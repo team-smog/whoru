@@ -1,0 +1,73 @@
+server:
+  port: 8081
+  servlet:
+    context-path: /api
+
+spring:
+  profiles:
+    active: local
+    include: key
+
+  #JPA 설정
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    # SQL 포매터
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+  sql:
+    init:
+      mode: always
+  # JPA 페이징 Defalut값 설정
+  data:
+    web:
+      pageable:
+        default-page-size: 12
+        one-indexed-parameters: true
+#        max-page-size: 30
+
+#Actuator 활성화 설정
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+#Swagger
+springdoc:
+  api-docs:
+    enabled: true
+    path: /api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+
+
+---
+#Local 개발 프로필
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  datasource:
+    url: ${my-db.url}
+    username: ${my-db.username}
+    password: ${my-db.password}
+    driver-class-name: ${my-db.driver-class-name}
+
+---
+#Production 프로필
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+#    datasource:
+#      url: ENC()
+#      username: ENC()
+#      password: ENC()
+#      driver-class-name: com.mysql.cj.jdbc.Driver
