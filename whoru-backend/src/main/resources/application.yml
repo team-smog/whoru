@@ -61,8 +61,9 @@ spring:
 
   data:
     redis:
-      host: localhost
+      host: ENC(4BetjSNJkZecvZ8pFsgjNLAFC5HmWxU2ni1oxe/B1d0=)
       port: 6379
+      password: ENC(Cob2I/Q2zRgYTv2Q/zP0GLrQpUk6hOOe)
 
 logging:
   level:
@@ -78,6 +79,7 @@ spring:
     redis:
       host: ENC(4BetjSNJkZecvZ8pFsgjNLAFC5HmWxU2ni1oxe/B1d0=)
       port: 6379
+      password: ENC(Cob2I/Q2zRgYTv2Q/zP0GLrQpUk6hOOe)
 
     datasource:
       url: ENC(EPSQGVLoerIjeLG9Gqrs14T0QUyLYthurV/Bqy3HrrY5UvnUf7ipZauxXyNJeUhbP6CXV22Pz5BnDFQfDZdcdjNtoC9G1F9/UpAHrlUKQf2W+3C7v3oKUA==)

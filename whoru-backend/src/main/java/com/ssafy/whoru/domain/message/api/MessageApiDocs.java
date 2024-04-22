@@ -5,12 +5,12 @@ package com.ssafy.whoru.domain.message.api;
 * */
 
 import com.ssafy.whoru.domain.message.dto.MessageResponse;
-import com.ssafy.whoru.global.common.dto.ApiResponse;
+import com.ssafy.whoru.global.common.dto.WrapResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 
 public interface MessageApiDocs {
     @Tag(name="Message String API Test", description="String test용 api")
-    ResponseEntity<ApiResponse<MessageResponse>> test200();
+    ResponseEntity<WrapResponse<MessageResponse>> test200();
 
 }
