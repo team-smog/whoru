@@ -8,13 +8,13 @@ import org.springframework.http.ResponseEntity;
 
 @Getter
 @Builder
-public class ApiResponse<T>{
+public class WrapResponse<T>{
     T data;
     Integer status;
     String msg;
 
-    public static <T> ApiResponse<T> create(T body, SuccessType httpType){
-        return ApiResponse.<T>builder()
+    public static <T> WrapResponse<T> create(T body, SuccessType httpType){
+        return WrapResponse.<T>builder()
                 .data(body)
                 .msg(httpType.getMsg())
                 .status(httpType.getStatus())
