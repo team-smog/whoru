@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8080
   servlet:
     context-path: /api
 
@@ -59,6 +59,14 @@ spring:
     password: ${my-db.password}
     driver-class-name: ${my-db.driver-class-name}
 
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+logging:
+  level:
+    root: info
 ---
 #Production 프로필
 spring:
@@ -66,8 +74,17 @@ spring:
     activate:
       on-profile: prod
 
-#    datasource:
-#      url: ENC()
-#      username: ENC()
-#      password: ENC()
-#      driver-class-name: com.mysql.cj.jdbc.Driver
+  data:
+    redis:
+      host: ENC(4BetjSNJkZecvZ8pFsgjNLAFC5HmWxU2ni1oxe/B1d0=)
+      port: 6379
+
+    datasource:
+      url: ENC(EPSQGVLoerIjeLG9Gqrs14T0QUyLYthurV/Bqy3HrrY5UvnUf7ipZauxXyNJeUhbP6CXV22Pz5BnDFQfDZdcdjNtoC9G1F9/UpAHrlUKQf2W+3C7v3oKUA==)
+      username: ENC(SlMRhFRwRUHykyE/Q6iYeQ==)
+      password: ENC(3ke7gPavz86vfhiq+jVjcaAO5gUtQgIl)
+      driver-class-name: com.mysql.cj.jdbc.Driver
+
+logging:
+  level:
+    root: info
