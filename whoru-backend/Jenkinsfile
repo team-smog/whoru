@@ -22,9 +22,11 @@ pipeline {
         }
         stage('Container build') {
             steps {
-                sh 'docker stop backend || true && docker rm backend || true'
-                sh 'docker rmi backend || true'
-                sh 'docker build --build-arg JASYPT_KEY=${JASYPT_KEY} -t backend .'
+                dir('./whoru-backend'){
+                    sh 'docker stop backend || true && docker rm backend || true'
+                    sh 'docker rmi backend || true'
+                    sh 'docker build --build-arg JASYPT_KEY=${JASYPT_KEY} -t backend .'
+                }
             }
         }
         stage('back-deploy') {
