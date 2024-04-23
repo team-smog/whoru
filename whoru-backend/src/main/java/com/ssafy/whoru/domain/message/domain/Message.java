@@ -1,6 +1,5 @@
 package com.ssafy.whoru.domain.message.domain;
 
-<<<<<<< whoru-backend/src/main/java/com/ssafy/whoru/domain/message/domain/Message.java
 import com.ssafy.whoru.domain.member.domain.Member;
 import com.ssafy.whoru.domain.message.dto.ContentType;
 import jakarta.persistence.Entity;

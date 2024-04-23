@@ -1,0 +1,38 @@
+pipeline {
+    agent any
+    tools {
+        gradle 'gradle'
+    }
+    environment {
+        JASYPT_KEY = credentials('JASYPT_KEY')
+    }
+    stages {
+        stage('clone'){
+            steps{
+                git branch: 'BE', url: 'https://lab.ssafy.com/s10-final/S10P31D203.git'
+            }
+        }
+        stage('Gradle build') {
+            steps {
+                dir('./whoru-backend') {
+                        sh 'chmod +x ./gradlew'
+                        sh './gradlew clean build'
+                    }
+                }
+            }
+        stage('Container build') {
+            steps {
+                dir("./whoru-backend") {
+                    sh 'docker stop backend || true && docker rm backend || true'
+                    sh 'docker rmi backend || true'
+                    sh 'docker build --build-arg JASYPT_KEY=${JASYPT_KEY} -t backend .'
+                }
+            }
+        }
+        stage('back-deploy') {
+            steps {
+                sh 'docker run -it -d -p 8080:8080 --name backend backend'
+            }
+        }
+    }
+}
