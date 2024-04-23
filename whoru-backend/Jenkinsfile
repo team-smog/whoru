@@ -15,19 +15,15 @@ pipeline {
         }
         stage('Gradle build') {
             steps {
-                dir('./whoru-backend') {
-                        sh 'chmod +x ./gradlew'
-                        sh './gradlew clean build'
-                    }
-                }
+                sh 'chmod +x ./gradlew'
+                sh './gradlew clean build'
             }
+        }
         stage('Container build') {
             steps {
-                dir("./whoru-backend") {
-                    sh 'docker stop backend || true && docker rm backend || true'
-                    sh 'docker rmi backend || true'
-                    sh 'docker build --build-arg JASYPT_KEY=${JASYPT_KEY} -t backend .'
-                }
+                sh 'docker stop backend || true && docker rm backend || true'
+                sh 'docker rmi backend || true'
+                sh 'docker build --build-arg JASYPT_KEY=${JASYPT_KEY} -t backend .'
             }
         }
         stage('back-deploy') {
