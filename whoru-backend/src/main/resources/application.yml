@@ -5,7 +5,7 @@ server:
 
 spring:
   profiles:
-    active: local
+    active: prod
     include: key
 
   #JPA 설정
@@ -81,11 +81,11 @@ spring:
       port: 6379
       password: ENC(Cob2I/Q2zRgYTv2Q/zP0GLrQpUk6hOOe)
 
-    datasource:
-      url: ENC(EPSQGVLoerIjeLG9Gqrs14T0QUyLYthurV/Bqy3HrrY5UvnUf7ipZauxXyNJeUhbP6CXV22Pz5BnDFQfDZdcdjNtoC9G1F9/UpAHrlUKQf2W+3C7v3oKUA==)
-      username: ENC(SlMRhFRwRUHykyE/Q6iYeQ==)
-      password: ENC(3ke7gPavz86vfhiq+jVjcaAO5gUtQgIl)
-      driver-class-name: com.mysql.cj.jdbc.Driver
+  datasource:
+    url: ENC(EPSQGVLoerIjeLG9Gqrs14T0QUyLYthurV/Bqy3HrrY5UvnUf7ipZauxXyNJeUhbP6CXV22Pz5BnDFQfDZdcdjNtoC9G1F9/UpAHrlUKQf2W+3C7v3oKUA==)
+    username: ENC(SlMRhFRwRUHykyE/Q6iYeQ==)
+    password: ENC(3ke7gPavz86vfhiq+jVjcaAO5gUtQgIl)
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
 logging:
   level:
