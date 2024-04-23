@@ -2,6 +2,7 @@ FROM openjdk:21
 
 # 인자 설정 - JAR_File
 ARG JAR_FILE=build/libs/*SNAPSHOT.jar
+ARG JASYPT_KEY
 
 #ARG JASYPT_KEY
 ENV JASYPT_KEY=$JASYPT_KEY
