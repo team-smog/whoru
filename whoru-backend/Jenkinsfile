@@ -10,11 +10,11 @@ pipeline {
         stage('clone'){
             steps{
                 git branch: 'BE', credentialsId: 'GitLab-Last', url: 'https://lab.ssafy.com/s10-final/S10P31D203.git'
-
             }
         }
         stage('Gradle build') {
             steps {
+                sh 'pwd'
                 sh 'chmod +x ./gradlew'
                 sh './gradlew clean build'
             }
