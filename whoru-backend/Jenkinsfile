@@ -15,9 +15,7 @@ pipeline {
         stage('Gradle build') {
             steps {
                 dir('./whoru-backend'){
-                    sh 'pwd'
                     sh 'chmod +x ./gradlew'
-                    sh 'pwd'
                     sh './gradlew clean build'
                 }
             }
