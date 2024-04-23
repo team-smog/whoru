@@ -14,8 +14,12 @@ pipeline {
         }
         stage('Gradle build') {
             steps {
-                sh 'cd ./whoru-backend && chmod +x ./gradlew'
-                sh './gradlew clean build'
+                dir('./whoru-backend'){
+                    sh 'pwd'
+                    sh 'chmod +x ./gradlew'
+                    sh 'pwd'
+                    sh './gradlew clean build'
+                }
             }
         }
         stage('Container build') {
