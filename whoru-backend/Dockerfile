@@ -4,7 +4,7 @@ FROM openjdk:21
 ARG JAR_FILE=build/libs/*SNAPSHOT.jar
 
 #ARG JASYPT_KEY
-ENV encryptor.key=$JASYPT_KEY
+ENV JASYPT_KEY=$JASYPT_KEY
 
 # jar 파일 복제
 COPY ${JAR_FILE} app.jar
@@ -13,4 +13,4 @@ COPY ${JAR_FILE} app.jar
 #COPY build/libs/*.jar app.jar
 EXPOSE 8080
 # 실행 명령어
-ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-DJASYPT_KEY=${JASYPT_KEY}", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-Dencryptor.key=${JASYPT_KEY}", "-jar", "app.jar"]
