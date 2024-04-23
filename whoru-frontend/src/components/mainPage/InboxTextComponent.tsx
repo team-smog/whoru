@@ -1,6 +1,22 @@
-import React from 'react'
+import axios from 'axios'
+import React, { useEffect,useState } from 'react'
 
 const InboxTextComponent = () => {
+  const [content, setContent] = useState<string>("")
+
+  // 일단 랜덤 글 불러오기
+  // TODO: 백엔드와 연동하여 실제 데이터를 받아오도록 수정
+  useEffect(() => {
+    axios.get('https://api.chucknorris.io/jokes/random')
+    .then((res) => {
+      console.log(res.data.value)
+      setContent(res.data.value)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  }, [])
+
   return (
     <div className="">
       <div className="m-4 text-xs">
@@ -9,7 +25,7 @@ const InboxTextComponent = () => {
           <p className="mx-3 text-gray-400">1분 전</p>
         </div>
         <div className="mx-5 mt-3 mb-4">
-          <p className="break-keep ">메시지 내용 메시지 내용 메시지 내용 메시지 내용 메시지 내용 메시지 내용 메시지 내용 메시지 내용 메시지 내용</p>
+          <p className="break-keep ">{content}</p>
         </div>
         <div className="flex flex-1 justify-around items-conter mb-3">
           <button>답장하기</button>
