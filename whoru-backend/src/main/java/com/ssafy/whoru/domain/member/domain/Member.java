@@ -44,7 +44,8 @@ public class Member {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createDate = LocalDateTime.now();
 
-    private int reportCount;
+    @Column(nullable = false)
+    private int reportCount = 0;
 
     private String refreshToken;
 

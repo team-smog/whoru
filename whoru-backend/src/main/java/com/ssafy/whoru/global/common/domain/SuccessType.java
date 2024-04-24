@@ -13,8 +13,8 @@ import java.util.Arrays;
 
 public enum SuccessType {
 
-    SIMPLE_STATUS(200, "성공적인 API"),
-    STATUS_201(201,"CREATED 인데용")
+    SIMPLE_STATUS(200, "요청에 대하여 성공적으로 처리되었습니다."),
+    STATUS_201(201,"요청에 대하여 처리되어 콘텐츠 생성에 성공하였습니다.")
     ;
 
     final Integer status;

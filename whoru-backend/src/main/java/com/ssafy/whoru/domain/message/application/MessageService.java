@@ -1,7 +1,9 @@
 package com.ssafy.whoru.domain.message.application;
 
-import org.springframework.stereotype.Service;
+import com.ssafy.whoru.domain.message.dto.request.TextSend;
+import com.ssafy.whoru.domain.message.dto.response.MessageResponse;
 
-@Service
+
 public interface MessageService {
+    void sendTextMessageToRandomMember(TextSend textSend);
 }
