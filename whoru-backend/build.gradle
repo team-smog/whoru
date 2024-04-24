@@ -67,6 +67,7 @@ dependencies {
 }
 
 tasks.named('test') {
-//    systemProperty 'encryptor.key', System.getProperty('encryptor.key')
-//    useJUnitPlatform()
+    systemProperty 'encryptor.key', System.getProperty('encryptor.key')
+    
+    useJUnitPlatform()
 }
