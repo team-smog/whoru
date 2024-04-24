@@ -1,7 +1,7 @@
 package com.ssafy.whoru.message;
 
 import com.ssafy.whoru.TestPrepare;
-import com.ssafy.whoru.domain.collect.dao.CollectRepository;
+import com.ssafy.whoru.domain.collect.dao.IconRepository;
 import com.ssafy.whoru.domain.collect.domain.Icon;
 import com.ssafy.whoru.domain.member.dao.MemberRepository;
 import com.ssafy.whoru.domain.member.domain.Member;
@@ -32,7 +32,7 @@ public class MessageApiTest extends TestPrepare {
     MemberRepository memberRepository;
 
     @Autowired
-    CollectRepository collectRepository;
+    IconRepository collectRepository;
 
     @Autowired
     MemberTestUtil memberTestUtil;
