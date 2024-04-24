@@ -1,33 +1,28 @@
-server:
-  port: 8080
-  servlet:
-    context-path: /api
-
 spring:
-  profiles:
-    active: local
-    include: key
-
-  #JPA 설정
+  h2:
+    console:
+      enabled: true
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:whoru;
+    username: sa
+    password:
   jpa:
     hibernate:
-      ddl-auto: create
-    show-sql: true
-    # SQL 포매터
+      ddl-auto: create-drop
     properties:
       hibernate:
         format_sql: true
-        use_sql_comments: true
-  sql:
-    init:
-      mode: always
-  # JPA 페이징 Defalut값 설정
+    show-sql: true
   data:
-    web:
-      pageable:
-        default-page-size: 12
-        one-indexed-parameters: true
-#        max-page-size: 30
+    redis:
+      port: 6379
+      host: localhost
+      password:
+
+server:
+  servlet:
+    context-path: /api
 
 #FCM 설정
 fcm:
@@ -53,64 +48,3 @@ fcm:
     uri: https://oauth2.googleapis.com/token
   universe:
     domain: googleapis.com
-
-
-
-#Actuator 활성화 설정
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-
-#Swagger
-springdoc:
-  api-docs:
-    enabled: true
-    path: /api-docs
-  swagger-ui:
-    enabled: true
-    path: /swagger-ui.html
-
-
----
-#Local 개발 프로필
-spring:
-  config:
-    activate:
-      on-profile: local
-
-  datasource:
-    url: ${my-db.url}
-    username: ${my-db.username}
-    password: ${my-db.password}
-    driver-class-name: ${my-db.driver-class-name}
-
-  data:
-    redis:
-      host: ${my-redis.host}
-      port: ${my-redis.port}
-      password: ${my-redis.password}
-
----
-#Production 프로필
-spring:
-  config:
-    activate:
-      on-profile: prod
-
-  data:
-    redis:
-      host: ENC(4BetjSNJkZecvZ8pFsgjNLAFC5HmWxU2ni1oxe/B1d0=)
-      port: 6379
-      password: ENC(g+ew4OYTc3qVGtJ+5H7IUe2LRjr5ehtn)
-
-    datasource:
-      url: ENC(EPSQGVLoerIjeLG9Gqrs14T0QUyLYthurV/Bqy3HrrY5UvnUf7ipZauxXyNJeUhbP6CXV22Pz5BnDFQfDZdcdjNtoC9G1F9/UpAHrlUKQf2W+3C7v3oKUA==)
-      username: ENC(SlMRhFRwRUHykyE/Q6iYeQ==)
-      password: ENC(3ke7gPavz86vfhiq+jVjcaAO5gUtQgIl)
-      driver-class-name: com.mysql.cj.jdbc.Driver
-
-logging:
-  level:
-    root: info

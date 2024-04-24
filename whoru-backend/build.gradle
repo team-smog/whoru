@@ -52,8 +52,21 @@ dependencies {
     //ModelMapper
     implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.2.0'
 
+    //Redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+    //FCM
+    implementation 'com.google.firebase:firebase-admin:9.2.0'
+
+    // H2 & JDBC (for Test)
+    runtimeOnly 'com.h2database:h2'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+
+    // embedded redis (for Test)
+    implementation("it.ozimov:embedded-redis:0.7.2")
 }
 
 tasks.named('test') {
+    systemProperty 'encryptor.key', System.getProperty('encryptor.key')
     useJUnitPlatform()
 }
