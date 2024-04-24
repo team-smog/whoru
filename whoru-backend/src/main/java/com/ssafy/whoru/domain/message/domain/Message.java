@@ -1,6 +1,6 @@
 package com.ssafy.whoru.domain.message.domain;
 
-<<<<<<< whoru-backend/src/main/java/com/ssafy/whoru/domain/message/domain/Message.java
+
 import com.ssafy.whoru.domain.member.domain.Member;
 import com.ssafy.whoru.domain.message.dto.ContentType;
 import jakarta.persistence.Entity;
@@ -42,6 +42,7 @@ public class Message {
 
     private Boolean readStatus;
 
+    // 답장인지 아닌지
     private Boolean isResponse;
 
     @ManyToOne
@@ -50,6 +51,7 @@ public class Message {
 
     private Boolean isReported;
 
+    // 받는사람 입장에서 해당 메세지에 답장을 보냈었는지
     private Boolean responseStatus;
 
     public void updateReadStatus(Boolean status) {this.readStatus = status; }
