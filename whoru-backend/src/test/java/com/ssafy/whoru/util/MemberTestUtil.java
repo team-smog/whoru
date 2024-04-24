@@ -1,14 +1,11 @@
 package com.ssafy.whoru.util;
 
-import com.ssafy.whoru.domain.collect.dao.CollectRepository;
+import com.ssafy.whoru.domain.collect.dao.IconRepository;
 import com.ssafy.whoru.domain.collect.domain.Icon;
 import com.ssafy.whoru.domain.member.dao.MemberRepository;
 import com.ssafy.whoru.domain.member.domain.Member;
 import com.ssafy.whoru.domain.member.dto.ProviderType;
-import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -21,7 +18,7 @@ public class MemberTestUtil {
     MemberRepository memberRepository;
 
     @Autowired
-    CollectRepository collectRepository;
+    IconRepository collectRepository;
 
     static final String MEMBER3000_FCM_TOKEN = "cfMx6tEB1EUp2Eb484bePq:APA91bG_iJU6Olx_aSkQSB7Q6j8wyCyRtx5Gb9jfDRLigIaYdRKJbY14kD34nIZjwWIepkxmm02WlOHaLvbbDck8FamulUEttEcGEKzseph_p3X1tkjpXWqvwCh8I-jiKkzE9RYJJ2uI";
 

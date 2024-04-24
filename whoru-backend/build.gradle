@@ -49,6 +49,9 @@ dependencies {
     //Actuator
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
+    //Prometheus
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+
     //ModelMapper
     implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.2.0'
 

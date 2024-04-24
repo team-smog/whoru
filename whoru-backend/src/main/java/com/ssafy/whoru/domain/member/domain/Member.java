@@ -18,6 +18,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Getter
@@ -42,6 +43,7 @@ public class Member {
     private int boxCount;
 
     @Column(nullable = false, updatable = false)
+    @Builder.Default
     private LocalDateTime createDate = LocalDateTime.now();
 
     @Column(nullable = false)
@@ -54,6 +56,8 @@ public class Member {
     public void updateBoxCount() {
         this.boxCount++;
     }
+
+    public void updateBoxDecrease() { this.boxCount--; }
 
     public void updateReportCount() {
         this.reportCount++;
