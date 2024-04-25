@@ -2,6 +2,7 @@ package com.ssafy.whoru.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.whoru.domain.collect.domain.Icon;
+import com.ssafy.whoru.domain.collect.dto.IconGradeType;
 import com.ssafy.whoru.domain.member.domain.Member;
 import com.ssafy.whoru.domain.member.dto.ProviderType;
 import com.ssafy.whoru.domain.message.domain.Message;
@@ -51,6 +52,7 @@ public class MemberTestUtil implements InitializingBean {
     public Icon 아이콘_추가(MockMvc mockMvc){
         Icon icon = Icon.builder()
                 .iconUrl("test_icon")
+                .iconGrade(IconGradeType.COMMON)
                 .build();
         return icon;
     }
