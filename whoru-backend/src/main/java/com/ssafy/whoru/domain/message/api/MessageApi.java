@@ -7,6 +7,7 @@ package com.ssafy.whoru.domain.message.api;
 
 import com.ssafy.whoru.domain.member.domain.Member;
 import com.ssafy.whoru.domain.message.application.MessageService;
+import com.ssafy.whoru.domain.message.dto.request.TextResponseSend;
 import com.ssafy.whoru.domain.message.dto.request.TextSend;
 import com.ssafy.whoru.domain.message.dto.response.MessageResponse;
 import com.ssafy.whoru.global.common.domain.SuccessType;
@@ -27,6 +28,14 @@ public class MessageApi implements MessageApiDocs{
     @PostMapping("")
     public ResponseEntity<WrapResponse<Void>> sendTextMessage(@RequestBody TextSend textSend) {
         service.sendTextMessageToRandomMember(textSend);
+        return ResponseEntity.ok(WrapResponse.create(
+                SuccessType.STATUS_201
+        ));
+    }
+
+    @PostMapping("/response/text")
+    public ResponseEntity<WrapResponse<Void>> sendTextResponseMessage(@RequestBody TextResponseSend responseSend){
+        service.responseTextMessage(responseSend);
         return ResponseEntity.ok(WrapResponse.create(
                 SuccessType.STATUS_201
         ));

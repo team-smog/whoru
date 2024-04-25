@@ -1,4 +1,4 @@
-package com.ssafy.whoru.domain.member.service;
+package com.ssafy.whoru.domain.member.application;
 
 import com.ssafy.whoru.domain.member.dto.response.MemberResponse;
 
@@ -7,5 +7,5 @@ public interface MemberService {
 
     MemberResponse findRandom(Long senderId);
 
-    void updateBoxCount(Long memberId);
+    void updateBoxIncrease(Long memberId);
 }

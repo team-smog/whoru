@@ -1,4 +1,4 @@
-package com.ssafy.whoru.domain.member.service;
+package com.ssafy.whoru.domain.member.application;
 
 
 import com.ssafy.whoru.domain.member.dao.MemberRepository;
@@ -31,9 +31,9 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void updateBoxCount(Long memberId) {
+    public void updateBoxIncrease(Long memberId) {
         Optional<Member> result = memberRepository.findById(memberId);
         Member member = result.orElseThrow(MemberNotFoundException::new);
-        member.updateBoxCount();
+        member.updateBoxIncrease();
     }
 }

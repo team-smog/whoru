@@ -51,8 +51,12 @@ public class Member {
 
     private String fcmToken;
 
-    public void updateBoxCount() {
+    public void updateBoxIncrease() {
         this.boxCount++;
+    }
+
+    public void updateBoxDecrease(){
+        this.boxCount--;
     }
 
     public void updateReportCount() {
