@@ -9,7 +9,7 @@ import com.ssafy.whoru.domain.collect.dto.response.GetIconResponse;
 import com.ssafy.whoru.domain.collect.exception.BoxCountInvalidException;
 import com.ssafy.whoru.domain.collect.exception.IconNotFoundException;
 import com.ssafy.whoru.domain.member.domain.Member;
-import com.ssafy.whoru.domain.member.service.MemberService;
+import com.ssafy.whoru.domain.member.application.MemberService;
 import com.ssafy.whoru.global.error.exception.ErrorCode;
 import jakarta.annotation.PostConstruct;
 import java.util.Optional;
