@@ -30,10 +30,10 @@ public class Message {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Member senderId;
+    private Member sender;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Member receiverId;
+    private Member receiver;
 
     private String content;
 
