@@ -36,10 +36,10 @@ public class CollectServiceImpl implements CollectService {
     private final ModelMapper modelMapper;
 
     @Override
-    public GetIconResponse redeemRandomIcon(Long userId) {
+    public GetIconResponse redeemRandomIcon(Long memberId) {
 
         //유저Id를 통해 해당 유저가 랜덤박스를 1개 이상 소지하고 있는지 확인.
-        Member member = memberService.findByIdToEntity(userId);
+        Member member = memberService.findByIdToEntity(memberId);
 
         //박스 개수가 부족할 경우 예외처리
         if(member.getBoxCount() == 0) throw new BoxCountInvalidException(ErrorCode.COLLECT_VALUE_INVALID);
