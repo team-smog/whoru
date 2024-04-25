@@ -13,42 +13,7 @@ import java.util.Optional;
 
 
 @Service
-@AllArgsConstructor
 public class MemberServiceImpl implements MemberService {
 
-    MemberRepository memberRepository;
-    @Override
-    public MemberResponse findOne(Long memberId) {
-        Optional<Member> result = memberRepository.findById(memberId);
-        Member member = result.orElseThrow(MemberNotFoundException::new);
-        return MemberResponse.toDto(member);
-    }
-
-    @Override
-    public Member findByIdWithEntity(Long memberId) {
-        Optional<Member> result = memberRepository.findById(memberId);
-        return result.orElseThrow(MemberNotFoundException::new);
-    }
-
-    @Override
-    public MemberResponse findRandom(Long senderId) {
-        Optional<Member> result = memberRepository.findRandom(senderId);
-        Member member = result.orElseThrow(MemberNotFoundException::new);
-        return MemberResponse.toDto(member);
-    }
-
-    @Override
-    public void updateBoxIncrease(Long memberId) {
-        Optional<Member> result = memberRepository.findById(memberId);
-        Member member = result.orElseThrow(MemberNotFoundException::new);
-        member.updateBoxIncrease();
-    }
-
-    @Override
-    public void updateBoxDecrease(Long memberId) {
-        Optional<Member> result = memberRepository.findById(memberId);
-        Member member = result.orElseThrow(MemberNotFoundException::new);
-        member.updateBoxDecrease();
-    }
 
 }

@@ -8,6 +8,7 @@ import com.ssafy.whoru.domain.collect.dto.IconGradeType;
 import com.ssafy.whoru.domain.collect.dto.response.GetIconResponse;
 import com.ssafy.whoru.domain.collect.exception.BoxCountInvalidException;
 import com.ssafy.whoru.domain.collect.exception.IconNotFoundException;
+import com.ssafy.whoru.domain.member.application.CrossMemberService;
 import com.ssafy.whoru.domain.member.domain.Member;
 import com.ssafy.whoru.domain.member.application.MemberService;
 import com.ssafy.whoru.global.error.exception.ErrorCode;
@@ -26,7 +27,7 @@ public class CollectServiceImpl implements CollectService {
 
     private static final int RANDOM_BOUND = 100;    //난수 범위값
 
-    private final MemberService memberService;
+    private final CrossMemberService memberService;
 
     private final IconRepository IconRepository;
 
@@ -38,7 +39,7 @@ public class CollectServiceImpl implements CollectService {
     public GetIconResponse redeemRandomIcon(Long userId) {
 
         //유저Id를 통해 해당 유저가 랜덤박스를 1개 이상 소지하고 있는지 확인.
-        Member member = memberService.findByIdWithEntity(userId);
+        Member member = memberService.findByIdToEntity(userId);
 
         //박스 개수가 부족할 경우 예외처리
         if(member.getBoxCount() == 0) throw new BoxCountInvalidException(ErrorCode.COLLECT_VALUE_INVALID);

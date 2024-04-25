@@ -1,5 +1,7 @@
 package com.ssafy.whoru.domain.message.application;
 
+import com.ssafy.whoru.domain.member.application.CrossMemberService;
+import com.ssafy.whoru.domain.member.domain.Member;
 import com.ssafy.whoru.domain.member.dto.response.MemberResponse;
 import com.ssafy.whoru.domain.member.application.MemberService;
 import com.ssafy.whoru.domain.message.dao.MessageRepository;
@@ -30,7 +32,7 @@ public class MessageServiceImpl implements MessageService{
 
     MessageRepository messageRepository;
 
-    MemberService memberService;
+    CrossMemberService memberService;
 
     RedisUtil redisUtil;
 
@@ -52,6 +54,10 @@ public class MessageServiceImpl implements MessageService{
         String key = RedisKeyType.TODAY_BOX.makeKey(String.valueOf(textSend.getSenderId()));
         Optional<String> boxCount = redisUtil.findValueByKey(key);
 
+        // db에서 두사람 정보 들고오기
+        Member sender = memberService.findByIdToEntity(textSend.getSenderId());
+        Member receiver = memberService.findRandomToEntity(textSend.getSenderId());
+
         // 현재 redis에 남아있는 오늘의 박스 얻은 횟수 가져오기
         Integer presentBoxCount = BOX_COUNT_INIT;
         if(boxCount.isPresent()){
@@ -60,17 +66,16 @@ public class MessageServiceImpl implements MessageService{
 
         if(presentBoxCount < BOX_LIMIT){
             // db상에 boxcount도 증가시켜야 하고
-            memberService.updateBoxIncrease(textSend.getSenderId());
-            // redis에서도 새롭게 +1 된 값을 반영해야 함
+            sender.updateBoxIncrease();
 
+            // redis에서도 새롭게 +1 된 값을 반영해야 함
             // 날짜 바뀌는 시간 구하기
             LocalDateTime next = LocalDate.now().plusDays(1).atStartOfDay();
 
             redisUtil.insert(key, String.valueOf(presentBoxCount+1), Duration.between(LocalDateTime.now(), next).getSeconds());
         }
 
-        MemberResponse sender = memberService.findOne(textSend.getSenderId());
-        MemberResponse receiver = memberService.findRandom(textSend.getSenderId());
+
 
         // fcm 발송
         fcmUtil.sendMessage(receiver.getFcmToken());
@@ -80,8 +85,8 @@ public class MessageServiceImpl implements MessageService{
                 Message.builder()
                         .content(textSend.getContent())
                         .contentType(ContentType.text)
-                        .sender(sender.toEntity())
-                        .receiver(receiver.toEntity())
+                        .sender(sender)
+                        .receiver(receiver)
                         .isReported(false)
                         .readStatus(false)
                         .parent(null)
