@@ -30,6 +30,7 @@ public class Ban {
     private Member member;
 
     @Column(nullable = false, updatable = false)
+    @Builder.Default
     private LocalDateTime startDate = LocalDateTime.now();
 
     private LocalDateTime endDate;
