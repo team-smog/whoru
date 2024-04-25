@@ -87,14 +87,5 @@ public class CollectServiceImpl implements CollectService {
         return response;
     }
 
-    @PostConstruct
-    void init() {
-        Icon icon = Icon.builder()
-            .iconUrl("dskljfweklfe1")
-            .iconGrade(IconGradeType.COMMON)
-            .build();
-
-        IconRepository.save(icon);
-    }
 
 }
