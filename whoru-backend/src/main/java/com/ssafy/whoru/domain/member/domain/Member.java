@@ -18,7 +18,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Getter
@@ -47,7 +46,8 @@ public class Member {
     private LocalDateTime createDate = LocalDateTime.now();
 
     @Column(nullable = false)
-    private int reportCount = 0;
+    @Builder.Default
+    private Integer reportCount = 0;
 
     private String refreshToken;
 

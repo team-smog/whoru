@@ -37,6 +37,7 @@ public class Report {
     private Message message;
 
     @Column(name = "report_date", nullable = false, updatable = false)
+    @Builder.Default
     private LocalDateTime reportDate = LocalDateTime.now();
 
     @Enumerated(value = EnumType.STRING)

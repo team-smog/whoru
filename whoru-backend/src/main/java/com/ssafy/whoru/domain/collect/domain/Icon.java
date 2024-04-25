@@ -8,6 +8,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Transient;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,7 +24,7 @@ public class Icon {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(nullable = false, updatable = false)
     private String iconUrl;
@@ -32,5 +33,11 @@ public class Icon {
     @Column(nullable = false, updatable = false)
     private IconGradeType iconGrade;
 
+    @Transient
+    @Builder.Default
+    private Boolean isAvailable = false;
 
+    public void isAvailableUpdate(Boolean status) {
+        this.isAvailable = status;
+    }
 }
