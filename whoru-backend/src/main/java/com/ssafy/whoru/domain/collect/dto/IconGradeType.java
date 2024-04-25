@@ -14,5 +14,3 @@ public enum IconGradeType {
     private String grade;
     private int probability;
 }
-
-

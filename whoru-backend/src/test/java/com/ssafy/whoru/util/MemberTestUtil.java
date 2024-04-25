@@ -1,18 +1,16 @@
 package com.ssafy.whoru.util;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.whoru.domain.collect.domain.Icon;
 import com.ssafy.whoru.domain.collect.dto.IconGradeType;
 import com.ssafy.whoru.domain.member.domain.Member;
 import com.ssafy.whoru.domain.member.dto.ProviderType;
-import com.ssafy.whoru.domain.message.domain.Message;
 import com.ssafy.whoru.global.common.domain.RedisKeyType;
 import com.ssafy.whoru.global.util.RedisUtil;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.TestComponent;
-import org.springframework.context.annotation.Profile;
-import org.springframework.http.MediaType;
+import com.ssafy.whoru.domain.collect.dao.IconRepository;
+import com.ssafy.whoru.domain.member.dao.MemberRepository;
+
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -25,6 +23,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Component
 public class MemberTestUtil implements InitializingBean {
+
+    @Autowired
+    MemberRepository memberRepository;
+
+    @Autowired
+    IconRepository collectRepository;
 
     static final String MEMBER3000_FCM_TOKEN = "cfMx6tEB1EUp2Eb484bePq:APA91bG_iJU6Olx_aSkQSB7Q6j8wyCyRtx5Gb9jfDRLigIaYdRKJbY14kD34nIZjwWIepkxmm02WlOHaLvbbDck8FamulUEttEcGEKzseph_p3X1tkjpXWqvwCh8I-jiKkzE9RYJJ2uI";
 
@@ -51,9 +55,9 @@ public class MemberTestUtil implements InitializingBean {
 
     public Icon 아이콘_추가(MockMvc mockMvc){
         Icon icon = Icon.builder()
-                .iconUrl("test_icon")
-                .iconGrade(IconGradeType.COMMON)
-                .build();
+            .iconUrl("test_icon")
+            .iconGrade(IconGradeType.COMMON)
+            .build();
         return icon;
     }
 
