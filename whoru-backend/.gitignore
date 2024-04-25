@@ -36,4 +36,4 @@ out/
 ### VS Code ###
 .vscode/
 
-application-key.yaml
+application-key.yml
