@@ -51,13 +51,4 @@ public class MemberServiceImpl implements MemberService {
         member.updateBoxDecrease();
     }
 
-
-    @PostConstruct
-    void init() {
-        Member member = Member.builder()
-            .userName("정현")
-            .build();
-
-        memberRepository.save(member);
-    }
 }
