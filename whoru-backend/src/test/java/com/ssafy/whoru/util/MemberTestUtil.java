@@ -2,7 +2,10 @@ package com.ssafy.whoru.util;
 
 import com.ssafy.whoru.domain.collect.domain.Icon;
 import com.ssafy.whoru.domain.collect.dto.IconGradeType;
+import com.ssafy.whoru.domain.member.dao.FcmRepository;
+import com.ssafy.whoru.domain.member.domain.FcmNotification;
 import com.ssafy.whoru.domain.member.domain.Member;
+import com.ssafy.whoru.domain.member.dto.LanguageType;
 import com.ssafy.whoru.domain.member.dto.ProviderType;
 import com.ssafy.whoru.global.common.domain.RedisKeyType;
 import com.ssafy.whoru.global.util.RedisUtil;
@@ -18,9 +21,6 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 @Component
 public class MemberTestUtil implements InitializingBean {
 
@@ -29,6 +29,9 @@ public class MemberTestUtil implements InitializingBean {
 
     @Autowired
     IconRepository collectRepository;
+
+    @Autowired
+    FcmRepository fcmRepository;
 
     static final String MEMBER3000_FCM_TOKEN = "cfMx6tEB1EUp2Eb484bePq:APA91bG_iJU6Olx_aSkQSB7Q6j8wyCyRtx5Gb9jfDRLigIaYdRKJbY14kD34nIZjwWIepkxmm02WlOHaLvbbDck8FamulUEttEcGEKzseph_p3X1tkjpXWqvwCh8I-jiKkzE9RYJJ2uI";
 
@@ -62,41 +65,70 @@ public class MemberTestUtil implements InitializingBean {
     }
 
     public Member Member3000_멤버추가(Icon icon, MockMvc mockMvc){
+        FcmNotification fcm = FcmNotification.builder()
+            .fcmToken(MEMBER3000_FCM_TOKEN)
+            .deviceName("IPhone")
+            .build();
+
+        fcmRepository.save(fcm);
+
         return Member.builder()
                 .iconId(icon)
                 .provider(ProviderType.kakao)
+                .memberIdentifier(1L)
                 .boxCount(3)
-                .fcmToken(MEMBER3000_FCM_TOKEN)
+                .fcmNotification(fcm)
                 .createDate(LocalDateTime.now())
                 .refreshToken("fdafasfasfasfafdfa")
                 .reportCount(0)
                 .userName("MEMBER3000")
+                .languageType(LanguageType.KOREAN)
                 .build();
     }
 
     public Member Member3001_멤버추가(Icon icon, MockMvc mockMvc){
+
+        FcmNotification fcm = FcmNotification.builder()
+            .fcmToken(MEMBER3001_FCM_TOKEN)
+            .deviceName("Galaxy S20")
+            .build();
+
+        fcmRepository.save(fcm);
+
         return Member.builder()
                 .iconId(icon)
                 .provider(ProviderType.kakao)
+                .memberIdentifier(2L)
                 .boxCount(3)
-                .fcmToken(MEMBER3001_FCM_TOKEN)
+                .fcmNotification(fcm)
                 .createDate(LocalDateTime.now())
                 .refreshToken("fdafasfasfasfafdfa")
                 .reportCount(0)
                 .userName("MEMBER3001")
+                .languageType(LanguageType.KOREAN)
                 .build();
     }
 
     public Member Member_Error_Fcm_token멤버추가(Icon icon, MockMvc mockMvc){
+
+        FcmNotification fcm = FcmNotification.builder()
+            .fcmToken(MEMBER_ERROR_FCM_TOKEN)
+            .deviceName("Galaxy S20")
+            .build();
+
+        fcmRepository.save(fcm);
+
         return Member.builder()
                 .iconId(icon)
                 .provider(ProviderType.kakao)
+                .memberIdentifier(3L)
                 .boxCount(3)
-                .fcmToken(MEMBER_ERROR_FCM_TOKEN)
+                .fcmNotification(fcm)
                 .createDate(LocalDateTime.now())
                 .refreshToken("fdafasfasfasfafdfa")
                 .reportCount(0)
                 .userName("MEMBER_ERROR_FCM_TOKEN")
+                .languageType(LanguageType.KOREAN)
                 .build();
 
     }
