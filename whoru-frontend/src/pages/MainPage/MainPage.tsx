@@ -46,7 +46,7 @@ const MainPage = () => {
   return (
     <div>
       <Header info={info} />
-      <div className="mt-12">
+      <div className="pt-12">
         <InboxTextComponent />
       </div>
       <NavigationBar />
