@@ -17,7 +17,7 @@ const Header = (props: {info:IHeaderInfo}) => {
     <div className="max-w-[500px] font-bold w-full z-[2] h-12 px-4 top-0 flex fixed justify-between items-center border-b-[0.5px] border-black">
       <div className="flex flex-1 justify-start items-center">
         {left_1 && (
-          <div className="text-black font-bold w-13">
+          <div className="w-13 text-[20px] text-text_color">
             <div>{left_1}</div>
           </div>
         )}
@@ -30,7 +30,7 @@ const Header = (props: {info:IHeaderInfo}) => {
       <div className="flex-1 flex justify-center">{center && <p className="text-white">{center}</p>}</div>
       <div className="flex flex-1 justify-end items-center relative">
         <button onClick={() => navigate('/alarm')}>
-          {right && <img src={Bell} alt="Alarm" className="w-[32px] h-[32px]" />}
+          {right && <img src={Bell} alt="Alarm" className="w-6 h-6"/>}
         </button>
       </div>
     </div>
