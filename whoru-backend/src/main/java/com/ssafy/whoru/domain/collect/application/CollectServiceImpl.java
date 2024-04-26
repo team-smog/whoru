@@ -14,7 +14,6 @@ import com.ssafy.whoru.domain.member.application.CrossMemberService;
 import com.ssafy.whoru.domain.member.application.MemberServiceImpl;
 import com.ssafy.whoru.domain.member.domain.Member;
 import com.ssafy.whoru.global.error.exception.ErrorCode;
-import jakarta.annotation.PostConstruct;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -132,24 +131,5 @@ public class CollectServiceImpl implements CollectService {
             .build();
     }
 
-    @PostConstruct
-    void init() {
-        Icon icon = Icon.builder()
-            .iconGrade(IconGradeType.COMMON)
-            .iconUrl("WJElkqej")
-            .build();
-
-        iconRepository.save(icon);
-
-        Member member = memberService.findByIdToEntity(1L);
-
-        MemberIcon memberIcon = MemberIcon.builder()
-            .icon(icon)
-            .member(member)
-            .build();
-
-        memberIconRepository.save(memberIcon);
-
-    }
 
 }
