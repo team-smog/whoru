@@ -1,6 +1,7 @@
 package com.ssafy.whoru.domain.member.domain;
 
 import com.ssafy.whoru.domain.collect.domain.Icon;
+import com.ssafy.whoru.domain.member.dto.LanguageType;
 import com.ssafy.whoru.domain.member.dto.ProviderType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -35,6 +37,9 @@ public class Member {
     @Enumerated(value = EnumType.STRING)
     private ProviderType provider;
 
+    @Column(updatable = false)
+    private Long memberIdentifier;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "icon_id")
     private Icon iconId;
@@ -51,7 +56,14 @@ public class Member {
 
     private String refreshToken;
 
-    private String fcmToken;
+    @Enumerated(value = EnumType.STRING)
+    private LanguageType languageType;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fcm_id", referencedColumnName = "id")
+    private FcmNotification fcmNotification;
+
+
 
     public void updateBoxIncrease() {
         this.boxCount++;
