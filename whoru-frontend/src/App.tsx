@@ -7,6 +7,9 @@ import ProfilePage from './pages/Profile/ProfilePage';
 import AskPage from './pages/Ask/AskPage';
 import PostPage from './pages/Post/PostPage';
 import AskPostPage from './pages/AskPost/AskPostPage';
+import AnnouncementPage from './pages/Announcement/AnnouncementPage';
+import Chacollection from './pages/Chacollection/Chacollection';
+import Inquiry from './pages/Inquiry/Inquiry';
 
 const router = createBrowserRouter([
   {
@@ -32,6 +35,18 @@ const router = createBrowserRouter([
   {
     path: '/profile/ask/post',
     element: <AskPostPage />
+  },
+  {
+    path : '/announcement',
+    element: <AnnouncementPage />
+  },
+  {
+    path : '/chacollection',
+    element : <Chacollection />
+  },
+  {
+    path : 'Inquiry',
+    element : <Inquiry />
   },
   {
     path: '/post',
