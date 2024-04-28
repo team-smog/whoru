@@ -16,7 +16,7 @@ pipeline {
             steps {
                 dir('./whoru-backend'){
                     sh 'chmod +x ./gradlew'
-                    sh './gradlew clean build -Dencryptor.key=${JASYPT_KEY}'
+                    sh './gradlew clean build -Dencryptor.key=${JASYPT_KEY} -DAWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} -DAWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}'
                 }
             }
         }
@@ -25,7 +25,7 @@ pipeline {
                 dir('./whoru-backend'){
                     sh 'docker stop backend || true && docker rm backend || true'
                     sh 'docker rmi backend || true'
-                    sh 'docker build --build-arg JASYPT_KEY=${JASYPT_KEY} -t backend .'
+                    sh 'docker build --build-arg JASYPT_KEY=${JASYPT_KEY} --build-arg AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} --build-arg AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} -t backend .'
                 }
             }
         }
