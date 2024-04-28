@@ -29,6 +29,12 @@ spring:
         one-indexed-parameters: true
 #        max-page-size: 30
 
+  # file size 제한 설정
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
+
 #FCM 설정
 fcm:
   type: service_account
@@ -53,7 +59,6 @@ fcm:
     uri: https://oauth2.googleapis.com/token
   universe:
     domain: googleapis.com
-
 
 
 #Actuator 활성화 설정

@@ -1,13 +1,9 @@
 package com.ssafy.whoru.global.util;
 
-import com.ssafy.whoru.global.common.domain.RedisKeyType;
 import lombok.AllArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
-import redis.embedded.Redis;
 
-import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;

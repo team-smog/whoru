@@ -2,18 +2,21 @@ package com.ssafy.whoru.domain.message.application;
 
 import com.ssafy.whoru.domain.member.application.CrossMemberService;
 import com.ssafy.whoru.domain.member.domain.Member;
-import com.ssafy.whoru.domain.member.dto.response.MemberResponse;
-import com.ssafy.whoru.domain.member.application.MemberService;
 import com.ssafy.whoru.domain.message.dao.MessageRepository;
+import com.ssafy.whoru.global.common.application.S3Service;
+import com.ssafy.whoru.global.common.dto.FileType;
 import com.ssafy.whoru.domain.message.domain.Message;
 import com.ssafy.whoru.domain.message.dto.ContentType;
+import com.ssafy.whoru.domain.message.dto.request.Info;
 import com.ssafy.whoru.domain.message.dto.request.TextResponseSend;
 import com.ssafy.whoru.domain.message.dto.request.TextSend;
 import com.ssafy.whoru.domain.message.exception.BannedSenderException;
 import com.ssafy.whoru.domain.message.exception.MessageNotFoundException;
 import com.ssafy.whoru.domain.message.exception.ReportedMessageException;
+import com.ssafy.whoru.domain.message.exception.UnacceptableFileTypeException;
 import com.ssafy.whoru.domain.message.util.MessageUtil;
-import com.ssafy.whoru.global.common.domain.RedisKeyType;
+import com.ssafy.whoru.global.common.dto.RedisKeyType;
+import com.ssafy.whoru.global.common.exception.S3UploadException;
 import com.ssafy.whoru.global.util.FCMUtil;
 import com.ssafy.whoru.global.util.RedisUtil;
 import lombok.AllArgsConstructor;
@@ -24,6 +27,8 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @AllArgsConstructor
@@ -33,6 +38,8 @@ public class MessageServiceImpl implements MessageService{
     MessageRepository messageRepository;
 
     CrossMemberService memberService;
+
+    S3Service s3Service;
 
     RedisUtil redisUtil;
 
@@ -123,5 +130,59 @@ public class MessageServiceImpl implements MessageService{
         fcmUtil.sendMessage(targetMessage.getSender().getFcmToken());
 
         messageRepository.save(responseMessage);
+    }
+
+    @Override
+    @Transactional
+    public void sendMediaMessageToRandomMember(MultipartFile file, Info info) {
+        FileType type = (FileType.getFileType(file)).orElseThrow(UnacceptableFileTypeException::new);
+
+        // db에서 두사람 정보 들고오기
+        Member sender = memberService.findByIdToEntity(info.getSenderId());
+        Member receiver = memberService.findRandomToEntity(info.getSenderId());
+
+        // randombox 카운트
+        String key = RedisKeyType.TODAY_BOX.makeKey(String.valueOf(info.getSenderId()));
+        Optional<String> boxCount = redisUtil.findValueByKey(key);
+
+        // 현재 redis에 남아있는 오늘의 박스 얻은 횟수 가져오기
+        Integer presentBoxCount = BOX_COUNT_INIT;
+        if(boxCount.isPresent()){
+            presentBoxCount = Integer.parseInt(boxCount.get());
+        }
+
+        if(presentBoxCount < BOX_LIMIT){
+            // db상에 boxcount도 증가시켜야 하고
+            sender.updateBoxIncrease();
+
+            // redis에서도 새롭게 +1 된 값을 반영해야 함
+            // 날짜 바뀌는 시간 구하기
+            LocalDateTime next = LocalDate.now().plusDays(1).atStartOfDay();
+
+            redisUtil.insert(key, String.valueOf(presentBoxCount+1), Duration.between(LocalDateTime.now(), next).getSeconds());
+        }
+
+        // S3 저장
+        Optional<String> result = s3Service.upload(file, type.getS3PathType());
+        String s3Url = result.orElseThrow(S3UploadException::new);
+
+        // message 전송
+        messageRepository.save(
+            Message.builder()
+                .content(s3Url)
+                .contentType(type.getContentType())
+                .sender(sender)
+                .receiver(receiver)
+                .isReported(false)
+                .readStatus(false)
+                .parent(null)
+                .isResponse(false)
+                .responseStatus(false)
+                .build()
+        );
+
+        // fcm 발송
+        fcmUtil.sendMessage(receiver.getFcmToken());
+
     }
 }

@@ -1,6 +1,6 @@
 package com.ssafy.whoru.domain.message.util;
 
-import com.ssafy.whoru.global.common.domain.RedisKeyType;
+import com.ssafy.whoru.global.common.dto.RedisKeyType;
 import com.ssafy.whoru.global.util.RedisUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;

@@ -1,4 +1,4 @@
-package com.ssafy.whoru.global.common.domain;
+package com.ssafy.whoru.global.common.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
