@@ -85,7 +85,7 @@ public class MessageServiceImpl implements MessageService{
 
 
         // fcm 발송
-        fcmUtil.sendMessage(receiver.getFcmToken());
+        fcmUtil.sendMessage(receiver.getFcmNotification().getFcmToken());
 
         // message 전송
         messageRepository.save(
@@ -127,7 +127,7 @@ public class MessageServiceImpl implements MessageService{
                 .isResponse(true)
                 .build();
 
-        fcmUtil.sendMessage(targetMessage.getSender().getFcmToken());
+        fcmUtil.sendMessage(targetMessage.getSender().getFcmNotification().getFcmToken());
 
         messageRepository.save(responseMessage);
     }
@@ -182,7 +182,7 @@ public class MessageServiceImpl implements MessageService{
         );
 
         // fcm 발송
-        fcmUtil.sendMessage(receiver.getFcmToken());
+        fcmUtil.sendMessage(receiver.getFcmNotification().getFcmToken());
 
     }
 }

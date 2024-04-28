@@ -57,7 +57,7 @@ dependencies {
 
     //Redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-
+    
     //FCM
     implementation 'com.google.firebase:firebase-admin:9.2.0'
 
