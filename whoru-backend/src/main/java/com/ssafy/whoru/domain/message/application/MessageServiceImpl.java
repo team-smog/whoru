@@ -3,6 +3,7 @@ package com.ssafy.whoru.domain.message.application;
 import com.ssafy.whoru.domain.member.application.CrossMemberService;
 import com.ssafy.whoru.domain.member.domain.Member;
 import com.ssafy.whoru.domain.message.dao.MessageRepository;
+import com.ssafy.whoru.domain.message.dto.request.ResponseInfo;
 import com.ssafy.whoru.global.common.application.S3Service;
 import com.ssafy.whoru.global.common.dto.FileType;
 import com.ssafy.whoru.domain.message.domain.Message;
@@ -135,6 +136,9 @@ public class MessageServiceImpl implements MessageService{
     @Override
     @Transactional
     public void sendMediaMessageToRandomMember(MultipartFile file, Info info) {
+        if(messageUtil.isBanned(info.getSenderId())){
+            throw new BannedSenderException();
+        }
         FileType type = (FileType.getFileType(file)).orElseThrow(UnacceptableFileTypeException::new);
 
         // db에서 두사람 정보 들고오기
@@ -184,5 +188,43 @@ public class MessageServiceImpl implements MessageService{
         // fcm 발송
         fcmUtil.sendMessage(receiver.getFcmNotification().getFcmToken());
 
+    }
+
+    @Override
+    @Transactional
+    public void responseFileMessage(MultipartFile file, ResponseInfo info) {
+        if(messageUtil.isBanned(info.getSenderId())){
+            throw new BannedSenderException();
+        }
+        FileType type = (FileType.getFileType(file)).orElseThrow(UnacceptableFileTypeException::new);
+
+        // message 정보 불러오기
+        Optional<Message> targetMessage = messageRepository.findById(info.getMessageId());
+        Message message = targetMessage.orElseThrow(MessageNotFoundException::new);
+        if(message.getIsReported()){
+            throw new ReportedMessageException();
+        }
+
+        // S3 저장
+        Optional<String> result = s3Service.upload(file, type.getS3PathType());
+        String s3Url = result.orElseThrow(S3UploadException::new);
+
+        // message 전송
+        messageRepository.save(
+            Message.builder()
+                .content(s3Url)
+                .contentType(type.getContentType())
+                .sender(message.getReceiver())
+                .receiver(message.getSender())
+                .isReported(false)
+                .readStatus(false)
+                .parent(message)
+                .isResponse(true)
+                .responseStatus(true)
+                .build()
+        );
+
+        // fcm 발송
+        fcmUtil.sendMessage(message.getReceiver().getFcmNotification().getFcmToken());
     }
 }

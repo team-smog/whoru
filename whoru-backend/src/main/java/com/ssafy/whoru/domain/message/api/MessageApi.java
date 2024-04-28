@@ -7,6 +7,7 @@ package com.ssafy.whoru.domain.message.api;
 
 import com.ssafy.whoru.domain.message.application.MessageService;
 import com.ssafy.whoru.domain.message.dto.request.Info;
+import com.ssafy.whoru.domain.message.dto.request.ResponseInfo;
 import com.ssafy.whoru.domain.message.dto.request.TextResponseSend;
 import com.ssafy.whoru.domain.message.dto.request.TextSend;
 import com.ssafy.whoru.global.common.dto.SuccessType;
@@ -58,4 +59,17 @@ public class MessageApi implements MessageApiDocs{
            SuccessType.STATUS_201
         ));
     }
+
+    @PostMapping(value = "/response/file", consumes = {
+        MediaType.MULTIPART_FORM_DATA_VALUE,
+        MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_GIF_VALUE, MediaType.IMAGE_PNG_VALUE,
+        MediaType.APPLICATION_JSON_VALUE, "audio/mpeg", "audio/wav"
+    })
+    public ResponseEntity<WrapResponse<Void>> sendFileResponseMessage(@RequestPart MultipartFile file, @RequestPart ResponseInfo info){
+        service.responseFileMessage(file, info);
+        return ResponseEntity.ok(WrapResponse.create(
+            SuccessType.STATUS_201
+        ));
+    }
+
 }

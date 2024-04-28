@@ -41,6 +41,20 @@ public class MessageTestUtil {
                 .build();
     }
 
+    public Message 미디어_메세지(MockMvc mockMvc, Member sender, Member receiver, Boolean isReported){
+        return Message.builder()
+            .sender(sender)
+            .receiver(receiver)
+            .content("test")
+            .contentType(ContentType.image)
+            .isResponse(false)
+            .responseStatus(false)
+            .isReported(isReported)
+            .parent(null)
+            .readStatus(false)
+            .build();
+    }
+
     public MockMultipartFile 이미지_생성(){
 
         byte [] imageContent = "dummy".getBytes(StandardCharsets.UTF_8);
@@ -57,6 +71,22 @@ public class MessageTestUtil {
         HashMap<String, Object> jsonHash = new HashMap<>();
         jsonHash.put("senderId", senderId);
         jsonHash.put("contentType", ContentType.image.name());
+        String json = objectMapper.writeValueAsString(jsonHash);
+        MockMultipartFile jsonFile = new MockMultipartFile(
+            "info",
+            "temp.json",
+            "application/json",
+            json.getBytes(StandardCharsets.UTF_8)
+        );
+
+        return jsonFile;
+    }
+
+    public MockMultipartFile JSON_생성(ObjectMapper objectMapper, Long senderId, Long messageId) throws IOException{
+        HashMap<String, Object> jsonHash = new HashMap<>();
+        jsonHash.put("senderId", senderId);
+        jsonHash.put("contentType", ContentType.image.name());
+        jsonHash.put("messageId", messageId);
         String json = objectMapper.writeValueAsString(jsonHash);
         MockMultipartFile jsonFile = new MockMultipartFile(
             "info",
