@@ -20,6 +20,7 @@ import com.ssafy.whoru.global.common.dto.RedisKeyType;
 import com.ssafy.whoru.global.common.exception.S3UploadException;
 import com.ssafy.whoru.global.util.FCMUtil;
 import com.ssafy.whoru.global.util.RedisUtil;
+import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -116,12 +117,14 @@ public class MessageServiceImpl implements MessageService{
             throw new ReportedMessageException();
         }
 
+        targetMessage.updateResponseStatus(true);
+
         Message responseMessage = Message.builder()
                 .contentType(ContentType.text)
                 .content(responseSend.getContent())
                 .sender(targetMessage.getReceiver())
                 .receiver(targetMessage.getSender())
-                .responseStatus(true)
+                .responseStatus(null)
                 .parent(targetMessage)
                 .readStatus(false)
                 .isReported(false)
@@ -134,7 +137,6 @@ public class MessageServiceImpl implements MessageService{
     }
 
     @Override
-    @Transactional
     public void sendMediaMessageToRandomMember(MultipartFile file, Info info) {
         if(messageUtil.isBanned(info.getSenderId())){
             throw new BannedSenderException();
@@ -191,7 +193,6 @@ public class MessageServiceImpl implements MessageService{
     }
 
     @Override
-    @Transactional
     public void responseFileMessage(MultipartFile file, ResponseInfo info) {
         if(messageUtil.isBanned(info.getSenderId())){
             throw new BannedSenderException();
@@ -205,25 +206,30 @@ public class MessageServiceImpl implements MessageService{
             throw new ReportedMessageException();
         }
 
+        message.updateResponseStatus(true);
+
+        assert(message.getResponseStatus());
+
         // S3 저장
         Optional<String> result = s3Service.upload(file, type.getS3PathType());
         String s3Url = result.orElseThrow(S3UploadException::new);
 
-        // message 전송
-        messageRepository.save(
-            Message.builder()
-                .content(s3Url)
-                .contentType(type.getContentType())
-                .sender(message.getReceiver())
-                .receiver(message.getSender())
-                .isReported(false)
-                .readStatus(false)
-                .parent(message)
-                .isResponse(true)
-                .responseStatus(true)
-                .build()
-        );
+        Message responseMessage = Message.builder()
+            .content(s3Url)
+            .contentType(type.getContentType())
+            .sender(message.getReceiver())
+            .receiver(message.getSender())
+            .isReported(false)
+            .readStatus(false)
+            .parent(message)
+            .isResponse(true)
+            .responseStatus(null)
+            .build();
 
+        // message 전송
+        messageRepository.save(responseMessage);
+
+        assert(responseMessage.getIsResponse());
         // fcm 발송
         fcmUtil.sendMessage(message.getReceiver().getFcmNotification().getFcmToken());
     }
