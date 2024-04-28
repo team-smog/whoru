@@ -2,7 +2,8 @@ package com.ssafy.whoru.domain.collect.api;
 
 import com.ssafy.whoru.domain.collect.application.CollectService;
 import com.ssafy.whoru.domain.collect.dto.response.GetIconResponse;
-import com.ssafy.whoru.global.common.domain.SuccessType;
+import com.ssafy.whoru.domain.collect.dto.response.MemberIconResponse;
+import com.ssafy.whoru.global.common.dto.SuccessType;
 import com.ssafy.whoru.global.common.dto.WrapResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
