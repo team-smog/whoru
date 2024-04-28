@@ -1,11 +1,8 @@
 package com.ssafy.whoru.global.common.dto;
 
-import com.ssafy.whoru.global.common.domain.SuccessType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
 
 @Getter
 @Builder

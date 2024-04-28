@@ -4,7 +4,7 @@ import com.ssafy.whoru.domain.collect.domain.Icon;
 import com.ssafy.whoru.domain.collect.dto.IconGradeType;
 import com.ssafy.whoru.domain.member.domain.Member;
 import com.ssafy.whoru.domain.member.dto.ProviderType;
-import com.ssafy.whoru.global.common.domain.RedisKeyType;
+import com.ssafy.whoru.global.common.dto.RedisKeyType;
 import com.ssafy.whoru.global.util.RedisUtil;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +17,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @Component
 public class MemberTestUtil implements InitializingBean {
@@ -34,7 +31,7 @@ public class MemberTestUtil implements InitializingBean {
 
     static final String MEMBER3001_FCM_TOKEN = "e8cnURUUWvX7vbwch21Egk:APA91bGgQKlqD7xsbbUstiypDx7KuAwOBi1TvxaR0Cvgqhjf8o3gVuRpBAqeiRFbo0Vj70CCx1CVyDb5b6nmwHzZOuIMyAFIBpzhqpsmwY-oR6GiAXqNJEV40xng934TA6Pse2ykBhV7";
 
-    static final String MEMBER_ERROR_FCM_TOKEN = "DFAFADSF";
+    static final String MEMBER_ERROR_FCM_TOKEN = "";
 
     RedisUtil redisUtil;
 
@@ -94,7 +91,7 @@ public class MemberTestUtil implements InitializingBean {
                 .boxCount(3)
                 .fcmToken(MEMBER_ERROR_FCM_TOKEN)
                 .createDate(LocalDateTime.now())
-                .refreshToken("fdafasfasfasfafdfa")
+                .refreshToken("fdafadfas")
                 .reportCount(0)
                 .userName("MEMBER_ERROR_FCM_TOKEN")
                 .build();
@@ -104,5 +101,7 @@ public class MemberTestUtil implements InitializingBean {
     public void 유저_정지_먹이기(Member member){
         redisUtil.insert(RedisKeyType.BAN.makeKey(String.valueOf(member.getId())), "test_ban",banDuration.getSeconds());
     }
+
+
 
 }

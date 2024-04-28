@@ -1,4 +1,4 @@
-package com.ssafy.whoru.global.common.domain;
+package com.ssafy.whoru.global.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonValue;
