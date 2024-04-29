@@ -68,7 +68,7 @@ public class CollectServiceImpl implements CollectService {
         //해당하는 등급에 맞는 랜덤 아이템 탐색
 
         Optional<Icon> icon = Optional.ofNullable(iconRepository.findByRandomIcon(grade)
-            .orElseThrow(() -> new IconNotFoundException(ErrorCode.ICON_NOT_FOUND)));
+            .orElseThrow(IconNotFoundException::new));
 
         GetIconResponse response = modelMapper.map(icon, GetIconResponse.class);
 
