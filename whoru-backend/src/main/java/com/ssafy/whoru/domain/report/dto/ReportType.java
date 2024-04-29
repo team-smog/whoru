@@ -7,8 +7,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ReportType {
 
-    vilification("욕설 메시지"),
-    disease("불건전한 메시지"),
+    VILIFICATION("욕설 메시지"),
+    DISEASE("불건전한 메시지"),
     SPAM("스팸 메시지"),
 
 

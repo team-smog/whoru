@@ -40,6 +40,10 @@ public class Report {
     @Builder.Default
     private LocalDateTime reportDate = LocalDateTime.now();
 
+    @Column(name = "is_reviewed")
+    @Builder.Default
+    private Boolean isReviewed = false;
+
     @Enumerated(value = EnumType.STRING)
     private ReportType reportType;
 
