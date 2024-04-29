@@ -165,7 +165,7 @@ public class MessageApiTest extends TestPrepare {
     }
 
     @Test
-    void 신고된_Text_메세지에_답장_전송_실패_403() throws Exception {
+    void 신고된_Text_메세지에_답장_전송_실패_451() throws Exception {
         Icon icon = memberTestUtil.아이콘_추가(mockMvc);
         collectRepository.save(icon);
         Member member3000 = memberTestUtil.Member3000_멤버추가(icon, mockMvc);
@@ -188,11 +188,11 @@ public class MessageApiTest extends TestPrepare {
         )
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is5xxServerError())
-                .andExpect(jsonPath("$.errorCode").value(HttpStatus.FORBIDDEN.value()));
+                .andExpect(jsonPath("$.errorCode").value(HttpStatus.UNAVAILABLE_FOR_LEGAL_REASONS.value()));
     }
 
     @Test
-    public  void 미디어_메세지_전송_성공_201() throws Exception {
+    public void 미디어_메세지_전송_성공_201() throws Exception {
         Icon icon = memberTestUtil.아이콘_추가(mockMvc);
         collectRepository.save(icon);
         Member member3000 = memberTestUtil.Member3000_멤버추가(icon, mockMvc);
@@ -359,7 +359,7 @@ public class MessageApiTest extends TestPrepare {
     }
 
     @Test
-    void 신고된_미디어_메세지에_답장_전송_실패_403() throws Exception {
+    void 신고된_미디어_메세지에_답장_전송_실패_451() throws Exception {
         Icon icon = memberTestUtil.아이콘_추가(mockMvc);
         collectRepository.save(icon);
         Member member3000 = memberTestUtil.Member3000_멤버추가(icon, mockMvc);
@@ -379,7 +379,7 @@ public class MessageApiTest extends TestPrepare {
             )
             .andExpect(status().is5xxServerError())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.errorCode").value(HttpStatus.FORBIDDEN.value()));
+            .andExpect(jsonPath("$.errorCode").value(HttpStatus.UNAVAILABLE_FOR_LEGAL_REASONS.value()));
 
         Mockito.verify(s3Client, Mockito.times(0))
             .putObject(any(PutObjectRequest.class), any(RequestBody.class));
