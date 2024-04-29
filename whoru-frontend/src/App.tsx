@@ -10,6 +10,7 @@ import AskPostPage from './pages/AskPost/AskPostPage';
 import AnnouncementPage from './pages/Announcement/AnnouncementPage';
 import Chacollection from './pages/Chacollection/Chacollection';
 import Inquiry from './pages/Inquiry/Inquiry';
+import AdminPage from './pages/Admin/AdminPage';
 
 const router = createBrowserRouter([
   {
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
   {
     path: '/post',
     element: <PostPage />
+  },
+  {
+    path: '/admin',
+    element: <AdminPage />
   }
 ])
 
