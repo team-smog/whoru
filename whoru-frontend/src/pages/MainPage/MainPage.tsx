@@ -4,6 +4,7 @@ import Header, { IHeaderInfo } from "@/components/@common/Header";
 import Bell from "@/assets/@common/Bell.png"
 import NavigationBar from "@/components/@common/NavigationBar";
 import InboxTextComponent from "@/components/mainPage/InboxTextComponent";
+import InboxImageComponent from "@/components/mainPage/InboxImageComponent";
 
 
 const MainPage = () => {
@@ -46,8 +47,9 @@ const MainPage = () => {
   return (
     <div>
       <Header info={info} />
-      <div className="pt-12">
+      <div className="pt-12 flex justify-center items-center">
         <InboxTextComponent />
+        {/* <InboxImageComponent /> */}
       </div>
       <NavigationBar />
     </div>
