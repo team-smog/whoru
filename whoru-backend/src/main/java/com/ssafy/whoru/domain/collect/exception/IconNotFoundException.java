@@ -5,7 +5,7 @@ import com.ssafy.whoru.global.error.exception.ErrorCode;
 
 public class IconNotFoundException extends BusinessLogicException {
 
-    public IconNotFoundException(ErrorCode errorCode) {
-        super(errorCode);
+    public IconNotFoundException() {
+        super(ErrorCode.ICON_NOT_FOUND);
     }
 }
