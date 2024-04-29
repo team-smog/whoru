@@ -15,6 +15,7 @@ import com.ssafy.whoru.domain.report.dto.response.SliceResponse;
 import com.ssafy.whoru.domain.report.exception.AlreadyBanException;
 import com.ssafy.whoru.domain.report.exception.DuplicatedReportException;
 import com.ssafy.whoru.domain.report.util.ReportUtil;
+import com.ssafy.whoru.global.common.dto.RedisKeyType;
 import com.ssafy.whoru.global.util.RedisUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
@@ -97,7 +98,7 @@ public class ReportServiceImpl implements ReportService{
 
         // Redis 갱신
         // DB IO Time과의 차이가 있을 수 있기 때문에 Duration으로 현재 값 비교.
-        redisUtil.insert(memberId.toString(), ban.getId().toString(), Duration.between(LocalDateTime.now(), ban.getEndDate()).getSeconds());
+        redisUtil.insert(RedisKeyType.BAN.makeKey(String.valueOf(member.getId())), ban.getId().toString(), Duration.between(LocalDateTime.now(), ban.getEndDate()).getSeconds());
 
         // reportCount zero init
         member.updateReportcountZeroInit();
