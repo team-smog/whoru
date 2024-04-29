@@ -2,6 +2,7 @@ package com.ssafy.whoru.global.common.application;
 
 import com.ssafy.whoru.global.common.dto.S3PathType;
 import com.ssafy.whoru.global.common.exception.InvalidFileStreamException;
+import com.ssafy.whoru.global.common.exception.S3UploadException;
 import java.util.UUID;
 import java.io.IOException;
 import java.util.Optional;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.core.exception.SdkException;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
@@ -40,8 +42,10 @@ public class S3ServiceImpl implements S3Service {
             s3.putObject(putObjectRequest, RequestBody.fromInputStream(file.getInputStream(), file.getSize()));
         }catch(IOException e){
             throw new InvalidFileStreamException();
+        }catch(SdkException e){
+            throw new S3UploadException();
         }
-        return Optional.ofNullable(uploadUrlMaker(pathType.getS3Path(),resultFileName));
+        return Optional.of(uploadUrlMaker(pathType.getS3Path(),resultFileName));
     }
 
     private String makeFileName(String originalFileName){

@@ -6,6 +6,6 @@ import com.ssafy.whoru.global.error.exception.ErrorCode;
 public class MemberNotFoundException extends BusinessLogicException {
 
     public MemberNotFoundException() {
-        super(ErrorCode.ENTITY_NOT_FOUND);
+        super(ErrorCode.MEMBER_NOT_FOUND);
     }
 }

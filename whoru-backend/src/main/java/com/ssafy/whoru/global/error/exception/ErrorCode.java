@@ -19,7 +19,7 @@ public enum ErrorCode {
     UNSUPPORTED_MEDIA_TYPE(415, "지원하지 않는 파일 형식입니다."),
 
     // Member
-    MEMEBER_NOT_FOUND(404, "존재하지 않는 회원입니다."),
+    MEMBER_NOT_FOUND(404, "존재하지 않는 회원입니다."),
 
     // Collet
     COLLECT_VALUE_INVALID(400, "박스 개수가 부족합니다."),
@@ -33,7 +33,7 @@ public enum ErrorCode {
     FCM_TOKEN_INVALID(422, "토큰이 잘못되거나 변조되어 작업을 실행할 수 없습니다."),
 
     // Message
-    REPORTED_MESSAGE_EXCEPTION(403, "신고한 메세지에는 답장할 수 없습니다."),
+    REPORTED_MESSAGE_EXCEPTION(451, "신고한 메세지에는 답장할 수 없습니다."),
 
     // S3 & File
     BUCKET_NOT_FOUND_EXCEPTION(404, "버킷 로드에 실패했습니다."),
