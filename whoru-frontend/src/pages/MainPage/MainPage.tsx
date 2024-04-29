@@ -47,9 +47,9 @@ const MainPage = () => {
   return (
     <div>
       <Header info={info} />
-      <div className="pt-12 flex justify-center items-center">
+      <div className="pt-12 flex justify-center items-center flex-col">
         <InboxTextComponent />
-        {/* <InboxImageComponent /> */}
+        <InboxImageComponent />
       </div>
       <NavigationBar />
     </div>
