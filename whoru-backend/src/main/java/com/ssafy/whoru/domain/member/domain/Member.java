@@ -71,4 +71,6 @@ public class Member {
 
     public void updateBoxDecrease() { this.boxCount--; }
 
+    public void updateReportcountZeroInit() { this.reportCount = 0; }
+
 }

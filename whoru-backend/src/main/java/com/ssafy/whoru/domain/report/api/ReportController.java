@@ -1,22 +1,29 @@
 package com.ssafy.whoru.domain.report.api;
 
 import com.ssafy.whoru.domain.report.application.ReportService;
+import com.ssafy.whoru.domain.report.dto.ReportType;
 import com.ssafy.whoru.domain.report.dto.request.PostReportRequest;
 import com.ssafy.whoru.domain.report.dto.response.ReportRecordResponse;
+import com.ssafy.whoru.domain.report.dto.response.SliceResponse;
 import com.ssafy.whoru.global.common.dto.SuccessType;
 import com.ssafy.whoru.global.common.dto.WrapResponse;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@Validated
 @Slf4j
 @RequestMapping("/report")
 public class ReportController implements ReportControllerDocs {
@@ -30,10 +37,18 @@ public class ReportController implements ReportControllerDocs {
         return ResponseEntity.ok(WrapResponse.create(SuccessType.STATUS_201));
     }
 
-//    @GetMapping("/{memberId}/list")
-//    public ResponseEntity<WrapResponse<ReportRecordResponse>> getReportList() {
-//
-//        reportService.reportMember();
-//        return ResponseEntity.ok(WrapResponse.create(SuccessType.SIMPLE_STATUS));
-//    }
+    @PostMapping("/{memberId}/ban")
+    public ResponseEntity<WrapResponse<Void>> banMember(@PathVariable("memberId") Long memberId) {
+
+        reportService.banMember(memberId);
+        return ResponseEntity.ok(WrapResponse.create(SuccessType.STATUS_201));
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<WrapResponse<?>> getReportRecord(@RequestParam("page") int page, @RequestParam(value = "size", required = false) @Min(1) @Max(30) int size, @RequestParam(value = "condition", required = false)
+        ReportType reportType) {
+
+        SliceResponse<ReportRecordResponse> result = reportService.getReportRecord(page, size, reportType);
+        return ResponseEntity.ok(WrapResponse.create(result, SuccessType.SIMPLE_STATUS));
+    }
 }

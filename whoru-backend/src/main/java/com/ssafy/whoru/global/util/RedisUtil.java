@@ -1,5 +1,6 @@
 package com.ssafy.whoru.global.util;
 
+import java.time.Duration;
 import lombok.AllArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -20,7 +21,7 @@ public class RedisUtil {
         return Optional.ofNullable(redisTemplate.opsForValue().get(key));
     }
 
-    public void insert(String key, String value){
+    public void insert(String key, String value, Duration between){
         redisTemplate.opsForValue().set(key, value);
     }
 

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 @Slf4j
@@ -76,4 +77,35 @@ public class GlobalExceptionHandler {
         return ResponseEntity.internalServerError()
             .body(errorResponse);
     }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatchException(final MethodArgumentTypeMismatchException e) {
+        ErrorCode errorType = ErrorCode.ARGUMENT_TYPE_MISMATCH;
+        final ErrorResponse errorResponse = new ErrorResponse(errorType.getStatus(), errorType.getMessage());
+        log.error(e.getMessage(), e);
+
+        return ResponseEntity.badRequest()
+            .body(errorResponse);
+    }
+
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<ErrorResponse> handleIllegalStateException(final IllegalStateException e) {
+        ErrorCode errorType = ErrorCode.ARGUMENT_TYPE_MISMATCH;
+        final ErrorResponse errorResponse = new ErrorResponse(errorType.getStatus(), errorType.getMessage());
+        log.error(e.getMessage(), e);
+
+        return ResponseEntity.badRequest()
+            .body(errorResponse);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorResponse> IllegalArgumentException(final IllegalArgumentException e) {
+        ErrorCode errorType = ErrorCode.ARGUMENT_TYPE_MISMATCH;
+        final ErrorResponse errorResponse = new ErrorResponse(errorType.getStatus(), errorType.getMessage());
+        log.error(e.getMessage(), e);
+
+        return ResponseEntity.badRequest()
+            .body(errorResponse);
+    }
+
 }

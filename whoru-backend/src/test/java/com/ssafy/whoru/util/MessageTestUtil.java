@@ -4,25 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.whoru.domain.member.domain.Member;
 import com.ssafy.whoru.domain.message.domain.Message;
 import com.ssafy.whoru.domain.message.dto.ContentType;
-import com.ssafy.whoru.global.common.application.S3Service;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.HashMap;
-import javax.imageio.ImageIO;
-import org.apache.tomcat.util.http.fileupload.disk.DiskFileItem;
-import org.mockito.Mock;
-import org.springframework.boot.test.context.TestComponent;
-import org.springframework.context.annotation.Profile;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.multipart.MultipartFile;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 
 @Component

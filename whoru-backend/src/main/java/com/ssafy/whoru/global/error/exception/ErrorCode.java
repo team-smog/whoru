@@ -17,6 +17,7 @@ public enum ErrorCode {
     ENTITY_NOT_FOUND(404, "존재하지 않는 Entity입니다."),
     FORBIDDEN_ERROR(403, "작업을 수행하기 위한 권한이 없습니다."),
     UNSUPPORTED_MEDIA_TYPE(415, "지원하지 않는 파일 형식입니다."),
+    ARGUMENT_TYPE_MISMATCH(400, "잘못된 타입의 파라미터 요청입니다."),
 
     // Member
     MEMBER_NOT_FOUND(404, "존재하지 않는 회원입니다."),
@@ -28,6 +29,7 @@ public enum ErrorCode {
 
     // Report
     DUPLICATE_REPORT_MESSAGE(409, "해당 메시지는 이미 신고처리된 메시지입니다."),
+    ALREADY_BAN_MEMBER(409, "이미 이용정지된 사용자입니다."),
 
     // FCM
     FCM_TOKEN_INVALID(422, "토큰이 잘못되거나 변조되어 작업을 실행할 수 없습니다."),
