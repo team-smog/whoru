@@ -35,23 +35,14 @@ public class ReportApiTest extends TestPrepare {
 
         Message message = messageTestUtil.Text_메세지(mockMvc, member3000, member3001, false);
         messageRepository.save(message);
-        //해당 메시지 신고
-        //When
-        // 정지여부 체크
 
-        System.out.println(message.getIsReported());
-        //메시지 조회 후 신고당했는 메시지인지 여부 체크
-
-
-        //기본값이 false인지 null인지 체크
-        //신고 테이블 로우 추가
-
+        /**
+         * 사용자 신고 API 호출
+         * **/
         PostReportRequest postReportRequest = PostReportRequest.builder()
             .senderId(member3000.getId())
             .messageId(message.getId())
             .build();
-
-        System.out.println(postReportRequest);
 
         mockMvc.perform(
             post("/report/member")
@@ -76,25 +67,18 @@ public class ReportApiTest extends TestPrepare {
         memberRepository.save(member3000);
         memberRepository.save(member3001);
 
+        //isReported true SETTING
         Message message = messageTestUtil.Text_메세지(mockMvc, member3000, member3001, true);
         messageRepository.save(message);
-        //해당 메시지 신고
-        //When
-        // 정지여부 체크
 
-        System.out.println(message.getIsReported());
-        //메시지 조회 후 신고당했는 메시지인지 여부 체크
-
-
-        //기본값이 false인지 null인지 체크
-        //신고 테이블 로우 추가
-
+        /**
+         * 사용자 신고 API 호출
+         * **/
         PostReportRequest postReportRequest = PostReportRequest.builder()
             .senderId(member3000.getId())
             .messageId(message.getId())
             .build();
 
-        System.out.println(postReportRequest);
 
         mockMvc.perform(
                 post("/report/member")
@@ -103,7 +87,7 @@ public class ReportApiTest extends TestPrepare {
             )
             .andExpect(status().is5xxServerError())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.errorCode").value(HttpStatus.NOT_FOUND.value()));;
+            .andExpect(jsonPath("$.errorCode").value(HttpStatus.CONFLICT.value()));;
 
     }
 
