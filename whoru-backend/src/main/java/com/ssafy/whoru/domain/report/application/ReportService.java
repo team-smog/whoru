@@ -5,4 +5,6 @@ import com.ssafy.whoru.domain.report.dto.request.PostReportRequest;
 public interface ReportService {
 
     public void reportMember(PostReportRequest request);
+
+    public void banMember(Long memberId);
 }

@@ -23,7 +23,7 @@ public class ReportApiTest extends TestPrepare {
 
     @Test
     @Transactional
-    void 사용자_신고_성공() throws Exception {
+    void 사용자_신고_성공_201() throws Exception {
         //테스트 코드 작성
         //메시지 생성
         Icon icon = memberTestUtil.아이콘_추가(mockMvc);
@@ -57,7 +57,7 @@ public class ReportApiTest extends TestPrepare {
 
     @Test
     @Transactional
-    void 사용자_신고_실패() throws Exception {
+    void 사용자_신고_실패_409() throws Exception {
         //테스트 코드 작성
         //메시지 생성
         Icon icon = memberTestUtil.아이콘_추가(mockMvc);
@@ -84,6 +84,57 @@ public class ReportApiTest extends TestPrepare {
                 post("/report/member")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(postReportRequest))
+            )
+            .andExpect(status().is5xxServerError())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.errorCode").value(HttpStatus.CONFLICT.value()));;
+
+    }
+
+    @Test
+    @Transactional
+    void 사용자_정지_요청_성공_201() throws Exception{
+
+        //사용자 생성
+        Icon icon = memberTestUtil.아이콘_추가(mockMvc);
+        collectRepository.save(icon);
+        Member member3000 = memberTestUtil.Member3000_멤버추가(icon, mockMvc);
+        memberRepository.save(member3000);
+
+        /**
+         * 사용자 이용정지 요청 API 호출
+         * **/
+        StringBuffer sb = new StringBuffer();
+        sb.append("/report/").append(member3000.getId()).append("/ban");
+        mockMvc.perform(
+                post(sb.toString())
+                    .contentType(MediaType.APPLICATION_JSON)
+            )
+            .andExpect(status().is2xxSuccessful())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.status").value(HttpStatus.CREATED.value()));;
+
+    }
+
+    @Test
+    @Transactional
+    void 이미_정지된_사용자_정지_요청_실패_409() throws Exception{
+
+        //사용자 생성
+        Icon icon = memberTestUtil.아이콘_추가(mockMvc);
+        collectRepository.save(icon);
+        Member member3000 = memberTestUtil.Member3000_멤버추가(icon, mockMvc);
+        Member member = memberRepository.save(member3000);
+
+        memberTestUtil.유저_정지_먹이기(member);
+        /**
+         * 사용자 이용정지 요청 API 호출
+         * **/
+        StringBuffer sb = new StringBuffer();
+        sb.append("/report/").append(member.getId()).append("/ban");
+        mockMvc.perform(
+                post(sb.toString())
+                    .contentType(MediaType.APPLICATION_JSON)
             )
             .andExpect(status().is5xxServerError())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
