@@ -29,6 +29,9 @@ public enum ErrorCode {
     // FCM
     FCM_TOKEN_INVALID(422, "토큰이 잘못되거나 변조되어 작업을 실행할 수 없습니다."),
 
+    // Message
+    REPORTED_MESSAGE_EXCEPTION(403, "신고한 메세지에는 답장할 수 없습니다."),
+
     // S3 & File
     BUCKET_NOT_FOUND_EXCEPTION(404, "버킷 로드에 실패했습니다."),
     PAYLOAD_TOO_LARGE(413, "요청 본문의 크기가 제한을 초과했습니다."),

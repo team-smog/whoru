@@ -3,6 +3,7 @@ package com.ssafy.whoru.domain.message.application;
 import com.ssafy.whoru.domain.member.application.CrossMemberService;
 import com.ssafy.whoru.domain.member.domain.Member;
 import com.ssafy.whoru.domain.message.dao.MessageRepository;
+import com.ssafy.whoru.domain.message.dto.request.ResponseInfo;
 import com.ssafy.whoru.global.common.application.S3Service;
 import com.ssafy.whoru.global.common.dto.FileType;
 import com.ssafy.whoru.domain.message.domain.Message;
@@ -19,6 +20,7 @@ import com.ssafy.whoru.global.common.dto.RedisKeyType;
 import com.ssafy.whoru.global.common.exception.S3UploadException;
 import com.ssafy.whoru.global.util.FCMUtil;
 import com.ssafy.whoru.global.util.RedisUtil;
+import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -115,12 +117,14 @@ public class MessageServiceImpl implements MessageService{
             throw new ReportedMessageException();
         }
 
+        targetMessage.updateResponseStatus(true);
+
         Message responseMessage = Message.builder()
                 .contentType(ContentType.text)
                 .content(responseSend.getContent())
                 .sender(targetMessage.getReceiver())
                 .receiver(targetMessage.getSender())
-                .responseStatus(true)
+                .responseStatus(null)
                 .parent(targetMessage)
                 .readStatus(false)
                 .isReported(false)
@@ -133,8 +137,10 @@ public class MessageServiceImpl implements MessageService{
     }
 
     @Override
-    @Transactional
     public void sendMediaMessageToRandomMember(MultipartFile file, Info info) {
+        if(messageUtil.isBanned(info.getSenderId())){
+            throw new BannedSenderException();
+        }
         FileType type = (FileType.getFileType(file)).orElseThrow(UnacceptableFileTypeException::new);
 
         // db에서 두사람 정보 들고오기
@@ -184,5 +190,47 @@ public class MessageServiceImpl implements MessageService{
         // fcm 발송
         fcmUtil.sendMessage(receiver.getFcmNotification().getFcmToken());
 
+    }
+
+    @Override
+    public void responseFileMessage(MultipartFile file, ResponseInfo info) {
+        if(messageUtil.isBanned(info.getSenderId())){
+            throw new BannedSenderException();
+        }
+        FileType type = (FileType.getFileType(file)).orElseThrow(UnacceptableFileTypeException::new);
+
+        // message 정보 불러오기
+        Optional<Message> targetMessage = messageRepository.findById(info.getMessageId());
+        Message message = targetMessage.orElseThrow(MessageNotFoundException::new);
+        if(message.getIsReported()){
+            throw new ReportedMessageException();
+        }
+
+        message.updateResponseStatus(true);
+
+        assert(message.getResponseStatus());
+
+        // S3 저장
+        Optional<String> result = s3Service.upload(file, type.getS3PathType());
+        String s3Url = result.orElseThrow(S3UploadException::new);
+
+        Message responseMessage = Message.builder()
+            .content(s3Url)
+            .contentType(type.getContentType())
+            .sender(message.getReceiver())
+            .receiver(message.getSender())
+            .isReported(false)
+            .readStatus(false)
+            .parent(message)
+            .isResponse(true)
+            .responseStatus(null)
+            .build();
+
+        // message 전송
+        messageRepository.save(responseMessage);
+
+        assert(responseMessage.getIsResponse());
+        // fcm 발송
+        fcmUtil.sendMessage(message.getReceiver().getFcmNotification().getFcmToken());
     }
 }

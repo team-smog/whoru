@@ -5,6 +5,6 @@ import com.ssafy.whoru.global.error.exception.ErrorCode;
 
 public class ReportedMessageException extends BusinessLogicException {
     public ReportedMessageException() {
-        super(ErrorCode.INPUT_VALUE_INVALID);
+        super(ErrorCode.REPORTED_MESSAGE_EXCEPTION);
     }
 }

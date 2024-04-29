@@ -4,7 +4,9 @@ import com.ssafy.whoru.TestPrepare;
 import com.ssafy.whoru.domain.collect.domain.Icon;
 import com.ssafy.whoru.domain.member.domain.Member;
 import com.ssafy.whoru.domain.message.domain.Message;
+import com.ssafy.whoru.domain.message.dto.ContentType;
 import com.ssafy.whoru.domain.message.dto.request.Info;
+import com.ssafy.whoru.domain.message.dto.request.ResponseInfo;
 import com.ssafy.whoru.domain.message.dto.request.TextResponseSend;
 import com.ssafy.whoru.domain.message.dto.request.TextSend;
 import com.ssafy.whoru.global.common.application.S3Service;
@@ -163,7 +165,7 @@ public class MessageApiTest extends TestPrepare {
     }
 
     @Test
-    void 신고된_Text_메세지에_답장_전송_실패_400() throws Exception {
+    void 신고된_Text_메세지에_답장_전송_실패_403() throws Exception {
         Icon icon = memberTestUtil.아이콘_추가(mockMvc);
         collectRepository.save(icon);
         Member member3000 = memberTestUtil.Member3000_멤버추가(icon, mockMvc);
@@ -186,7 +188,7 @@ public class MessageApiTest extends TestPrepare {
         )
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is5xxServerError())
-                .andExpect(jsonPath("$.errorCode").value(HttpStatus.BAD_REQUEST.value()));
+                .andExpect(jsonPath("$.errorCode").value(HttpStatus.FORBIDDEN.value()));
     }
 
     @Test
@@ -219,7 +221,7 @@ public class MessageApiTest extends TestPrepare {
 
 
     @Test
-    public  void 허용되지_되지_않은_확장자_전송_실패_500() throws Exception {
+    public  void 허용되지_되지_않은_확장자_전송_실패_415() throws Exception {
         Icon icon = memberTestUtil.아이콘_추가(mockMvc);
         collectRepository.save(icon);
         Member member3000 = memberTestUtil.Member3000_멤버추가(icon, mockMvc);
@@ -242,5 +244,144 @@ public class MessageApiTest extends TestPrepare {
         Mockito.verify(s3Client, Mockito.times(0))
             .putObject(any(PutObjectRequest.class), any(RequestBody.class));
 
+    }
+
+    @Test
+    void 정지된_유저_미디어_메세지_전송_실패_403() throws Exception {
+        Icon icon = memberTestUtil.아이콘_추가(mockMvc);
+        collectRepository.save(icon);
+        Member member3000 = memberTestUtil.Member3000_멤버추가(icon, mockMvc);
+        Member member3001 = memberTestUtil.Member3001_멤버추가(icon, mockMvc);
+        memberRepository.save(member3000);
+        memberRepository.save(member3001);
+
+        MockMultipartFile file = messageTestUtil.이미지_생성();
+        MockMultipartFile json = messageTestUtil.JSON_생성(objectMapper, member3000.getId());
+
+        memberTestUtil.유저_정지_먹이기(member3000);
+
+        mockMvc.perform(
+            multipart("/message/file")
+                .file(file)
+                .file(json)
+        )
+            .andExpect(status().is5xxServerError())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.errorCode").value(HttpStatus.FORBIDDEN.value()));
+
+        Mockito.verify(s3Client, Mockito.times(0))
+            .putObject(any(PutObjectRequest.class), any(RequestBody.class));
+    }
+
+
+    @Test
+    void 미디어_답장_메세지_전송_성공_201() throws Exception{
+        Icon icon = memberTestUtil.아이콘_추가(mockMvc);
+        collectRepository.save(icon);
+        Member member3000 = memberTestUtil.Member3000_멤버추가(icon, mockMvc);
+        Member member3001 = memberTestUtil.Member3001_멤버추가(icon, mockMvc);
+        memberRepository.save(member3000);
+        memberRepository.save(member3001);
+
+        Message message = messageTestUtil.미디어_메세지(mockMvc, member3000, member3001, false);
+        messageRepository.save(message);
+
+        MockMultipartFile file = messageTestUtil.이미지_생성();
+        MockMultipartFile json = messageTestUtil.JSON_생성(objectMapper, member3001.getId(), message.getId());
+
+        mockMvc.perform(
+            multipart("/message/response/file")
+                .file(file)
+                .file(json)
+        )   .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.status").value(HttpStatus.CREATED.value()));
+
+        Mockito.verify(s3Client, Mockito.times(1))
+            .putObject(any(PutObjectRequest.class), any(RequestBody.class));
+    }
+
+    @Test
+    public  void 허용되지_되지_않은_확장자_답장전송_실패_415() throws Exception {
+        Icon icon = memberTestUtil.아이콘_추가(mockMvc);
+        collectRepository.save(icon);
+        Member member3000 = memberTestUtil.Member3000_멤버추가(icon, mockMvc);
+        Member member3001 = memberTestUtil.Member3001_멤버추가(icon, mockMvc);
+        memberRepository.save(member3000);
+        memberRepository.save(member3001);
+
+        Message message = messageTestUtil.미디어_메세지(mockMvc, member3000, member3001, false);
+        messageRepository.save(message);
+
+        MockMultipartFile file = messageTestUtil.Error_File_생성();
+        MockMultipartFile json = messageTestUtil.JSON_생성(objectMapper, member3001.getId(), message.getId());
+
+        mockMvc.perform(
+                multipart("/message/response/file")
+                    .file(file)
+                    .file(json)
+            )
+            .andExpect(status().is5xxServerError())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.errorCode").value(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value()));
+
+        Mockito.verify(s3Client, Mockito.times(0))
+            .putObject(any(PutObjectRequest.class), any(RequestBody.class));
+
+    }
+
+    @Test
+    void 정지된_유저_미디어_답장_전송_실패_403() throws Exception{
+        Icon icon = memberTestUtil.아이콘_추가(mockMvc);
+        collectRepository.save(icon);
+        Member member3000 = memberTestUtil.Member3000_멤버추가(icon, mockMvc);
+        Member member3001 = memberTestUtil.Member3001_멤버추가(icon, mockMvc);
+        memberRepository.save(member3000);
+        memberRepository.save(member3001);
+        Message message = messageTestUtil.미디어_메세지(mockMvc, member3000, member3001, false);
+        messageRepository.save(message);
+
+        memberTestUtil.유저_정지_먹이기(member3001);
+        MockMultipartFile file = messageTestUtil.이미지_생성();
+        MockMultipartFile json = messageTestUtil.JSON_생성(objectMapper, member3001.getId(), message.getId());
+
+        mockMvc.perform(
+                multipart("/message/response/file")
+                    .file(file)
+                    .file(json)
+            )
+            .andExpect(status().is5xxServerError())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.errorCode").value(HttpStatus.FORBIDDEN.value()));
+
+        Mockito.verify(s3Client, Mockito.times(0))
+            .putObject(any(PutObjectRequest.class), any(RequestBody.class));
+    }
+
+    @Test
+    void 신고된_미디어_메세지에_답장_전송_실패_403() throws Exception {
+        Icon icon = memberTestUtil.아이콘_추가(mockMvc);
+        collectRepository.save(icon);
+        Member member3000 = memberTestUtil.Member3000_멤버추가(icon, mockMvc);
+        Member member3001 = memberTestUtil.Member3001_멤버추가(icon, mockMvc);
+        memberRepository.save(member3000);
+        memberRepository.save(member3001);
+        Message message = messageTestUtil.미디어_메세지(mockMvc, member3000, member3001, true);
+        messageRepository.save(message);
+
+        MockMultipartFile file = messageTestUtil.이미지_생성();
+        MockMultipartFile json = messageTestUtil.JSON_생성(objectMapper, member3001.getId(), message.getId());
+
+        mockMvc.perform(
+                multipart("/message/response/file")
+                    .file(file)
+                    .file(json)
+            )
+            .andExpect(status().is5xxServerError())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.errorCode").value(HttpStatus.FORBIDDEN.value()));
+
+        Mockito.verify(s3Client, Mockito.times(0))
+            .putObject(any(PutObjectRequest.class), any(RequestBody.class));
     }
 }
