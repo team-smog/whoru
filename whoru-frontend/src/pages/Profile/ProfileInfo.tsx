@@ -1,9 +1,8 @@
-import React from 'react';
 import Profile from '@/assets/@common/Profile.png';
 
 const ProfileInfo = () => {
     return (
-        <div className="flex flex-row">
+        <div className="flex flex-row justify-center">
             <div className="pt-20 w-20 h-20">
                 <img src={Profile} alt="Profile" />
             </div>
