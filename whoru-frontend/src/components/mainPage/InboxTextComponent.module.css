@@ -1,0 +1,112 @@
+.inboxTextComponent {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+    width: 90%;
+    min-height: 110px;
+    background: #ffffff;
+    border: 3px solid #423752;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.inboxTextComponentHeader {
+    width: 100%;
+    height: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background: #D78DDD;
+    border-bottom: 3px solid #423752;
+}
+
+.inboxTextComponentHeaderText {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.inboxTextComponentHeaderTextTitle {
+  font-size: 12px;
+  margin: auto 12px;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.inboxTextComponentHeaderTime {
+  font-size: 10px;
+  color: #ffffff;
+}
+
+.inboxTextComponentHeaderIcons {
+    display: flex;
+    flex-direction: row;
+    margin: auto 12px;
+}
+
+.inboxTextComponentHeaderIcons img {
+    width: 18px;
+    height: 18px;
+    margin: 0 2.5px;
+}
+
+.inboxTextComponentBody {
+  width: 100%;
+  min-height: 90px;
+  background: #ffffff;
+  padding: 4px;
+}
+
+.inboxTextComponentBodyMain {
+  width: 100%;
+  min-height: 88px;
+  border: 3px solid #423752;
+  border-radius: 10px;
+  font-size: 12px;
+  background: #E08EDC;
+  background: linear-gradient(0deg, #E08EDC 0%, #AFA4F4 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.inboxTextComponentBodyMainText {
+  margin: 12px;
+  font-size: 16px;
+  color: #ffffff;
+}
+
+.inboxTextComponentFooter {
+  width: 100%;
+  height: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.inboxTextComponentFooterButton {
+  width: 56px;
+  height: 24px;
+  font-size: 10px;
+  margin: auto 12px;
+  border: 3px solid #423752;
+  border-radius: 6px;
+  padding: 2px 4px;
+  background: #E08EDC;
+  background: linear-gradient(165deg, #FFC2FC 0%, #9786FF 100%);
+  color: #ffffff;
+}
+
+.inboxTextComponentFooterReportButton {
+  width: 56px;
+  height: 24px;
+  font-size: 10px;
+  margin: auto 12px;
+  border: 3px solid #423752;
+  border-radius: 6px;
+  padding: 2px 4px;
+  background: #E2E0FF;
+  color: #656565;
+}
