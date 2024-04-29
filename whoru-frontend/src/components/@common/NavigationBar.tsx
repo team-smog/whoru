@@ -27,13 +27,13 @@ const NavigationBar = () => {
   return (
     <div className="fixed bottom-0 max-w-[500px] z-[2] w-full h-[60px] border-t-[0.5px] border-gray px-9 flex justify-between items-center">
       <div className="" onClick={() => handleTabClick('home')}>
-        <img src={pathname === '/' ? FilledHouse : House} className="w-9" />
+        <img src={pathname === '/' ? FilledHouse : House} className="w-8" />
       </div>
       <div className="" onClick={() => handleTabClick('post')}>
-        <img src={pathname === '/post' ? FilledPost : Post} className="w-9" />
+        <img src={pathname === '/post' ? FilledPost : Post} className="w-8 h-9" />
       </div>
       <div className="" onClick={() => handleTabClick('profile')}>
-        <img src={pathname === '/profile' ? FilledProfile : Profile} className="w-9 h-9" />
+        <img src={pathname === '/profile' ? FilledProfile : Profile} className="w-8 h-7" />
       </div>
     </div>
   )
