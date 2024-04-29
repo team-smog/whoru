@@ -5,6 +5,8 @@ import Bell from "@/assets/@common/Bell.png"
 import NavigationBar from "@/components/@common/NavigationBar";
 import InboxTextComponent from "@/components/mainPage/InboxTextComponent";
 import InboxImageComponent from "@/components/mainPage/InboxImageComponent";
+import InboxVoiceComponent from "@/components/mainPage/InboxVoiceComponent";
+import styles from "./MainPage.module.css";
 
 
 const MainPage = () => {
@@ -45,11 +47,12 @@ const MainPage = () => {
   // }, []);
   
   return (
-    <div>
+    <div className={styles.mainPage}>
       <Header info={info} />
-      <div className="pt-12 flex justify-center items-center flex-col">
+      <div className={styles.mainPageBody}>
         <InboxTextComponent />
         <InboxImageComponent />
+        <InboxVoiceComponent />
       </div>
       <NavigationBar />
     </div>
