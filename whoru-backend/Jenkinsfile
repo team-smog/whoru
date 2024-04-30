@@ -31,7 +31,7 @@ pipeline {
         }
         stage('back-deploy') {
             steps {
-                sh 'docker run -it -d -p 8080:8080 --name backend backend'
+                sh 'docker run -it -d -v /var/log/whoru/logs:/logs -p 8080:8080 --name backend backend'
             }
         }
     }
