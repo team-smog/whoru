@@ -62,7 +62,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         response.setHeader("Authorization", accessToken);
         response.addCookie(createCookie("Refresh", refreshToken));
 //        response.sendRedirect(local); //로컬
-        response.sendRedirect("http://k10d203.p.ssafy.io"); //배포
+        response.sendRedirect("https://k10d203.p.ssafy.io"); //배포
 
 
 
