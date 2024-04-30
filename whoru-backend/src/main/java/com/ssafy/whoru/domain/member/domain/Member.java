@@ -38,7 +38,7 @@ public class Member {
     private ProviderType provider;
 
     @Column(updatable = false)
-    private Long memberIdentifier;
+    private String memberIdentifier;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "icon_id")

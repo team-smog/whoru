@@ -16,7 +16,7 @@ public class MemberResponse {
 
     private Long id;
     private String userName;
-    private Long memberIdentifier;
+    private String memberIdentifier;
     private ProviderType providerType;
     private Icon iconId;
     private int boxCount;

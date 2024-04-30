@@ -23,15 +23,20 @@ repositories {
 
 dependencies {
 
+
     implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     runtimeOnly 'com.mysql:mysql-connector-j'
 
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
+    //OAuth2 Client
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+
     //Spring Security
-//    implementation 'org.springframework.boot:spring-boot-starter-security'
-//    testImplementation 'org.springframework.security:spring-security-test'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    testImplementation 'org.springframework.security:spring-security-test'
 
     //Spring Data JPA
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -57,13 +62,18 @@ dependencies {
 
     //Redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-    
+
     //FCM
     implementation 'com.google.firebase:firebase-admin:9.2.0'
 
     // S3
     implementation(platform("software.amazon.awssdk:bom:2.21.1"))
     implementation("software.amazon.awssdk:s3")
+
+    //JWT
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
 
     // H2 & JDBC (for Test)
     runtimeOnly 'com.h2database:h2'
@@ -80,9 +90,9 @@ dependencies {
 
 }
 
-tasks.named('test') {
-    systemProperty 'encryptor.key', System.getProperty('encryptor.key')
-    systemProperty 'aws.accessKeyId', System.getProperty('AWS_ACCESS_KEY_ID')
-    systemProperty 'aws.secretAccessKey', System.getProperty('AWS_SECRET_ACCESS_KEY')
-    useJUnitPlatform()
-}
+//tasks.named('test') {
+//    systemProperty 'encryptor.key', System.getProperty('encryptor.key')
+//    systemProperty 'aws.accessKeyId', System.getProperty('AWS_ACCESS_KEY_ID')
+//    systemProperty 'aws.secretAccessKey', System.getProperty('AWS_SECRET_ACCESS_KEY')
+//    useJUnitPlatform()
+//}

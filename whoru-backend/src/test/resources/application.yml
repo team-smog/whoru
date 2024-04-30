@@ -1,4 +1,5 @@
 spring:
+
   h2:
     console:
       enabled: true
@@ -19,6 +20,48 @@ spring:
       port: 6379
       host: localhost
       password:
+  jwt:
+    expire:
+      access: 3600000
+      refresh: 1209600000
+
+    secret: ENC(FZm2+cnNzBUJNDxOUQFnvLAXbbvCJtgr+kRiw4avSMhdYVmMOyqnQMJ1Xprtr2oslRDtdew6FNcEJschjZzcW9PQEPgufl1uJuga5slxY00=)
+  security:
+    oauth2:
+      client:
+        registration:
+          #          naver:
+          #            client-name: naver
+          #            client-id: ${social.naver-client-id}
+          #            client-secret: ${social.naver-secret-key}
+          #            redirect-uri: http://localhost:8080/login/oauth2/code/naver
+          #            authorization-grant-type: authorization_code
+          #            scope: name,email
+          #          google:
+          #            client-name: google
+          #            client-id: ${social.google-client-id}
+          #            client-secret: ${social.google-secret-key}
+          #            redirect-uri: http://localhost:8080/login/oauth2/code/google
+          #            authorization-grant-type: authorization_code
+          #            scope: profile,email
+          kakao:
+            client-name: kakao
+            client-id: ENC(QWkDLnmvcGEJ15Kc7QzgL6KdrR7v2oWXAqZEtNlyAicIwqDocmGJ/x+7gAh2bfLt)
+            client-secret: ENC(4DHQkCzKfmC/d8wSaVCr1oUO/0lk/Z2QJArqVoG1kZu4+1QSvglXtovvi4Nx6jzs)
+            redirect-uri: http://k10p31d203.p.ssafy.io/api/login/oauth2/code/kakao
+            authorization-grant-type: authorization_code
+            client-authentication-method: client_secret_post
+            scope:
+              - profile_nickname
+
+
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-info-authentication-method: header
+            user-name-attribute: id
 
 server:
   servlet:
