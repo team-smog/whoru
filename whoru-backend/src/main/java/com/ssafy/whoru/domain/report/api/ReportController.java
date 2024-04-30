@@ -45,7 +45,7 @@ public class ReportController implements ReportControllerDocs {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<WrapResponse<?>> getReportRecord(@RequestParam("page") int page, @RequestParam(value = "size", required = false) @Min(1) @Max(30) int size, @RequestParam(value = "condition", required = false)
+    public ResponseEntity<WrapResponse<SliceResponse<ReportRecordResponse>>> getReportRecord(@RequestParam("page") int page, @RequestParam(value = "size", required = false) @Min(1) @Max(30) int size, @RequestParam(value = "condition", required = false)
         ReportType reportType) {
 
         SliceResponse<ReportRecordResponse> result = reportService.getReportRecord(page, size, reportType);

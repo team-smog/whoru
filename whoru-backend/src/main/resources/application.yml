@@ -97,6 +97,7 @@ spring:
       port: ${my-redis.port}
       password: ${my-redis.password}
 
+
 ---
 #Production 프로필
 spring:
