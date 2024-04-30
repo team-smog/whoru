@@ -1,15 +1,15 @@
 .mainPage {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
 }
 
 .mainPageBody {
-  display: block;
-  max-height: calc(100% - 108px);
-  overflow-y: auto;
-  position: relative;
-  top: 48px;
-  border-top: 1px solid #df93f8;
-  border-bottom: 1px solid #C4AFF1;
+	display: block;
+	height: calc(100% - 108px);
+	overflow-y: auto;
+	position: relative;
+	top: 48px;
+	border-top: 1px solid #df93f8;
+	border-bottom: 1px solid #c4aff1;
 }
