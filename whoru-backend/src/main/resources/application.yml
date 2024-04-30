@@ -4,6 +4,12 @@ server:
     context-path: /api
 
 spring:
+
+  jwt:
+    expire:
+      access: 3600000
+      refresh: 1209600000
+
   profiles:
     active: local
     include: key
@@ -61,6 +67,7 @@ fcm:
     domain: googleapis.com
 
 
+
 #Actuator 활성화 설정
 management:
   endpoints:
@@ -110,24 +117,26 @@ spring:
             client-name: kakao
             client-id: ${social.kakao-client-id}
             client-secret: ${social.kakao-secret-key}
-            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
+            redirect-uri: http://localhost:8080/api/login/oauth2/code/kakao
             authorization-grant-type: authorization_code
-            scope: name
+            client-authentication-method: client_secret_post
+            scope:
+              - profile_nickname
 
 
         provider:
-          naver:
-            authorization-uri: https://nid.naver.com/oauth2.0/authorize
-            token-uri: https://nid.naver.com/oauth2.0/token
-            user-info-uri: https://openapi.naver.com/v1/nid/me
-            user-name-attribute: response
-
           kakao:
             authorization-uri: https://kauth.kakao.com/oauth/authorize
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-info-authentication-method: header
             user-name-attribute: id
 
+#          naver:
+#            authorization-uri: https://nid.naver.com/oauth2.0/authorize
+#            token-uri: https://nid.naver.com/oauth2.0/token
+#            user-info-uri: https://openapi.naver.com/v1/nid/me
+#            user-name-attribute: response
 
 
   jpa:
@@ -159,6 +168,46 @@ spring:
   config:
     activate:
       on-profile: prod
+
+  security:
+    oauth2:
+      client:
+        registration:
+#          naver:
+#            client-name: naver
+#            client-id: ${social.naver-client-id}
+#            client-secret: ${social.naver-secret-key}
+#            redirect-uri: http://localhost:8080/login/oauth2/code/naver
+#            authorization-grant-type: authorization_code
+#            scope: name,email
+#          google:
+#            client-name: google
+#            client-id: ${social.google-client-id}
+#            client-secret: ${social.google-secret-key}
+#            redirect-uri: http://localhost:8080/login/oauth2/code/google
+#            authorization-grant-type: authorization_code
+#            scope: profile,email
+          kakao:
+            client-name: kakao
+            client-id: ENC(jqNS/15RI0d2d+ZCoJDd60zWPUScj7Ky7aKRUfIsvWo11dRgpusQGcX5IvKXC5R8)
+            client-secret: ENC(/AMkrC+xa4FuLGvj8BenVtn6Uwci2AczDFBWgRxcW5Egg0XFtHm+ODD1WP5Oq+LZ)
+            redirect-uri: ENC(2MakBk5MtHoe4vzB0nl6l/B+JzUyjTxi1+rEBUed+Lc/rMhyLTCdNwIWFkpjYEjnDmm09QJHyaAU3qj4sgAapg==)
+            authorization-grant-type: authorization_code
+            scope: id,name
+
+
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+
+#          naver:
+#            authorization-uri: https://nid.naver.com/oauth2.0/authorize
+#            token-uri: https://nid.naver.com/oauth2.0/token
+#            user-info-uri: https://openapi.naver.com/v1/nid/me
+#            user-name-attribute: response
 
   data:
     redis:

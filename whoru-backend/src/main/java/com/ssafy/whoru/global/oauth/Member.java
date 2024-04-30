@@ -1,6 +1,7 @@
-package com.ssafy.whoru.domain.member.domain;
+package com.ssafy.whoru.global.oauth;
 
 import com.ssafy.whoru.domain.collect.domain.Icon;
+import com.ssafy.whoru.domain.member.domain.FcmNotification;
 import com.ssafy.whoru.domain.member.dto.LanguageType;
 import com.ssafy.whoru.domain.member.dto.ProviderType;
 import jakarta.persistence.Column;
@@ -38,7 +39,7 @@ public class Member {
     private ProviderType provider;
 
     @Column(updatable = false)
-    private Long memberIdentifier;
+    private String memberIdentifier;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "icon_id")

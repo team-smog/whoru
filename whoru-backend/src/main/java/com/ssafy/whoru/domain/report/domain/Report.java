@@ -1,6 +1,6 @@
 package com.ssafy.whoru.domain.report.domain;
 
-import com.ssafy.whoru.domain.member.domain.Member;
+import com.ssafy.whoru.global.oauth.Member;
 import com.ssafy.whoru.domain.message.domain.Message;
 import com.ssafy.whoru.domain.report.dto.ReportType;
 import jakarta.persistence.Column;

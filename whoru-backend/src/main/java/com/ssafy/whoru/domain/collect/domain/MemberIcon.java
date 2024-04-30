@@ -1,6 +1,6 @@
 package com.ssafy.whoru.domain.collect.domain;
 
-import com.ssafy.whoru.domain.member.domain.Member;
+import com.ssafy.whoru.global.oauth.Member;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
