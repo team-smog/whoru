@@ -90,9 +90,9 @@ dependencies {
 
 }
 
-tasks.named('test') {
-    systemProperty 'encryptor.key', System.getProperty('encryptor.key')
-    systemProperty 'aws.accessKeyId', System.getProperty('AWS_ACCESS_KEY_ID')
-    systemProperty 'aws.secretAccessKey', System.getProperty('AWS_SECRET_ACCESS_KEY')
-    useJUnitPlatform()
-}
+//tasks.named('test') {
+//    systemProperty 'encryptor.key', System.getProperty('encryptor.key')
+//    systemProperty 'aws.accessKeyId', System.getProperty('AWS_ACCESS_KEY_ID')
+//    systemProperty 'aws.secretAccessKey', System.getProperty('AWS_SECRET_ACCESS_KEY')
+//    useJUnitPlatform()
+//}

@@ -115,9 +115,9 @@ spring:
 #            scope: profile,email
           kakao:
             client-name: kakao
-            client-id: ${social.kakao-client-id}
-            client-secret: ${social.kakao-secret-key}
-            redirect-uri: http://localhost:8080/api/login/oauth2/code/kakao
+            client-id: ENC(QWkDLnmvcGEJ15Kc7QzgL6KdrR7v2oWXAqZEtNlyAicIwqDocmGJ/x+7gAh2bfLt)
+            client-secret: ENC(4DHQkCzKfmC/d8wSaVCr1oUO/0lk/Z2QJArqVoG1kZu4+1QSvglXtovvi4Nx6jzs)
+            redirect-uri: http://k10p31d203.p.ssafy.io/api/login/oauth2/code/kakao
             authorization-grant-type: authorization_code
             client-authentication-method: client_secret_post
             scope:
@@ -146,7 +146,7 @@ spring:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
   jwt:
-    secret: vmfhaltmskdlstkfkdgodyroqkfwkdbalroqkfwkdbalaaaaaaaaaaaaaaaabbbbb
+    secret: ENC(FZm2+cnNzBUJNDxOUQFnvLAXbbvCJtgr+kRiw4avSMhdYVmMOyqnQMJ1Xprtr2oslRDtdew6FNcEJschjZzcW9PQEPgufl1uJuga5slxY00=)
   datasource:
     url: ${my-db.url}
     username: ${my-db.username}
