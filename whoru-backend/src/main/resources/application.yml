@@ -10,6 +10,10 @@ spring:
       access: 3600000
       refresh: 1209600000
 
+    secret: ENC(FZm2+cnNzBUJNDxOUQFnvLAXbbvCJtgr+kRiw4avSMhdYVmMOyqnQMJ1Xprtr2oslRDtdew6FNcEJschjZzcW9PQEPgufl1uJuga5slxY00=)
+
+
+
   profiles:
     active: local
     include: key
@@ -144,8 +148,7 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
-  jwt:
-    secret: ENC(FZm2+cnNzBUJNDxOUQFnvLAXbbvCJtgr+kRiw4avSMhdYVmMOyqnQMJ1Xprtr2oslRDtdew6FNcEJschjZzcW9PQEPgufl1uJuga5slxY00=)
+
   datasource:
     url: ${my-db.url}
     username: ${my-db.username}
