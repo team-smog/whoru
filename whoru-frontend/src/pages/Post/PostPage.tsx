@@ -1,6 +1,7 @@
 import Header, { IHeaderInfo } from "@/components/@common/Header";
 import Bell from "@/assets/@common/Bell.png"
 import NavigationBar from "@/components/@common/NavigationBar";
+import styles from "./PostPage.module.css";
 
 const PostPage = () => {
   const info: IHeaderInfo = {
@@ -11,9 +12,9 @@ const PostPage = () => {
   }
 
   return (
-    <div>
+    <div className={styles.postPage}>
       <Header info={info} />
-      <div>
+      <div className={styles.postPageBody}>
         보내기요
       </div>
       <NavigationBar />
