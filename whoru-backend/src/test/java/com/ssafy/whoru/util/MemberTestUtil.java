@@ -4,7 +4,7 @@ import com.ssafy.whoru.domain.collect.domain.Icon;
 import com.ssafy.whoru.domain.collect.dto.IconGradeType;
 import com.ssafy.whoru.domain.member.dao.FcmRepository;
 import com.ssafy.whoru.domain.member.domain.FcmNotification;
-import com.ssafy.whoru.global.oauth.Member;
+import com.ssafy.whoru.domain.member.domain.Member;
 import com.ssafy.whoru.domain.member.dto.LanguageType;
 import com.ssafy.whoru.domain.member.dto.ProviderType;
 import com.ssafy.whoru.global.common.dto.RedisKeyType;

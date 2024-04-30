@@ -1,4 +1,4 @@
-package com.ssafy.whoru.global.oauth.service.response;
+package com.ssafy.whoru.domain.member.dto.response;
 
 import java.util.Map;
 

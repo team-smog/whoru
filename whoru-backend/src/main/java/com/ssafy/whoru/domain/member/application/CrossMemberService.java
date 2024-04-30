@@ -1,6 +1,6 @@
 package com.ssafy.whoru.domain.member.application;
 
-import com.ssafy.whoru.global.oauth.Member;
+import com.ssafy.whoru.domain.member.domain.Member;
 
 public interface CrossMemberService {
 
