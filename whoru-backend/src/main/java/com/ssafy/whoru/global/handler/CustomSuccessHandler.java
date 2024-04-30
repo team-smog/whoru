@@ -31,6 +31,9 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     @Value("${spring.jwt.expire.refresh}")
     private Long time;
 
+    @Value("${local.website}")
+    private String local;
+
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -58,7 +61,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         //Response 세팅
         response.setHeader("Authorization", accessToken);
         response.addCookie(createCookie("Refresh", refreshToken));
-//        response.sendRedirect("http://localhost:8080/"); //로컬
+//        response.sendRedirect(local); //로컬
         response.sendRedirect("http://k10d203.p.ssafy.io"); //배포
 
 

@@ -106,14 +106,14 @@ spring:
 #            client-name: naver
 #            client-id: ${social.naver-client-id}
 #            client-secret: ${social.naver-secret-key}
-#            redirect-uri: http://localhost:8080/login/oauth2/code/naver
+#            redirect-uri: ${local.website}/login/oauth2/code/naver
 #            authorization-grant-type: authorization_code
 #            scope: name,email
 #          google:
 #            client-name: google
 #            client-id: ${social.google-client-id}
 #            client-secret: ${social.google-secret-key}
-#            redirect-uri: http://localhost:8080/login/oauth2/code/google
+#            redirect-uri: ${local.website}/login/oauth2/code/google
 #            authorization-grant-type: authorization_code
 #            scope: profile,email
           kakao:
@@ -176,14 +176,14 @@ spring:
 #            client-name: naver
 #            client-id: ${social.naver-client-id}
 #            client-secret: ${social.naver-secret-key}
-#            redirect-uri: http://localhost:8080/login/oauth2/code/naver
+#            redirect-uri: ${local.website}/login/oauth2/code/naver
 #            authorization-grant-type: authorization_code
 #            scope: name,email
 #          google:
 #            client-name: google
 #            client-id: ${social.google-client-id}
 #            client-secret: ${social.google-secret-key}
-#            redirect-uri: http://localhost:8080/api/login/oauth2/code/google
+#            redirect-uri: ${local.website}/api/login/oauth2/code/google
 #            authorization-grant-type: authorization_code
 #            scope: profile,email
           kakao:
@@ -225,3 +225,6 @@ spring:
 logging:
   level:
     root: info
+
+local:
+  website: ENC(9tDfivSj95aIAW4vpFdXopRyX2pst9tbCLUmkcpRAAc=)
