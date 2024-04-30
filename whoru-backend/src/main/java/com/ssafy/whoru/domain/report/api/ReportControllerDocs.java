@@ -2,6 +2,7 @@ package com.ssafy.whoru.domain.report.api;
 
 import com.ssafy.whoru.domain.report.dto.ReportType;
 import com.ssafy.whoru.domain.report.dto.request.PostReportRequest;
+import com.ssafy.whoru.domain.report.dto.response.ReportRecordResponse;
 import com.ssafy.whoru.domain.report.dto.response.SliceResponse;
 import com.ssafy.whoru.global.common.dto.WrapResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -44,7 +45,7 @@ public interface ReportControllerDocs {
         @Parameter(name = "condition", description = "신고 종류에 따라 검색 조건을 설정할 수 있다.")
     })
     @ApiResponse(responseCode = "200", description = "Custom Slice Response", content = @Content(schema = @Schema(implementation = SliceResponse.class)))
-    public ResponseEntity<WrapResponse<?>> getReportRecord(@RequestParam("page") int page, @RequestParam(value = "size", required = false) @Min(1) @Max(30) int size, @RequestParam(value = "condition", required = false)
+    public ResponseEntity<WrapResponse<SliceResponse<ReportRecordResponse>>> getReportRecord(@RequestParam("page") int page, @RequestParam(value = "size", required = false) @Min(1) @Max(30) int size, @RequestParam(value = "condition", required = false)
     ReportType reportType);
 
 }
