@@ -25,7 +25,7 @@ const NavigationBar = () => {
   }
   
   return (
-    <div className="fixed bottom-0 max-w-[500px] z-[2] w-full h-[60px] border-t-[0.5px] border-gray px-9 flex justify-between items-center">
+    <div className="fixed bottom-0 max-w-[500px] z-[2] w-full h-[60px] bg-[#AEC3F1] px-9 flex justify-between items-center">
       <div className="" onClick={() => handleTabClick('home')}>
         <img src={pathname === '/' ? FilledHouse : House} className="w-8" />
       </div>
