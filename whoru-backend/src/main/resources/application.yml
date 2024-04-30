@@ -120,7 +120,7 @@ spring:
             client-name: kakao
             client-id: ENC(QWkDLnmvcGEJ15Kc7QzgL6KdrR7v2oWXAqZEtNlyAicIwqDocmGJ/x+7gAh2bfLt)
             client-secret: ENC(4DHQkCzKfmC/d8wSaVCr1oUO/0lk/Z2QJArqVoG1kZu4+1QSvglXtovvi4Nx6jzs)
-            redirect-uri: http://k10p31d203.p.ssafy.io/api/login/oauth2/code/kakao
+            redirect-uri: ENC(Qwmz87/dciHBhqLwP+4H3nttj5AAqaqPkSt3oiVXR1gydRfqLptqyW/lwnJnCB/Ja3L0bAKFWmpcUwvxn1kj+A==)
             authorization-grant-type: authorization_code
             client-authentication-method: client_secret_post
             scope:
@@ -183,14 +183,14 @@ spring:
 #            client-name: google
 #            client-id: ${social.google-client-id}
 #            client-secret: ${social.google-secret-key}
-#            redirect-uri: http://localhost:8080/login/oauth2/code/google
+#            redirect-uri: http://localhost:8080/api/login/oauth2/code/google
 #            authorization-grant-type: authorization_code
 #            scope: profile,email
           kakao:
             client-name: kakao
             client-id: ENC(jqNS/15RI0d2d+ZCoJDd60zWPUScj7Ky7aKRUfIsvWo11dRgpusQGcX5IvKXC5R8)
             client-secret: ENC(/AMkrC+xa4FuLGvj8BenVtn6Uwci2AczDFBWgRxcW5Egg0XFtHm+ODD1WP5Oq+LZ)
-            redirect-uri: ENC(2MakBk5MtHoe4vzB0nl6l/B+JzUyjTxi1+rEBUed+Lc/rMhyLTCdNwIWFkpjYEjnDmm09QJHyaAU3qj4sgAapg==)
+            redirect-uri: ENC(TxZCJ6urnKclk3yWALlHkjW3MHVZuni4A4S5dm7vjm/+pcgjimA/anX345PG5hiEhk9kRnEwjTUFgvSjiTdVbw==)
             authorization-grant-type: authorization_code
             scope:
               - profile_nickname
