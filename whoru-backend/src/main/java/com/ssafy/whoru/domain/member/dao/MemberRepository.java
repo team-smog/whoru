@@ -11,4 +11,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findRandom(Long senderId);
 
     Optional<Member> findByUserName(String userName);
+
+    Optional<Member> findByMemberIdentifier(String memberIdentifier);
 }

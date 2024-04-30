@@ -2,6 +2,7 @@ package com.ssafy.whoru.domain.member.application;
 
 import com.ssafy.whoru.domain.member.dao.MemberRepository;
 import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
+import com.ssafy.whoru.domain.member.dto.ProviderType;
 import com.ssafy.whoru.domain.member.dto.response.KakaoResponse;
 import com.ssafy.whoru.domain.member.domain.Member;
 import com.ssafy.whoru.domain.member.dto.MemberDTO;
@@ -57,19 +58,19 @@ public class CustomOAuth2UserServiceImpl extends DefaultOAuth2UserService implem
         }
 
         //리소스 서버에서 발급 받은 정보로 사용자를 특정할 아이디값을 만듬
-        String memberIdentifier = oAuth2Response.getProvider()+" "+oAuth2Response.getProviderId();
+        String memberIdentifier = oAuth2Response.getProviderId();
+        ProviderType providerType = ProviderType.valueOf(oAuth2Response.getProvider());
         String name = oAuth2Response.getName();
 
         //DB에 해당 유저 존재하는지 확인
-        Optional<Member> existData = memberRepository.findByUserName(memberIdentifier);
-        log.info("DB 저장로직 수행 완료");
+        Optional<Member> existData = memberRepository.findByMemberIdentifier(memberIdentifier);
 
         //없으면 회원가입 시켜주고 저장
         if (existData.isEmpty()){
-            log.info("회원가입 로직 수행");
             Member member =  Member
                     .builder()
                     .userName(name)
+                    .provider(providerType)
                     .memberIdentifier(memberIdentifier)
                     .build();
 
@@ -87,7 +88,6 @@ public class CustomOAuth2UserServiceImpl extends DefaultOAuth2UserService implem
             return new CustomOAuth2User(memberDTO);
 
         }else{   //있으면 패스
-            log.info("로그인 로직 수행");
             MemberDTO memberDTO = MemberDTO
                     .builder()
                     .id(existData.get().getId())
