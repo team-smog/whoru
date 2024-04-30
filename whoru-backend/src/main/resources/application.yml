@@ -3,6 +3,9 @@ server:
   servlet:
     context-path: /api
 
+local:
+  website: ENC(9tDfivSj95aIAW4vpFdXopRyX2pst9tbCLUmkcpRAAc=)
+
 spring:
 
   jwt:
@@ -226,5 +229,3 @@ logging:
   level:
     root: info
 
-local:
-  website: ENC(9tDfivSj95aIAW4vpFdXopRyX2pst9tbCLUmkcpRAAc=)
