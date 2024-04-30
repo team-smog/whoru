@@ -5,7 +5,7 @@ import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.domain.member.dto.response.KakaoResponse;
 import com.ssafy.whoru.domain.member.domain.Member;
 import com.ssafy.whoru.domain.member.dto.MemberDTO;
-import com.ssafy.whoru.global.oauth.service.response.OAuth2Response;
+import com.ssafy.whoru.domain.member.dto.response.OAuth2Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;

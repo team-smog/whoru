@@ -2,7 +2,7 @@ package com.ssafy.whoru.domain.collect.dao;
 
 import com.ssafy.whoru.domain.collect.domain.Icon;
 import com.ssafy.whoru.domain.collect.domain.MemberIcon;
-import com.ssafy.whoru.global.oauth.Member;
+import com.ssafy.whoru.domain.member.domain.Member;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;

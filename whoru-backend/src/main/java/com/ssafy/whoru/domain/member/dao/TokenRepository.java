@@ -1,4 +1,4 @@
-package com.ssafy.whoru.global.oauth;
+package com.ssafy.whoru.domain.member.dao;
 
 import org.springframework.data.redis.core.SetOperations;
 import org.springframework.stereotype.Repository;

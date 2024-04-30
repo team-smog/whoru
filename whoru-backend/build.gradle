@@ -66,6 +66,10 @@ dependencies {
     //FCM
     implementation 'com.google.firebase:firebase-admin:9.2.0'
 
+    // S3
+    implementation(platform("software.amazon.awssdk:bom:2.21.1"))
+    implementation("software.amazon.awssdk:s3")
+
     //JWT
     implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
     implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
@@ -75,12 +79,20 @@ dependencies {
     runtimeOnly 'com.h2database:h2'
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 
-    // embedded redis (for Test)
+    // Embedded redis (for Test)
     implementation("it.ozimov:embedded-redis:0.7.2")
+
+    // mocking bean (for Test)
+    testImplementation "org.mockito:mockito-core:3.+"
+
+
+
+
 }
 
 tasks.named('test') {
     systemProperty 'encryptor.key', System.getProperty('encryptor.key')
-    
+    systemProperty 'aws.accessKeyId', System.getProperty('AWS_ACCESS_KEY_ID')
+    systemProperty 'aws.secretAccessKey', System.getProperty('AWS_SECRET_ACCESS_KEY')
     useJUnitPlatform()
 }

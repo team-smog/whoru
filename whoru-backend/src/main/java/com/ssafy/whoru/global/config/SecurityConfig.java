@@ -2,7 +2,7 @@ package com.ssafy.whoru.global.config;
 
 import com.ssafy.whoru.domain.member.application.CustomOAuth2UserServiceImpl;
 import com.ssafy.whoru.global.common.filter.JWTFilter;
-import com.ssafy.whoru.global.common.handler.CustomSuccessHandler;
+import com.ssafy.whoru.global.handler.CustomSuccessHandler;
 import com.ssafy.whoru.global.util.JWTUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

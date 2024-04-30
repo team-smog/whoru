@@ -1,4 +1,4 @@
-package com.ssafy.whoru.global.oauth;
+package com.ssafy.whoru.domain.member.api;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

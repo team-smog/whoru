@@ -15,7 +15,9 @@ public enum RedisKeyType {
 
     BAN("ban"),
 
-    TODAY_BOX("today_cnt")
+    TODAY_BOX("today_cnt"),
+
+    REFRESHTOKEN("refresh")
     ;
 
     final String prefix;

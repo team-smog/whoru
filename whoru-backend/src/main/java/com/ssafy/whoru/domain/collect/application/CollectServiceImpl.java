@@ -12,7 +12,7 @@ import com.ssafy.whoru.domain.collect.exception.BoxCountInvalidException;
 import com.ssafy.whoru.domain.collect.exception.IconNotFoundException;
 import com.ssafy.whoru.domain.member.application.CrossMemberService;
 import com.ssafy.whoru.domain.member.application.MemberServiceImpl;
-import com.ssafy.whoru.global.oauth.Member;
+import com.ssafy.whoru.domain.member.domain.Member;
 import com.ssafy.whoru.global.error.exception.ErrorCode;
 import java.util.List;
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package com.ssafy.whoru.global.oauth.service;
+package com.ssafy.whoru.domain.member.application;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

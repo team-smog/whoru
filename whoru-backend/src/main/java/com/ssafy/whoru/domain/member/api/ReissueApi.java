@@ -1,9 +1,7 @@
-package com.ssafy.whoru.global.oauth;
+package com.ssafy.whoru.domain.member.api;
 
 
-import com.ssafy.whoru.domain.message.dto.request.TextSend;
-import com.ssafy.whoru.global.common.dto.WrapResponse;
-import com.ssafy.whoru.global.oauth.service.ReissueServiceImpl;
+import com.ssafy.whoru.domain.member.application.ReissueServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
