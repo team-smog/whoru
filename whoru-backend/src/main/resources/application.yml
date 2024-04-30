@@ -197,6 +197,7 @@ spring:
             authorization-grant-type: authorization_code
             scope:
               - profile_nickname
+            client-authentication-method: POST
 
 
         provider:
