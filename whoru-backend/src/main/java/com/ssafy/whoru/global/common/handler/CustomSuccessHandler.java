@@ -1,7 +1,7 @@
-package com.ssafy.whoru.global.oauth.handler;
+package com.ssafy.whoru.global.common.handler;
 
-import com.ssafy.whoru.global.oauth.CustomOAuth2User;
-import com.ssafy.whoru.global.oauth.TokenRepository;
+import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
+import com.ssafy.whoru.domain.member.dao.TokenRepository;
 import com.ssafy.whoru.global.util.JWTUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
