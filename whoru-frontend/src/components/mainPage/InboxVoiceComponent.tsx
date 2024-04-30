@@ -7,6 +7,7 @@ import re from '@/assets/components/InboxVoiceComponent/voice-component-re-butto
 import star from '@/assets/components/InboxVoiceComponent/voice-component-star-button.svg'
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
+import "./audioStyles.css";
 
 const InboxVoiceComponent = () => {
   return (
@@ -28,6 +29,7 @@ const InboxVoiceComponent = () => {
       <div className={styles.inboxVoiceComponentBody}>
         <div className={styles.inboxVoiceComponentBodyMain}>
           <AudioPlayer
+            className={styles.inboxVoiceComponentBodyMainAudio}
             src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
             onPlay={e => console.log("onPlay")}
             layout="stacked-reverse"
