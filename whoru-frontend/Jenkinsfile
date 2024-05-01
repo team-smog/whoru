@@ -12,6 +12,7 @@ pipeline {
                 dir('whoru-frontend') {
                     sh "docker stop frontend || true && docker rm frontend || true"
                     sh 'docker rmi frontend || true'
+                    sh 'cp /etc/nginx/nginx.conf ./'
                     sh 'docker build -t frontend .' 
                 }
             }
