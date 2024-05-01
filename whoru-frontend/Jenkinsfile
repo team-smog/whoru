@@ -9,7 +9,7 @@ pipeline {
 
         stage('Docker front image build') {
             steps {
-                dir('./') {
+                dir('whoru-frontend') {
                     sh "docker stop frontend || true && docker rm frontend || true"
                     sh 'docker rmi frontend || true'
                     sh 'docker build -t frontend .' 
@@ -19,7 +19,7 @@ pipeline {
 
         stage('Docker front container run && connect network') {
             steps {
-                dir('./') {
+                dir('whoru-frontend') {
                     sh 'docker run -i -t --name frontend --net whoru -p 3000:3000 frontend'
                 }
             }
