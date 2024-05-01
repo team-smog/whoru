@@ -7,6 +7,7 @@ import com.ssafy.whoru.global.error.exception.SimpleException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -101,6 +102,16 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> IllegalArgumentException(final IllegalArgumentException e) {
         ErrorCode errorType = ErrorCode.ARGUMENT_TYPE_MISMATCH;
+        final ErrorResponse errorResponse = new ErrorResponse(errorType.getStatus(), errorType.getMessage());
+        log.error(e.getMessage(), e);
+
+        return ResponseEntity.badRequest()
+            .body(errorResponse);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> MethodArgumentNotValidException(final MethodArgumentNotValidException e) {
+        ErrorCode errorType = ErrorCode.INVALID_REQUEST_PARAM;
         final ErrorResponse errorResponse = new ErrorResponse(errorType.getStatus(), errorType.getMessage());
         log.error(e.getMessage(), e);
 
