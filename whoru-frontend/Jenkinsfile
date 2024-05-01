@@ -9,17 +9,17 @@ pipeline {
 
         stage('Docker front image build') {
             steps {
-                dir('S10P31D203/whoru-frontend') {
+                dir('./') {
                     sh "docker stop frontend || true && docker rm frontend || true"
                     sh 'docker rmi frontend || true'
-                    sh 'docker build -t frontend .'
+                    sh 'docker build -t frontend .' 
                 }
             }
         }
 
         stage('Docker front container run && connect network') {
             steps {
-                dir('S10P31D203/whoru-frontend') {
+                dir('./') {
                     sh 'docker run -i -t --name frontend --net whoru -p 3000:3000 frontend'
                 }
             }
