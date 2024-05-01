@@ -1,5 +1,8 @@
 spring:
 
+  local:
+    website: ENC(Y9N17hSVJ/BGs+yNO4j6XHnKs3emRRC27OhBuN3zstU=)
+
   h2:
     console:
       enabled: true
@@ -48,7 +51,7 @@ spring:
             client-name: kakao
             client-id: ENC(QWkDLnmvcGEJ15Kc7QzgL6KdrR7v2oWXAqZEtNlyAicIwqDocmGJ/x+7gAh2bfLt)
             client-secret: ENC(4DHQkCzKfmC/d8wSaVCr1oUO/0lk/Z2QJArqVoG1kZu4+1QSvglXtovvi4Nx6jzs)
-            redirect-uri: http://k10p31d203.p.ssafy.io/api/login/oauth2/code/kakao
+            redirect-uri: https://k10p31d203.p.ssafy.io/api/login/oauth2/code/kakao
             authorization-grant-type: authorization_code
             client-authentication-method: client_secret_post
             scope:
