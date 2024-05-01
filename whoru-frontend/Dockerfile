@@ -32,7 +32,7 @@ COPY --from=build /app/dist /usr/share/nginx/html
 RUN rm /etc/nginx/conf.d/default.conf
 
 # custom 설정파일을 컨테이너 내부로 복사한다.
-COPY nginx/nginx.conf /etc/nginx/conf.d
+COPY /etc/nginx/nginx.conf /etc/nginx/conf.d
 
 # 컨테이너의 3000번 포트를 열어준다.
 EXPOSE 3000
