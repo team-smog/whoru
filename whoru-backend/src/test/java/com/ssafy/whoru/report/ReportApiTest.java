@@ -138,7 +138,7 @@ public class ReportApiTest extends TestPrepare {
             )
             .andExpect(status().is5xxServerError())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.errorCode").value(HttpStatus.CONFLICT.value()));;
+            .andExpect(jsonPath("$.errorCode").value(HttpStatus.CONFLICT.value()));
 
     }
 

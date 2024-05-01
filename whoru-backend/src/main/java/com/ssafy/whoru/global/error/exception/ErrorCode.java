@@ -18,9 +18,12 @@ public enum ErrorCode {
     FORBIDDEN_ERROR(403, "작업을 수행하기 위한 권한이 없습니다."),
     UNSUPPORTED_MEDIA_TYPE(415, "지원하지 않는 파일 형식입니다."),
     ARGUMENT_TYPE_MISMATCH(400, "잘못된 타입의 파라미터 요청입니다."),
+    INVALID_REQUEST_PARAM(400, "잘못된 요청입니다."),
 
     // Member
     MEMBER_NOT_FOUND(404, "존재하지 않는 회원입니다."),
+    MEMBER_NOT_POSSESSION(404, "보유하고 있지않은 아이콘입니다."),
+    MEMBER_ALREADY_ICON(400, "변경하려는 아이콘이 현재 아이콘과 동일한 아이콘입니다."),
 
     // Collet
     COLLECT_VALUE_INVALID(400, "박스 개수가 부족합니다."),
