@@ -1,6 +1,8 @@
 package com.ssafy.whoru.util;
 
+import com.ssafy.whoru.domain.collect.dao.MemberIconRepository;
 import com.ssafy.whoru.domain.collect.domain.Icon;
+import com.ssafy.whoru.domain.collect.domain.MemberIcon;
 import com.ssafy.whoru.domain.collect.dto.IconGradeType;
 import com.ssafy.whoru.domain.member.dao.FcmRepository;
 import com.ssafy.whoru.domain.member.domain.FcmNotification;
@@ -36,6 +38,9 @@ public class MemberTestUtil implements InitializingBean {
 
     @Autowired
     JWTUtil jwtUtil;
+
+    @Autowired
+    MemberIconRepository memberIconRepository;
 
     static final String MEMBER3000_FCM_TOKEN = "cfMx6tEB1EUp2Eb484bePq:APA91bG_iJU6Olx_aSkQSB7Q6j8wyCyRtx5Gb9jfDRLigIaYdRKJbY14kD34nIZjwWIepkxmm02WlOHaLvbbDck8FamulUEttEcGEKzseph_p3X1tkjpXWqvwCh8I-jiKkzE9RYJJ2uI";
 
@@ -116,6 +121,20 @@ public class MemberTestUtil implements InitializingBean {
                 .languageType(LanguageType.KOREAN)
                 .build();
     }
+
+    public void 멤버_보유_아이콘_추가(Member member, Icon icon, MockMvc mockMvc) {
+        MemberIcon memberIcon = MemberIcon
+            .builder()
+            .member(member)
+            .icon(icon)
+            .build();
+
+        memberIconRepository.save(memberIcon);
+
+
+    }
+
+
 
     public Member Member_Error_Fcm_token멤버추가(Icon icon, MockMvc mockMvc){
 
