@@ -27,9 +27,6 @@ const ChacollectionProfile = () => {
 				<div className="profile-container">
 					<img src={Profile} alt="Profile" />
 				</div>
-				<div className="profile-container">
-					<img src={Profile} alt="Profile" />
-				</div>
 			</div>
 			<div className="fixed flex justify-center w-full max-w-[500px] bottom-20 pt-4 m-auto px-3">
 				<ChacollectionModal />
