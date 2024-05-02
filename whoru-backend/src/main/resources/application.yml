@@ -100,10 +100,6 @@ spring:
   local:
     website: ENC(9tDfivSj95aIAW4vpFdXopRyX2pst9tbCLUmkcpRAAc=)
 
-#로깅관련 xml 설정
-#logging:
-#  config: classpath:log-config.xml
-
   application:
     name: SpringOAuth2JWT
 
@@ -169,7 +165,9 @@ spring:
       host: ${my-redis.host}
       port: ${my-redis.port}
       password: ${my-redis.password}
-
+#로깅관련 xml 설정
+logging:
+  config: classpath:log-config.xml
 ---
 #Production 프로필
 spring:
