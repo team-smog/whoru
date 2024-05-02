@@ -13,10 +13,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Iterator;
 
 @Slf4j
 @Component
@@ -49,9 +52,13 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             log.info("customUserDetails.getId() is null");
         }
         //===================================================
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
+        GrantedAuthority auth = iterator.next();
+        String role = auth.getAuthority();
 
-        String accessToken = jwtUtil.createAccessToken(userId,"access");
-        String refreshToken = jwtUtil.createRefreshToken(userId,"refresh");
+        String accessToken = jwtUtil.createAccessToken(userId,"access", role);
+        String refreshToken = jwtUtil.createRefreshToken(userId,"refresh",role);
 
         log.info("access Token : {}", accessToken);
 

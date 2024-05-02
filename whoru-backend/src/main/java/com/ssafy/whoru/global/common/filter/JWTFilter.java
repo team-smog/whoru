@@ -57,6 +57,7 @@ public class JWTFilter extends OncePerRequestFilter {
         }
 
         String category = jwtUtil.getCategory(token);
+        String role = jwtUtil.getRole(token);
 
         if (!category.equals("access")) {
 
@@ -77,6 +78,7 @@ public class JWTFilter extends OncePerRequestFilter {
         MemberDTO memberDTO = MemberDTO
                 .builder()
                 .id(userId)
+                .role(role)
                 .memberIdentifier(memberIdentifier)
                 .build();
 
@@ -84,7 +86,7 @@ public class JWTFilter extends OncePerRequestFilter {
         CustomOAuth2User customOAuth2User = new CustomOAuth2User(memberDTO);
 
         //스프링 시큐리티 인증 토큰 생성
-        Authentication authToken = new UsernamePasswordAuthenticationToken(customOAuth2User, null);
+        Authentication authToken = new UsernamePasswordAuthenticationToken(customOAuth2User, null, customOAuth2User.getAuthorities());
 
         //세션에 사용자 등록
         SecurityContextHolder.getContext().setAuthentication(authToken);

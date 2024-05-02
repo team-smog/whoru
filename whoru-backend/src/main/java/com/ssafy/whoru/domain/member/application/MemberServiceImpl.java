@@ -48,4 +48,9 @@ public class MemberServiceImpl implements MemberService {
 
         return modelMapper.map(icon, ChangeIconResponse.class);
     }
+
+    @Override
+    public ChangeIconResponse logout() {
+        return null;
+    }
 }
