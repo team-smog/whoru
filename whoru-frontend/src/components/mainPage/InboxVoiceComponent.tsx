@@ -8,8 +8,15 @@ import star from '@/assets/components/InboxVoiceComponent/voice-component-star-b
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
 import "./audioStyles.css";
+import { MessageInfoDetail } from '../../types/mainTypes'
 
-const InboxVoiceComponent = () => {
+
+interface InboxVoiceComponentProps {
+  message: MessageInfoDetail;
+  key: number;
+}
+
+const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message }) => {
   return (
     <div className={styles.inboxVoiceComponent}>
       {/* <img src={Header} alt="component-Header" className={styles.inboxVoiceComponentHeader} /> */}
@@ -30,7 +37,7 @@ const InboxVoiceComponent = () => {
         <div className={styles.inboxVoiceComponentBodyMain}>
           <AudioPlayer
             className={styles.inboxVoiceComponentBodyMainAudio}
-            src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+            src={message.content}
             onPlay={() => {console.log("onPlay")}}
             layout="stacked-reverse"
             style={{ width: "100%", 

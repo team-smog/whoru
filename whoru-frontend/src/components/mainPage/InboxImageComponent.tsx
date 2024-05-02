@@ -3,9 +3,15 @@ import styles from './InboxImageComponent.module.css'
 import ulIcon from '../../assets/components/InboxImageComponent/image-component-ul-button.svg'
 import sqIcon from '../../assets/components/InboxImageComponent/image-component-sq-button.svg'
 import xIcon from '../../assets/components/InboxImageComponent/image-component-x-button.svg'
+import { MessageInfoDetail } from '../../types/mainTypes'
 
 
-const InboxImageComponent = () => {
+interface InboxImageComponentProps {
+  message: MessageInfoDetail;
+  key: number;
+}
+
+const InboxImageComponent: React.FC<InboxImageComponentProps> = ({ message }) => {
   return (
     <div className={styles.InboxImageComponent}>
       <div className={styles.inboxImageComponentHeader}>
@@ -25,10 +31,15 @@ const InboxImageComponent = () => {
             TODO: 백엔드와 연동하여 실제 데이터를 받아오도록 수정
             React Query 사용
           */}
-          <img 
+          {/* <img 
             // className='min-w-[100px] max-w-[360px] min-h-[100px] max-h-[500px]'
             className={styles.inboxImageComponentBodyMain}
             src="https://source.unsplash.com/random"
+            alt="이미지"
+          /> */}
+          <img 
+            className={styles.inboxImageComponentBodyMain}
+            src={message.content}
             alt="이미지"
           />
       </div>
