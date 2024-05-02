@@ -31,7 +31,6 @@ public class CustomOAuth2UserServiceImpl extends DefaultOAuth2UserService implem
         OAuth2User oAuth2User = super.loadUser(userRequest);
         log.info("oAuth2User : {}", oAuth2User.toString());
 
-
         System.out.println(oAuth2User);
 
         // 어느 플랫폼의 소셜로그인인지 알아야함
@@ -90,6 +89,8 @@ public class CustomOAuth2UserServiceImpl extends DefaultOAuth2UserService implem
         }else{   //있으면 패스
             MemberDTO memberDTO = MemberDTO
                     .builder()
+                    .memberIdentifier(memberIdentifier)
+                    .userName(name)
                     .id(existData.get().getId())
                     .build();
 
