@@ -4,9 +4,17 @@ import com.ssafy.whoru.global.error.exception.BusinessLogicException;
 import com.ssafy.whoru.global.error.exception.ErrorCode;
 import com.ssafy.whoru.global.error.exception.InvalidValueException;
 import com.ssafy.whoru.global.error.exception.SimpleException;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.integration.IntegrationProperties.Error;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -76,6 +84,49 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.internalServerError()
             .body(errorResponse);
+    }
+
+    /**
+     * MethodArgumentNotValidException handler (400번 에러로 처리)
+     * springframework.bind 어노테이션에 의한 검사시에 발생하는 Exception
+     * **/
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(final MethodArgumentNotValidException e, BindingResult bindingResult){
+        ErrorCode errorType = ErrorCode.INPUT_VALUE_INVALID;
+        StringBuffer sb = new StringBuffer();
+        bindingResult.getFieldErrors().forEach(fieldError -> sb.append(fieldError.getDefaultMessage()).append(", "));
+
+        final ErrorResponse errorResponse = new ErrorResponse(errorType.getStatus(), sb.toString());
+        return ResponseEntity.badRequest().body(errorResponse);
+    }
+
+    /**
+     * MissingServletRequestParameterException handler (400번 에러로 처리)
+     * 쿼리 파라미터가 누락되었을 때 발생하는 Exception
+     * **/
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseEntity<ErrorResponse> handleMissingServletRequestParameterException(final MissingServletRequestParameterException e){
+        ErrorCode errorType = ErrorCode.INPUT_VALUE_INVALID;
+        StringBuffer sb = new StringBuffer();
+        sb.append(e.getParameterName()).append("가 비었습니다.");
+        if(sb.isEmpty()){
+            sb.append(errorType.getMessage());
+        }
+        final ErrorResponse errorResponse = new ErrorResponse(errorType.getStatus(), sb.toString());
+        return ResponseEntity.badRequest().body(errorResponse);
+    }
+
+    /*
+    * ConstraintViolationException handler (400번 에러로 처리)
+    * jakarta.validation 의 어노테이션에서 발생하는 Exception
+    * */
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ErrorResponse> handleConstraintViolationException(final ConstraintViolationException e){
+       final ErrorResponse errorResponse = new ErrorResponse(ErrorCode.INPUT_VALUE_INVALID.getStatus(), e.getMessage());
+       log.error(e.getMessage(), e);
+
+       return ResponseEntity.badRequest()
+           .body(errorResponse);
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)

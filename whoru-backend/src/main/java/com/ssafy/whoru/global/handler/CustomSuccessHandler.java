@@ -31,8 +31,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     @Value("${spring.jwt.expire.refresh}")
     private Long time;
 
-    @Value("${local.website}")
-    private String local;
+//    @Value("${local.website}")
+//    private String local;
 
 
     @Override
@@ -53,6 +53,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         String accessToken = jwtUtil.createAccessToken(userId,"access");
         String refreshToken = jwtUtil.createRefreshToken(userId,"refresh");
+
+        log.info("access Token : {}", accessToken);
 
         //토큰 Redis 저장
 //        tokenRepository.saveRefreshToken(customUserDetails.getId(), refreshToken);
