@@ -100,6 +100,10 @@ spring:
     activate:
       on-profile: local
 
+#로깅관련 xml 설정
+#logging:
+#  config: classpath:log-config.xml
+
   application:
     name: SpringOAuth2JWT
 
@@ -173,6 +177,7 @@ spring:
     activate:
       on-profile: prod
 
+
   local:
     website: ENC(Y9N17hSVJ/BGs+yNO4j6XHnKs3emRRC27OhBuN3zstU=)
 
@@ -234,4 +239,5 @@ spring:
 logging:
   level:
     root: info
+  config: classpath:log-config.xml
 
