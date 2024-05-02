@@ -1,0 +1,28 @@
+pipeline {
+    agent any
+    stages{
+        stage('Front clone'){
+            steps{
+                git branch: 'FE', credentialsId: 'GitLab-Last', url: 'https://lab.ssafy.com/s10-final/S10P31D203.git'
+            }
+        }
+
+        stage('Docker front image build') {
+            steps {
+                dir('whoru-frontend') {
+                    sh "docker stop frontend || true && docker rm frontend || true"
+                    sh 'docker rmi frontend || true'
+                    sh 'docker build -t frontend .' 
+                }
+            }
+        }
+
+        stage('Docker front container run && connect network') {
+            steps {
+                dir('whoru-frontend') {
+                    sh 'docker run -i -t --name frontend --net whoru -p 3000:3000 frontend'
+                }
+            }
+        }
+    }
+}
