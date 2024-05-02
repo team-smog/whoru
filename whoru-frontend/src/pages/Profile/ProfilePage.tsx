@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom'
 import Header from '@/components/@common/Header'
-import ProfileInfo from './ProfileInfo'
-import ProfileActions from './ProfileActions'
-import ProfileSettingsModal from './ProfileSettingsModal'
+import ProfileInfo from '../../components/Profile/ProfileInfo'
+import ProfileActions from '../../components/Profile/ProfileActions'
+import ProfileSettingsModal from '../../components/Profile/ProfileSettingsModal'
 import NavigationBar from '@/components/@common/NavigationBar'
 import Bell from '@/assets/@common/Bell.png'
 
