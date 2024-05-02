@@ -10,6 +10,8 @@ import AskPostPage from './pages/AskPost/AskPostPage';
 import AnnouncementPage from './pages/Announcement/AnnouncementPage';
 import Chacollection from './pages/Chacollection/Chacollection';
 import Inquiry from './pages/Inquiry/Inquiry';
+import AdminPage from './pages/Admin/AdminPage';
+import ReceivePage from './pages/Login/ReceivePage';
 
 const router = createBrowserRouter([
   {
@@ -19,6 +21,10 @@ const router = createBrowserRouter([
   {
     path: '/login',
     element: <LoginPage />
+  },
+  {
+    path: '/receive',
+    element: <ReceivePage />
   },
   {
     path: '/alarm',
@@ -51,6 +57,10 @@ const router = createBrowserRouter([
   {
     path: '/post',
     element: <PostPage />
+  },
+  {
+    path: '/admin',
+    element: <AdminPage />
   }
 ])
 

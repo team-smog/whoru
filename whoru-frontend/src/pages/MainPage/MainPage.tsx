@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+// import { useState } from "react";
+// import axios from "axios";
 import Header, { IHeaderInfo } from "@/components/@common/Header";
 import Bell from "@/assets/@common/Bell.png"
 import NavigationBar from "@/components/@common/NavigationBar";
 import InboxTextComponent from "@/components/mainPage/InboxTextComponent";
+import InboxImageComponent from "@/components/mainPage/InboxImageComponent";
+import InboxVoiceComponent from "@/components/mainPage/InboxVoiceComponent";
+import styles from "./MainPage.module.css";
 
 
 const MainPage = () => {
@@ -14,20 +17,20 @@ const MainPage = () => {
     right: <img src={Bell} alt="Alarm"/>
   }
 
-  type MessageInfoDetail = {
-    messageId: string;
-    contentType: string;
-    content: string;
-    senderId: string;
-    isResponse: boolean;
-    isRead: boolean;
-    time: string;
-    type: string;
-  }
+  // type MessageInfoDetail = {
+  //   messageId: string;
+  //   contentType: string;
+  //   content: string;
+  //   senderId: string;
+  //   isResponse: boolean;
+  //   isRead: boolean;
+  //   time: string;
+  //   type: string;
+  // }
 
-  const [messageInfo, setMessageInfo] = useState<MessageInfoDetail[]>();
-  const messageInfoSize: number = 10;
-  const [lastId, setLastId] = useState<string> ("");
+  // const [messageInfo, setMessageInfo] = useState<MessageInfoDetail[]>();
+  // const messageInfoSize: number = 10;
+  // const [lastId, setLastId] = useState<string> ("");
 
   // useEffect(() => {
   //   axios.get<MessageInfoDetail[]>(`https://k10d203.p.ssafy.io/message?lastid=${lastId}&size=${messageInfoSize}`, {
@@ -44,10 +47,12 @@ const MainPage = () => {
   // }, []);
   
   return (
-    <div>
+    <div className={styles.mainPage}>
       <Header info={info} />
-      <div className="pt-12">
+      <div className={styles.mainPageBody}>
         <InboxTextComponent />
+        <InboxImageComponent />
+        <InboxVoiceComponent />
       </div>
       <NavigationBar />
     </div>
