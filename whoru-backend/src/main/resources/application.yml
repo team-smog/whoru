@@ -3,8 +3,7 @@ server:
   servlet:
     context-path: /api
 
-local:
-  website: ENC(9tDfivSj95aIAW4vpFdXopRyX2pst9tbCLUmkcpRAAc=)
+
 
 spring:
 
@@ -20,6 +19,9 @@ spring:
   profiles:
     active: local
     include: key
+
+  local:
+    website: ENC(9tDfivSj95aIAW4vpFdXopRyX2pst9tbCLUmkcpRAAc=)
 
   #JPA 설정
   jpa:
@@ -147,7 +149,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
@@ -170,6 +172,9 @@ spring:
   config:
     activate:
       on-profile: prod
+
+  local:
+    website: ENC(Y9N17hSVJ/BGs+yNO4j6XHnKs3emRRC27OhBuN3zstU=)
 
   security:
     oauth2:

@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Transient;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,4 +41,10 @@ public class Icon {
     public void isAvailableUpdate(Boolean status) {
         this.isAvailable = status;
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);  // id를 사용하여 hashCode를 생성
+    }
+
 }

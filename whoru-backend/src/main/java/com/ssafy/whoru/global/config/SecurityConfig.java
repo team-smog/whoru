@@ -48,7 +48,7 @@ public class SecurityConfig{
 
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/").permitAll()
-                        .anyRequest().authenticated())
+                        .anyRequest().permitAll())
 
                 .oauth2Login((oauth2) -> oauth2
 //                        .loginPage("/login")
