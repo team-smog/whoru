@@ -8,6 +8,7 @@ import com.ssafy.whoru.domain.member.domain.Member;
 import com.ssafy.whoru.domain.member.dto.LanguageType;
 import com.ssafy.whoru.domain.member.dto.ProviderType;
 import com.ssafy.whoru.global.common.dto.RedisKeyType;
+import com.ssafy.whoru.global.util.JWTUtil;
 import com.ssafy.whoru.global.util.RedisUtil;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,11 +34,18 @@ public class MemberTestUtil implements InitializingBean {
     @Autowired
     FcmRepository fcmRepository;
 
+    @Autowired
+    JWTUtil jwtUtil;
+
     static final String MEMBER3000_FCM_TOKEN = "cfMx6tEB1EUp2Eb484bePq:APA91bG_iJU6Olx_aSkQSB7Q6j8wyCyRtx5Gb9jfDRLigIaYdRKJbY14kD34nIZjwWIepkxmm02WlOHaLvbbDck8FamulUEttEcGEKzseph_p3X1tkjpXWqvwCh8I-jiKkzE9RYJJ2uI";
 
     static final String MEMBER3001_FCM_TOKEN = "e8cnURUUWvX7vbwch21Egk:APA91bGgQKlqD7xsbbUstiypDx7KuAwOBi1TvxaR0Cvgqhjf8o3gVuRpBAqeiRFbo0Vj70CCx1CVyDb5b6nmwHzZOuIMyAFIBpzhqpsmwY-oR6GiAXqNJEV40xng934TA6Pse2ykBhV7";
 
     static final String MEMBER_ERROR_FCM_TOKEN = "";
+
+    static final String MEMBER_HEADER_PREFIX = "Bearer";
+
+    public static final String MEMBER_HEADER_AUTH = "Authorization";
 
     RedisUtil redisUtil;
 
@@ -131,6 +139,12 @@ public class MemberTestUtil implements InitializingBean {
                 .languageType(LanguageType.KOREAN)
                 .build();
 
+    }
+
+    public String 유저_AccessToken_만들고_헤더값_리턴(Member member){
+        StringBuilder sb = new StringBuilder();
+        sb.append(MEMBER_HEADER_PREFIX).append(jwtUtil.createAccessToken(member.getId(), "access"));
+        return sb.toString();
     }
 
     public void 유저_정지_먹이기(Member member){

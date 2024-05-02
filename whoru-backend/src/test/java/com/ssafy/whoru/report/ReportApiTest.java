@@ -10,6 +10,7 @@ import com.ssafy.whoru.domain.collect.domain.Icon;
 import com.ssafy.whoru.domain.member.domain.Member;
 import com.ssafy.whoru.domain.message.domain.Message;
 import com.ssafy.whoru.domain.report.dto.request.PostReportRequest;
+import com.ssafy.whoru.util.MemberTestUtil;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -33,6 +34,8 @@ public class ReportApiTest extends TestPrepare {
         memberRepository.save(member3000);
         memberRepository.save(member3001);
 
+        String header3000 = memberTestUtil.유저_AccessToken_만들고_헤더값_리턴(member3000);
+
         Message message = messageTestUtil.Text_메세지(mockMvc, member3000, member3001, false);
         messageRepository.save(message);
 
@@ -48,6 +51,7 @@ public class ReportApiTest extends TestPrepare {
             post("/report/member")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(postReportRequest))
+                .header(MemberTestUtil.MEMBER_HEADER_AUTH, header3000)
         )
             .andExpect(status().is2xxSuccessful())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -67,6 +71,8 @@ public class ReportApiTest extends TestPrepare {
         memberRepository.save(member3000);
         memberRepository.save(member3001);
 
+        String header3000 = memberTestUtil.유저_AccessToken_만들고_헤더값_리턴(member3000);
+
         //isReported true SETTING
         Message message = messageTestUtil.Text_메세지(mockMvc, member3000, member3001, true);
         messageRepository.save(message);
@@ -84,6 +90,7 @@ public class ReportApiTest extends TestPrepare {
                 post("/report/member")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(postReportRequest))
+                    .header(MemberTestUtil.MEMBER_HEADER_AUTH, header3000)
             )
             .andExpect(status().is5xxServerError())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -101,6 +108,8 @@ public class ReportApiTest extends TestPrepare {
         Member member3000 = memberTestUtil.Member3000_멤버추가(icon, mockMvc);
         memberRepository.save(member3000);
 
+        String header3000 = memberTestUtil.유저_AccessToken_만들고_헤더값_리턴(member3000);
+
         /**
          * 사용자 이용정지 요청 API 호출
          * **/
@@ -109,6 +118,7 @@ public class ReportApiTest extends TestPrepare {
         mockMvc.perform(
                 post(sb.toString())
                     .contentType(MediaType.APPLICATION_JSON)
+                    .header(MemberTestUtil.MEMBER_HEADER_AUTH, header3000)
             )
             .andExpect(status().is2xxSuccessful())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -126,6 +136,8 @@ public class ReportApiTest extends TestPrepare {
         Member member3000 = memberTestUtil.Member3000_멤버추가(icon, mockMvc);
         Member member = memberRepository.save(member3000);
 
+        String header3000 = memberTestUtil.유저_AccessToken_만들고_헤더값_리턴(member3000);
+
         memberTestUtil.유저_정지_먹이기(member);
         /**
          * 사용자 이용정지 요청 API 호출
@@ -135,6 +147,7 @@ public class ReportApiTest extends TestPrepare {
         mockMvc.perform(
                 post(sb.toString())
                     .contentType(MediaType.APPLICATION_JSON)
+                    .header(MemberTestUtil.MEMBER_HEADER_AUTH, header3000)
             )
             .andExpect(status().is5xxServerError())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
