@@ -11,7 +11,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Entity
+@Entity(name = "fcm_notification")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -22,12 +22,14 @@ public class FcmNotification {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "fcm_token")
     private String fcmToken;
 
+    @Column(name = "is_enabled")
     @Builder.Default
     private Boolean isEnabled = true;
 
+    @Column(name = "device_name")
     private String deviceName;
 
     public void updateNotificationsEnabled(Boolean status) { this.isEnabled = status; }

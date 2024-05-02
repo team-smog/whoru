@@ -45,6 +45,7 @@ public class Report {
     private Boolean isReviewed = false;
 
     @Enumerated(value = EnumType.STRING)
+    @Column(name = "report_type")
     private ReportType reportType;
 
 }

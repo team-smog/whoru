@@ -26,11 +26,11 @@ public class Icon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false, updatable = false, name = "icon_url")
     private String iconUrl;
 
     @Enumerated(value = EnumType.STRING)
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false, updatable = false, name = "icon_grade")
     private IconGradeType iconGrade;
 
     @Transient
