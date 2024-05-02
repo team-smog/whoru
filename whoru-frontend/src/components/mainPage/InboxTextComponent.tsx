@@ -1,26 +1,33 @@
-import axios from 'axios'
-import { useEffect,useState } from 'react'
+// import axios from 'axios'
+// import { useEffect,useState } from 'react'
 import styles from './InboxTextComponent.module.css'
 import ulIcon from '../../assets/components/InboxTextComponent/text-component-ul-button.svg'
 import sqIcon from '../../assets/components/InboxTextComponent/text-component-sq-button.svg'
 import xIcon from '../../assets/components/InboxTextComponent/text-component-x-button.svg'
+import { MessageInfoDetail } from '../../types/mainTypes'
 
-const InboxTextComponent = () => {
-  const [content, setContent] = useState<string>("")
+
+interface InboxTextComponentProps {
+  message: MessageInfoDetail;
+  key: number;
+}
+
+const InboxTextComponent: React.FC<InboxTextComponentProps> = ({ message }) => {
+  // const [content, setContent] = useState<string>("")
 
   // 일단 랜덤 글 불러오기
   // TODO: 백엔드와 연동하여 실제 데이터를 받아오도록 수정
   // React Query 사용
-  useEffect(() => {
-    axios.get('https://api.chucknorris.io/jokes/random')
-    .then((res) => {
-      console.log(res.data.value)
-      setContent(res.data.value)
-    })
-    .catch((err) => {
-      console.log(err)
-    })
-  }, [])
+  // useEffect(() => {
+  //   axios.get('https://api.chucknorris.io/jokes/random')
+  //   .then((res) => {
+  //     console.log(res.data.value)
+  //     setContent(res.data.value)
+  //   })
+  //   .catch((err) => {
+  //     console.log(err)
+  //   })
+  // }, [])
 
   return (
     <div className={styles.inboxTextComponent}>
@@ -37,7 +44,7 @@ const InboxTextComponent = () => {
       </div>
       <div className={styles.inboxTextComponentBody}>
         <div className={styles.inboxTextComponentBodyMain}>
-          <p className={styles.inboxTextComponentBodyMainText}>{content}</p>
+          <p className={styles.inboxTextComponentBodyMainText}>{message.content}</p>
           <div className={styles.inboxTextComponentFooter}>
             <button className={styles.inboxTextComponentFooterButton}>답장</button>
             <button className={styles.inboxTextComponentFooterButton}>번역</button>

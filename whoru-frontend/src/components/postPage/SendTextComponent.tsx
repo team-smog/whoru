@@ -21,6 +21,10 @@ const SendTextComponent = () => {
     }
   };
 
+  const onCancel = () => {
+    setText("");
+  };
+
   useEffect(() => {
     textareaRef.current?.focus();
   }, [])
@@ -91,7 +95,12 @@ const SendTextComponent = () => {
             >
               전송
             </button>
-            <button className={styles.sendTextComponentFooterReportButton}>취소</button>
+            <button 
+              className={styles.sendTextComponentFooterReportButton}
+              onClick={onCancel}
+            >
+              취소
+            </button>
           </div>
         </div>
       </div>
