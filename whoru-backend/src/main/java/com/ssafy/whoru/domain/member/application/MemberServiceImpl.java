@@ -7,6 +7,7 @@ import com.ssafy.whoru.domain.member.dao.MemberRepository;
 import com.ssafy.whoru.domain.member.domain.Member;
 import com.ssafy.whoru.domain.member.dto.response.ChangeIconResponse;
 import com.ssafy.whoru.domain.member.exception.MemberAlreadyIconException;
+import com.ssafy.whoru.global.common.dto.RedisKeyType;
 import com.ssafy.whoru.global.error.exception.BusinessLogicException;
 import com.ssafy.whoru.global.error.exception.ErrorCode;
 import com.ssafy.whoru.global.util.RedisUtil;
@@ -54,6 +55,6 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void logout(Member member) {
-        redisUtil.delete("refresh::"+member.getId().toString());
+        redisUtil.delete(RedisKeyType.REFRESHTOKEN.makeKey(member.getId().toString()));
     }
 }
