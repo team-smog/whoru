@@ -26,8 +26,7 @@ public class MemberApi implements MemberApiDocs {
 
     @PostMapping("/logout")
     public ResponseEntity<WrapResponse<ChangeIconResponse>> logout(@AuthenticationPrincipal Member member) {
-
-        ChangeIconResponse response = memberService.logout();
-        return ResponseEntity.ok(WrapResponse.create(response, SuccessType.SIMPLE_STATUS));
+        memberService.logout(member);
+        return ResponseEntity.ok(WrapResponse.create(SuccessType.SIMPLE_STATUS));
     }
 }

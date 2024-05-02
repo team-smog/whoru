@@ -11,7 +11,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -29,6 +31,8 @@ public class SecurityConfig{
     private final CustomSuccessHandler customSuccessHandler;            // 성공시
     private final JWTUtil jwtUtil;              //토큰관련 로직
 
+    private final AccessDeniedHandler accessDeniedHandler;  // 권한이 없는 경우에 대한 handler [403]
+    private final AuthenticationEntryPoint authenticationEntryPoint; // 로그인 정보가 충분치 않은 경우에 대한 handler [401]
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
@@ -48,7 +52,7 @@ public class SecurityConfig{
 
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/").permitAll()
-//                        .requestMatchers("/api/login/**").permitAll()
+                        .requestMatchers("/api/login/**").permitAll()
                         .anyRequest().authenticated())
 
                 .oauth2Login((oauth2) -> oauth2
@@ -57,6 +61,9 @@ public class SecurityConfig{
                                 .userService(customOAuth2UserService))
                         .successHandler(customSuccessHandler)
 
+                ).exceptionHandling(exceptionConfig ->
+                        exceptionConfig
+                                .accessDeniedHandler(accessDeniedHandler)
                 );
 //                .logout(logout ->
 //                        logout.logoutSuccessUrl("/login"))

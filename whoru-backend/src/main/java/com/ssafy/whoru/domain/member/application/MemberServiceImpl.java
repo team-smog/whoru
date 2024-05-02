@@ -9,6 +9,7 @@ import com.ssafy.whoru.domain.member.dto.response.ChangeIconResponse;
 import com.ssafy.whoru.domain.member.exception.MemberAlreadyIconException;
 import com.ssafy.whoru.global.error.exception.BusinessLogicException;
 import com.ssafy.whoru.global.error.exception.ErrorCode;
+import com.ssafy.whoru.global.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,8 @@ public class MemberServiceImpl implements MemberService {
     private final CrossCollectService collectService;
 
     private final ModelMapper modelMapper;
+
+    private final RedisUtil redisUtil;
 
     @Override
     @Transactional
@@ -50,7 +53,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public ChangeIconResponse logout() {
-        return null;
+    public void logout(Member member) {
+        redisUtil.delete("refresh::"+member.getId().toString());
     }
 }

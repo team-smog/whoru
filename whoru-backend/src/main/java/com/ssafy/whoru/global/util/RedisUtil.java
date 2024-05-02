@@ -36,4 +36,9 @@ public class RedisUtil {
         }
     }
 
+    public boolean delete(String key){
+        return Boolean.TRUE.equals(redisTemplate.delete(key));
+    }
+
+
 }
