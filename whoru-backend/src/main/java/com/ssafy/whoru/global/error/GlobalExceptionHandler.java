@@ -159,14 +159,4 @@ public class GlobalExceptionHandler {
             .body(errorResponse);
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> MethodArgumentNotValidException(final MethodArgumentNotValidException e) {
-        ErrorCode errorType = ErrorCode.INVALID_REQUEST_PARAM;
-        final ErrorResponse errorResponse = new ErrorResponse(errorType.getStatus(), errorType.getMessage());
-        log.error(e.getMessage(), e);
-
-        return ResponseEntity.badRequest()
-            .body(errorResponse);
-    }
-
 }
