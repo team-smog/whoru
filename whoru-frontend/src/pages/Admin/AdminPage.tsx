@@ -6,7 +6,6 @@ import { useState } from "react";
 
 const AdminPage = () => {
   const [selectedTab, setSelectedTab] = useState<string>('');
-  const [formState, setFormState] = useState<boolean>(false);
 
   const info: IHeaderInfo = {
     left_1: "Admin",
@@ -36,10 +35,6 @@ const AdminPage = () => {
       setSelectedTab(type);
     }
     console.log(selectedTab)
-  }
-
-  const handleFormState = () => {
-    setFormState(true)
   }
 
   return (
