@@ -38,7 +38,7 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 @Slf4j
 @Validated
-public class MessageApi{
+public class MessageApi implements MessageApiDocs{
 
     MessageService service;
 
