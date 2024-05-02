@@ -1,15 +1,17 @@
 .postPage {
 	display: flex;
 	flex-direction: column;
+	justify-content: center;
 	height: 100vh;
 }
 
 .postPageBody {
-	display: block;
-	height: calc(100% - 108px);
-	overflow-y: auto;
-	position: relative;
-	top: 48px;
-	border-top: 1px solid #df93f8;
-	border-bottom: 1px solid #c4aff1;
+	/* display: block; */
+	/* height: calc(100% - 108px); */
+	/* overflow-y: auto; */
+	/* position: relative; */
+	/* top: 50% !important; */
+	/* transform: translateY(-50%) !important; */
+	/* border-top: 1px solid #df93f8; */
+	/* border-bottom: 1px solid #c4aff1; */
 }

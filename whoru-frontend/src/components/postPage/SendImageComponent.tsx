@@ -4,49 +4,55 @@ import ulIcon from '../../assets/components/InboxImageComponent/image-component-
 import sqIcon from '../../assets/components/InboxImageComponent/image-component-sq-button.svg'
 import xIcon from '../../assets/components/InboxImageComponent/image-component-x-button.svg'
 import camerabutton from '../../assets/components/InboxImageComponent/image-component-camera-button.svg'
-// import axios from 'axios'
+import axios from 'axios'
 
 
 const SendImageComponent = () => {
   const fileInputRef = useRef(null);
-  // const [imageSrc, setImageSrc] = useState(null);
-  const [imageSrc] = useState(null);
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
+  // const [imageSrc] = useState(null);
 
   const handleUploadAreaClick = () => {
-    // fileInputRef.current.click();
+    if (fileInputRef.current) {
+      (fileInputRef.current as HTMLInputElement).click();
+    }
   };
 
-  const handleFileChange = () => {
-    // const file = event.target.files[0];
-    // if (file) {
-    //   const reader = new FileReader();
-    //   reader.onloadend = () => {
-    //     setImageSrc(reader.result);
-    //   };
-    //   reader.readAsDataURL(file); 
-    // }
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files) {
+      const file = files[0];
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImageSrc(reader.result as string | null);
+      };
+      reader.readAsDataURL(file); 
+    }
   };
 
-  // const handleSendClick = async () => {
-  //   if (imageSrc) {
-  //     try {
-  //       const formData = new FormData();
-  //       formData.append('image', imageSrc);
+  const handleSendClick = async () => {
+    if (imageSrc) {
+      try {
+        const formData = new FormData();
+        formData.append('image', imageSrc);
 
-  //       const response = await axios.post('https://S10P31D203WRU.com//message/file', formData, { //TODO: 서버 URL을 입력
-  //         headers: {
-  //           'Content-Type': 'multipart/form-data',
-  //           'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
-  //         },
-  //       });
+        await axios.post('https://k10d203.p.ssafy.io//message/file', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+        })
 
-  //       setImageSrc(null);
+        setImageSrc(null);
 
-  //     } catch (error) {
-  //       console.error('Error:', error);
-  //     }
-  //   }
-  // };
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+  };
 
   return (
     <div className={styles.sendImageComponent}>
@@ -84,7 +90,7 @@ const SendImageComponent = () => {
       <div className={styles.sendImageComponentFooter}>
         <button 
           className={styles.sendImageComponentFooterButton} 
-          // onClick={handleSendClick}
+          onClick={handleSendClick}
         >
           전송
         </button>

@@ -3,10 +3,11 @@ import styles from './SendTextComponent.module.css'
 import ulIcon from '../../assets/components/InboxTextComponent/text-component-ul-button.svg'
 import sqIcon from '../../assets/components/InboxTextComponent/text-component-sq-button.svg'
 import xIcon from '../../assets/components/InboxTextComponent/text-component-x-button.svg'
-// import axios from 'axios'
+import axios from 'axios'
+import { requestPermission } from '../../components/@common/FirebaseUtil'
+import { FCMComponent } from '../../FCM';
 
 const SendTextComponent = () => {
-  // const [content, setContent] = useState<string>("")
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [text, setText] = useState("");
 
@@ -24,26 +25,36 @@ const SendTextComponent = () => {
     textareaRef.current?.focus();
   }, [])
 
-  // const sendMessage = async () => {
-  //   try {
-  //     const response = await axios.post(
-  //       'https://S10P31D203WRU.com/message/text', 
-  //       {
-  //         senderId: 'your-user-id', // 보내는 사람 userId
-  //         content: text // text 내용
-  //       },
-  //       {
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //           'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
-  //         },
-  //       }
-  //     );
-  //     console.log(response.data);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+  const [token, setToken] = useState<string>("");
+  useEffect(() => {
+    const resultToken = requestPermission();
+    resultToken.then((token) => {
+      setToken(token);
+    });
+  }, []);
+
+  const sendMessage = async () => {
+    try {
+      await axios.post(
+        'https://k10d203.p.ssafy.io/message/text', 
+        {
+          senderId: 'your-user-id', // 보내는 사람 userId
+          content: text // text 내용
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res.data);
+      })
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div className={styles.sendTextComponent}>
@@ -60,11 +71,12 @@ const SendTextComponent = () => {
       </div>
       <div className={styles.sendTextComponentBody}>
         <div className={styles.sendTextComponentBodyMain}>
+          {/* <FCMComponent token={token}/> */}
           <textarea className={styles.sendTextComponentBodyMainText} 
           name="textarea" 
           ref={textareaRef}
           value={text}
-          id="" 
+          id="textareaRef" 
           // cols="30" 
           // rows="10" 
           maxLength={200}
@@ -75,7 +87,7 @@ const SendTextComponent = () => {
           <div className={styles.sendTextComponentFooter}>
             <button 
               className={styles.sendTextComponentFooterButton} 
-              // onClick={sendMessage}
+              onClick={sendMessage}
             >
               전송
             </button>

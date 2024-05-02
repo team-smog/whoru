@@ -38,7 +38,6 @@ const InboxVoiceComponent = () => {
                       background: "linear-gradient(90deg, #E08EDC 0%, #AFA4F4 100%)", 
                       border: "3px solid #423752", 
                       borderRadius: "10px"}}
-            // other props here
           />
         </div>
       </div>
