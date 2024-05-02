@@ -6,6 +6,7 @@ import com.ssafy.whoru.global.error.exception.InvalidValueException;
 import com.ssafy.whoru.global.error.exception.SimpleException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import java.util.Arrays;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.integration.IntegrationProperties.Error;
@@ -122,9 +123,17 @@ public class GlobalExceptionHandler {
     * */
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ErrorResponse> handleConstraintViolationException(final ConstraintViolationException e){
-       final ErrorResponse errorResponse = new ErrorResponse(ErrorCode.INPUT_VALUE_INVALID.getStatus(), e.getMessage());
+        Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
+        String [] errors = violations.stream()
+            .map(ConstraintViolation::getMessage)
+            .toArray(String[]::new);
+        ErrorCode type = ErrorCode.INPUT_VALUE_INVALID;
+        String clientMessage = type.getMessage();
+        if(errors.length > 0) {
+            clientMessage = String.join(", ", errors);
+        }
+       final ErrorResponse errorResponse = new ErrorResponse(type.getStatus(), clientMessage);
        log.error(e.getMessage(), e);
-
        return ResponseEntity.badRequest()
            .body(errorResponse);
     }
