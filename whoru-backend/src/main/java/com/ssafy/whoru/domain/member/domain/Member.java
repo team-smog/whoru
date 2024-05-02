@@ -43,7 +43,7 @@ public class Member {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "icon_id")
-    private Icon iconId;
+    private Icon icon;
 
     @Column(name = "box_count")
     private int boxCount;
@@ -76,5 +76,7 @@ public class Member {
     public void updateBoxDecrease() { this.boxCount--; }
 
     public void updateReportcountZeroInit() { this.reportCount = 0; }
+
+    public void updateIcon(Icon changeIcon) { this.icon = changeIcon; }
 
 }

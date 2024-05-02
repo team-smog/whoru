@@ -58,7 +58,7 @@ public class CustomOAuth2UserServiceImpl extends DefaultOAuth2UserService implem
         }
 
         //리소스 서버에서 발급 받은 정보로 사용자를 특정할 아이디값을 만듬
-        String memberIdentifier = oAuth2Response.getProviderId();
+        String memberIdentifier = oAuth2Response.getProvider()+" "+oAuth2Response.getProviderId();
         ProviderType providerType = ProviderType.valueOf(oAuth2Response.getProvider());
         String name = oAuth2Response.getName();
 

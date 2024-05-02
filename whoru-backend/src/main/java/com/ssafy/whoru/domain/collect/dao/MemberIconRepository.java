@@ -16,4 +16,5 @@ public interface MemberIconRepository extends JpaRepository<MemberIcon, Long> {
 
     @Query("SELECT mi FROM MemberIcon mi WHERE mi.member = :member")
     List<MemberIcon> findByMember(@Param("member") Member member);
+
 }

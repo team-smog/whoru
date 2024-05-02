@@ -31,8 +31,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     @Value("${spring.jwt.expire.refresh}")
     private Long time;
 
-//    @Value("${local.website}")
-//    private String local;
+    @Value("${spring.local.website}")
+    private String local;
 
 
     @Override
@@ -61,10 +61,10 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         redisUtil.insert(RedisKeyType.REFRESHTOKEN.makeKey(String.valueOf(userId)),refreshToken,time/1000);
 
         //Response 세팅
-        response.setHeader("Authorization", accessToken);
         response.addCookie(createCookie("Refresh", refreshToken));
 //        response.sendRedirect(local); //로컬
-        response.sendRedirect("https://k10d203.p.ssafy.io"); //배포
+        response.sendRedirect(local + "?accessToken=" + accessToken); // 로컬
+
 
 
 
