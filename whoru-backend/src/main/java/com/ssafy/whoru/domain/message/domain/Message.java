@@ -18,6 +18,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
@@ -26,6 +27,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @AllArgsConstructor
 @DynamicUpdate
 @Builder
+@ToString
 public class Message {
 
     @Id
@@ -38,11 +40,13 @@ public class Message {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member receiver;
 
+    @Column(name = "content")
     private String content;
 
     @Enumerated(EnumType.STRING)
     private ContentType contentType;
 
+    @Column(name ="read_status")
     private Boolean readStatus;
 
     // 답장인지 아닌지

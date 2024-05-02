@@ -32,31 +32,35 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "user_name")
     private String userName;
 
     @Enumerated(value = EnumType.STRING)
     private ProviderType provider;
 
-    @Column(updatable = false)
+    @Column(updatable = false, name = "member_identifier")
     private String memberIdentifier;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "icon_id")
     private Icon icon;
 
+    @Column(name = "box_count")
     private int boxCount;
 
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false, updatable = false, name = "create_date")
     @Builder.Default
     private LocalDateTime createDate = LocalDateTime.now();
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "report_count")
     @Builder.Default
     private Integer reportCount = 0;
 
+    @Column(name = "refresh_token")
     private String refreshToken;
 
     @Enumerated(value = EnumType.STRING)
+    @Column(name = "language_type")
     private LanguageType languageType;
 
     @OneToOne(fetch = FetchType.LAZY)
