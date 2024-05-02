@@ -48,6 +48,9 @@ public class Member {
     @Column(name = "box_count")
     private int boxCount;
 
+    @Column(name = "role")
+    private String role;
+
     @Column(nullable = false, updatable = false, name = "create_date")
     @Builder.Default
     private LocalDateTime createDate = LocalDateTime.now();

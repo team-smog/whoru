@@ -7,8 +7,10 @@ import com.ssafy.whoru.domain.member.dao.MemberRepository;
 import com.ssafy.whoru.domain.member.domain.Member;
 import com.ssafy.whoru.domain.member.dto.response.ChangeIconResponse;
 import com.ssafy.whoru.domain.member.exception.MemberAlreadyIconException;
+import com.ssafy.whoru.global.common.dto.RedisKeyType;
 import com.ssafy.whoru.global.error.exception.BusinessLogicException;
 import com.ssafy.whoru.global.error.exception.ErrorCode;
+import com.ssafy.whoru.global.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,8 @@ public class MemberServiceImpl implements MemberService {
     private final CrossCollectService collectService;
 
     private final ModelMapper modelMapper;
+
+    private final RedisUtil redisUtil;
 
     @Override
     @Transactional
@@ -47,5 +51,10 @@ public class MemberServiceImpl implements MemberService {
         member.updateIcon(icon);
 
         return modelMapper.map(icon, ChangeIconResponse.class);
+    }
+
+    @Override
+    public void logout(Member member) {
+        redisUtil.delete(RedisKeyType.REFRESHTOKEN.makeKey(member.getId().toString()));
     }
 }

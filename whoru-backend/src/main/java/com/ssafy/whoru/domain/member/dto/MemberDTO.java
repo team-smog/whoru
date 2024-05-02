@@ -12,5 +12,6 @@ public class MemberDTO {
     private Long id;
     private String userName;
     private String memberIdentifier;
+    private String role;
 
 }

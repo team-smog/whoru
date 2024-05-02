@@ -68,8 +68,8 @@ public class ReissueServiceImpl implements ReissueService {
         Long userId = jwtUtil.getUserId(refresh);
 
         //make new JWT
-        String newAccess = jwtUtil.createAccessToken(userId,"access");
-        String newRefresh = jwtUtil.createRefreshToken(userId,"refresh");
+        String newAccess = jwtUtil.createAccessToken(userId,"access", jwtUtil.getRole(refresh));
+        String newRefresh = jwtUtil.createRefreshToken(userId,"refresh", jwtUtil.getRole(refresh));
 
         //Refresh 토큰 저장 Redis에 기존의 Refresh 토큰 삭제 후 새 Refresh 토큰 저장
         tokenRepository.deleteRefreshToken(userId,refresh);

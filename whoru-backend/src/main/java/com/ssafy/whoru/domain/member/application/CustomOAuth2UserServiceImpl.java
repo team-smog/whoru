@@ -69,6 +69,7 @@ public class CustomOAuth2UserServiceImpl extends DefaultOAuth2UserService implem
             Member member =  Member
                     .builder()
                     .userName(name)
+                    .role("ROLE_USER")
                     .provider(providerType)
                     .memberIdentifier(memberIdentifier)
                     .build();
@@ -79,6 +80,7 @@ public class CustomOAuth2UserServiceImpl extends DefaultOAuth2UserService implem
             MemberDTO memberDTO = MemberDTO
                     .builder()
                     .memberIdentifier(memberIdentifier)
+                    .role(save.getRole())
                     .userName(name)
                     .id(save.getId())
                     .build();
@@ -89,6 +91,7 @@ public class CustomOAuth2UserServiceImpl extends DefaultOAuth2UserService implem
         }else{   //있으면 패스
             MemberDTO memberDTO = MemberDTO
                     .builder()
+                    .role(existData.get().getRole())
                     .memberIdentifier(memberIdentifier)
                     .userName(name)
                     .id(existData.get().getId())

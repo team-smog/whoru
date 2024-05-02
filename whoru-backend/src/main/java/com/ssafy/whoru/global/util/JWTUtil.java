@@ -36,6 +36,10 @@ public class JWTUtil {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("category", String.class);
     }
 
+    public String getRole(String token) {
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("role", String.class);
+    }
+
     public boolean validateToken(String token) {
 
         try {
@@ -73,21 +77,23 @@ public class JWTUtil {
                 .get("memberIdentifier", String.class);
     }
 
-    public String createAccessToken(Long userId, String category) {
+    public String createAccessToken(Long userId, String category, String role) {
         log.info("access token expire ms : " + accessExpirems);
         return Jwts.builder()
                 .claim("category", category)
                 .claim("id", userId)
+                .claim("role", role)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + accessExpirems))
                 .signWith(secretKey)
                 .compact();
     }
-    public String createRefreshToken(Long userId, String category) {
+    public String createRefreshToken(Long userId, String category, String role) {
 
         return Jwts.builder()
                 .claim("category", category)
                 .claim("id", userId)
+                .claim("role", role)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + refreshExpireMs))
                 .signWith(secretKey)
