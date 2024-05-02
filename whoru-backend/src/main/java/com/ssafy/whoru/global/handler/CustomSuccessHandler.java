@@ -9,7 +9,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +31,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     private Long time;
 
     @Value("${spring.local.website}")
-    private String local;
+    private String url;
 
 
     @Override
@@ -63,7 +62,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         //Response 세팅
         response.addCookie(createCookie("Refresh", refreshToken));
 //        response.sendRedirect(local); //로컬
-        response.sendRedirect(local + "?accessToken=" + accessToken); // 로컬
+        response.sendRedirect(url + "?accessToken=" + accessToken); // 로컬
 
 
 

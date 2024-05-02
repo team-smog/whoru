@@ -20,9 +20,6 @@ spring:
     active: local
     include: key
 
-  local:
-    website: ENC(9tDfivSj95aIAW4vpFdXopRyX2pst9tbCLUmkcpRAAc=)
-
   #JPA 설정
   jpa:
     hibernate:
@@ -100,6 +97,9 @@ spring:
     activate:
       on-profile: local
 
+  local:
+    website: ENC(9tDfivSj95aIAW4vpFdXopRyX2pst9tbCLUmkcpRAAc=)
+
 #로깅관련 xml 설정
 #logging:
 #  config: classpath:log-config.xml
@@ -129,7 +129,7 @@ spring:
             client-name: kakao
             client-id: ENC(QWkDLnmvcGEJ15Kc7QzgL6KdrR7v2oWXAqZEtNlyAicIwqDocmGJ/x+7gAh2bfLt)
             client-secret: ENC(4DHQkCzKfmC/d8wSaVCr1oUO/0lk/Z2QJArqVoG1kZu4+1QSvglXtovvi4Nx6jzs)
-            redirect-uri: http://localhost:8080/api/login/oauth2/code/kakao
+            redirect-uri: ENC(Qwmz87/dciHBhqLwP+4H3nttj5AAqaqPkSt3oiVXR1gydRfqLptqyW/lwnJnCB/Ja3L0bAKFWmpcUwvxn1kj+A==)
             authorization-grant-type: authorization_code
             client-authentication-method: client_secret_post
             scope:
