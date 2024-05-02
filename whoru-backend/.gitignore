@@ -38,4 +38,4 @@ out/
 
 application-key.yml
 
-./logs/
+/logs/
