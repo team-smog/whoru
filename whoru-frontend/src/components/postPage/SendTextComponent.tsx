@@ -1,12 +1,12 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import styles from './SendTextComponent.module.css'
 import ulIcon from '../../assets/components/InboxTextComponent/text-component-ul-button.svg'
 import sqIcon from '../../assets/components/InboxTextComponent/text-component-sq-button.svg'
 import xIcon from '../../assets/components/InboxTextComponent/text-component-x-button.svg'
-import axios from 'axios'
+// import axios from 'axios'
 
 const SendTextComponent = () => {
-  const [content, setContent] = useState<string>("")
+  // const [content, setContent] = useState<string>("")
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [text, setText] = useState("");
 
@@ -24,26 +24,26 @@ const SendTextComponent = () => {
     textareaRef.current?.focus();
   }, [])
 
-  const sendMessage = async () => {
-    try {
-      const response = await axios.post(
-        'https://S10P31D203WRU.com/message/text', 
-        {
-          senderId: 'your-user-id', // 보내는 사람 userId
-          content: text // text 내용
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
-          },
-        }
-      );
-      console.log(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const sendMessage = async () => {
+  //   try {
+  //     const response = await axios.post(
+  //       'https://S10P31D203WRU.com/message/text', 
+  //       {
+  //         senderId: 'your-user-id', // 보내는 사람 userId
+  //         content: text // text 내용
+  //       },
+  //       {
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //           'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+  //         },
+  //       }
+  //     );
+  //     console.log(response.data);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   return (
     <div className={styles.sendTextComponent}>
@@ -73,7 +73,12 @@ const SendTextComponent = () => {
           onChange={onChangeText}
           ></textarea>
           <div className={styles.sendTextComponentFooter}>
-            <button className={styles.sendTextComponentFooterButton} onClick={sendMessage}>전송</button>
+            <button 
+              className={styles.sendTextComponentFooterButton} 
+              // onClick={sendMessage}
+            >
+              전송
+            </button>
             <button className={styles.sendTextComponentFooterReportButton}>취소</button>
           </div>
         </div>

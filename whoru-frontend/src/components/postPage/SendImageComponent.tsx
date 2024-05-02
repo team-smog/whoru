@@ -1,51 +1,52 @@
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import styles from './SendImageComponent.module.css'
 import ulIcon from '../../assets/components/InboxImageComponent/image-component-ul-button.svg'
 import sqIcon from '../../assets/components/InboxImageComponent/image-component-sq-button.svg'
 import xIcon from '../../assets/components/InboxImageComponent/image-component-x-button.svg'
 import camerabutton from '../../assets/components/InboxImageComponent/image-component-camera-button.svg'
-import axios from 'axios'
+// import axios from 'axios'
 
 
 const SendImageComponent = () => {
   const fileInputRef = useRef(null);
-  const [imageSrc, setImageSrc] = useState(null);
+  // const [imageSrc, setImageSrc] = useState(null);
+  const [imageSrc] = useState(null);
 
   const handleUploadAreaClick = () => {
-    fileInputRef.current.click();
+    // fileInputRef.current.click();
   };
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImageSrc(reader.result);
-      };
-      reader.readAsDataURL(file); 
-    }
+  const handleFileChange = () => {
+    // const file = event.target.files[0];
+    // if (file) {
+    //   const reader = new FileReader();
+    //   reader.onloadend = () => {
+    //     setImageSrc(reader.result);
+    //   };
+    //   reader.readAsDataURL(file); 
+    // }
   };
 
-  const handleSendClick = async () => {
-    if (imageSrc) {
-      try {
-        const formData = new FormData();
-        formData.append('image', imageSrc);
+  // const handleSendClick = async () => {
+  //   if (imageSrc) {
+  //     try {
+  //       const formData = new FormData();
+  //       formData.append('image', imageSrc);
 
-        const response = await axios.post('https://S10P31D203WRU.com//message/file', formData, { //TODO: 서버 URL을 입력
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
-          },
-        });
+  //       const response = await axios.post('https://S10P31D203WRU.com//message/file', formData, { //TODO: 서버 URL을 입력
+  //         headers: {
+  //           'Content-Type': 'multipart/form-data',
+  //           'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+  //         },
+  //       });
 
-        setImageSrc(null);
+  //       setImageSrc(null);
 
-      } catch (error) {
-        console.error('Error:', error);
-      }
-    }
-  };
+  //     } catch (error) {
+  //       console.error('Error:', error);
+  //     }
+  //   }
+  // };
 
   return (
     <div className={styles.sendImageComponent}>
@@ -81,7 +82,12 @@ const SendImageComponent = () => {
         </div>
       </div>
       <div className={styles.sendImageComponentFooter}>
-        <button className={styles.sendImageComponentFooterButton} onClick={handleSendClick}>전송</button>
+        <button 
+          className={styles.sendImageComponentFooterButton} 
+          // onClick={handleSendClick}
+        >
+          전송
+        </button>
         <button className={styles.sendImageComponentFooterReportButton}>취소</button>
       </div>
     </div>

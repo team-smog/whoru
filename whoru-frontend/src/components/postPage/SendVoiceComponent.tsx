@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import styles from './SendVoiceComponent.module.css'
-import Header from '@/assets/components/InboxVoiceComponent/voice-component-header.svg'
+// import Header from '@/assets/components/InboxVoiceComponent/voice-component-header.svg'
 import back from '@/assets/components/InboxVoiceComponent/voice-component-back-button.svg'
 import front from '@/assets/components/InboxVoiceComponent/voice-component-front-button.svg'
 import re from '@/assets/components/InboxVoiceComponent/voice-component-re-button.svg'
@@ -14,7 +14,7 @@ import postbutton from '@/assets/components/InboxVoiceComponent/voice-component-
 import pausebutton from '@/assets/components/InboxVoiceComponent/voice-component-pause-button.svg'
 import { useVoiceVisualizer, VoiceVisualizer } from "react-voice-visualizer";
 import 'react-h5-audio-player/lib/styles.css';
-import axios from 'axios';
+// import axios from 'axios';
 
 const SendVoiceComponent = () => {
     const [currentRecordType,setCurrentRecordType] = useState<string>("")
@@ -26,11 +26,11 @@ const SendVoiceComponent = () => {
         audioRef,
         isRecordingInProgress,
         isPausedRecording,
-        audioData,
-        recordingTime,
+        // audioData,
+        // recordingTime,
         mediaRecorder,
         duration,
-        currentAudioTime,
+        // currentAudioTime,
         audioSrc,
         isPausedRecordedAudio,
         isProcessingRecordedAudio,
@@ -40,7 +40,7 @@ const SendVoiceComponent = () => {
         bufferFromRecordedBlob,
         formattedDuration,
         formattedRecordingTime,
-        formattedRecordedAudioCurrentTime,
+        // formattedRecordedAudioCurrentTime,
         isProcessingOnResize,
         isProcessingStartRecording,
     } = recorderControls;
@@ -179,27 +179,27 @@ const SendVoiceComponent = () => {
       console.log("bufferFromRecordedBlob:", bufferFromRecordedBlob);
     }, [bufferFromRecordedBlob]);
 
-    const handlePostButtonClick = async () => {
-      if (!recordedBlob) {
-          console.error("No recorded audio to send");
-          return;
-      }
+    // const handlePostButtonClick = async () => {
+    //   if (!recordedBlob) {
+    //       console.error("No recorded audio to send");
+    //       return;
+    //   }
   
-      const formData = new FormData();
-      formData.append('audio', recordedBlob, 'audio.webm');
+    //   const formData = new FormData();
+    //   formData.append('audio', recordedBlob, 'audio.webm');
   
-      try {
-          const response = await axios.post('https://S10P31D203WRU.com//message/file', formData, {
-              headers: {
-                  'Content-Type': 'multipart/form-data',
-                  'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
-              }
-          });
-          console.log(response.data);
-      } catch (error) {
-          console.error(error);
-      }
-    };
+    //   try {
+    //       const response = await axios.post('https://S10P31D203WRU.com//message/file', formData, {
+    //           headers: {
+    //               'Content-Type': 'multipart/form-data',
+    //               'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+    //           }
+    //       });
+    //       console.log(response.data);
+    //   } catch (error) {
+    //       console.error(error);
+    //   }
+    // };
 
   return (
     <div className={styles.sendVoiceComponent}>
@@ -271,7 +271,11 @@ const SendVoiceComponent = () => {
               } else if (currentRecordType==="audio") {
                 return (
                   <>
-                    <img src={postbutton} alt="post-icon" onClick={handlePostButtonClick}/>
+                    <img 
+                      src={postbutton} 
+                      alt="post-icon" 
+                      // onClick={handlePostButtonClick}
+                    />
                     {isPausedRecordedAudio ?
                       <img src={startbutton} alt="start-icon" onClick={recorderControls.togglePauseResume}/>
                       :

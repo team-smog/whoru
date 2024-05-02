@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import Cancel from '@/assets/@common/Cancel.png'
-import { useNavigate } from 'react-router-dom'
+// import { useNavigate } from 'react-router-dom'
 import './Profile.css'
 
 const ProfileSettingsModal = () => {
 	const [isPushNotificationEnabled, setIsPushNotificationEnabled] = useState(false)
 	const [isModalOpen, setIsModalOpen] = useState(false)
-	const navigate = useNavigate()
+	// const navigate = useNavigate()
 
 	const handleToggleChange = () => {
 		setIsPushNotificationEnabled((prevState) => !prevState)
