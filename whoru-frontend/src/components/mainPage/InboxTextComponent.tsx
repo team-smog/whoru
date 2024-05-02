@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useEffect,useState } from 'react'
+import { useEffect,useState } from 'react'
 import styles from './InboxTextComponent.module.css'
 import ulIcon from '../../assets/components/InboxTextComponent/text-component-ul-button.svg'
 import sqIcon from '../../assets/components/InboxTextComponent/text-component-sq-button.svg'

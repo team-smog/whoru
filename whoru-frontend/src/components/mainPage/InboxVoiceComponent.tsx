@@ -1,6 +1,6 @@
-import React from 'react'
+// import React from 'react'
 import styles from './InboxVoiceComponent.module.css'
-import Header from '@/assets/components/InboxVoiceComponent/voice-component-header.svg'
+// import Header from '@/assets/components/InboxVoiceComponent/voice-component-header.svg'
 import back from '@/assets/components/InboxVoiceComponent/voice-component-back-button.svg'
 import front from '@/assets/components/InboxVoiceComponent/voice-component-front-button.svg'
 import re from '@/assets/components/InboxVoiceComponent/voice-component-re-button.svg'
@@ -31,7 +31,7 @@ const InboxVoiceComponent = () => {
           <AudioPlayer
             className={styles.inboxVoiceComponentBodyMainAudio}
             src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
-            onPlay={e => console.log("onPlay")}
+            onPlay={() => {console.log("onPlay")}}
             layout="stacked-reverse"
             style={{ width: "100%", 
                       height: "100%", 
