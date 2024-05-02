@@ -2,6 +2,9 @@ import Header, { IHeaderInfo } from "@/components/@common/Header";
 import Bell from "@/assets/@common/Bell.png"
 import NavigationBar from "@/components/@common/NavigationBar";
 import styles from "./PostPage.module.css";
+import SendTextComponent from "@/components/postPage/SendTextComponent";
+import SendImageComponent from "@/components/postPage/SendImageComponent";
+import SendVoiceComponent from "@/components/postPage/SendVoiceComponent";
 
 const PostPage = () => {
   const info: IHeaderInfo = {
@@ -15,7 +18,9 @@ const PostPage = () => {
     <div className={styles.postPage}>
       <Header info={info} />
       <div className={styles.postPageBody}>
-        보내기요
+        <SendTextComponent />
+        <SendVoiceComponent />
+        <SendImageComponent />
       </div>
       <NavigationBar />
     </div>

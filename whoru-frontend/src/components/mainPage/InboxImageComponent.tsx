@@ -1,4 +1,4 @@
-import React from 'react'
+// import React from 'react'
 import styles from './InboxImageComponent.module.css'
 import ulIcon from '../../assets/components/InboxImageComponent/image-component-ul-button.svg'
 import sqIcon from '../../assets/components/InboxImageComponent/image-component-sq-button.svg'
