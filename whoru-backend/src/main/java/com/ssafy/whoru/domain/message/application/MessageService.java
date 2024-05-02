@@ -1,19 +1,25 @@
 package com.ssafy.whoru.domain.message.application;
 
-import com.ssafy.whoru.domain.message.dto.request.Info;
-import com.ssafy.whoru.domain.message.dto.request.ResponseInfo;
-import com.ssafy.whoru.domain.message.dto.request.TextResponseSend;
 import com.ssafy.whoru.domain.message.dto.request.TextSend;
 import com.ssafy.whoru.domain.message.dto.response.MessageResponse;
+import com.ssafy.whoru.domain.message.dto.response.ResponseWithSuccess;
+import com.ssafy.whoru.domain.message.dto.response.SliceMessageResponse;
+import com.ssafy.whoru.global.common.dto.SuccessType;
+import java.util.List;
+import org.springframework.data.domain.Slice;
 import org.springframework.web.multipart.MultipartFile;
 
 
 public interface MessageService {
-    void sendTextMessageToRandomMember(TextSend textSend);
+    void sendTextMessageToRandomMember(TextSend textSend, Long senderId);
 
-    void responseTextMessage(TextResponseSend responseSend);
+    void responseTextMessage(TextSend textSend, Long senderId, Long messageId);
 
-    void sendMediaMessageToRandomMember(MultipartFile file, Info info);
+    void sendMediaMessageToRandomMember(MultipartFile file, Long senderId);
 
-    void responseFileMessage(MultipartFile file, ResponseInfo info);
+    void responseFileMessage(MultipartFile file, Long senderId, Long messageId);
+
+    ResponseWithSuccess<SliceMessageResponse> getOldMessages(Long lastId, Integer size, Long receiverId);
+
+    ResponseWithSuccess<List<MessageResponse>> getRecentMessages(Long firstId, Integer size, Long receiverId);
 }

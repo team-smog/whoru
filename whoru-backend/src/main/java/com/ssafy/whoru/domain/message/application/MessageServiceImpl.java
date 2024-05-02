@@ -2,14 +2,15 @@ package com.ssafy.whoru.domain.message.application;
 
 import com.ssafy.whoru.domain.member.application.CrossMemberService;
 import com.ssafy.whoru.domain.member.domain.Member;
+import com.ssafy.whoru.domain.message.dao.MessageCustomRepository;
 import com.ssafy.whoru.domain.message.dao.MessageRepository;
-import com.ssafy.whoru.domain.message.dto.request.ResponseInfo;
+import com.ssafy.whoru.domain.message.dto.response.MessageResponse;
+import com.ssafy.whoru.domain.message.dto.response.ResponseWithSuccess;
+import com.ssafy.whoru.domain.message.dto.response.SliceMessageResponse;
 import com.ssafy.whoru.global.common.application.S3Service;
 import com.ssafy.whoru.global.common.dto.FileType;
 import com.ssafy.whoru.domain.message.domain.Message;
 import com.ssafy.whoru.domain.message.dto.ContentType;
-import com.ssafy.whoru.domain.message.dto.request.Info;
-import com.ssafy.whoru.domain.message.dto.request.TextResponseSend;
 import com.ssafy.whoru.domain.message.dto.request.TextSend;
 import com.ssafy.whoru.domain.message.exception.BannedSenderException;
 import com.ssafy.whoru.domain.message.exception.MessageNotFoundException;
@@ -17,19 +18,22 @@ import com.ssafy.whoru.domain.message.exception.ReportedMessageException;
 import com.ssafy.whoru.domain.message.exception.UnacceptableFileTypeException;
 import com.ssafy.whoru.domain.message.util.MessageUtil;
 import com.ssafy.whoru.global.common.dto.RedisKeyType;
+import com.ssafy.whoru.global.common.dto.SuccessType;
 import com.ssafy.whoru.global.common.exception.S3UploadException;
 import com.ssafy.whoru.global.util.FCMUtil;
 import com.ssafy.whoru.global.util.RedisUtil;
-import jakarta.persistence.EntityManager;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
@@ -39,7 +43,11 @@ public class MessageServiceImpl implements MessageService{
 
     MessageRepository messageRepository;
 
+    MessageCustomRepository messageCustomRepository;
+
     CrossMemberService memberService;
+
+    ModelMapper modelMapper;
 
     S3Service s3Service;
 
@@ -52,20 +60,22 @@ public class MessageServiceImpl implements MessageService{
     static final Integer BOX_COUNT_INIT = 0;
     static final Integer BOX_LIMIT = 3;
 
+    static final Integer EMPTY_MESSAGE = 0;
+
     @Override
-    public void sendTextMessageToRandomMember(TextSend textSend) {
+    public void sendTextMessageToRandomMember(TextSend textSend, Long senderId) {
 
         // 정지여부 체크
-        if(messageUtil.isBanned(textSend.getSenderId())){
+        if(messageUtil.isBanned(senderId)){
             throw new BannedSenderException();
         }
         // randombox 카운트
-        String key = RedisKeyType.TODAY_BOX.makeKey(String.valueOf(textSend.getSenderId()));
+        String key = RedisKeyType.TODAY_BOX.makeKey(String.valueOf(senderId));
         Optional<String> boxCount = redisUtil.findValueByKey(key);
 
         // db에서 두사람 정보 들고오기
-        Member sender = memberService.findByIdToEntity(textSend.getSenderId());
-        Member receiver = memberService.findRandomToEntity(textSend.getSenderId());
+        Member sender = memberService.findByIdToEntity(senderId);
+        Member receiver = memberService.findRandomToEntity(senderId);
 
         // 현재 redis에 남아있는 오늘의 박스 얻은 횟수 가져오기
         Integer presentBoxCount = BOX_COUNT_INIT;
@@ -106,12 +116,13 @@ public class MessageServiceImpl implements MessageService{
     }
 
     @Override
-    public void responseTextMessage(TextResponseSend responseSend) {
-        if(messageUtil.isBanned(responseSend.getSenderId())){
+    public void responseTextMessage(TextSend textSend, Long senderId, Long messageId) {
+
+        if(messageUtil.isBanned(senderId)){
             throw new BannedSenderException();
         }
 
-        Optional<Message> result = messageRepository.findById(responseSend.getMessageId());
+        Optional<Message> result = messageRepository.findById(messageId);
         Message targetMessage = result.orElseThrow(MessageNotFoundException::new);
         if(targetMessage.getIsReported()){
             throw new ReportedMessageException();
@@ -121,7 +132,7 @@ public class MessageServiceImpl implements MessageService{
 
         Message responseMessage = Message.builder()
                 .contentType(ContentType.text)
-                .content(responseSend.getContent())
+                .content(textSend.getContent())
                 .sender(targetMessage.getReceiver())
                 .receiver(targetMessage.getSender())
                 .responseStatus(null)
@@ -137,18 +148,18 @@ public class MessageServiceImpl implements MessageService{
     }
 
     @Override
-    public void sendMediaMessageToRandomMember(MultipartFile file, Info info) {
-        if(messageUtil.isBanned(info.getSenderId())){
+    public void sendMediaMessageToRandomMember(MultipartFile file, Long senderId) {
+        if(messageUtil.isBanned(senderId)){
             throw new BannedSenderException();
         }
         FileType type = (FileType.getFileType(file)).orElseThrow(UnacceptableFileTypeException::new);
 
         // db에서 두사람 정보 들고오기
-        Member sender = memberService.findByIdToEntity(info.getSenderId());
-        Member receiver = memberService.findRandomToEntity(info.getSenderId());
+        Member sender = memberService.findByIdToEntity(senderId);
+        Member receiver = memberService.findRandomToEntity(senderId);
 
         // randombox 카운트
-        String key = RedisKeyType.TODAY_BOX.makeKey(String.valueOf(info.getSenderId()));
+        String key = RedisKeyType.TODAY_BOX.makeKey(String.valueOf(senderId));
         Optional<String> boxCount = redisUtil.findValueByKey(key);
 
         // 현재 redis에 남아있는 오늘의 박스 얻은 횟수 가져오기
@@ -193,14 +204,14 @@ public class MessageServiceImpl implements MessageService{
     }
 
     @Override
-    public void responseFileMessage(MultipartFile file, ResponseInfo info) {
-        if(messageUtil.isBanned(info.getSenderId())){
+    public void responseFileMessage(MultipartFile file, Long senderId, Long messageId) {
+        if(messageUtil.isBanned(senderId)){
             throw new BannedSenderException();
         }
         FileType type = (FileType.getFileType(file)).orElseThrow(UnacceptableFileTypeException::new);
 
         // message 정보 불러오기
-        Optional<Message> targetMessage = messageRepository.findById(info.getMessageId());
+        Optional<Message> targetMessage = messageRepository.findById(messageId);
         Message message = targetMessage.orElseThrow(MessageNotFoundException::new);
         if(message.getIsReported()){
             throw new ReportedMessageException();
@@ -229,8 +240,33 @@ public class MessageServiceImpl implements MessageService{
         // message 전송
         messageRepository.save(responseMessage);
 
-        assert(responseMessage.getIsResponse());
         // fcm 발송
         fcmUtil.sendMessage(message.getReceiver().getFcmNotification().getFcmToken());
+    }
+
+    @Override
+    public ResponseWithSuccess<List<MessageResponse>> getRecentMessages(Long firstId, Integer size, Long receiverId) {
+        Member receiver = memberService.findByIdToEntity(receiverId);
+        List<Message> messages = messageCustomRepository.findAllByRecent(firstId, size, receiver);
+        List<MessageResponse> body = messages.stream()
+            .map(message -> modelMapper.map(message, MessageResponse.class))
+            .collect(Collectors.toList());
+        ResponseWithSuccess<List<MessageResponse>> response = new ResponseWithSuccess<>(body);
+        if(messages.size() == EMPTY_MESSAGE){
+            response.setSuccessType(SuccessType.STATUS_204);
+        }
+        return response;
+    }
+
+    @Override
+    public ResponseWithSuccess<SliceMessageResponse> getOldMessages(Long lastId, Integer size, Long receiverId) {
+        Member receiver = memberService.findByIdToEntity(receiverId);
+        Slice<Message> sliceMessages = messageCustomRepository.findAllBySizeWithNotReported(lastId, size, receiver);
+        SliceMessageResponse body = SliceMessageResponse.to(sliceMessages, modelMapper);
+        ResponseWithSuccess<SliceMessageResponse> response = new ResponseWithSuccess<>(body);
+        if(sliceMessages.getContent().size() == EMPTY_MESSAGE){
+            response.setSuccessType(SuccessType.STATUS_204);
+        }
+        return response;
     }
 }

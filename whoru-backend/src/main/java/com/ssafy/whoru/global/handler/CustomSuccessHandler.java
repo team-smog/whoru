@@ -54,6 +54,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String accessToken = jwtUtil.createAccessToken(userId,"access");
         String refreshToken = jwtUtil.createRefreshToken(userId,"refresh");
 
+        log.info("access Token : {}", accessToken);
+
         //토큰 Redis 저장
 //        tokenRepository.saveRefreshToken(customUserDetails.getId(), refreshToken);
         redisUtil.insert(RedisKeyType.REFRESHTOKEN.makeKey(String.valueOf(userId)),refreshToken,time/1000);

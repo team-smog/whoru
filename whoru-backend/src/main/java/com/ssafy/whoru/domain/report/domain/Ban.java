@@ -29,10 +29,11 @@ public class Ban {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false, updatable = false, name = "start_date")
     @Builder.Default
     private LocalDateTime startDate = LocalDateTime.now();
 
+    @Column(name = "end_date")
     private LocalDateTime endDate;
 
 }
