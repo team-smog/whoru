@@ -16,7 +16,9 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,4 +43,11 @@ public interface BoardApiDocs {
     public ResponseEntity<WrapResponse<SliceResponse<InquiryRecordResponse>>> getInquiryBoard(@AuthenticationPrincipal CustomOAuth2User member,
         @RequestParam("page") int page,
         @RequestParam(value = "size", required = false) @Min(value = 1, message = "size는 최소 1이상이어야 합니다.") @Max(value = 30, message = "size는 최대 30까지만 적용됩니다.") int size);
+
+    @Operation(summary = "문의사항 삭제 요청", description = "사용자는 자신이 작성한 문의사항을 삭제할 수 있다.")
+    @Parameter(description = "PathVariable로 게시판의 ID를 전달")
+    @ApiResponse(responseCode = "204", description = "성공적으로 삭제 시 204 No Content 반환")
+    @DeleteMapping("/{boardId}")
+    public ResponseEntity<WrapResponse<Void>> deleteInquiryBoard(@AuthenticationPrincipal CustomOAuth2User member, @PathVariable("boardId") Long boardId);
+
 }
