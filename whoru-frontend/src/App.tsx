@@ -12,6 +12,7 @@ import Chacollection from './pages/Chacollection/Chacollection';
 import Inquiry from './pages/Inquiry/Inquiry';
 import AdminPage from './pages/Admin/AdminPage';
 import ReceivePage from './pages/Login/ReceivePage';
+import CallBackPage from './pages/CallBack/CallBackPage';
 
 const router = createBrowserRouter([
   {
@@ -61,6 +62,10 @@ const router = createBrowserRouter([
   {
     path: '/admin',
     element: <AdminPage />
+  },
+  {
+    path: '/callback',
+    element: <CallBackPage />
   }
 ])
 
