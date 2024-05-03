@@ -41,10 +41,10 @@ const AdminPage = () => {
         id:1,
         title:'[공지] 점검사항',
         date: '2024.04.24',
-        content: '궁시렁궁시렁'
+        content: '궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁'
       },
       {
-        id:1,
+        id:2,
         title:'[공지] 업데이트',
         date: '2024.04.25',
         content: '궁시렁궁시렁궁시렁궁시렁'
@@ -72,7 +72,7 @@ const AdminPage = () => {
   const renderForm = () => {
     switch (selectedTab) {
       case 'Notification':
-        return <NotificationPage />;
+        return <NotificationPage data={dummies.notification_info} />;
       case 'Inquiry':
         return <InquiryPage data={dummies.inquiry_info} />;
       case 'Report':
@@ -96,17 +96,17 @@ const AdminPage = () => {
       <Header info={info} />
       <div className="pt-16">
         <div className="flex justify-between items-center">
-          <div className={`w-1/3 text-center ${selectedTab === 'Notification' ? 'text-text_color border-black border-b-[0.5px]' : 'text-[#A5A5A5]'}`} onClick={() => handleUserTab('Notification')}>
+          <div className={`w-1/3 h-8 text-center ${selectedTab === 'Notification' ? 'text-text_color border-text_color border-b-[0.5px]' : 'text-[#A5A5A5]'}`} onClick={() => handleUserTab('Notification')}>
             공지사항
           </div>
-          <div className={`w-1/3 text-center ${selectedTab === 'Inquiry' ? 'text-text_color' : 'text-[#A5A5A5]'}`} onClick={() => handleUserTab('Inquiry')}>
+          <div className={`w-1/3 h-8 text-center ${selectedTab === 'Inquiry' ? 'text-text_color border-text_color border-b-[0.5px]' : 'text-[#A5A5A5]'}`} onClick={() => handleUserTab('Inquiry')}>
             문의사항
           </div>
-          <div className={`w-1/3 text-center ${selectedTab === 'Report' ? 'text-text_color' : 'text-[#A5A5A5]'}`} onClick={() => handleUserTab('Report')}>
+          <div className={`w-1/3 h-8 text-center ${selectedTab === 'Report' ? 'text-text_color border-text_color border-b-[0.5px]' : 'text-[#A5A5A5]'}`} onClick={() => handleUserTab('Report')}>
             신고목록
           </div>
         </div>
-        <div>
+        <div className="py-4">
           {renderForm()}
         </div>
       </div>

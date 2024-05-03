@@ -17,15 +17,6 @@ const BottomModal = ({ height, title, onClose, children }: IBottomSheetProps) =>
     });
   };
 
-  const getBackgroundColor = (title: string) => {
-    switch (title) {
-      case '선호 구단':
-        return 'bg-[#2E2E3D] text-[16px]';
-      default:
-        return 'bg-white';
-    }
-  };
-
   return (
     <>
       {isRendering && (
@@ -34,9 +25,7 @@ const BottomModal = ({ height, title, onClose, children }: IBottomSheetProps) =>
           onClick={handleOverlayClick}
         >
           <div
-            className={`max-w-[500px] w-full m-auto fixed pb-16 bottom-0 left-0 right-0 rounded-xl ${getBackgroundColor(
-              title,
-            )} `}
+            className={`max-w-[500px] w-full m-auto fixed pb-16 bottom-0 left-0 right-0 rounded-xl`}
             onClick={e => e.stopPropagation()}
           >
             <div style={{ height: height }}>

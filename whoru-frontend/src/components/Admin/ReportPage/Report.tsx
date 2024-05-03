@@ -1,7 +1,9 @@
 const Report = () => {
   return (
     <>
-      신고목록
+      <div className="">
+        신고목록
+      </div>
     </>
   )
 }
