@@ -1,5 +1,6 @@
-package com.ssafy.whoru.domain.report.dto.response;
+package com.ssafy.whoru.global.common.dto;
 
+import com.ssafy.whoru.domain.report.dto.response.ReportRecordResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import lombok.Data;

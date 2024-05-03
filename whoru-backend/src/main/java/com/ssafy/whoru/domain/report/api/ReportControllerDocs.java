@@ -3,7 +3,7 @@ package com.ssafy.whoru.domain.report.api;
 import com.ssafy.whoru.domain.report.dto.ReportType;
 import com.ssafy.whoru.domain.report.dto.request.PostReportRequest;
 import com.ssafy.whoru.domain.report.dto.response.ReportRecordResponse;
-import com.ssafy.whoru.domain.report.dto.response.SliceResponse;
+import com.ssafy.whoru.global.common.dto.SliceResponse;
 import com.ssafy.whoru.global.common.dto.WrapResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
