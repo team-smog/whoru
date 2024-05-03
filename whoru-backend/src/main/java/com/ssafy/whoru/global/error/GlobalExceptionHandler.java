@@ -6,6 +6,7 @@ import com.ssafy.whoru.global.error.exception.InvalidValueException;
 import com.ssafy.whoru.global.error.exception.SimpleException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Arrays;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
@@ -161,6 +162,16 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> IllegalArgumentException(final IllegalArgumentException e) {
         ErrorCode errorType = ErrorCode.ARGUMENT_TYPE_MISMATCH;
+        final ErrorResponse errorResponse = new ErrorResponse(errorType.getStatus(), errorType.getMessage());
+        log.error(e.getMessage(), e);
+
+        return ResponseEntity.badRequest()
+            .body(errorResponse);
+    }
+
+    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+    public ResponseEntity<ErrorResponse> SQLIntegrityConstraintViolationException(final IllegalArgumentException e) {
+        ErrorCode errorType = ErrorCode.QUERY_INVALID_PARAM;
         final ErrorResponse errorResponse = new ErrorResponse(errorType.getStatus(), errorType.getMessage());
         log.error(e.getMessage(), e);
 

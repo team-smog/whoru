@@ -19,6 +19,7 @@ public enum ErrorCode {
     UNSUPPORTED_MEDIA_TYPE(415, "지원하지 않는 파일 형식입니다."),
     ARGUMENT_TYPE_MISMATCH(400, "잘못된 타입의 파라미터 요청입니다."),
     INVALID_REQUEST_PARAM(400, "잘못된 요청입니다."),
+    QUERY_INVALID_PARAM(400, "잘못된 요청입니다."),
 
     // Member
     MEMBER_NOT_FOUND(404, "존재하지 않는 회원입니다."),
