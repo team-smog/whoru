@@ -46,13 +46,14 @@ public class SecurityConfig{
                 .sessionManagement((sessionManagement) ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                .addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
 
                 //경로별 인가 작업`
 
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/").permitAll()
                         .requestMatchers("/api/login/**").permitAll()
+                        .requestMatchers("/api/swagger-ui/**").permitAll()
                         .anyRequest().authenticated())
 
                 .oauth2Login((oauth2) -> oauth2
