@@ -177,7 +177,7 @@ spring:
 
 
   local:
-    website: ENC(YwbHE6Gxk+8/wp6Obv8Z9XzJcVffCF9bLLyuwKoQAP7+sMJBcccrMw==)
+    website: ENC(grt37Yhvj1yhBiuyc/ia3Xt/5FwYcIl0lIM7ydo9dEfL5DcRv5Q6TQ==)
 
   security:
     oauth2:
