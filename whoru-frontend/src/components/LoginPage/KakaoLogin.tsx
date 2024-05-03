@@ -5,6 +5,7 @@ const KakaoLogin = () => {
 
   const handleKakaoLogin = () => {
     window.location.href = link;
+    console.log('카카오로그인')
   }
   return (
     <>
