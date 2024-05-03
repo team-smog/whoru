@@ -1,5 +1,6 @@
 package com.ssafy.whoru.domain.report.api;
 
+import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.domain.report.application.ReportService;
 import com.ssafy.whoru.domain.report.dto.ReportType;
 import com.ssafy.whoru.domain.report.dto.request.PostReportRequest;
@@ -12,6 +13,7 @@ import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,10 +39,10 @@ public class ReportController implements ReportControllerDocs {
         return ResponseEntity.ok(WrapResponse.create(SuccessType.STATUS_201));
     }
 
-    @PostMapping("/{memberId}/ban")
-    public ResponseEntity<WrapResponse<Void>> banMember(@PathVariable("memberId") Long memberId) {
+    @PostMapping("/ban")
+    public ResponseEntity<WrapResponse<Void>> banMember(@AuthenticationPrincipal CustomOAuth2User member) {
 
-        reportService.banMember(memberId);
+        reportService.banMember(member.getId());
         return ResponseEntity.ok(WrapResponse.create(SuccessType.STATUS_201));
     }
 

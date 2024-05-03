@@ -2,6 +2,7 @@ package com.ssafy.whoru.domain.member.api;
 
 import com.ssafy.whoru.domain.member.application.MemberService;
 import com.ssafy.whoru.domain.member.domain.Member;
+import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.domain.member.dto.response.ChangeIconResponse;
 import com.ssafy.whoru.global.common.dto.SuccessType;
 import com.ssafy.whoru.global.common.dto.WrapResponse;
@@ -18,9 +19,9 @@ public class MemberApi implements MemberApiDocs {
     private final MemberService memberService;
 
     @PatchMapping("/icon")
-    public ResponseEntity<WrapResponse<ChangeIconResponse>> changeIcon(@RequestParam("memberId") Long memberId, @RequestParam("iconId") int iconId) {
+    public ResponseEntity<WrapResponse<ChangeIconResponse>> changeIcon(@AuthenticationPrincipal CustomOAuth2User member, @RequestParam("iconId") int iconId) {
 
-        ChangeIconResponse response = memberService.changeIcon(memberId, iconId);
+        ChangeIconResponse response = memberService.changeIcon(member.getId(), iconId);
         return ResponseEntity.ok(WrapResponse.create(response, SuccessType.SIMPLE_STATUS));
     }
 
