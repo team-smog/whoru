@@ -1,6 +1,6 @@
 package com.ssafy.whoru.domain.board.api;
 
-import com.ssafy.whoru.domain.board.dto.request.PostBoardRequest;
+import com.ssafy.whoru.domain.board.dto.request.PostInquiryBoardRequest;
 import com.ssafy.whoru.domain.board.dto.response.InquiryRecordResponse;
 import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.global.common.dto.SliceResponse;
@@ -17,7 +17,6 @@ import jakarta.validation.constraints.Min;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,10 +26,10 @@ public interface BoardApiDocs {
 
 
     @Operation(summary = "문의사항 작성 요청", description = "사용자는 문의사항을 작성할 수 있다.")
-    @Parameter(content = @Content(schema = @Schema(implementation = PostBoardRequest.class)))
+    @Parameter(content = @Content(schema = @Schema(implementation = PostInquiryBoardRequest.class)))
     @ApiResponse(responseCode = "201")
     @PostMapping("")
-    public ResponseEntity<WrapResponse<Void>> postInquiryBoard(@RequestBody PostBoardRequest request);
+    public ResponseEntity<WrapResponse<Void>> postInquiryBoard(@RequestBody PostInquiryBoardRequest request);
 
     @Operation(summary = "사용자 문의사항 조회 API", description = "사용자는 자신이 작성한 문의사항들을 조회할 수 있다.")
     @Parameters( value = {

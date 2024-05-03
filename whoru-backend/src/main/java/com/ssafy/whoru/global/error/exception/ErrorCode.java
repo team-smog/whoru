@@ -49,7 +49,8 @@ public enum ErrorCode {
 
     // Board
     CONTENT_NOT_FOUND(404, "해당 게시글을 찾지 못하였습니다."),
-    NOT_SAME_WRITER(403, "해당 게시글을 삭제할 권한이 없습니다.")
+    NOT_SAME_WRITER(403, "해당 게시글을 삭제할 권한이 없습니다."),
+    COMMENT_NOT_FOUND(404, "해당하는 답글을 찾지 못하였습니다.")
     ;
 
     private final int status;
