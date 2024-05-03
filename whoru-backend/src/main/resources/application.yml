@@ -87,7 +87,7 @@ springdoc:
     path: /api-docs
   swagger-ui:
     enabled: true
-    path: /swagger-ui.html
+    path: /swagger-ui/index.html
 
 
 ---
@@ -175,7 +175,7 @@ spring:
 
 
   local:
-    website: ENC(Y9N17hSVJ/BGs+yNO4j6XHnKs3emRRC27OhBuN3zstU=)
+    website: ENC(grt37Yhvj1yhBiuyc/ia3Xt/5FwYcIl0lIM7ydo9dEfL5DcRv5Q6TQ==)
 
   security:
     oauth2:
