@@ -2,13 +2,19 @@ package com.ssafy.whoru.domain.board.application;
 
 
 import com.ssafy.whoru.domain.board.dao.BoardRepository;
+import com.ssafy.whoru.domain.board.dao.CommentRepository;
 import com.ssafy.whoru.domain.board.domain.Board;
+import com.ssafy.whoru.domain.board.domain.Comment;
 import com.ssafy.whoru.domain.board.dto.BoardType;
 import com.ssafy.whoru.domain.board.dto.request.PostBoardRequest;
+import com.ssafy.whoru.domain.board.dto.request.PostCommentRequest;
 import com.ssafy.whoru.domain.board.dto.response.InquiryRecordResponse;
+import com.ssafy.whoru.domain.board.exception.BoardNotFoundException;
+import com.ssafy.whoru.domain.collect.exception.IconNotFoundException;
 import com.ssafy.whoru.domain.member.application.CrossMemberService;
 import com.ssafy.whoru.domain.member.domain.Member;
 import com.ssafy.whoru.global.common.dto.SliceResponse;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
@@ -24,6 +30,8 @@ public class BoardServiceImpl implements BoardService{
     private final CrossMemberService crossMemberService;
 
     private final BoardRepository boardRepository;
+
+    private final CommentRepository commentRepository;
 
     private final ModelMapper modelMapper;
 
@@ -63,6 +71,22 @@ public class BoardServiceImpl implements BoardService{
         Slice<InquiryRecordResponse> response = result.map(board -> modelMapper.map(board, InquiryRecordResponse.class));
 
         return new SliceResponse<>(response);
+
+    }
+
+    @Override
+    public void postComment(PostCommentRequest request) {
+
+        Member member = crossMemberService.findByIdToEntity(request.getCommenterId());
+
+        Optional<Board> board = Optional.of(boardRepository.findById(request.getBoardId())
+            .orElseThrow(BoardNotFoundException::new));
+
+        commentRepository.save(Comment.builder()
+                .board(board.get())
+                .commenter(member)
+                .content(request.getContent())
+                .build());
 
     }
 }
