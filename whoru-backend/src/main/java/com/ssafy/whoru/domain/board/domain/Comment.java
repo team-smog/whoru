@@ -46,4 +46,6 @@ public class Comment {
         this.content = content;
     }
 
+    public void setUpdateDate() { this.updateDate = LocalDateTime.now(); }
+
 }

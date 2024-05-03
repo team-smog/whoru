@@ -49,6 +49,9 @@ public class Board {
     @Builder.Default
     private LocalDateTime createDate = LocalDateTime.now();
 
+    @Builder.Default
+    private LocalDateTime updateDate = LocalDateTime.now();
+
     @Transient
     private Boolean isCommented;
     public void updateIsCommented(Boolean status) {
@@ -58,6 +61,8 @@ public class Board {
     public void setComment(Comment comment) {
         this.comment = comment;
     }
+
+    public void setUpdateDate() { this.updateDate = LocalDateTime.now(); }
 
 
 }
