@@ -17,6 +17,7 @@ import { getFirebaseMessagingObject } from "./FirebaseUtil"
 import { onMessage } from "firebase/messaging";
 import { requestPermission } from './FirebaseUtil';
 
+import CallBackPage from './pages/CallBack/CallBackPage';
 
 const router = createBrowserRouter([
   {
@@ -66,6 +67,10 @@ const router = createBrowserRouter([
   {
     path: '/admin',
     element: <AdminPage />
+  },
+  {
+    path: '/callback',
+    element: <CallBackPage />
   }
 ])
 

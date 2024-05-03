@@ -1,7 +1,7 @@
 # react-dockerizing/Dockerfile
 
 # base image 설정(as build 로 완료된 파일을 밑에서 사용할 수 있다.)
-FROM node:20-alpine as build
+FROM node:20.11.1-alpine3.18 as build
 
 # 컨테이너 내부 작업 디렉토리 설정
 WORKDIR /app
