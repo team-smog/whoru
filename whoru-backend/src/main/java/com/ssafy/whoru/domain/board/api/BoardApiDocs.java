@@ -38,5 +38,6 @@ public interface BoardApiDocs {
     @ApiResponse(responseCode = "200", description = "Custom Slice Response", content = @Content(schema = @Schema(implementation = SliceResponse.class)))
     @GetMapping("/{memberId}")
     public ResponseEntity<WrapResponse<SliceResponse<InquiryRecordResponse>>> getInquiryBoard(@PathVariable("memberId") Long memberId,
-        @RequestParam("page") int page, @RequestParam(value = "size", required = false) @Min(1) @Max(30) int size);
+        @RequestParam("page") int page,
+        @RequestParam(value = "size", required = false) @Min(value = 1, message = "size는 최소 1이상이어야 합니다.") @Max(value = 30, message = "size는 최대 30까지만 적용됩니다.") int size);
 }
