@@ -11,5 +11,7 @@ public interface BoardService {
 
     public SliceResponse<InquiryRecordResponse> getInquiryBoard(Long memberId, int page, int size);
 
+    public SliceResponse<InquiryRecordResponse> getTotalInquiry(int page, int size, int condition);
+
     public void postComment(PostCommentRequest request);
 }

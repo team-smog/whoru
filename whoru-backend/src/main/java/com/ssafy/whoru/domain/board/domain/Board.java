@@ -55,5 +55,9 @@ public class Board {
         this.isCommented = status;
     }
 
+    public void setComment(Comment comment) {
+        this.comment = comment;
+    }
+
 
 }

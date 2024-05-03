@@ -1,8 +1,6 @@
 package com.ssafy.whoru.domain.board.dto.response;
 
-import com.ssafy.whoru.domain.board.domain.Comment;
 import com.ssafy.whoru.domain.board.dto.BoardType;
-import com.ssafy.whoru.domain.member.domain.Member;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,15 +17,13 @@ public class InquiryRecordResponse {
 
     private String subject;
 
-    private Member writer;
+    private String writerName;
 
     private String content;
 
     private BoardType boardType;
 
     private LocalDateTime createDate;
-
-//    private Comment comment;
 
     private Boolean isCommented;
 }
