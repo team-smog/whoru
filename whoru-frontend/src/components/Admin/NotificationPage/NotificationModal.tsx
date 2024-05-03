@@ -1,13 +1,13 @@
 import Modal from "@/components/@common/Modal";
 
-const InquiryModal = ({ onClose }: { onClose: () => void }) => {
+const NotificationModal = ({ onClose }: { onClose: () => void }) => {
   return (
     <Modal width="300px" height="auto" title="공지사항 수정" onClose={onClose}>
       <div className="flex flex-col px-4 pt-4 pb-4">
         <label className="py-1 text-[14px]">제목</label>
         <input 
           placeholder="제목을 입력해주세요"
-          className="border rounded-[10px] p-2 text-[12px]"
+          className="border rounded-[10px] p-2 text-[12px] text-text_color"
         />
         <label className="py-1 text-[14px]">내용</label>
         <textarea
@@ -24,4 +24,4 @@ const InquiryModal = ({ onClose }: { onClose: () => void }) => {
   )
 };
 
-export default InquiryModal;
+export default NotificationModal;

@@ -34,7 +34,7 @@ const Notification = ({data} : {data : NotificationInfo[]}) => {
               <div className="text-[12px] text-gray-400 pl-1">{item.date}</div>
             </div>
             {openId === item.id && (
-              <div className="mx-8 py-3 text-text_color border rounded-[10px] ">
+              <div className="mx-8 py-3 text-text_color border rounded-[10px] min-h-[250px] relative">
                 <div className="flex items-center gap-3 px-4">
                   <div className="text-[14px]">공지</div>
                   <div>
@@ -44,8 +44,8 @@ const Notification = ({data} : {data : NotificationInfo[]}) => {
                 </div>
                 <div className="border-b-[0.5px] mt-1 mx-2"/>
                 <div className="px-4 pt-3 text-[12px]">{item.content}</div>
-                <div className="flex items-center justify-center h-8 mx-2 mt-6 bg-gray-200 text-[14px] rounded-[10px] text-text_color" onClick={handleModalOpen}>
-                  <div>수정하기</div>
+                <div className="absolute bottom-3 w-full flex justify-center max-w-[500px] m-auto px-4">
+                  <button className="justify-center w-[300px] flex items-center h-8 bg-gray-200 text-[14px] rounded-[10px] text-text_color" onClick={handleModalOpen}>수정하기</button>
                 </div>
               </div>
             )}

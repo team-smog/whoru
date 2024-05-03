@@ -19,14 +19,24 @@ export type NotificationInfo = {
   content: string;
 }
 
+export type ReportInfo = {
+  id: number;
+  report_type: string;
+  report_date: number;
+  member_id: number;
+  message_id: number;
+  content: string;
+}
+
 
 export type AdminData = {
   inquiry_info: InquiryInfo[];
   notification_info: NotificationInfo[];
+  report_info: ReportInfo[];
 }
 
 const AdminPage = () => {
-  const [selectedTab, setSelectedTab] = useState<string>('');
+  const [selectedTab, setSelectedTab] = useState<string>('Notification');
 
   const info: IHeaderInfo = {
     left_1: "Admin",
@@ -66,7 +76,32 @@ const AdminPage = () => {
         content: '민호는 오늘 코를 고면서 잠을 자네?'
       }
     ],
-
+    report_info:[
+      {
+        id: 1,
+        report_type: '비속어',
+        report_date: 20240501,
+        member_id: 10211423,
+        message_id: 1000001,
+        content: '궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁'
+      },
+      {
+        id: 2,
+        report_type: '음란',
+        report_date: 20240502,
+        member_id: 12222222,
+        message_id: 1000002,
+        content: '궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁'
+      },
+      {
+        id: 3,
+        report_type: '광고',
+        report_date: 20240503,
+        member_id: 13333333,
+        message_id: 1000003,
+        content: '궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁'
+      },
+    ]
   }
 
   const renderForm = () => {
@@ -76,7 +111,7 @@ const AdminPage = () => {
       case 'Inquiry':
         return <InquiryPage data={dummies.inquiry_info} />;
       case 'Report':
-        return <ReportPage />;
+        return <ReportPage data={dummies.report_info}/>;
       default:
         return null;
     }
