@@ -1,6 +1,6 @@
 // FCM.jsx
 import { useEffect, useRef, useState } from "react"
-import { getFirebaseMessagingObject } from "./components/@common/FirebaseUtil"
+import { getFirebaseMessagingObject } from "./FirebaseUtil"
 import { onMessage } from "firebase/messaging";
 
 

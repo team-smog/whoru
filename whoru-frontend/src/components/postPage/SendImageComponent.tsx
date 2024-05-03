@@ -36,7 +36,7 @@ const SendImageComponent = () => {
         const formData = new FormData();
         formData.append('image', imageSrc);
 
-        await axios.post('https://k10d203.p.ssafy.io//message/file', formData, {
+        await axios.post('https://k10d203.p.ssafy.io/api/message/file', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
             'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
@@ -52,6 +52,10 @@ const SendImageComponent = () => {
         console.error('Error:', error);
       }
     }
+  };
+
+  const handleCancelClick = () => {
+    setImageSrc(null);
   };
 
   return (
@@ -94,7 +98,7 @@ const SendImageComponent = () => {
         >
           전송
         </button>
-        <button className={styles.sendImageComponentFooterReportButton}>취소</button>
+        <button className={styles.sendImageComponentFooterReportButton} onClick={handleCancelClick}>취소</button>
       </div>
     </div>
   )

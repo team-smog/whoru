@@ -7,7 +7,8 @@
 .mainPageBody {
 	display: block;
 	height: calc(100% - 108px);
-	overflow-y: auto;
+	/* height: 100vh; */
+	overflow-y: scroll;
 	position: relative;
 	top: 48px;
 	border-top: 1px solid #df93f8;

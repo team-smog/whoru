@@ -1,5 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import Bell from "@/assets/@common/Bell.png"
+import { getFirebaseMessagingObject } from "../../FirebaseUtil"
+import { onMessage } from "firebase/messaging";
+import { useEffect, useRef } from "react";
 
 export interface IHeaderInfo {
   left_1: React.ReactNode | null;
@@ -10,6 +13,20 @@ export interface IHeaderInfo {
 
 const Header = (props: {info:IHeaderInfo}) => {
   const navigate = useNavigate();
+
+  // const messagingObject = useRef(null);
+  //   useEffect(()=>{
+  //       messagingObject.current = getFirebaseMessagingObject()
+  //       console.log(messagingObject.current)
+  //   },[])
+  //   if(messagingObject.current !== null){
+  //       onMessage(messagingObject.current, (body)=>{
+  //         if (body && body.notification) {
+  //           console.log(body.notification.body);
+  //           alert(body.notification.body);
+  //         }
+  //       })
+  //   }
 
   const {left_1, left_2, center, right} = props.info;
 

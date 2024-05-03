@@ -25,6 +25,7 @@ const requestPermission = async () => {
 
   const token = await getToken(messaging, {
       vapidKey: "BOJrA8KgnUI2pEEzLEfsVNjlEPB9vmvh_0Km-lsp714IRV9cgwgc5mi3ynx5uCBHzhbiPeMJ8v9_EH9oP_x_Emc"
+      // 기기 등록 토큰 받아오는 client key
   })
 
   if(token) {

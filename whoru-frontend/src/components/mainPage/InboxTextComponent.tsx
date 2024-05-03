@@ -34,7 +34,7 @@ const InboxTextComponent: React.FC<InboxTextComponentProps> = ({ message }) => {
       <div className={styles.inboxTextComponentHeader}>
         <div className={styles.inboxTextComponentHeaderText}>
           <p className={styles.inboxTextComponentHeaderTextTitle}>익명 메세지</p>
-          <p className={styles.inboxTextComponentHeaderTime}>1분전</p>
+          <p className={styles.inboxTextComponentHeaderTime}>시간계산</p>
         </div>
         <div className={styles.inboxTextComponentHeaderIcons}>
           <img src={ulIcon} alt="ul-icon" />

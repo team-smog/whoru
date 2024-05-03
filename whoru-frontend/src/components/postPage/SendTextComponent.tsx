@@ -4,8 +4,8 @@ import ulIcon from '../../assets/components/InboxTextComponent/text-component-ul
 import sqIcon from '../../assets/components/InboxTextComponent/text-component-sq-button.svg'
 import xIcon from '../../assets/components/InboxTextComponent/text-component-x-button.svg'
 import axios from 'axios'
-import { requestPermission } from '../../components/@common/FirebaseUtil'
-import { FCMComponent } from '../../FCM';
+// import { requestPermission } from '../../FirebaseUtil'
+// import { FCMComponent } from '../../FCM';
 
 const SendTextComponent = () => {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
@@ -21,34 +21,42 @@ const SendTextComponent = () => {
     }
   };
 
-  const onCancel = () => {
-    setText("");
+  const onCancel = async () => {
+    await setText("");
+    if (textareaRef && textareaRef.current) {
+      textareaRef.current.style.height = "0px";
+      const scrollHeight = textareaRef.current.scrollHeight;
+      textareaRef.current.style.height = scrollHeight + "px";
+    }
   };
 
   useEffect(() => {
     textareaRef.current?.focus();
   }, [])
 
-  const [token, setToken] = useState<string>("");
-  useEffect(() => {
-    const resultToken = requestPermission();
-    resultToken.then((token) => {
-      setToken(token);
-    });
-  }, []);
+  // const [token, setToken] = useState<string>("");
+  // useEffect(() => {
+  //   const resultToken = requestPermission();
+  //   resultToken.then((token) => {
+  //     setToken(token);
+  //   });
+  // }, []);
 
   const sendMessage = async () => {
     try {
       await axios.post(
-        'https://k10d203.p.ssafy.io/message/text', 
+        // 'https://k10d203.p.ssafy.io/api/message/text',
+          'http://192.168.100.208:8080/api/message',
         {
-          senderId: 'your-user-id', // 보내는 사람 userId
-          content: text // text 내용
+          // senderId: 'your-user-id', // 보내는 사람 userId
+          content: "text", // text 내용
+          // token: token
         },
         {
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+            // 'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+            'Authorization': 'Bearer' + 'eyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImlkIjoyLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE0NzEwMDkxLCJleHAiOjE3NTA3MTAwOTF9.coDlad6k0UadtPqBvTIBFhXByytdncFAvChB0kZnN9g'
           },
         }
       )

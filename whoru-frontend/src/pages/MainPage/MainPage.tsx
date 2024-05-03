@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect,useRef } from "react";
 import axios from "axios";
 import Header, { IHeaderInfo } from "@/components/@common/Header";
 import Bell from "@/assets/@common/Bell.png"
@@ -10,7 +10,10 @@ import styles from "./MainPage.module.css";
 import { MessageInfoDetail } from "@/types/mainTypes";
 import PullToRefresh from 'react-pull-to-refresh';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { QueryFunctionContext, useInfiniteQuery } from "@tanstack/react-query";
 
+
+//todo: 
 
 const MainPage = () => {
   const info: IHeaderInfo = {
@@ -21,109 +24,138 @@ const MainPage = () => {
   }
 
   interface ResponseData {
-    content: MessageInfoDetail[];
+    data: {
+      content: MessageInfoDetail[];
+    }
+    hasNext: boolean;
   }
   
   
   const [refreshing, setRefreshing] = useState(false);
 
-  const [messageInfo, setMessageInfo] = useState<MessageInfoDetail[]>();
   // const [messageInfo, setMessageInfo] = useState<MessageInfoDetail[]>();
-  const messageInfoSize: number = 10;
+  // const [messageInfo, setMessageInfo] = useState<MessageInfoDetail[]>();
+  const messageInfoSize: number = 20;
   const [lastId, setLastId] = useState<string | null>(null);
-  // const [lastId, setLastId] = useState<string | null> (null);
   const [hasMore, setHasMore] = useState(true);
 
-  useEffect(() => {
-    axios.get<ResponseData>(`https://k10d203.p.ssafy.io/message?lastid=${lastId}&size=${messageInfoSize}`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    })
-    .then((res) => {
-      setMessageInfo(res.data.content);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  }, []);
+  	
+  const targetRef = useRef<HTMLDivElement>(null)
+  const [intersecting, setIntersecting] = useState(false);
 
-  const handleRefresh = (): Promise<void> => {
-    setRefreshing(true);
-    return axios.get<ResponseData>(`https://k10d203.p.ssafy.io/message?lastid=${lastId}&size=${messageInfoSize}`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    })
-    .then((res) => {
-      setMessageInfo(res.data.content);
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-    .finally(() => {
-      setRefreshing(false);
-    });
-  };
-
-  useEffect(() => {
-    fetchMoreData();
-  }, []);
-
-  const fetchMoreData = () => {
-    axios.get<ResponseData>(`https://k10d203.p.ssafy.io/message?lastid=${lastId}&size=${messageInfoSize}`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    })
-    .then((res) => {
-      if (res.data.content.length > 0) {
-        setMessageInfo(prevMessageInfo => [...(prevMessageInfo || []), ...res.data.content]);
-        setLastId(res.data.content[res.data.content.length - 1].id);
-      } else {
-        setHasMore(false);
+  const fetchData = async function ({pageParm = 1}:QueryFunctionContext):Promise<ResponseData> {
+    const res = await axios.post(`http://192.168.100.208:8080/api/message?lastid=${lastId}&size=${messageInfoSize}`,{
+      headers: { 
+       Authorization: 'BearereyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImlkIjoyLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE0NzEwMDkxLCJleHAiOjE3NTA3MTAwOTF9.coDlad6k0UadtPqBvTIBFhXByytdncFAvChB0kZnN9g'
       }
-    })
-    .catch((err) => {
-      console.log(err);
+    }
+    )
+    return res.data
+  }
+
+  const { data, isLoading, hasNextPage, isFetchingNextPage,isSuccess, fetchNextPage } = useInfiniteQuery(
+    {
+      queryKey: ['main'],
+      queryFn: fetchData,
+      getNextPageParam: (lastPage, allPages) => lastPage.nextPageId,
+    }
+  )
+
+  // useEffect(() => {
+  //   // axios.get<ResponseData>(`https://k10d203.p.ssafy.io/api/message?lastid=${lastId}&size=${messageInfoSize}`, {
+  //   axios.get<ResponseData>(`http://192.168.100.208:8080/api/message?size=${messageInfoSize}`, {
+  //     headers: {
+  //       // Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+  //       Authorization: 'BearereyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImlkIjoyLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE0NzEwMDkxLCJleHAiOjE3NTA3MTAwOTF9.coDlad6k0UadtPqBvTIBFhXByytdncFAvChB0kZnN9g',
+  //     },
+  //   })
+  //   .then((res) => {
+  //     console.log(res);
+  //     setMessageInfo(res.data.data.content);
+  //     setHasMore(res.data.hasNext);
+  //     setLastId(res.data.data.content[res.data.data.content.length - 1].id);
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   });
+  // }, []);
+
+  // const handleRefresh = (): Promise<void> => {
+  //   setRefreshing(true);
+  //   return axios.get<ResponseData>(`https://k10d203.p.ssafy.io/api/message/resent`, {
+  //     headers: {
+  //       Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+  //     },
+  //   })
+  //   .then((res) => {
+  //     setMessageInfo(prevMessageInfo => [...res.data.data.content, ...(prevMessageInfo || [])]);
+  //     setLastId(res.data.data.content[res.data.data.content.length - 1].id);
+  //     setHasMore(res.data.hasNext);
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   })
+  //   .finally(() => {
+  //     setRefreshing(false);
+  //   });
+  // };
+
+  // const fetchMoreData = () => {
+  //   console.log('fetchMoreData');
+  //   // axios.get<ResponseData>(`https://k10d203.p.ssafy.io/api/message?lastid=${lastId}&size=${messageInfoSize}`, {
+  //   axios.get<ResponseData>(`http://192.168.100.208:8080/api/message?lastid=${lastId}&size=${messageInfoSize}`, {
+  //     headers: {
+  //       // Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+  //       Authorization: 'BearereyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImlkIjoyLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE0NzEwMDkxLCJleHAiOjE3NTA3MTAwOTF9.coDlad6k0UadtPqBvTIBFhXByytdncFAvChB0kZnN9g',
+  //     },
+  //   })
+  //   .then((res) => {
+  //     if (res.data.data.content.length > 0) {
+  //       setMessageInfo(prevMessageInfo => [...(prevMessageInfo || []), ...res.data.data.content]);
+  //       setLastId(res.data.data.content[res.data.data.content.length - 1].id);
+  //       setHasMore(res.data.hasNext);
+  //     } else {
+  //       setHasMore(false);
+  //     }
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   });
+  // };
+
+  useEffect(()=>{
+    if(!targetRef.current){
+        return;
+    }
+    const observer = new IntersectionObserver((entries)=>{
+        console.log(entries[0].isIntersecting);
+        setIntersecting(entries[0].isIntersecting);
     });
-  };
+    observer.observe(targetRef.current);
+    return ()=>{
+        observer.disconnect();
+    }
+  },[isSuccess])
+
+
+  useEffect(()=>{
+      if(intersecting && hasMore ){
+        fetchMoreData();
+      }
+  },[intersecting, hasMore])
   
   return (
-    <PullToRefresh onRefresh={handleRefresh}>
       <div className={styles.mainPage}>
         <Header info={info} />
-        <InfiniteScroll
-          dataLength={messageInfo?.length || 0}
-          next={fetchMoreData}
-          hasMore={hasMore}
-          loader={<h4>Loading...</h4>}
-          endMessage={
-            <p style={{ textAlign: 'center' }}>
-              <b>Yay! You have seen it all</b>
-            </p>
-        }
-      >
         <div className={styles.mainPageBody}>
-          {
-            messageInfo?.map((message, index) => {
-              switch (message.contentType) {
-                case 'text':
-                  return <InboxTextComponent key={index} message={message} />;
-                case 'image':
-                  return <InboxImageComponent key={index} message={message} />;
-                case 'voice':
-                  return <InboxVoiceComponent key={index} message={message} />;
-                default:
-                  return null;
-              }
-            })
-          }
+          <PullToRefresh onRefresh={handleRefresh}>
+            
+        
+
+          </PullToRefresh>
         </div>
-      </InfiniteScroll>
         <NavigationBar />
-      </div>
-    </PullToRefresh>
+    </div>
   );
 };
 

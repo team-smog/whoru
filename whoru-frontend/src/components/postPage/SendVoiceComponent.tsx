@@ -189,7 +189,7 @@ const SendVoiceComponent = () => {
       formData.append('audio', recordedBlob, 'audio.webm');
   
       try {
-          const response = await axios.post('https://k10d203.p.ssafy.io/message/file', formData, {
+          const response = await axios.post('https://k10d203.p.ssafy.io/api/message/file', formData, {
               headers: {
                   'Content-Type': 'multipart/form-data',
                   'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
@@ -250,7 +250,7 @@ const SendVoiceComponent = () => {
                 height="100px"
                 backgroundColor="transparent"
                 mainBarColor="#ffffff"
-                barWidth={8}
+                barWidth={4}
                 gap={1}
                 speed={1}
                 isDefaultUIShown={false}
