@@ -44,7 +44,10 @@ public enum ErrorCode {
     BUCKET_NOT_FOUND_EXCEPTION(404, "버킷 로드에 실패했습니다."),
     PAYLOAD_TOO_LARGE(413, "요청 본문의 크기가 제한을 초과했습니다."),
     FILE_INPUT_STREAM_EXCEPTION(400, "파일이 변조되었거나 잘못되었습니다."),
-    S3_UPLOAD_EXCEPTION(503, "클라우드에 파일 업로드 도중 문제가 발생하였습니다.")
+    S3_UPLOAD_EXCEPTION(503, "클라우드에 파일 업로드 도중 문제가 발생하였습니다."),
+
+    // Board
+    CONTENT_NOT_FOUND(404, "해당 게시글을 찾지 못하였습니다.")
     ;
 
     private final int status;

@@ -1,6 +1,7 @@
 package com.ssafy.whoru.domain.board.application;
 
 import com.ssafy.whoru.domain.board.dto.request.PostBoardRequest;
+import com.ssafy.whoru.domain.board.dto.request.PostCommentRequest;
 import com.ssafy.whoru.domain.board.dto.response.InquiryRecordResponse;
 import com.ssafy.whoru.global.common.dto.SliceResponse;
 
@@ -10,4 +11,5 @@ public interface BoardService {
 
     public SliceResponse<InquiryRecordResponse> getInquiryBoard(Long memberId, int page, int size);
 
+    public void postComment(PostCommentRequest request);
 }
