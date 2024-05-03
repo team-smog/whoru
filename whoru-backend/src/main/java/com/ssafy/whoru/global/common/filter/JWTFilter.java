@@ -23,12 +23,25 @@ import java.io.PrintWriter;
 public class JWTFilter extends OncePerRequestFilter {
 
     private final JWTUtil jwtUtil;
-    private final static String HEADER_AUTHORIZATION = "Authorization";
-    private final static String TOKEN_PREFIX = "Bearer";
+    private static String HEADER_AUTHORIZATION = "Authorization";
+    private static String TOKEN_PREFIX = "Bearer";
+    private static String[] PERMIT_URL_ARRAY = {
+            /* swagger v3 -> authorization */
+            "/v3/api-docs/**",
+            "/swagger-ui/**",
+            /* image */
+            "/image/**"
+    };
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
+        for(String url : PERMIT_URL_ARRAY) {
+            if(request.getRequestURI().contains(url)){
+                filterChain.doFilter(request, response);
+                return;
+            }
+        }
         // request에서 토큰 추출 ex) Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
         String token = getAccessToken(request.getHeader(
                 HEADER_AUTHORIZATION));
@@ -37,7 +50,6 @@ public class JWTFilter extends OncePerRequestFilter {
         if (token == null) {
             log.info("token is null");
             filterChain.doFilter(request, response);
-            log.info("token is null to after");
             return;
         }
 

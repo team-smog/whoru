@@ -46,16 +46,12 @@ public class SecurityConfig{
                 .sessionManagement((sessionManagement) ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                .addFilterAfter(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
-
                 //경로별 인가 작업`
-
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/").permitAll()
-                        .requestMatchers("/api/login/**").permitAll()
-                        .requestMatchers("/api/swagger-ui/**").permitAll()
+                        .requestMatchers("/login/**").permitAll()
+                        .requestMatchers("/swagger-ui/**").permitAll()
                         .anyRequest().authenticated())
-
                 .oauth2Login((oauth2) -> oauth2
 //                        .loginPage("/login")
                         .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
@@ -65,7 +61,10 @@ public class SecurityConfig{
                 ).exceptionHandling(exceptionConfig ->
                         exceptionConfig
                                 .accessDeniedHandler(accessDeniedHandler)
-                );
+                )
+                .addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
+
+        ;
 //                .logout(logout ->
 //                        logout.logoutSuccessUrl("/login"))
                  //인증 되지 않은 url 요청시 처리 프로세스
@@ -96,5 +95,4 @@ public class SecurityConfig{
         source.registerCorsConfiguration("/**", configuration); // 모든 경로에 대해 위 설정 적용
         return source;
     }
-
 }
