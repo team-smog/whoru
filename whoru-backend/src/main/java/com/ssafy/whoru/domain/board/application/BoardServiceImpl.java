@@ -10,6 +10,7 @@ import com.ssafy.whoru.domain.board.dto.request.PostBoardRequest;
 import com.ssafy.whoru.domain.board.dto.request.PostCommentRequest;
 import com.ssafy.whoru.domain.board.dto.response.InquiryRecordResponse;
 import com.ssafy.whoru.domain.board.exception.BoardNotFoundException;
+import com.ssafy.whoru.domain.board.exception.NotSameWriterException;
 import com.ssafy.whoru.domain.collect.exception.IconNotFoundException;
 import com.ssafy.whoru.domain.member.application.CrossMemberService;
 import com.ssafy.whoru.domain.member.domain.Member;
@@ -22,6 +23,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -89,4 +91,24 @@ public class BoardServiceImpl implements BoardService{
                 .build());
 
     }
+
+    @Override
+    @Transactional
+    public void deleteInquiryBoard(Long memberId, Long boardId) {
+
+        Member member = crossMemberService.findByIdToEntity(memberId);
+
+        Optional<Board> board = Optional.of(boardRepository.findById(boardId)
+            .orElseThrow(BoardNotFoundException::new));
+
+        if(member.equals(board.get().getWriter())) {
+            boardRepository.deleteById(boardId);
+        }
+
+        else {
+            throw new NotSameWriterException();
+        }
+
+    }
+
 }

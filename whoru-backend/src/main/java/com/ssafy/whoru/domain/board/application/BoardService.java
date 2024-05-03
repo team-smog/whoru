@@ -12,4 +12,6 @@ public interface BoardService {
     public SliceResponse<InquiryRecordResponse> getInquiryBoard(Long memberId, int page, int size);
 
     public void postComment(PostCommentRequest request);
+
+    public void deleteInquiryBoard(Long memberId, Long boardId);
 }
