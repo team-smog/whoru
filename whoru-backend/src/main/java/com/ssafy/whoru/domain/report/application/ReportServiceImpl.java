@@ -11,7 +11,7 @@ import com.ssafy.whoru.domain.report.domain.Report;
 import com.ssafy.whoru.domain.report.dto.ReportType;
 import com.ssafy.whoru.domain.report.dto.request.PostReportRequest;
 import com.ssafy.whoru.domain.report.dto.response.ReportRecordResponse;
-import com.ssafy.whoru.domain.report.dto.response.SliceResponse;
+import com.ssafy.whoru.global.common.dto.SliceResponse;
 import com.ssafy.whoru.domain.report.exception.AlreadyBanException;
 import com.ssafy.whoru.domain.report.exception.DuplicatedReportException;
 import com.ssafy.whoru.domain.report.util.ReportUtil;
