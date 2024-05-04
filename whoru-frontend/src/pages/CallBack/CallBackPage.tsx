@@ -10,13 +10,11 @@ const CallBackPage = () => {
   useEffect(() => {
     const getTokens = () => {
       const accessToken = searchParams.get('accessToken');
-      // const userId = searchParams.get('user-id');
-      // const refreshToken = cookies['RefreshToken'];
+      const refreshToken = cookies['RefreshToken'];
 
-      if (accessToken) {
+      if (accessToken && refreshToken) {
         localStorage.setItem('AccessToken', accessToken);
-        // localStorage.setItem('UserId', userId);
-        // localStorage.setItem('RefreshToken', refreshToken);
+        localStorage.setItem('RefreshToken', refreshToken);
         navigate('/');
       } else {
         navigate('/login');
