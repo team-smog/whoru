@@ -5,12 +5,12 @@ import { useCookies } from 'react-cookie';
 const CallBackPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const [cookies] = useCookies(['RefreshToken']);
+  const [cookies] = useCookies(['Refresh']);
 
   useEffect(() => {
     const getTokens = () => {
       const accessToken = searchParams.get('accessToken');
-      const refreshToken = cookies['RefreshToken'];
+      const refreshToken = cookies['Refresh'];
 
       if (accessToken && refreshToken) {
         localStorage.setItem('AccessToken', accessToken);
