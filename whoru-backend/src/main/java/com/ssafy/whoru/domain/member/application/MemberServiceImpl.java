@@ -3,6 +3,7 @@ package com.ssafy.whoru.domain.member.application;
 
 import com.ssafy.whoru.domain.collect.application.CrossCollectService;
 import com.ssafy.whoru.domain.collect.domain.Icon;
+import com.ssafy.whoru.domain.member.dao.FcmRepository;
 import com.ssafy.whoru.domain.member.dao.MemberRepository;
 import com.ssafy.whoru.domain.member.domain.FcmNotification;
 import com.ssafy.whoru.domain.member.domain.Member;
@@ -36,14 +37,17 @@ import static com.ssafy.whoru.domain.member.domain.QMember.member;
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 
+    private final CrossMemberService crossMemberService;
     private final MemberRepository memberRepository;
 
+    private final FcmService fcmService;
     private final CrossCollectService collectService;
 
     private final ModelMapper modelMapper;
 
     private final RedisUtil redisUtil;
     private final JWTUtil jwtUtil;
+    private final FcmServiceImpl fcmServiceImpl;
 
 
     @Override
@@ -76,21 +80,14 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional
     public void setPush(Long memberId) {
-        log.info("setpush start");
-        Optional<Member> byId = memberRepository.findById(memberId);
-
-        if (byId.isPresent()) {
-            FcmNotification fcm = byId.get().getFcmNotification();
-            if (fcm == null) {
-                throw new FcmNotFoundException();
-            }
-            fcm.updateNotificationsEnabled(!fcm.getIsEnabled());
-            byId.get().updateUserPushAlarm(fcm);
-            log.info(" fcm.getIsEnabled() :"+byId.get().getFcmNotification().getIsEnabled());
-            return;
+        Member byId = crossMemberService.findByIdToEntity(memberId);
+        FcmNotification fcm = byId.getFcmNotification();
+        if (fcm == null) {
+            throw new FcmNotFoundException();
         }
-        throw new MemberNotFoundException();
+        fcmService.changeIsEnabled(fcm);
     }
 
     @Override

@@ -29,8 +29,8 @@ public class MemberApi implements MemberApiDocs {
         return ResponseEntity.ok(WrapResponse.create(response, SuccessType.SIMPLE_STATUS));
     }
 
-    @PutMapping("/push-alarm")
-    public ResponseEntity<WrapResponse<Void>> setPush(CustomOAuth2User member) {
+    @PatchMapping("/push-alarm")
+    public ResponseEntity<WrapResponse<Void>> setPush(@AuthenticationPrincipal CustomOAuth2User member) {
         memberService.setPush(member.getId());
         return ResponseEntity.ok(WrapResponse.create(SuccessType.SIMPLE_STATUS));
     }

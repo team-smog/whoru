@@ -22,7 +22,7 @@ public interface MemberApiDocs {
     @PatchMapping("/icon")
     ResponseEntity<WrapResponse<ChangeIconResponse>> changeIcon(@AuthenticationPrincipal CustomOAuth2User member, @RequestParam("iconId") int iconId);
 
-    @PutMapping("/push-alarm")
+    @PatchMapping("/push-alarm")
     ResponseEntity<WrapResponse<Void>> setPush(@AuthenticationPrincipal CustomOAuth2User member);
 
     @PostMapping("/logout")
