@@ -1,19 +1,19 @@
 import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { Cookies } from 'react-cookie';
+import { useCookies } from 'react-cookie';
 
 const CallBackPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const cookies = new Cookies();
+  const [cookies] = useCookies(['RefreshToken']);
 
   useEffect(() => {
     const getTokens = () => {
       const accessToken = searchParams.get('accessToken');
       const userId = searchParams.get('user-id');
-      const refreshToken = cookies.get('RefreshToken');
+      const refreshToken = cookies['RefreshToken'];
 
-      if (accessToken && userId && refreshToken) {
+      if (accessToken !== null && userId !== null) {
         localStorage.setItem('AccessToken', accessToken);
         localStorage.setItem('UserId', userId);
         localStorage.setItem('RefreshToken', refreshToken);
