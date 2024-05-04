@@ -24,7 +24,7 @@ public class JWTFilter extends OncePerRequestFilter {
 
     private final JWTUtil jwtUtil;
     private static String HEADER_AUTHORIZATION = "Authorization";
-    private static String TOKEN_PREFIX = "Bearer";
+    private static String TOKEN_PREFIX = "Bearer ";
     private static String[] PERMIT_URL_ARRAY = {
             /* swagger v3 -> authorization */
             "/v3/api-docs/**",
@@ -56,6 +56,7 @@ public class JWTFilter extends OncePerRequestFilter {
         //토큰 검증 ㄱㄱ access 토큰
         try {
             log.info("validate token");
+
             jwtUtil.validateToken(token);
         } catch (ExpiredJwtException e) {
 
