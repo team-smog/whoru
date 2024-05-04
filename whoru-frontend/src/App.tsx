@@ -11,7 +11,6 @@ import AnnouncementPage from './pages/Announcement/AnnouncementPage';
 import Chacollection from './pages/Chacollection/Chacollection';
 import Inquiry from './pages/Inquiry/Inquiry';
 import AdminPage from './pages/Admin/AdminPage';
-import ReceivePage from './pages/Login/ReceivePage';
 import CallBackPage from './pages/CallBack/CallBackPage';
 
 interface AuthWrapperProps {
