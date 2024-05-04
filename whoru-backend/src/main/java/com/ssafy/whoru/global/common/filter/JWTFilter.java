@@ -72,16 +72,6 @@ public class JWTFilter extends OncePerRequestFilter {
         String category = jwtUtil.getCategory(token);
         String role = jwtUtil.getRole(token);
 
-        if (!category.equals("access")) {
-
-            //response body
-            PrintWriter writer = response.getWriter();
-            writer.print("유효하지 않은 access token");
-
-            //response status code
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
-        }
 
         //토큰에서 userId 와 MemberIdentifier 획득
         Long userId = jwtUtil.getUserId(token);

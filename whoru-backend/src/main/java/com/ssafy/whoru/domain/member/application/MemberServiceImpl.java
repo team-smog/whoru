@@ -72,6 +72,7 @@ public class MemberServiceImpl implements MemberService {
         Optional<String> valueByKey = redisUtil.findValueByKey(RedisKeyType.REFRESHTOKEN.makeKey(String.valueOf(member.getId())));
 
         if (valueByKey.isEmpty()||!jwtUtil.validateToken(valueByKey.get())){
+            redisUtil.delete(RedisKeyType.REFRESHTOKEN.makeKey(member.getId().toString()));
             throw new RefreshTokenNotFoundException();
         }
         String createdAccessToken = jwtUtil.createAccessToken(member.getId(), "access","ROLE_USER");
