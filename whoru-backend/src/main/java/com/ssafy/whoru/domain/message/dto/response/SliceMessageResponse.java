@@ -1,6 +1,7 @@
 package com.ssafy.whoru.domain.message.dto.response;
 
 
+import com.ssafy.whoru.domain.message.domain.Message;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,7 +33,9 @@ public class SliceMessageResponse {
             .hasNext(slice.hasNext())
             .content(
                 slice.getContent().stream()
-                    .map(entity -> modelMapper.map(entity, MessageResponse.class))
+                    .map(entity -> {
+                        return modelMapper.map(entity, MessageResponse.class);
+                    })
                     .limit(slice.getSize())
                     .collect(Collectors.toList())
             )

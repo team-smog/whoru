@@ -34,6 +34,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
@@ -245,11 +246,16 @@ public class MessageServiceImpl implements MessageService{
     }
 
     @Override
+    @Transactional
     public ResponseWithSuccess<List<MessageResponse>> getRecentMessages(Long firstId, Integer size, Long receiverId) {
         Member receiver = memberService.findByIdToEntity(receiverId);
         List<Message> messages = messageCustomRepository.findAllByRecent(firstId, size, receiver);
         List<MessageResponse> body = messages.stream()
-            .map(message -> modelMapper.map(message, MessageResponse.class))
+            .map(message -> {
+                message.updateReadDate();
+                message.updateReadStatus(true);
+                return modelMapper.map(message, MessageResponse.class);
+            })
             .collect(Collectors.toList());
         ResponseWithSuccess<List<MessageResponse>> response = new ResponseWithSuccess<>(body);
         if(messages.size() == EMPTY_MESSAGE){
@@ -259,9 +265,14 @@ public class MessageServiceImpl implements MessageService{
     }
 
     @Override
+    @Transactional
     public ResponseWithSuccess<SliceMessageResponse> getOldMessages(Long lastId, Integer size, Long receiverId) {
         Member receiver = memberService.findByIdToEntity(receiverId);
         Slice<Message> sliceMessages = messageCustomRepository.findAllBySizeWithNotReported(lastId, size, receiver);
+        sliceMessages.getContent().forEach(message -> {
+            message.updateReadStatus(true);
+            message.updateReadDate();
+        });
         SliceMessageResponse body = SliceMessageResponse.to(sliceMessages, modelMapper);
         ResponseWithSuccess<SliceMessageResponse> response = new ResponseWithSuccess<>(body);
         if(sliceMessages.getContent().size() == EMPTY_MESSAGE){

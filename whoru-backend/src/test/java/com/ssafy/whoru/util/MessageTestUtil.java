@@ -7,6 +7,7 @@ import com.ssafy.whoru.domain.message.dto.ContentType;
 import com.ssafy.whoru.domain.message.dto.request.TextSend;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +26,7 @@ public class MessageTestUtil {
                 .sender(sender)
                 .receiver(receiver)
                 .content("test")
+                .createDate(LocalDateTime.now())
                 .contentType(ContentType.text)
                 .isResponse(false)
                 .responseStatus(false)
@@ -40,6 +42,7 @@ public class MessageTestUtil {
             .receiver(receiver)
             .content("test")
             .contentType(ContentType.image)
+            .createDate(LocalDateTime.now())
             .isResponse(false)
             .responseStatus(false)
             .isReported(isReported)

@@ -13,13 +13,16 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.cglib.core.Local;
 
 @Entity
 @Getter
@@ -64,6 +67,13 @@ public class Message {
     @Column(name = "response_status", columnDefinition = "TINYINT")
     private Boolean responseStatus;
 
+    @Column(name = "create_date")
+    @Default
+    private LocalDateTime createDate = LocalDateTime.now();
+
+    @Column(name = "read_date", nullable = true)
+    private LocalDateTime readDate;
+
     public void updateReadStatus(Boolean status) {this.readStatus = status; }
 
     public void updateIsResponse(Boolean status) {this.isResponse = status; }
@@ -71,5 +81,9 @@ public class Message {
     public void updateIsReported(Boolean status) {this.isReported = status; }
 
     public void updateResponseStatus(Boolean status) {this.responseStatus = status; }
+
+    public void updateReadDate(){
+        this.readDate = LocalDateTime.now();
+    }
     
 }
