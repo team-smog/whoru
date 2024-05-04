@@ -10,6 +10,7 @@ import axios from 'axios'
 const SendImageComponent = () => {
   const fileInputRef = useRef(null);
   const [imageSrc, setImageSrc] = useState<string | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
   // const [imageSrc] = useState(null);
 
   const handleUploadAreaClick = () => {
@@ -18,40 +19,86 @@ const SendImageComponent = () => {
     }
   };
 
+  // const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const files = event.target.files;
+  //   if (files) {
+  //     const file = files[0];
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       setImageSrc(reader.result as string | null);
+  //     };
+  //     reader.readAsDataURL(file); 
+  //   }
+  // };
+
+  // const handleSendClick = async () => {
+  //   if (imageSrc) {
+  //     try {
+  //       const formData = new FormData();
+  //       formData.append('file', imageSrc);
+
+  //       // await axios.post('https://k10d203.p.ssafy.io/api/message/file', formData, {
+  //       await axios.post('http://k10d203.p.ssafy.io:18080/api/message/file', formData, {
+  //         headers: {
+  //           'Content-Type': 'multipart/form-data',
+  //           'Authorization': 'BearereyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImlkIjoyLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE0NzEwMDkxLCJleHAiOjE3NTA3MTAwOTF9.coDlad6k0UadtPqBvTIBFhXByytdncFAvChB0kZnN9g'
+  //         },
+  //       })
+  //       .then((res) => {
+  //         console.log(res.data);
+  //       })
+
+  //       setImageSrc(null);
+
+  //     } catch (error) {
+  //       console.error('Error:', error);
+  //     }
+  //   }
+  // };
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files) {
       const file = files[0];
+      setImageFile(file); // Save the file instead of its Data URL
+
+      // Create a new FileReader object
       const reader = new FileReader();
+
+      // Set the image source to the result of the FileReader
       reader.onloadend = () => {
         setImageSrc(reader.result as string | null);
       };
-      reader.readAsDataURL(file); 
+
+      // Start reading the file as Data URL
+      reader.readAsDataURL(file);
     }
   };
-
+  
   const handleSendClick = async () => {
-    if (imageSrc) {
+    if (imageFile) { // Check if there is a file
       try {
         const formData = new FormData();
-        formData.append('image', imageSrc);
-
-        await axios.post('https://k10d203.p.ssafy.io/api/message/file', formData, {
+        formData.append('file', imageFile); // Add the file to FormData
+        console.log(imageFile);
+  
+        await axios.post('http://k10d203.p.ssafy.io:18080/api/message/file', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
-            'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+            'Authorization': 'BearereyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImlkIjoyLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE0NzEwMDkxLCJleHAiOjE3NTA3MTAwOTF9.coDlad6k0UadtPqBvTIBFhXByytdncFAvChB0kZnN9g'
           },
         })
         .then((res) => {
           console.log(res.data);
         })
-
-        setImageSrc(null);
-
+  
+        setImageFile(null); // Clear the file
+  
       } catch (error) {
         console.error('Error:', error);
       }
     }
+    setImageSrc(null);
   };
 
   const handleCancelClick = () => {

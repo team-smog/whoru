@@ -11,16 +11,16 @@ import "./audioStyles.css";
 import { MessageInfoDetail } from '../../types/mainTypes'
 
 
-interface InboxVoiceComponentProps {
+interface InboxVoiceComponentProps extends React.HTMLAttributes<HTMLDivElement>{
   message: MessageInfoDetail;
-  key: number;
+  innerRef?: React.Ref<HTMLDivElement>;
 }
 
-const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message }) => {
+const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, innerRef, ...props }) => {
   return (
-    <div className={styles.inboxVoiceComponent}>
+    <div className={styles.inboxVoiceComponent} key={message.id} ref={innerRef} {...props}>
       {/* <img src={Header} alt="component-Header" className={styles.inboxVoiceComponentHeader} /> */}
-      <div className={styles.inboxVoiceComponentHeader}>
+      <div className={styles.inboxVoiceComponentHeader} key={message.id} {...props}>
         <div className={styles.inboxVoiceComponentHeaderText}>
           <p className={styles.inboxVoiceComponentHeaderTextTitle}>익명 메세지</p>
           <p className={styles.inboxVoiceComponentHeaderTime}>1분전</p>

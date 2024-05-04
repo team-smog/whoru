@@ -7,12 +7,12 @@ import xIcon from '../../assets/components/InboxTextComponent/text-component-x-b
 import { MessageInfoDetail } from '../../types/mainTypes'
 
 
-interface InboxTextComponentProps {
+interface InboxTextComponentProps extends React.HTMLAttributes<HTMLDivElement>{
   message: MessageInfoDetail;
-  key: number;
+  innerRef?: React.Ref<HTMLDivElement>;
 }
 
-const InboxTextComponent: React.FC<InboxTextComponentProps> = ({ message }) => {
+const InboxTextComponent: React.FC<InboxTextComponentProps> = ({ message, innerRef, ...props }) => {
   // const [content, setContent] = useState<string>("")
 
   // 일단 랜덤 글 불러오기
@@ -30,8 +30,8 @@ const InboxTextComponent: React.FC<InboxTextComponentProps> = ({ message }) => {
   // }, [])
 
   return (
-    <div className={styles.inboxTextComponent}>
-      <div className={styles.inboxTextComponentHeader}>
+    <div className={styles.inboxTextComponent} key={message.id} ref={innerRef} {...props}>
+      <div className={styles.inboxTextComponentHeader} key={message.id} {...props}>
         <div className={styles.inboxTextComponentHeaderText}>
           <p className={styles.inboxTextComponentHeaderTextTitle}>익명 메세지</p>
           <p className={styles.inboxTextComponentHeaderTime}>시간계산</p>

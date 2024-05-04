@@ -6,15 +6,15 @@ import xIcon from '../../assets/components/InboxImageComponent/image-component-x
 import { MessageInfoDetail } from '../../types/mainTypes'
 
 
-interface InboxImageComponentProps {
+interface InboxImageComponentProps extends React.HTMLAttributes<HTMLDivElement>{
   message: MessageInfoDetail;
-  key: number;
+  innerRef?: React.Ref<HTMLDivElement>;
 }
 
-const InboxImageComponent: React.FC<InboxImageComponentProps> = ({ message }) => {
+const InboxImageComponent: React.FC<InboxImageComponentProps> = ({ message, innerRef, ...props }) => {
   return (
-    <div className={styles.InboxImageComponent}>
-      <div className={styles.inboxImageComponentHeader}>
+    <div className={styles.InboxImageComponent} key={message.id} ref={innerRef} {...props}>
+      <div className={styles.inboxImageComponentHeader} key={message.id} {...props}>
         <div className={styles.inboxImageComponentHeaderText}>
           <p className={styles.inboxImageComponentHeaderTextTitle}>익명 메세지</p>
           <p className={styles.inboxImageComponentHeaderTime}>1분전</p>

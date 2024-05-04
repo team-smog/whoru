@@ -1,5 +1,5 @@
 export type MessageInfoDetail = {
-  id: string;
+  id: number;
   senderId: number;
   receiverId: number;
   content: string;
