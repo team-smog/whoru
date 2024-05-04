@@ -8,7 +8,7 @@ const CallBackPage = () => {
   useEffect(() => {
     const getTokens = () => {
       const accessToken = searchParams.get('accessToken');
-      const userId = searchParams.get('user-id');
+      const userId = searchParams.get('userId');
 
       if (accessToken && userId) {
         localStorage.setItem('AccessToken', accessToken);
