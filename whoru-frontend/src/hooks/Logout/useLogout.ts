@@ -3,8 +3,6 @@ import { logoutApi } from "@/service/Logout/api";
 import { useMutation } from "@tanstack/react-query";
 import { useCookies } from 'react-cookie';
 
-
-
 const useLogout = () => {
   const [, , removeCookie] = useCookies(['MM']);
   const navigate = useNavigate();
