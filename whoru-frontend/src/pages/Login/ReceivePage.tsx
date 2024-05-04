@@ -3,7 +3,7 @@ import { useEffect } from "react";
 
 function ReceivePage() {
   const [searchParams] = useSearchParams();
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const accessToken = searchParams.get("accessToken");
@@ -12,7 +12,7 @@ function ReceivePage() {
 
     if (accessToken !== null) {
         localStorage.setItem("accessToken", accessToken);
-      }
+    }
 
     if (localStorage.getItem("accessToken")) {
         return navigate("/main");
