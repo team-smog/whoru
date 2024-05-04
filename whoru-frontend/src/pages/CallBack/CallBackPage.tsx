@@ -21,7 +21,7 @@ const CallBackPage = () => {
 
   return (
     <>
-    
+      로그인 중...
     </>
   )
 }

@@ -20,7 +20,7 @@ interface AuthWrapperProps {
 const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
   const accessToken = localStorage.getItem('AccessToken');
 
-  if (!accessToken) {
+  if (accessToken == null) {
     return <Navigate to='/login' replace />
   }
 
@@ -93,7 +93,7 @@ const router = createBrowserRouter([
     )
   },
   {
-    path : 'Inquiry',
+    path : '/inquiry',
     element : (
       <AuthWrapper>
         <Inquiry />
@@ -118,11 +118,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/callback',
-    element: (
-      <AuthWrapper>
-        <CallBackPage />
-      </AuthWrapper>
-    )
+    element: <CallBackPage />
   }
 ])
 
