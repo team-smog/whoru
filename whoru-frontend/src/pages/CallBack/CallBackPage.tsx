@@ -10,13 +10,13 @@ const CallBackPage = () => {
   useEffect(() => {
     const getTokens = () => {
       const accessToken = searchParams.get('accessToken');
-      const userId = searchParams.get('user-id');
-      const refreshToken = cookies['RefreshToken'];
+      // const userId = searchParams.get('user-id');
+      // const refreshToken = cookies['RefreshToken'];
 
-      if (accessToken !== null && userId !== null) {
+      if (accessToken) {
         localStorage.setItem('AccessToken', accessToken);
-        localStorage.setItem('UserId', userId);
-        localStorage.setItem('RefreshToken', refreshToken);
+        // localStorage.setItem('UserId', userId);
+        // localStorage.setItem('RefreshToken', refreshToken);
         navigate('/');
       } else {
         navigate('/login');
