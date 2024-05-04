@@ -1,7 +1,7 @@
 import kakao from '@/assets/login/kakao_login_medium_wide.png'
 
 const KakaoLogin = () => {
-  const link = `https://k10d203.p.ssafy.io/api/login/oauth2/authorization/kakao/?redirect\_uri=https://k10d203.p.ssafy.io/callback`
+  const link = `https://k10d203.p.ssafy.io/api/login/oauth2/authorization/kakao/?redirect\_uri=https://http://localhost:5173/callback`
 
   const handleKakaoLogin = () => {
     window.location.href = link;
