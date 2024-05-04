@@ -1,20 +1,29 @@
 package com.ssafy.whoru.domain.member.application;
 
-
 import com.ssafy.whoru.domain.collect.application.CrossCollectService;
 import com.ssafy.whoru.domain.collect.domain.Icon;
+import com.ssafy.whoru.domain.member.application.MemberService;
 import com.ssafy.whoru.domain.member.dao.MemberRepository;
 import com.ssafy.whoru.domain.member.domain.Member;
+import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.domain.member.dto.response.ChangeIconResponse;
+import com.ssafy.whoru.domain.member.dto.response.TokenResponse;
 import com.ssafy.whoru.domain.member.exception.MemberAlreadyIconException;
+import com.ssafy.whoru.domain.member.exception.RefreshTokenNotFoundException;
 import com.ssafy.whoru.global.common.dto.RedisKeyType;
 import com.ssafy.whoru.global.error.exception.BusinessLogicException;
 import com.ssafy.whoru.global.error.exception.ErrorCode;
+import com.ssafy.whoru.global.error.exception.SimpleException;
+import com.ssafy.whoru.global.util.JWTUtil;
 import com.ssafy.whoru.global.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
+
+import static com.ssafy.whoru.domain.member.domain.QMember.member;
 
 
 @Service
@@ -28,6 +37,8 @@ public class MemberServiceImpl implements MemberService {
     private final ModelMapper modelMapper;
 
     private final RedisUtil redisUtil;
+    private final JWTUtil jwtUtil;
+
 
     @Override
     @Transactional
@@ -54,7 +65,23 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void logout(Member member) {
-        redisUtil.delete(RedisKeyType.REFRESHTOKEN.makeKey(member.getId().toString()));
+    public void logout(Long memberId) {
+        redisUtil.delete(RedisKeyType.REFRESHTOKEN.makeKey(memberId.toString()));
     }
+
+    @Override
+    public TokenResponse reGenerateToken(Long memberId) {
+        Optional<String> valueByKey = redisUtil.findValueByKey(RedisKeyType.REFRESHTOKEN.makeKey(String.valueOf(memberId)));
+
+        if (valueByKey.isEmpty()||!jwtUtil.validateToken(valueByKey.get())){
+            redisUtil.delete(RedisKeyType.REFRESHTOKEN.makeKey(memberId.toString()));
+            throw new RefreshTokenNotFoundException();
+        }
+        String createdAccessToken = jwtUtil.createAccessToken(memberId, "access","ROLE_USER");
+        return TokenResponse
+                .builder()
+                .token(createdAccessToken)
+                .build();
+    }
+
 }

@@ -50,7 +50,7 @@ public class MemberTestUtil implements InitializingBean {
 
     static final String MEMBER_ERROR_FCM_TOKEN = "";
 
-    static final String MEMBER_HEADER_PREFIX = "Bearer";
+    static final String MEMBER_HEADER_PREFIX = "Bearer ";
 
     public static final String MEMBER_HEADER_AUTH = "Authorization";
 
