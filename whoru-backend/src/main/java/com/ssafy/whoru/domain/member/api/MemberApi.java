@@ -22,12 +22,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/member")
 public class MemberApi implements MemberApiDocs {
 
-    private final MemberServiceImpl memberService;
+    private final MemberService memberService;
 
     @PatchMapping("/icon")
-    public ResponseEntity<WrapResponse<ChangeIconResponse>> changeIcon(@RequestParam("memberId") Long memberId, @RequestParam("iconId") int iconId) {
+    public ResponseEntity<WrapResponse<ChangeIconResponse>> changeIcon(@AuthenticationPrincipal CustomOAuth2User member, @RequestParam("iconId") int iconId) {
 
-        ChangeIconResponse response = memberService.changeIcon(memberId, iconId);
+        ChangeIconResponse response = memberService.changeIcon(member, iconId);
         return ResponseEntity.ok(WrapResponse.create(response, SuccessType.SIMPLE_STATUS));
     }
 

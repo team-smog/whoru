@@ -9,6 +9,7 @@ import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.domain.member.dto.response.ChangeIconResponse;
 import com.ssafy.whoru.domain.member.dto.response.TokenResponse;
 import com.ssafy.whoru.domain.member.exception.MemberAlreadyIconException;
+import com.ssafy.whoru.domain.member.exception.RefreshTokenNotFoundException;
 import com.ssafy.whoru.global.common.dto.RedisKeyType;
 import com.ssafy.whoru.global.error.exception.BusinessLogicException;
 import com.ssafy.whoru.global.error.exception.ErrorCode;
@@ -39,9 +40,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
-    public ChangeIconResponse changeIcon(Long memberId, int iconId) {
+    public ChangeIconResponse changeIcon(CustomOAuth2User oauthmember, int iconId) {
 
-        Member member = memberRepository.findById(memberId)
+        Member member = memberRepository.findById(oauthmember.getId())
                 .orElseThrow(() -> new BusinessLogicException(ErrorCode.MEMBER_NOT_FOUND));
 
         //Icon 조회
@@ -71,7 +72,7 @@ public class MemberServiceImpl implements MemberService {
         Optional<String> valueByKey = redisUtil.findValueByKey(RedisKeyType.REFRESHTOKEN.makeKey(String.valueOf(member.getId())));
 
         if (valueByKey.isEmpty()||!jwtUtil.validateToken(valueByKey.get())){
-            throw new SimpleException(ErrorCode.TOKEN_NOT_FOUND);
+            throw new RefreshTokenNotFoundException();
         }
         String createdAccessToken = jwtUtil.createAccessToken(member.getId(), "access","ROLE_USER");
         return TokenResponse

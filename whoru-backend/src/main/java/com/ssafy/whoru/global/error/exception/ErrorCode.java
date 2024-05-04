@@ -22,8 +22,8 @@ public enum ErrorCode {
     QUERY_INVALID_PARAM(400, "잘못된 요청입니다."),
 
     // Member
-    TOKEN_NOT_FOUND(404,"토큰을 찾을 수 없습니다."),
-    TOKEN_CREATE_FAILED(432,"토큰 생성 실패했습니다."),
+    TOKEN_NOT_FOUND(404,"토큰을 찾을 수 없습니다."), //redis속 refresh토큰이 없을때
+    TOKEN_CREATE_FAILED(432,"토큰 생성 실패했습니다."), //access 토큰재발급에 실패했을때
     MEMBER_NOT_FOUND(404, "존재하지 않는 회원입니다."),
     MEMBER_NOT_POSSESSION(404, "보유하고 있지않은 아이콘입니다."),
     MEMBER_ALREADY_ICON(400, "변경하려는 아이콘이 현재 아이콘과 동일한 아이콘입니다."),

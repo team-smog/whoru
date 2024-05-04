@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface MemberApiDocs {
 
     @PatchMapping("/icon")
-    ResponseEntity<WrapResponse<ChangeIconResponse>> changeIcon(@RequestParam Long memberId, @RequestParam("iconId") int iconId);
+    ResponseEntity<WrapResponse<ChangeIconResponse>> changeIcon(@AuthenticationPrincipal CustomOAuth2User member, @RequestParam("iconId") int iconId);
 
     @PostMapping("/logout")
     ResponseEntity<WrapResponse<Void>> logout(@AuthenticationPrincipal CustomOAuth2User member);
