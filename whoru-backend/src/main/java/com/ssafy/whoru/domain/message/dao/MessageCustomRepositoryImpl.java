@@ -52,8 +52,7 @@ public class MessageCustomRepositoryImpl implements MessageCustomRepository{
         BooleanExpression whereConditions =
             message.isReported.isFalse()
             .and(message.id.between(firstId+1, firstId+size))
-            .and(message.receiver.id.eq(receiver.getId()))
-            .and(message.readStatus.isFalse());
+            .and(message.receiver.id.eq(receiver.getId()));
 
         return jpaQueryFactory.
             selectFrom(message)
