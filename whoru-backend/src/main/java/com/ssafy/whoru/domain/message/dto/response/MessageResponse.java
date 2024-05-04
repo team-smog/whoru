@@ -14,6 +14,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -53,5 +54,11 @@ public class MessageResponse {
 
     @Schema(description = "받은사람 기준 답장을 보낸적 있는지 여부", pattern = "[ true: 이 메세지에 대한 답장 메세지가 존재함, false: 이 메세지는 아직 받은사람이 답장 보내지 않았음, null: 답장 메세지의 경우 해당 필드값 ]")
     private Boolean responseStatus;
+
+    @Schema(description = "메세지를 만든 날짜")
+    private LocalDateTime createDate;
+
+    @Schema(description = "메세지를 읽은 날짜", pattern = "[ null: 아직 안읽음, 값이 있음: 조회한 순간 최초의 시간이 등록됨 ]")
+    private LocalDateTime readDate;
 
 }
