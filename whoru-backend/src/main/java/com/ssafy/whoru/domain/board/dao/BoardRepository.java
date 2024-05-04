@@ -17,5 +17,5 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     public Slice<Board> findAllByType(Pageable pageable, BoardType type);
 
     @Query("SELECT b FROM Board b LEFT JOIN b.comment c WHERE c IS NULL AND b.boardType = :type")
-    public Slice<Board> findByComment(Pageable pageable, BoardType type);
+    public Slice<Board> findAllByCommentAndType(Pageable pageable, BoardType type);
 }

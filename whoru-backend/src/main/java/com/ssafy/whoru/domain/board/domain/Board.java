@@ -43,7 +43,7 @@ public class Board {
     @Enumerated(value = EnumType.STRING)
     private BoardType boardType;
 
-    @OneToOne(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "board", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Comment comment;
 
     @Builder.Default
@@ -53,7 +53,8 @@ public class Board {
     private LocalDateTime updateDate = LocalDateTime.now();
 
     @Transient
-    private Boolean isCommented;
+    @Builder.Default
+    private Boolean isCommented = false;
     public void updateIsCommented(Boolean status) {
         this.isCommented = status;
     }
