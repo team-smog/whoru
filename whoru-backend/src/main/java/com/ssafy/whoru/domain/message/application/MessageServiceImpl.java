@@ -95,10 +95,10 @@ public class MessageServiceImpl implements MessageService{
             redisUtil.insert(key, String.valueOf(presentBoxCount+1), Duration.between(LocalDateTime.now(), next).getSeconds());
         }
 
-
-
         // fcm 발송
-        fcmUtil.sendMessage(receiver.getFcmNotification().getFcmToken());
+        if(receiver.getFcmNotification().getIsEnabled()){
+            fcmUtil.sendMessage(receiver.getFcmNotification().getFcmToken());
+        }
 
         // message 전송
         messageRepository.save(

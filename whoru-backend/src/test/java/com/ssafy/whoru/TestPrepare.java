@@ -5,6 +5,7 @@ import com.ssafy.whoru.domain.collect.dao.IconRepository;
 import com.ssafy.whoru.domain.member.dao.MemberRepository;
 import com.ssafy.whoru.domain.message.dao.MessageRepository;
 import com.ssafy.whoru.domain.report.dao.ReportRepository;
+import com.ssafy.whoru.global.util.FCMUtil;
 import com.ssafy.whoru.global.util.RedisUtil;
 import com.ssafy.whoru.util.MemberTestUtil;
 import com.ssafy.whoru.util.MessageTestUtil;
@@ -57,9 +58,13 @@ public class TestPrepare {
     @MockBean
     protected S3Client s3Client;
 
+    @MockBean
+    protected FCMUtil fcmUtil;
+
     @BeforeEach
     public void mockBeanSetup(){
         reset(s3Client);
+        reset(fcmUtil);
     }
 
 
