@@ -3,8 +3,6 @@
 package com.ssafy.whoru.domain.member.api;
 
 import com.ssafy.whoru.domain.member.application.MemberService;
-import com.ssafy.whoru.domain.member.application.MemberServiceImpl;
-import com.ssafy.whoru.domain.member.domain.Member;
 import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.domain.member.dto.response.ChangeIconResponse;
 import com.ssafy.whoru.domain.member.dto.response.TokenResponse;
@@ -27,21 +25,19 @@ public class MemberApi implements MemberApiDocs {
     @PatchMapping("/icon")
     public ResponseEntity<WrapResponse<ChangeIconResponse>> changeIcon(@AuthenticationPrincipal CustomOAuth2User member, @RequestParam("iconId") int iconId) {
 
-        ChangeIconResponse response = memberService.changeIcon(member, iconId);
+        ChangeIconResponse response = memberService.changeIcon(member.getId(), iconId);
         return ResponseEntity.ok(WrapResponse.create(response, SuccessType.SIMPLE_STATUS));
     }
 
     @PostMapping("/logout")
     public ResponseEntity<WrapResponse<Void>> logout(@AuthenticationPrincipal CustomOAuth2User member) {
-        memberService.logout(member);
+        memberService.logout(member.getId());
         return ResponseEntity.ok(WrapResponse.create(SuccessType.SIMPLE_STATUS));
     }
 
     @PostMapping("/regenerate-token")
     public ResponseEntity<WrapResponse<TokenResponse>> regenerateToken(@AuthenticationPrincipal CustomOAuth2User member) {
-        log.info("api start");
-        log.info(member.toString());
-        TokenResponse response = memberService.reGenerateToken(member);
+        TokenResponse response = memberService.reGenerateToken(member.getId());
         return ResponseEntity.ok((WrapResponse.create(response,SuccessType.SIMPLE_STATUS)));
     }
 

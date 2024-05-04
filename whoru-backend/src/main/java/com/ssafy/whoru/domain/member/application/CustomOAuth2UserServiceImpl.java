@@ -27,7 +27,6 @@ public class CustomOAuth2UserServiceImpl extends DefaultOAuth2UserService implem
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 
-        log.info("loadUser start");
         OAuth2User oAuth2User = super.loadUser(userRequest);
         log.info("oAuth2User : {}", oAuth2User.toString());
 
@@ -40,7 +39,6 @@ public class CustomOAuth2UserServiceImpl extends DefaultOAuth2UserService implem
         OAuth2Response oAuth2Response = null;
 
         if(registrationId.equals("kakao")) {
-            log.info("kakao resource accept");
             oAuth2Response = new KakaoResponse(oAuth2User.getAttributes());
         }
 //        else if (registrationId.equals("naver")) {

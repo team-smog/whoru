@@ -6,9 +6,9 @@ import com.ssafy.whoru.domain.member.dto.response.TokenResponse;
 
 public interface MemberService {
 
-    public ChangeIconResponse changeIcon(CustomOAuth2User member, int iconId);
+    ChangeIconResponse changeIcon(Long memberId, int iconId);
 
-    void logout(CustomOAuth2User member);
+    void logout(Long memberId);
 
-    public TokenResponse reGenerateToken(CustomOAuth2User member);
+    TokenResponse reGenerateToken(Long memberId);
 }

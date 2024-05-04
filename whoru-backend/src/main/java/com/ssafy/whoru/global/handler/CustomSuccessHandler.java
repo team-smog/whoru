@@ -45,13 +45,6 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         Long userId = customUserDetails.getId();
 
-        // customUserDetails.getId 로 id가 불러와지는지 test====
-        if(customUserDetails.getId()!=null){
-            log.info("customUserDetails.getId() : "+userId);
-        }else{
-            log.info("customUserDetails.getId() is null");
-        }
-        //===================================================
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
         GrantedAuthority auth = iterator.next();
@@ -63,13 +56,11 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         log.info("access Token : {}", accessToken);
 
         //토큰 Redis 저장
-//        tokenRepository.saveRefreshToken(customUserDetails.getId(), refreshToken);
         redisUtil.insert(RedisKeyType.REFRESHTOKEN.makeKey(String.valueOf(userId)),refreshToken,time/1000);
 
         //Response 세팅
         response.addCookie(createCookie("Refresh", refreshToken));
-//        response.sendRedirect(local); //로컬
-        response.sendRedirect(url +"callback" + "?accessToken=" + accessToken); // 로컬
+        response.sendRedirect(url +"callback" + "?accessToken=" + accessToken);
 
 
 

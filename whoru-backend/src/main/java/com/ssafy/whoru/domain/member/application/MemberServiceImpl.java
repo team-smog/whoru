@@ -23,6 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+import static com.ssafy.whoru.domain.member.domain.QMember.member;
+
 
 @Service
 @RequiredArgsConstructor
@@ -40,9 +42,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
-    public ChangeIconResponse changeIcon(CustomOAuth2User oauthmember, int iconId) {
+    public ChangeIconResponse changeIcon(Long memberId, int iconId) {
 
-        Member member = memberRepository.findById(oauthmember.getId())
+        Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new BusinessLogicException(ErrorCode.MEMBER_NOT_FOUND));
 
         //Icon 조회
@@ -63,19 +65,19 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void logout(CustomOAuth2User member) {
-        redisUtil.delete(RedisKeyType.REFRESHTOKEN.makeKey(member.getId().toString()));
+    public void logout(Long memberId) {
+        redisUtil.delete(RedisKeyType.REFRESHTOKEN.makeKey(memberId.toString()));
     }
 
     @Override
-    public TokenResponse reGenerateToken(CustomOAuth2User member) {
-        Optional<String> valueByKey = redisUtil.findValueByKey(RedisKeyType.REFRESHTOKEN.makeKey(String.valueOf(member.getId())));
+    public TokenResponse reGenerateToken(Long memberId) {
+        Optional<String> valueByKey = redisUtil.findValueByKey(RedisKeyType.REFRESHTOKEN.makeKey(String.valueOf(memberId)));
 
         if (valueByKey.isEmpty()||!jwtUtil.validateToken(valueByKey.get())){
-            redisUtil.delete(RedisKeyType.REFRESHTOKEN.makeKey(member.getId().toString()));
+            redisUtil.delete(RedisKeyType.REFRESHTOKEN.makeKey(memberId.toString()));
             throw new RefreshTokenNotFoundException();
         }
-        String createdAccessToken = jwtUtil.createAccessToken(member.getId(), "access","ROLE_USER");
+        String createdAccessToken = jwtUtil.createAccessToken(memberId, "access","ROLE_USER");
         return TokenResponse
                 .builder()
                 .token(createdAccessToken)

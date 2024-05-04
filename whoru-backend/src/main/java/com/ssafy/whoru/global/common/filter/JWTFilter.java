@@ -48,16 +48,13 @@ public class JWTFilter extends OncePerRequestFilter {
 
         // 토큰이 없다면 다음 필터로 넘김
         if (token == null) {
-            log.info("token is null");
             filterChain.doFilter(request, response);
             return;
         }
 
         //토큰 검증 ㄱㄱ access 토큰
         try {
-            log.info("validate token");
-
-            jwtUtil.validateToken(token);
+           jwtUtil.validateToken(token);
         } catch (ExpiredJwtException e) {
 
             //response body
