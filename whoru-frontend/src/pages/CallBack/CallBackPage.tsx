@@ -1,16 +1,16 @@
 import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useCookies } from 'react-cookie';
+import { Cookies } from 'react-cookie';
 
 const CallBackPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const [cookies] = useCookies(['Refresh']);
+  const cookies = new Cookies();
+  let refreshToken = cookies.get('Refresh');
 
   useEffect(() => {
     const getTokens = () => {
       const accessToken = searchParams.get('accessToken');
-      const refreshToken = cookies['Refresh'];
 
       if (accessToken && refreshToken) {
         localStorage.setItem('AccessToken', accessToken);
@@ -19,15 +19,15 @@ const CallBackPage = () => {
       } else {
         navigate('/login');
       }
-    }
+    };
     getTokens();
-  }, [navigate, searchParams, cookies]);
+  }, [navigate, searchParams, refreshToken]);
 
   return (
     <>
       로그인 중...
     </>
-  )
-}
+  );
+};
 
 export default CallBackPage;
