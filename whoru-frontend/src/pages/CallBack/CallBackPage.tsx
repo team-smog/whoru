@@ -1,45 +1,31 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { Cookies } from 'react-cookie';
 
 const CallBackPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const cookies = new Cookies();
-  
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    const getTokens = () => {
       const accessToken = searchParams.get('accessToken');
-      const refreshToken = cookies.get('Refresh');
-      
-      if (accessToken && refreshToken) {
-        clearInterval(interval);
+      const userId = searchParams.get('user-id');
+
+      if (accessToken && userId) {
         localStorage.setItem('AccessToken', accessToken);
-        localStorage.setItem('RefreshToken', refreshToken);
-        setLoading(false);
+        localStorage.setItem('UserId', userId);
         navigate('/');
+      } else {
+        navigate('/login');
       }
-    }, 500);
-
-    return () => clearInterval(interval);
-  }, [navigate, searchParams, cookies]);
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setLoading(false);
-      navigate('/login');
-    }, 5000);
-
-    return () => clearTimeout(timeout);
-  }, [navigate]);
+    }
+    getTokens();
+  }, [navigate, searchParams]);
 
   return (
     <>
-      {loading ? <div>로그인 중...</div> : null}
+      로그인 중...
     </>
-  );
-};
+  )
+}
 
 export default CallBackPage;
