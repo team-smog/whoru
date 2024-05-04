@@ -5,6 +5,7 @@ import com.ssafy.whoru.domain.collect.domain.Icon;
 import com.ssafy.whoru.domain.member.domain.Member;
 import com.ssafy.whoru.domain.message.domain.Message;
 import com.ssafy.whoru.domain.message.dto.request.TextSend;
+import com.ssafy.whoru.global.util.exception.FCMTokenInvalidException;
 import com.ssafy.whoru.util.MemberTestUtil;
 import java.util.List;
 import org.junit.jupiter.api.*;
@@ -48,6 +49,37 @@ public class MessageApiTest extends TestPrepare {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.status").value(HttpStatus.CREATED.value()));
+
+        Mockito.verify(fcmUtil, Mockito.times(1))
+            .sendMessage(any(String.class));
+    }
+
+    @Test
+    void Text_메세지_전송_성공_수신측_FCM_disable_201() throws Exception{
+
+        List<Member> memberList = memberTestUtil.기본_멤버_세팅();
+        Member member3000 = memberList.get(0);
+        Member member3001 = memberList.get(1);
+        member3001.getFcmNotification().updateNotificationsEnabled(false);
+
+        String header3000 = memberTestUtil.유저_AccessToken_만들고_헤더값_리턴(member3000);
+
+        TextSend textSend = TextSend.builder()
+            .content("반갑습니다.")
+            .build();
+
+        mockMvc.perform(
+                post("/message")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(textSend))
+                    .header(MemberTestUtil.MEMBER_HEADER_AUTH, header3000)
+            )
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.status").value(HttpStatus.CREATED.value()));
+
+        Mockito.verify(fcmUtil, Mockito.times(0))
+            .sendMessage(any(String.class));
     }
 
     @Test
@@ -68,6 +100,9 @@ public class MessageApiTest extends TestPrepare {
             .andExpect(status().is4xxClientError())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.errorCode").value(HttpStatus.BAD_REQUEST.value()));
+
+        Mockito.verify(fcmUtil, Mockito.times(0))
+            .sendMessage(any(String.class));
     }
 
     @Test
@@ -88,6 +123,9 @@ public class MessageApiTest extends TestPrepare {
             .andExpect(status().is4xxClientError())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.errorCode").value(HttpStatus.BAD_REQUEST.value()));
+
+        Mockito.verify(fcmUtil, Mockito.times(0))
+            .sendMessage(any(String.class));
     }
 
     @Test
@@ -112,6 +150,9 @@ public class MessageApiTest extends TestPrepare {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.errorCode").value(HttpStatus.FORBIDDEN.value()));
 
+        Mockito.verify(fcmUtil, Mockito.times(0))
+            .sendMessage(any(String.class));
+
     }
 
     @Test
@@ -126,7 +167,7 @@ public class MessageApiTest extends TestPrepare {
         TextSend textSend = TextSend.builder()
             .content("fcm error")
             .build();
-
+        Mockito.doThrow(new FCMTokenInvalidException()).when(fcmUtil).sendMessage(any(String.class));
         mockMvc.perform(
             post("/message")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -166,6 +207,9 @@ public class MessageApiTest extends TestPrepare {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.status").value(HttpStatus.CREATED.value()));
 
+        Mockito.verify(fcmUtil, Mockito.times(1))
+            .sendMessage(any(String.class));
+
     }
 
     @Test
@@ -195,6 +239,9 @@ public class MessageApiTest extends TestPrepare {
             .andExpect(status().is4xxClientError())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.errorCode").value(HttpStatus.BAD_REQUEST.value()));
+
+        Mockito.verify(fcmUtil, Mockito.times(0))
+            .sendMessage(any(String.class));
     }
 
     @Test
@@ -223,6 +270,9 @@ public class MessageApiTest extends TestPrepare {
                 .andExpect(status().is5xxServerError())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.errorCode").value(HttpStatus.FORBIDDEN.value()));
+
+        Mockito.verify(fcmUtil, Mockito.times(0))
+            .sendMessage(any(String.class));
     }
 
     @Test
@@ -250,6 +300,9 @@ public class MessageApiTest extends TestPrepare {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is5xxServerError())
                 .andExpect(jsonPath("$.errorCode").value(HttpStatus.UNAVAILABLE_FOR_LEGAL_REASONS.value()));
+
+        Mockito.verify(fcmUtil, Mockito.times(0))
+            .sendMessage(any(String.class));
     }
 
     @Test
@@ -274,6 +327,9 @@ public class MessageApiTest extends TestPrepare {
 
         Mockito.verify(s3Client, Mockito.times(1))
             .putObject(any(PutObjectRequest.class), any(RequestBody.class));
+
+        Mockito.verify(fcmUtil, Mockito.times(1))
+            .sendMessage(any(String.class));
 
     }
 
@@ -301,6 +357,9 @@ public class MessageApiTest extends TestPrepare {
         Mockito.verify(s3Client, Mockito.times(0))
             .putObject(any(PutObjectRequest.class), any(RequestBody.class));
 
+        Mockito.verify(fcmUtil, Mockito.times(0))
+            .sendMessage(any(String.class));
+
     }
 
     @Test
@@ -327,6 +386,9 @@ public class MessageApiTest extends TestPrepare {
 
         Mockito.verify(s3Client, Mockito.times(0))
             .putObject(any(PutObjectRequest.class), any(RequestBody.class));
+
+        Mockito.verify(fcmUtil, Mockito.times(0))
+            .sendMessage(any(String.class));
     }
 
 
@@ -356,6 +418,9 @@ public class MessageApiTest extends TestPrepare {
 
         Mockito.verify(s3Client, Mockito.times(1))
             .putObject(any(PutObjectRequest.class), any(RequestBody.class));
+
+        Mockito.verify(fcmUtil, Mockito.times(1))
+            .sendMessage(any(String.class));
     }
 
     @Test
@@ -384,6 +449,9 @@ public class MessageApiTest extends TestPrepare {
 
         Mockito.verify(s3Client, Mockito.times(0))
             .putObject(any(PutObjectRequest.class), any(RequestBody.class));
+
+        Mockito.verify(fcmUtil, Mockito.times(0))
+            .sendMessage(any(String.class));
     }
 
     @Test
@@ -413,6 +481,9 @@ public class MessageApiTest extends TestPrepare {
 
         Mockito.verify(s3Client, Mockito.times(0))
             .putObject(any(PutObjectRequest.class), any(RequestBody.class));
+
+        Mockito.verify(fcmUtil, Mockito.times(0))
+            .sendMessage(any(String.class));
 
     }
 
@@ -445,6 +516,9 @@ public class MessageApiTest extends TestPrepare {
 
         Mockito.verify(s3Client, Mockito.times(0))
             .putObject(any(PutObjectRequest.class), any(RequestBody.class));
+
+        Mockito.verify(fcmUtil, Mockito.times(0))
+            .sendMessage(any(String.class));
     }
 
     @Test
@@ -475,6 +549,9 @@ public class MessageApiTest extends TestPrepare {
 
         Mockito.verify(s3Client, Mockito.times(0))
             .putObject(any(PutObjectRequest.class), any(RequestBody.class));
+
+        Mockito.verify(fcmUtil, Mockito.times(0))
+            .sendMessage(any(String.class));
     }
 
     @Test
