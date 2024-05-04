@@ -10,21 +10,30 @@ const CallBackPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const accessToken = searchParams.get('accessToken');
-    const refreshToken = cookies.get('Refresh');
-
-    if (accessToken && refreshToken) {
-      localStorage.setItem('AccessToken', accessToken);
-      localStorage.setItem('RefreshToken', refreshToken);
-      setLoading(false);
-      navigate('/');
-    } else if (loading) {
-      setTimeout(() => {
+    const interval = setInterval(() => {
+      const accessToken = searchParams.get('accessToken');
+      const refreshToken = cookies.get('Refresh');
+      
+      if (accessToken && refreshToken) {
+        clearInterval(interval);
+        localStorage.setItem('AccessToken', accessToken);
+        localStorage.setItem('RefreshToken', refreshToken);
         setLoading(false);
-        navigate('/login');
-      }, 1000);
-    }
-  }, [navigate, searchParams]);
+        navigate('/');
+      }
+    }, 500);
+
+    return () => clearInterval(interval);
+  }, [navigate, searchParams, cookies]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setLoading(false);
+      navigate('/login');
+    }, 5000);
+
+    return () => clearTimeout(timeout);
+  }, [navigate]);
 
   return (
     <>
