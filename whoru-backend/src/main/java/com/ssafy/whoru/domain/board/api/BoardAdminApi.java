@@ -40,7 +40,7 @@ public class BoardAdminApi {
      * **/
     private static void checkedAuth() {
         SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
-            .filter(role -> role.getAuthority().equals("ADMIN"))
+            .filter(role -> role.getAuthority().equals("ROLE_ADMIN"))
             .findFirst()
             .orElseThrow(() -> new BusinessLogicException(ErrorCode.FORBIDDEN_ERROR));
     }

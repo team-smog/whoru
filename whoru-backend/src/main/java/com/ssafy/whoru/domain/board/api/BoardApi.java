@@ -35,7 +35,7 @@ public class BoardApi implements BoardApiDocs{
     /**
      * 문의사항 작성 요청 API
      * **/
-    @PostMapping("")
+    @PostMapping("/inquiry")
     public ResponseEntity<WrapResponse<Void>> postInquiryBoard(@RequestBody PostInquiryBoardRequest request) {
 
         boardService.postInquiryBoard(request);

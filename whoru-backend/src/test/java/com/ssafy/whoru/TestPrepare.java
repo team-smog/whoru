@@ -1,11 +1,15 @@
 package com.ssafy.whoru;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ssafy.whoru.domain.board.dao.BoardRepository;
+import com.ssafy.whoru.domain.board.dao.CommentRepository;
 import com.ssafy.whoru.domain.collect.dao.IconRepository;
 import com.ssafy.whoru.domain.member.dao.MemberRepository;
 import com.ssafy.whoru.domain.message.dao.MessageRepository;
 import com.ssafy.whoru.domain.report.dao.ReportRepository;
 import com.ssafy.whoru.global.util.RedisUtil;
+import com.ssafy.whoru.util.BoardTestUtil;
+import com.ssafy.whoru.util.CommentTestUtil;
 import com.ssafy.whoru.util.MemberTestUtil;
 import com.ssafy.whoru.util.MessageTestUtil;
 import com.ssafy.whoru.util.ReportTestUtil;
@@ -43,6 +47,15 @@ public class TestPrepare {
     protected IconRepository collectRepository;
 
     @Autowired
+    protected ReportRepository reportRepository;
+
+    @Autowired
+    protected BoardRepository boardRepository;
+
+    @Autowired
+    protected CommentRepository commentRepository;
+
+    @Autowired
     protected MemberTestUtil memberTestUtil;
 
     @Autowired
@@ -52,7 +65,10 @@ public class TestPrepare {
     protected ReportTestUtil reportTestUtil;
 
     @Autowired
-    protected ReportRepository reportRepository;
+    protected BoardTestUtil boardTestUtil;
+
+    @Autowired
+    protected CommentTestUtil commentTestUtil;
 
     @MockBean
     protected S3Client s3Client;

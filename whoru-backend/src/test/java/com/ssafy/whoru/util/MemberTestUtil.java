@@ -65,7 +65,7 @@ public class MemberTestUtil implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        // bean 초기화 직후 실행하는 메소드
+        // bean 초기화 직후 실행하는 메소드MEMBER_HEADER_AUTH
         LocalDateTime next = LocalDate.now().plusDays(1).atStartOfDay();
         banDuration = Duration.between(LocalDateTime.now(), next);
     }
@@ -175,6 +175,12 @@ public class MemberTestUtil implements InitializingBean {
     public String 유저_AccessToken_만들고_헤더값_리턴(Member member){
         StringBuilder sb = new StringBuilder();
         sb.append(MEMBER_HEADER_PREFIX).append(jwtUtil.createAccessToken(member.getId(), "access", "ROLE_USER"));
+        return sb.toString();
+    }
+
+    public String 관리자_AccessToken_만들고_헤더값_리턴(Member member) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(MEMBER_HEADER_PREFIX).append(jwtUtil.createAccessToken(member.getId(), "access", "ROLE_ADMIN"));
         return sb.toString();
     }
 
