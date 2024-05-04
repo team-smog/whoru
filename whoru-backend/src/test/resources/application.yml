@@ -1,4 +1,6 @@
 spring:
+  test:
+    url: ENC(Y9N17hSVJ/BGs+yNO4j6XHnKs3emRRC27OhBuN3zstU=)
 
   local:
     website: ENC(Y9N17hSVJ/BGs+yNO4j6XHnKs3emRRC27OhBuN3zstU=)
