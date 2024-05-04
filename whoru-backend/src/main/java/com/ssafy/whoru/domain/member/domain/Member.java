@@ -76,6 +76,8 @@ public class Member {
         this.boxCount++;
     }
 
+    public void updateUserPushAlarm(FcmNotification fcmNotification){ this.fcmNotification = fcmNotification; }
+
     public void updateBoxDecrease() { this.boxCount--; }
 
     public void updateReportcountZeroInit() { this.reportCount = 0; }
