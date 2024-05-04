@@ -1,7 +1,7 @@
 package com.ssafy.whoru.domain.board.api;
 
 import com.ssafy.whoru.domain.board.application.BoardService;
-import com.ssafy.whoru.domain.board.dto.request.PostBoardRequest;
+import com.ssafy.whoru.domain.board.dto.request.PostInquiryBoardRequest;
 import com.ssafy.whoru.domain.board.dto.response.InquiryRecordResponse;
 import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.global.common.dto.SliceResponse;
@@ -36,7 +36,7 @@ public class BoardApi implements BoardApiDocs{
      * 문의사항 작성 요청 API
      * **/
     @PostMapping("")
-    public ResponseEntity<WrapResponse<Void>> postInquiryBoard(@RequestBody PostBoardRequest request) {
+    public ResponseEntity<WrapResponse<Void>> postInquiryBoard(@RequestBody PostInquiryBoardRequest request) {
 
         boardService.postInquiryBoard(request);
         return ResponseEntity.ok(WrapResponse.create(SuccessType.STATUS_201));

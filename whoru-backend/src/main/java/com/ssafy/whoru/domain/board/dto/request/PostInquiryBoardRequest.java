@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class PostBoardRequest {
+public class PostInquiryBoardRequest {
 
     private Long memberId;
 

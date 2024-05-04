@@ -25,5 +25,7 @@ public class InquiryRecordResponse {
 
     private LocalDateTime createDate;
 
+    private LocalDateTime updateDate;
+
     private Boolean isCommented;
 }

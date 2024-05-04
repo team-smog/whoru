@@ -6,12 +6,13 @@ import com.ssafy.whoru.domain.board.dao.CommentRepository;
 import com.ssafy.whoru.domain.board.domain.Board;
 import com.ssafy.whoru.domain.board.domain.Comment;
 import com.ssafy.whoru.domain.board.dto.BoardType;
-import com.ssafy.whoru.domain.board.dto.request.PostBoardRequest;
-import com.ssafy.whoru.domain.board.dto.request.PostCommentRequest;
+import com.ssafy.whoru.domain.board.dto.request.PatchInquiryCommentRequest;
+import com.ssafy.whoru.domain.board.dto.request.PostInquiryBoardRequest;
+import com.ssafy.whoru.domain.board.dto.request.PostInquiryCommentRequest;
 import com.ssafy.whoru.domain.board.dto.response.InquiryRecordResponse;
 import com.ssafy.whoru.domain.board.exception.BoardNotFoundException;
+import com.ssafy.whoru.domain.board.exception.CommentNotFoundException;
 import com.ssafy.whoru.domain.board.exception.NotSameWriterException;
-import com.ssafy.whoru.domain.collect.exception.IconNotFoundException;
 import com.ssafy.whoru.domain.member.application.CrossMemberService;
 import com.ssafy.whoru.domain.member.domain.Member;
 import com.ssafy.whoru.global.common.dto.SliceResponse;
@@ -42,7 +43,7 @@ public class BoardServiceImpl implements BoardService{
     private final ModelMapper modelMapper;
 
     @Override
-    public void postInquiryBoard(PostBoardRequest request) {
+    public void postInquiryBoard(PostInquiryBoardRequest request) {
 
         Member member = crossMemberService.findByIdToEntity(request.getMemberId());
 
@@ -116,7 +117,7 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     @Transactional
-    public void postComment(PostCommentRequest request) {
+    public void postComment(PostInquiryCommentRequest request) {
 
         Member member = crossMemberService.findByIdToEntity(request.getCommenterId());
 
@@ -129,19 +130,6 @@ public class BoardServiceImpl implements BoardService{
             .content(request.getContent())
             .build());
 
-    }
-
-
-    /**
-     * ModelMapper 설정 최초 1회 진행
-     * **/
-    @PostConstruct
-    void init() {
-        modelMapper.addMappings(new PropertyMap<Board, InquiryRecordResponse>() {
-            protected void configure() {
-                map().setWriterName(source.getWriter().getUserName());
-            }
-        });
     }
 
     @Override
@@ -161,6 +149,30 @@ public class BoardServiceImpl implements BoardService{
             throw new NotSameWriterException();
         }
 
+    }
+
+    @Override
+    @Transactional
+    public void patchComment(Long commentId, PatchInquiryCommentRequest request) {
+
+        //관리자 답글 수정의 경우 어떤 관리자가 수정해도 상관없도록 구현
+        Optional<Comment> comment = Optional.ofNullable(commentRepository.findById(commentId)
+            .orElseThrow(CommentNotFoundException::new));
+
+        comment.get().patchContent(request.getContent());
+
+    }
+
+    /**
+     * ModelMapper 설정 최초 1회 진행
+     * **/
+    @PostConstruct
+    void init() {
+        modelMapper.addMappings(new PropertyMap<Board, InquiryRecordResponse>() {
+            protected void configure() {
+                map().setWriterName(source.getWriter().getUserName());
+            }
+        });
     }
 
 }
