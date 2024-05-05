@@ -50,8 +50,7 @@ public class MessageCustomRepositoryImpl implements MessageCustomRepository{
     @Override
     public List<Message> findAllByRecent(Long firstId, Integer size, Member receiver) {
         BooleanExpression whereConditions =
-            message.isReported.isFalse()
-            .and(message.id.between(firstId+1, firstId+size))
+            message.id.between(firstId+1, firstId+size)
             .and(message.receiver.id.eq(receiver.getId()));
 
         return jpaQueryFactory.

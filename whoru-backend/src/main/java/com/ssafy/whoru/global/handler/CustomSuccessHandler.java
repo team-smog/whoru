@@ -1,5 +1,6 @@
 package com.ssafy.whoru.global.handler;
 
+import com.ssafy.whoru.domain.member.dao.MemberRepository;
 import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.domain.member.dao.TokenRepository;
 import com.ssafy.whoru.global.common.dto.RedisKeyType;
@@ -27,7 +28,7 @@ import java.util.Iterator;
 public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final JWTUtil jwtUtil;
-    private final TokenRepository tokenRepository;
+    private final MemberRepository memberRepository;
     private final RedisUtil redisUtil;
 
     @Value("${spring.jwt.expire.refresh}")
@@ -36,6 +37,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     @Value("${spring.local.website}")
     private String url;
 
+    @Value(("${spring.test.url}"))
+    private String testUrl;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -44,11 +47,13 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
 
         Long userId = customUserDetails.getId();
+        String username = memberRepository.findById(userId).get().getUserName();
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
         GrantedAuthority auth = iterator.next();
         String role = auth.getAuthority();
+
 
         String accessToken = jwtUtil.createAccessToken(userId,"access", role);
         String refreshToken = jwtUtil.createRefreshToken(userId,"refresh",role);
@@ -60,12 +65,9 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         //Response 세팅
         response.addCookie(createCookie("Refresh", refreshToken));
-        response.sendRedirect(url +"callback" + "?accessToken=" + accessToken);
-
-
-
-
-
+//        response.sendRedirect(url +"callback" + "?accessToken=" + accessToken   );
+        log.info("redirect url : "+testUrl);
+        response.sendRedirect(testUrl +"callback" + "?accessToken=" + accessToken);
     }
 
     private Cookie createCookie(String key, String value) {

@@ -34,4 +34,5 @@ public class FcmNotification {
 
     public void updateNotificationsEnabled(Boolean status) { this.isEnabled = status; }
 
+
 }
