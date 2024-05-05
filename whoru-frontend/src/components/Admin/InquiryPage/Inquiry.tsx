@@ -62,10 +62,10 @@ const Inquiry = ({ data }: { data: InquiryInfo[] }) => {
           </div>
         ))}
       </div>
-      <div className="flex justify-center mt-4">
+      <div className="fixed bottom-5 left-0 right-0 mx-auto flex justify-center">
         <button onClick={handlePrevPage} disabled={currentPage === 1}>이전</button>
         {Array.from({ length: totalPages }, (_, index) => (
-          <button key={index + 1} onClick={() => handleClickPage(index + 1)}>{index + 1}</button>
+            <button key={index + 1} onClick={() => handleClickPage(index + 1)}>{index + 1}</button>
         ))}
         <button onClick={handleNextPage} disabled={currentPage === totalPages}>다음</button>
       </div>
