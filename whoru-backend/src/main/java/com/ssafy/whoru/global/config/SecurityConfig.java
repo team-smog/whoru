@@ -51,6 +51,14 @@ public class SecurityConfig{
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/").permitAll()
                         .requestMatchers("/login/**").permitAll()
+                        // Prometheus에서 오는 요청만 허용
+                        .requestMatchers(request ->
+                            request.getRequestURI().startsWith("/actuator") &&
+                                "prometheus".equals(request.getRemoteAddr())).permitAll()
+                        // 그 외 메트릭 요청은 권한 체크
+                        .requestMatchers(request ->
+                            request.getRequestURI().startsWith("/actuator"))
+                        .hasRole("DEVELOPER")
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/api-docs/**").permitAll()
                         .anyRequest().authenticated())
