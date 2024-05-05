@@ -85,7 +85,7 @@ public class SecurityConfig{
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:8080",
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:8080", "http://localhost:3000",
                 "http://localhost:5173", "http://127.0.0.1:5173", "https://k10d203.p.ssafy.io",
                 "https://k10d203.p.ssafy.io:8080" , "https://k10d203.p.ssafy.io:8080/api")); // 모든 출처 허용
         configuration.setAllowedMethods(

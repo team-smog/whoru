@@ -56,7 +56,19 @@ public class BoardServiceImpl implements BoardService{
 
     }
 
+    /**
+     * Comment가 달린 게시글인지 확인
+     * **/
+    protected static void isCommentExist(Slice<Board> result) {
+        for(Board board : result) {
+            if(board.getComment() != null) {
+                board.updateIsCommented(true);
+            }
+        }
+    }
+
     @Override
+    @Transactional(readOnly = true)
     public SliceResponse<InquiryRecordResponse> getInquiryBoard(Long memberId, int page, int size) {
 
         Member member = crossMemberService.findByIdToEntity(memberId);
@@ -66,14 +78,9 @@ public class BoardServiceImpl implements BoardService{
 
         Slice<Board> result = boardRepository.findByMember(member, pageable);
 
-        /**
-         * Comment가 달린 게시글인지 확인
-         * **/
-        for(Board board : result) {
-            if(board.getComment() != null) {
-                board.updateIsCommented(true);
-            }
-        }
+
+        isCommentExist(result);
+
         // Entity to DTO
         Slice<InquiryRecordResponse> response = result.map(board -> modelMapper.map(board, InquiryRecordResponse.class));
 
@@ -81,7 +88,10 @@ public class BoardServiceImpl implements BoardService{
 
     }
 
+
+
     @Override
+    @Transactional(readOnly = true)
     public SliceResponse<InquiryRecordResponse> getTotalInquiry(int page, int size,
         int condition) {
 
@@ -97,17 +107,11 @@ public class BoardServiceImpl implements BoardService{
 
         else {
             //답글이 달리지 않은 문의사항에 한하여 조회 쿼리 실행
-            result = boardRepository.findByComment(pageable, BoardType.INQUIRY);
+            result = boardRepository.findAllByCommentAndType(pageable, BoardType.INQUIRY);
         }
 
-        /**
-         * Comment가 달린 게시글인지 확인
-         * **/
-        for(Board board : result) {
-            if(board.getComment() != null) {
-                board.updateIsCommented(true);
-            }
-        }
+
+        isCommentExist(result);
 
         // Entity to DTO
         Slice<InquiryRecordResponse> response = result.map(board -> modelMapper.map(board, InquiryRecordResponse.class));
@@ -119,12 +123,15 @@ public class BoardServiceImpl implements BoardService{
     @Transactional
     public void postComment(PostInquiryCommentRequest request) {
 
+        // 관리자 조회
         Member member = crossMemberService.findByIdToEntity(request.getCommenterId());
 
+        // 게시글 조회
         Optional<Board> board = Optional.of(boardRepository.findById(request.getBoardId())
             .orElseThrow(BoardNotFoundException::new));
 
-        board.get().setComment(Comment.builder()
+        // 답글 저장
+        commentRepository.save(Comment.builder()
             .board(board.get())
             .commenter(member)
             .content(request.getContent())
@@ -144,7 +151,6 @@ public class BoardServiceImpl implements BoardService{
         if(member.equals(board.get().getWriter())) {
             boardRepository.deleteById(boardId);
         }
-
         else {
             throw new NotSameWriterException();
         }
@@ -165,6 +171,7 @@ public class BoardServiceImpl implements BoardService{
 
     /**
      * ModelMapper 설정 최초 1회 진행
+     * Member Entity to UserName Dto Setting
      * **/
     @PostConstruct
     void init() {
