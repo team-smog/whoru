@@ -36,6 +36,9 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     @Value("${spring.local.website}")
     private String url;
 
+    @Value("spring.test.url")
+    private String testUrl;
+
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -60,7 +63,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         //Response 세팅
         response.addCookie(createCookie("Refresh", refreshToken));
-        response.sendRedirect(url +"callback" + "?accessToken=" + accessToken);
+//        response.sendRedirect(url +"callback" + "?accessToken=" + accessToken);
+        response.sendRedirect(testUrl +"callback" + "?accessToken=" + accessToken);
 
 
 

@@ -7,6 +7,10 @@ server:
 
 spring:
 
+  test:
+    url: ENC(1b16VQR6i0vRiZU6lpok+6Nb61pnBuB/uPnSFJPYqtw=)
+
+
   jwt:
     expire:
       access: 3600000
