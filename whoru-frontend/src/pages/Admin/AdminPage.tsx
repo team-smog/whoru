@@ -2,14 +2,18 @@ import Header, { IHeaderInfo } from "@/components/@common/Header";
 import InquiryPage from "@/components/Admin/InquiryPage/Inquiry";
 import NotificationPage from "@/components/Admin/NotificationPage/Notification";
 import ReportPage from "@/components/Admin/ReportPage/Report";
+import { useInquiryDetail } from "@/hooks/Admin/useAdmin";
 import { useState } from "react";
 
 export type InquiryInfo = {
   id: number;
-  name: string;
-  title: string;
-  date: string;
+  subject: string;
+  writerName: string;
+  createDate: string;
+  updateDate: string;
   content: string;
+  boardType: string;
+  isCommented: boolean;
 }
 
 export type NotificationInfo = {
@@ -30,13 +34,13 @@ export type ReportInfo = {
 
 
 export type AdminData = {
-  inquiry_info: InquiryInfo[];
   notification_info: NotificationInfo[];
   report_info: ReportInfo[];
 }
 
 const AdminPage = () => {
   const [selectedTab, setSelectedTab] = useState<string>('Notification');
+  const {data: inquiryData} = useInquiryDetail(1, 10, 0);
 
   const info: IHeaderInfo = {
     left_1: "Admin",
@@ -59,22 +63,6 @@ const AdminPage = () => {
         date: '2024.04.25',
         content: '궁시렁궁시렁궁시렁궁시렁'
       },
-    ],
-    inquiry_info:[
-      {
-        id: 1,
-        name: '정민호1',
-        title:'[#1] 회원탈퇴가 안됩니다.',
-        date: '2024.04.24',
-        content: '뭐시여뭐시여뭐시여뭐시여뭐시여뭐시여뭐시여뭐시여뭐시여뭐시여뭐시여뭐시여뭐시여뭐시여뭐시여뭐시여뭐시여뭐시여뭐시여뭐시여뭐시여뭐시여뭐시여뭐시여뭐시여뭐시여뭐시여뭐시여뭐시여뭐시여뭐시여뭐시여뭐시여뭐시여뭐시여뭐시여뭐시여뭐시여뭐시여뭐시여뭐시여뭐시여뭐시여'
-      },
-      {
-        id: 2,
-        name: '정민호2',
-        title: '[#2] 민호가 고장났어요',
-        date: '2024.04.25',
-        content: '민호는 오늘 코를 고면서 잠을 자네?'
-      }
     ],
     report_info:[
       {
@@ -109,7 +97,10 @@ const AdminPage = () => {
       case 'Notification':
         return <NotificationPage data={dummies.notification_info} />;
       case 'Inquiry':
-        return <InquiryPage data={dummies.inquiry_info} />;
+        if (inquiryData) {
+          return <InquiryPage data={inquiryData.inquiry_info} />;
+        }
+        break;
       case 'Report':
         return <ReportPage data={dummies.report_info}/>;
       default:
