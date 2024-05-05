@@ -2,15 +2,14 @@ package com.ssafy.whoru.domain.member.api;
 
 import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.domain.member.dto.response.ChangeIconResponse;
+import com.ssafy.whoru.domain.member.dto.response.ProfileResponse;
 import com.ssafy.whoru.domain.member.dto.response.TokenResponse;
 import com.ssafy.whoru.global.common.dto.WrapResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import software.amazon.awssdk.profiles.Profile;
 
 /**
  * Swagger 문서 작업을 위한 추상 인터페이스
@@ -30,4 +29,7 @@ public interface MemberApiDocs {
 
     @PostMapping("/regenerate-token")
     ResponseEntity<WrapResponse<TokenResponse>> regenerateToken(@AuthenticationPrincipal CustomOAuth2User member);
+
+    @GetMapping("/profile")
+    ResponseEntity<WrapResponse<ProfileResponse>> getProfile(@AuthenticationPrincipal CustomOAuth2User member);
 }

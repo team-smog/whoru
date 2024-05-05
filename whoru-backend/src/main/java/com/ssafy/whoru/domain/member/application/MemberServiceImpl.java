@@ -9,6 +9,7 @@ import com.ssafy.whoru.domain.member.domain.FcmNotification;
 import com.ssafy.whoru.domain.member.domain.Member;
 import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.domain.member.dto.response.ChangeIconResponse;
+import com.ssafy.whoru.domain.member.dto.response.ProfileResponse;
 import com.ssafy.whoru.domain.member.dto.response.TokenResponse;
 import com.ssafy.whoru.domain.member.exception.FcmNotFoundException;
 import com.ssafy.whoru.domain.member.exception.MemberAlreadyIconException;
@@ -104,5 +105,24 @@ public class MemberServiceImpl implements MemberService {
                 .token(createdAccessToken)
                 .build();
     }
+
+    @Override
+    public ProfileResponse getProfile(Long memberId) {
+        Member byId = crossMemberService.findByIdToEntity(memberId);
+        Icon icon = byId.getIcon();
+        String url;
+        if(byId.getIcon()==null) {
+           url = "basic";
+        }else{
+            url= icon.getIconUrl();
+        }
+        return ProfileResponse
+                .builder()
+                .username(byId.getUserName())
+                .iconUrl(url)
+                .build();
+    }
+
+
 
 }
