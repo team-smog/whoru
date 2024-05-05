@@ -4,18 +4,18 @@ import { useMutation } from "@tanstack/react-query";
 import { useCookies } from 'react-cookie';
 
 const useLogout = () => {
-  const [, , removeCookie] = useCookies(['MM']);
+  const [, , removeCookie] = useCookies(['Refresh']);
   const navigate = useNavigate();
   return useMutation({
     mutationFn: () => logoutApi(),
     onSuccess: () => {
-      console.log('로그아웃됬습니다.')
+      console.log('로그아웃됬습니다.');
       localStorage.removeItem('AccessToken');
-      removeCookie('MM', { path: '/' });
-      navigate('/login')
+      removeCookie('Refresh', { path: '/' });
+      navigate('/login');
     },
     onError: (err: Error) => {
-      console.error('로그아웃에 실패했습니다.', err.message)
+      console.error('로그아웃에 실패했습니다.', err.message);
     }
   })
 }
