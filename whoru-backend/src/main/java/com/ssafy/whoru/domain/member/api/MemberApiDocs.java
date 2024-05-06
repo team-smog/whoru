@@ -1,7 +1,9 @@
 package com.ssafy.whoru.domain.member.api;
 
+import com.ssafy.whoru.domain.collect.dto.response.GetIconResponse;
 import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.domain.member.dto.response.ChangeIconResponse;
+import com.ssafy.whoru.domain.member.dto.response.ProfileResponse;
 import com.ssafy.whoru.domain.member.dto.response.TokenResponse;
 import com.ssafy.whoru.global.common.dto.SliceResponse;
 import com.ssafy.whoru.global.common.dto.WrapResponse;
@@ -15,10 +17,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import software.amazon.awssdk.profiles.Profile;
 
 /*
  * Author 정민호
@@ -49,4 +49,11 @@ public interface MemberApiDocs {
     @ApiResponse(responseCode = "200", description = "TokenResponse", content = @Content(schema = @Schema(implementation = TokenResponse.class)))
     @PostMapping("/regenerate-token")
     ResponseEntity<WrapResponse<TokenResponse>> regenerateToken(@AuthenticationPrincipal CustomOAuth2User member, HttpServletRequest request);
+
+
+    @Operation(summary = "유저 정보 반환", description = "사용자의 프로필 icon과 닉네임, pushalarm 설정상태, 언어상태, fcm 기기명을 가져올 수 있다.")
+    @ApiResponse(responseCode = "200",description = "fcm 기기명과 iconUrl은 없을시 null 문자열 반환, pushalarm은 default true 입니다. 언어는 korean 고정상태입니다.(미구현)", content = @Content(schema = @Schema(implementation = ProfileResponse.class)))
+    @GetMapping("/profile")
+    ResponseEntity<WrapResponse<ProfileResponse>> getProfile(@AuthenticationPrincipal CustomOAuth2User member);
+
 }

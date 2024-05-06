@@ -3,18 +3,23 @@ package com.ssafy.whoru.domain.board.api;
 
 import com.ssafy.whoru.domain.board.application.BoardService;
 import com.ssafy.whoru.domain.board.dto.request.PatchInquiryCommentRequest;
+import com.ssafy.whoru.domain.board.dto.request.PatchNotificationRequest;
 import com.ssafy.whoru.domain.board.dto.request.PostInquiryCommentRequest;
+import com.ssafy.whoru.domain.board.dto.request.PostNotificationRequest;
 import com.ssafy.whoru.domain.board.dto.response.InquiryRecordResponse;
+import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.global.common.dto.SliceResponse;
 import com.ssafy.whoru.global.common.dto.SuccessType;
 import com.ssafy.whoru.global.common.dto.WrapResponse;
 import com.ssafy.whoru.global.error.exception.BusinessLogicException;
 import com.ssafy.whoru.global.error.exception.ErrorCode;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @Validated
 @RequestMapping("/admin/board")
-public class BoardAdminApi {
+public class BoardAdminApi implements BoardAdminApiDocs{
 
     private final BoardService boardService;
 
@@ -90,4 +95,37 @@ public class BoardAdminApi {
         boardService.patchComment(commentId, request);
         return ResponseEntity.ok(WrapResponse.create(SuccessType.STATUS_204));
     }
+
+    /**
+     * 관리자 공지사항 작성 API
+     */
+    @PostMapping("/noti")
+    public ResponseEntity<WrapResponse<Void>> writeNotification(@AuthenticationPrincipal CustomOAuth2User admin, @RequestBody @Valid PostNotificationRequest postNotificationRequest){
+
+        checkedAuth();
+
+        boardService.postNotification(admin.getId(), postNotificationRequest);
+        return ResponseEntity.ok(WrapResponse.create(
+            SuccessType.STATUS_201
+        ));
+    }
+
+    /**
+     * 관리자 공지사항 수정 API
+     */
+    @PatchMapping("/noti/{boardId}")
+    public ResponseEntity<WrapResponse<Void>> updateNotification(
+        @AuthenticationPrincipal CustomOAuth2User admin,
+        @RequestBody @Valid PatchNotificationRequest patchNotificationRequest,
+        @PathVariable @Min(value = 1, message = "적어도 0보다 커야 합니다.") Long boardId
+    ){
+
+        checkedAuth();
+
+        boardService.patchNotification(admin.getId(), patchNotificationRequest, boardId);
+        return ResponseEntity.ok(WrapResponse.create(
+           SuccessType.STATUS_204
+        ));
+    }
+
 }

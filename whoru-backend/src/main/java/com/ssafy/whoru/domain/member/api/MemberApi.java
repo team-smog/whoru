@@ -5,6 +5,7 @@ package com.ssafy.whoru.domain.member.api;
 import com.ssafy.whoru.domain.member.application.MemberService;
 import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.domain.member.dto.response.ChangeIconResponse;
+import com.ssafy.whoru.domain.member.dto.response.ProfileResponse;
 import com.ssafy.whoru.domain.member.dto.response.TokenResponse;
 import com.ssafy.whoru.domain.member.exception.RefreshTokenNotFoundException;
 import com.ssafy.whoru.global.common.dto.SuccessType;
@@ -71,6 +72,12 @@ public class MemberApi implements MemberApiDocs {
         }
         TokenResponse response = memberService.reGenerateToken(member.getId(),refreshToken);
         return ResponseEntity.ok((WrapResponse.create(response,SuccessType.SIMPLE_STATUS)));
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity<WrapResponse<ProfileResponse>> getProfile(@AuthenticationPrincipal CustomOAuth2User member) {
+        ProfileResponse response = memberService.getProfile(member.getId());
+        return ResponseEntity.ok(WrapResponse.create(response,SuccessType.SIMPLE_STATUS));
     }
 
 }

@@ -1,20 +1,27 @@
 package com.ssafy.whoru.domain.board.api;
 
 import com.ssafy.whoru.domain.board.dto.request.PatchInquiryCommentRequest;
+import com.ssafy.whoru.domain.board.dto.request.PatchNotificationRequest;
 import com.ssafy.whoru.domain.board.dto.request.PostInquiryCommentRequest;
+import com.ssafy.whoru.domain.board.dto.request.PostNotificationRequest;
 import com.ssafy.whoru.domain.board.dto.response.InquiryRecordResponse;
+import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.global.common.dto.SliceResponse;
 import com.ssafy.whoru.global.common.dto.WrapResponse;
+import com.ssafy.whoru.global.error.ErrorResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,4 +55,21 @@ public interface BoardAdminApiDocs {
     @PatchMapping("/{commentId}")
     public ResponseEntity<WrapResponse<Void>> patchComment(@PathVariable("commentId") Long commentId, @RequestBody PatchInquiryCommentRequest request);
 
+    @Operation(summary = "공지사항 작성하기", description = "관리자의 공지사항 작성 기능")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "201", description = "성공적으로 공지사항이 등록되고, 모든 다른 유저들에게 공지사항 알림이 발송됨", content = @Content(schema = @Schema(implementation = WrapResponse.class))),
+        @ApiResponse(responseCode = "400", description = "공지사항 제목이 너무 짧거나(2자 미만) 너무 긴 경우(30자 이상), 내용이 너무 짧거나(2자 미만) 너무 긴 경우(200자 이상)", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+        @ApiResponse(responseCode = "403", description = "권한 없을 경우에 반응옴", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @PostMapping("/noti")
+    public ResponseEntity<WrapResponse<Void>> writeNotification(@AuthenticationPrincipal CustomOAuth2User admin, @RequestBody @Valid PostNotificationRequest postNotificationRequest);
+
+    @Operation(summary = "공지사항 수정하기", description = "관리자의 공지사항 수정 기능, content 만 따로 업데이트 할 수 있으며, subject만 따로 업데이트 할 수 있음")
+    @ApiResponses( value = {
+        @ApiResponse(responseCode = "204", description = "성공적으로 업데이트 되었음을 의미함, NO_CONTENT(204)는 말그대로 업데이트 명령 수행에 대한 body는 없기 때문", content = @Content(schema = @Schema(implementation = WrapResponse.class))),
+        @ApiResponse(responseCode = "400", description = "공지사항 제목이 너무 짧거나(2자 미만) 너무 긴 경우(30자 이상), 내용이 너무 짧거나(2자 미만) 너무 긴 경우(200자 이상), boardId가 0이하인 경우", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+        @ApiResponse(responseCode = "403", description = "권한 없을 경우에 반응옴", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @PatchMapping("/noti/{boardId}")
+    public ResponseEntity<WrapResponse<Void>> updateNotification(@AuthenticationPrincipal CustomOAuth2User admin, @RequestBody @Valid PatchNotificationRequest patchNotificationRequest, @PathVariable @Min(value = 1, message = "적어도 0보다 커야 합니다.") Long boardId);
 }
