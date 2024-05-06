@@ -186,8 +186,8 @@ const MainPage = () => {
         }, 
       })
       const data = await res.json();
-      console.log(data);
-      setFirstId(data.data.content[0].id);
+      // console.log(data);
+      // setFirstId(data.data.content[0].id);
       setLastId(data.data.content[data.data.content.length - 1].id);
       // console.log("lastId", lastId);
 
