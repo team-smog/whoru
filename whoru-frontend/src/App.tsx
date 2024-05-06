@@ -1,5 +1,5 @@
 import './App.css'
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { Navigate, RouterProvider, createBrowserRouter } from 'react-router-dom';
 import MainPage from './pages/MainPage/MainPage';
 import LoginPage from './pages/Login/LoginPage';
 import AlarmPage from './pages/Alarm/AlarmPage';
@@ -19,54 +19,108 @@ import { requestPermission } from './FirebaseUtil';
 
 import CallBackPage from './pages/CallBack/CallBackPage';
 
+interface AuthWrapperProps {
+  children: React.ReactNode;
+}
+
+const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
+  const accessToken = localStorage.getItem('AccessToken');
+
+  if (accessToken == null) {
+    return <Navigate to='/login' replace />
+  }
+
+  return (
+    <>
+      {children}
+    </>
+  )
+}
+
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <MainPage />
+    element: (
+      <AuthWrapper>
+        <MainPage />
+      </AuthWrapper>
+    )
   },
   {
     path: '/login',
     element: <LoginPage />
   },
   {
-    path: '/receive',
-    element: <ReceivePage />
-  },
-  {
     path: '/alarm',
-    element: <AlarmPage />
+    element: (
+      <AuthWrapper>
+        <AlarmPage />
+      </AuthWrapper>
+    )
   },
   {
     path: '/profile',
-    element: <ProfilePage />
+    element: (
+      <AuthWrapper>
+        <ProfilePage />
+      </AuthWrapper>
+    )
   },
   {
     path: '/profile/ask',
-    element: <AskPage />
+    element: (
+      <AuthWrapper>
+        <AskPage />
+      </AuthWrapper>
+    )
   },
   {
     path: '/profile/ask/post',
-    element: <AskPostPage />
+    element: (
+      <AuthWrapper>
+        <AskPostPage />
+      </AuthWrapper>
+    )
   },
   {
     path : '/announcement',
-    element: <AnnouncementPage />
+    element: (
+      <AuthWrapper>
+        <AnnouncementPage />
+      </AuthWrapper>
+    )
   },
   {
     path : '/chacollection',
-    element : <Chacollection />
+    element : (
+      <AuthWrapper>
+        <Chacollection />
+      </AuthWrapper>
+    )
   },
   {
-    path : 'Inquiry',
-    element : <Inquiry />
+    path : '/inquiry',
+    element : (
+      <AuthWrapper>
+        <Inquiry />
+      </AuthWrapper>
+    )
   },
   {
     path: '/post',
-    element: <PostPage />
+    element: (
+      <AuthWrapper>
+        <PostPage />
+      </AuthWrapper>
+    )
   },
   {
     path: '/admin',
-    element: <AdminPage />
+    element: (
+      <AuthWrapper>
+        <AdminPage />
+      </AuthWrapper>
+    )
   },
   {
     path: '/callback',

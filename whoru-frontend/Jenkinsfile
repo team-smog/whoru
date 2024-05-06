@@ -20,7 +20,7 @@ pipeline {
         stage('Docker front container run && connect network') {
             steps {
                 dir('whoru-frontend') {
-                    sh 'docker run -d -v /config/front/d203front.conf:/etc/nginx/conf.d/d203front.conf -p 3000:3000 --net whoru --name frontend frontend'
+                    sh 'docker run -d -v /config/front/d203front.conf:/etc/nginx/conf.d/d203front.conf --net whoru --name frontend frontend'
                 }
             }
         }
