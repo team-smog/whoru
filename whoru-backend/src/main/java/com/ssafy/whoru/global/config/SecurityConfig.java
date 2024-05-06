@@ -52,7 +52,7 @@ public class SecurityConfig{
                         .requestMatchers("/").permitAll()
                         .requestMatchers("/login/**").permitAll()
                         // Prometheus에서 오는 요청만 허용
-                        .requestMatchers("/actuator").permitAll()
+                        .requestMatchers("/actuator/**").permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/api-docs/**").permitAll()
                         .anyRequest().authenticated())
