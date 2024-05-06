@@ -1,6 +1,7 @@
 package com.ssafy.whoru.domain.board.application;
 
 import com.ssafy.whoru.domain.board.dto.request.PatchInquiryCommentRequest;
+import com.ssafy.whoru.domain.board.dto.request.PatchNotificationRequest;
 import com.ssafy.whoru.domain.board.dto.request.PostInquiryBoardRequest;
 import com.ssafy.whoru.domain.board.dto.request.PostInquiryCommentRequest;
 import com.ssafy.whoru.domain.board.dto.request.PostNotificationRequest;
@@ -22,4 +23,6 @@ public interface BoardService {
     public void patchComment(Long commentId, PatchInquiryCommentRequest request);
 
     public void postNotification(Long adminId, PostNotificationRequest postNotificationRequest);
+
+    public void patchNotification(Long adminId, PatchNotificationRequest patchNotificationRequest, Long boardId);
 }

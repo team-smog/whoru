@@ -31,10 +31,13 @@ public class BoardTestUtil {
             .build();
     }
 
-    public PostNotificationRequest 공지사항_생성(String content, String subject){
-        return PostNotificationRequest.builder()
-            .content(content)
+    public Board 공지사항_생성(Member admin, String content, String subject){
+        return Board.builder()
             .subject(subject)
+            .content(content)
+            .writer(admin)
+            .boardType(BoardType.NOTIFICATION)
+            .isCommented(false)
             .build();
     }
 }

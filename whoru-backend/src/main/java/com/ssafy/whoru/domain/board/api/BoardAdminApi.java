@@ -3,6 +3,7 @@ package com.ssafy.whoru.domain.board.api;
 
 import com.ssafy.whoru.domain.board.application.BoardService;
 import com.ssafy.whoru.domain.board.dto.request.PatchInquiryCommentRequest;
+import com.ssafy.whoru.domain.board.dto.request.PatchNotificationRequest;
 import com.ssafy.whoru.domain.board.dto.request.PostInquiryCommentRequest;
 import com.ssafy.whoru.domain.board.dto.request.PostNotificationRequest;
 import com.ssafy.whoru.domain.board.dto.response.InquiryRecordResponse;
@@ -35,7 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @Validated
 @RequestMapping("/admin/board")
-public class BoardAdminApi {
+public class BoardAdminApi implements BoardAdminApiDocs{
 
     private final BoardService boardService;
 
@@ -108,4 +109,23 @@ public class BoardAdminApi {
             SuccessType.STATUS_201
         ));
     }
+
+    /**
+     * 관리자 공지사항 수정 API
+     */
+    @PatchMapping("/noti/{boardId}")
+    public ResponseEntity<WrapResponse<Void>> updateNotification(
+        @AuthenticationPrincipal CustomOAuth2User admin,
+        @RequestBody @Valid PatchNotificationRequest patchNotificationRequest,
+        @PathVariable @Min(value = 1, message = "적어도 0보다 커야 합니다.") Long boardId
+    ){
+
+        checkedAuth();
+
+        boardService.patchNotification(admin.getId(), patchNotificationRequest, boardId);
+        return ResponseEntity.ok(WrapResponse.create(
+           SuccessType.STATUS_204
+        ));
+    }
+
 }

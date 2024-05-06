@@ -7,6 +7,7 @@ import com.ssafy.whoru.domain.board.domain.Board;
 import com.ssafy.whoru.domain.board.domain.Comment;
 import com.ssafy.whoru.domain.board.dto.BoardType;
 import com.ssafy.whoru.domain.board.dto.request.PatchInquiryCommentRequest;
+import com.ssafy.whoru.domain.board.dto.request.PatchNotificationRequest;
 import com.ssafy.whoru.domain.board.dto.request.PostInquiryBoardRequest;
 import com.ssafy.whoru.domain.board.dto.request.PostInquiryCommentRequest;
 import com.ssafy.whoru.domain.board.dto.request.PostNotificationRequest;
@@ -201,6 +202,21 @@ public class BoardServiceImpl implements BoardService{
         final String dateTitle = fcmUtil.makeDateTitle(NOTIFICATION_TITLE, createDate);
         for(String token: tokens){
             fcmUtil.sendMessage(token, dateTitle, NOTIFICATION_CONTENT);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void patchNotification(Long adminId, PatchNotificationRequest patchNotificationRequest, Long boardId) {
+        Optional<Board> result = boardRepository.findById(boardId);
+        Board board = result.orElseThrow(BoardNotFoundException::new);
+        String willChangeSubject = patchNotificationRequest.getSubject();
+        String willChangeContent = patchNotificationRequest.getContent();
+        if(willChangeSubject != null){
+            board.updateSubject(willChangeSubject);
+        }
+        if(willChangeContent != null){
+            board.updateContent(willChangeContent);
         }
     }
 

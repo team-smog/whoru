@@ -15,6 +15,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Optional<Member> findByMemberIdentifier(String memberIdentifier);
 
-    @Query(value = "SELECT m From Member m WHERE m.role != 'ROLE_USER'")
+    @Query(value = "SELECT m From Member m WHERE m.role = 'ROLE_USER'")
     Optional<List<Member>> findAllByRoleUser();
 }
