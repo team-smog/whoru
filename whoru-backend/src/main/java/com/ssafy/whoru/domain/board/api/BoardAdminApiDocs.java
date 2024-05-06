@@ -2,16 +2,20 @@ package com.ssafy.whoru.domain.board.api;
 
 import com.ssafy.whoru.domain.board.dto.request.PatchInquiryCommentRequest;
 import com.ssafy.whoru.domain.board.dto.request.PostInquiryCommentRequest;
+import com.ssafy.whoru.domain.board.dto.request.PostNotificationRequest;
 import com.ssafy.whoru.domain.board.dto.response.InquiryRecordResponse;
 import com.ssafy.whoru.global.common.dto.SliceResponse;
 import com.ssafy.whoru.global.common.dto.WrapResponse;
+import com.ssafy.whoru.global.error.ErrorResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import org.springframework.http.ResponseEntity;
@@ -48,4 +52,12 @@ public interface BoardAdminApiDocs {
     @PatchMapping("/{commentId}")
     public ResponseEntity<WrapResponse<Void>> patchComment(@PathVariable("commentId") Long commentId, @RequestBody PatchInquiryCommentRequest request);
 
+    @Operation(summary = "공지사항 작성하기", description = "관리자의 공지사항 작성 기능")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "201", description = "성공적으로 공지사항이 등록되고, 모든 다른 유저들에게 공지사항 알림이 발송됨", content = @Content(schema = @Schema(implementation = WrapResponse.class))),
+        @ApiResponse(responseCode = "400", description = "공지사항 제목이 너무 짧거나(2자 미만) 너무 긴 경우(30자 이상), 내용이 너무 짧거나(2자 미만) 너무 긴 경우(200자 이상)", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+        @ApiResponse(responseCode = "403", description = "권한 없을 경우에 반응옴", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @PostMapping("/noti")
+    public ResponseEntity<WrapResponse<Void>> writeNotification(@RequestBody @Valid PostNotificationRequest postNotificationRequest);
 }
