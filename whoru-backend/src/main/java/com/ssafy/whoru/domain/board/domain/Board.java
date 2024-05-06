@@ -20,6 +20,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Getter
 @NoArgsConstructor
@@ -49,7 +50,7 @@ public class Board {
     @Builder.Default
     private LocalDateTime createDate = LocalDateTime.now();
 
-    @Builder.Default
+    @UpdateTimestamp // UPDATE 시 자동으로 값을 채워줌
     private LocalDateTime updateDate = LocalDateTime.now();
 
     @Transient
@@ -64,6 +65,15 @@ public class Board {
     }
 
     public void setUpdateDate() { this.updateDate = LocalDateTime.now(); }
+
+    public void updateContent(String content){
+        this.content = content;
+    }
+
+    public void updateSubject(String subject){
+        this.subject = subject;
+    }
+
 
 
 }
