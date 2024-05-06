@@ -52,9 +52,8 @@ public class SecurityConfig{
                         .requestMatchers("/").permitAll()
                         .requestMatchers("/login/**").permitAll()
                         // Prometheus에서 오는 요청만 허용
-                        .requestMatchers(request ->
-                            request.getRequestURI().startsWith("/actuator") &&
-                                "prometheus".equals(request.getRemoteAddr())).permitAll()
+                        .requestMatchers(request -> "/api/actuator".equals(request.getRequestURI()) &&
+                            "prometheus".equals(request.getHeader("X-Source")))
                         // 그 외 메트릭 요청은 권한 체크
                         .requestMatchers(request ->
                             request.getRequestURI().startsWith("/actuator"))
