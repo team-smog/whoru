@@ -15,7 +15,7 @@ public enum FileType {
 
     IMG(ContentType.image, Arrays.asList(MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_GIF_VALUE), S3PathType.MESSAGE_IMG_PATH),
 
-    VOICE(ContentType.voice, Arrays.asList("audio/mpeg", "audio/wav", "audio/weba"), S3PathType.MESSAGE_VOICE_PATH)
+    VOICE(ContentType.voice, Arrays.asList("audio/mpeg", "audio/wav", "audio/webm", "audio/weba"), S3PathType.MESSAGE_VOICE_PATH)
     ;
 
     final ContentType contentType;

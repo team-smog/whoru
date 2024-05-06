@@ -65,7 +65,7 @@ public class MessageApi implements MessageApiDocs{
     @PostMapping(value = "/file", consumes = {
         MediaType.MULTIPART_FORM_DATA_VALUE,
         MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_GIF_VALUE, MediaType.IMAGE_PNG_VALUE,
-        MediaType.APPLICATION_JSON_VALUE, "audio/mpeg", "audio/wav"
+        MediaType.APPLICATION_JSON_VALUE, "audio/mpeg", "audio/wav", "audio/weba", "audio/webm"
     })
     public ResponseEntity<WrapResponse<Void>> sendFileMessage(@AuthenticationPrincipal CustomOAuth2User member, @RequestPart MultipartFile file){
         service.sendMediaMessageToRandomMember(file, member.getId());
@@ -77,7 +77,7 @@ public class MessageApi implements MessageApiDocs{
     @PostMapping(value = "/{messageId}/file", consumes = {
         MediaType.MULTIPART_FORM_DATA_VALUE,
         MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_GIF_VALUE, MediaType.IMAGE_PNG_VALUE,
-        MediaType.APPLICATION_JSON_VALUE, "audio/mpeg", "audio/wav"
+        MediaType.APPLICATION_JSON_VALUE, "audio/mpeg", "audio/wav", "audio/webm", "audio/weba"
     })
 
     public ResponseEntity<WrapResponse<Void>> sendFileResponseMessage(

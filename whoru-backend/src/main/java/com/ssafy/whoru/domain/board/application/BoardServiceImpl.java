@@ -9,14 +9,19 @@ import com.ssafy.whoru.domain.board.dto.BoardType;
 import com.ssafy.whoru.domain.board.dto.request.PatchInquiryCommentRequest;
 import com.ssafy.whoru.domain.board.dto.request.PostInquiryBoardRequest;
 import com.ssafy.whoru.domain.board.dto.request.PostInquiryCommentRequest;
+import com.ssafy.whoru.domain.board.dto.request.PostNotificationRequest;
 import com.ssafy.whoru.domain.board.dto.response.InquiryRecordResponse;
 import com.ssafy.whoru.domain.board.exception.BoardNotFoundException;
 import com.ssafy.whoru.domain.board.exception.CommentNotFoundException;
 import com.ssafy.whoru.domain.board.exception.NotSameWriterException;
 import com.ssafy.whoru.domain.member.application.CrossMemberService;
+import com.ssafy.whoru.domain.member.domain.FcmNotification;
 import com.ssafy.whoru.domain.member.domain.Member;
 import com.ssafy.whoru.global.common.dto.SliceResponse;
+import com.ssafy.whoru.global.util.FCMUtil;
 import jakarta.annotation.PostConstruct;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,6 +46,12 @@ public class BoardServiceImpl implements BoardService{
     private final CommentRepository commentRepository;
 
     private final ModelMapper modelMapper;
+
+    private final FCMUtil fcmUtil;
+
+    private static final String NOTIFICATION_TITLE = "공지사항입니다.";
+
+    private static final String NOTIFICATION_CONTENT = "새로운 공지사항이 올라왔어요";
 
     @Override
     public void postInquiryBoard(PostInquiryBoardRequest request) {
@@ -167,6 +178,30 @@ public class BoardServiceImpl implements BoardService{
 
         comment.get().patchContent(request.getContent());
 
+    }
+
+    @Override
+    public void postNotification(Long adminId, PostNotificationRequest postNotificationRequest) {
+        Member admin = crossMemberService.findByIdToEntity(adminId);
+        Board noti = Board.builder()
+            .boardType(BoardType.NOTIFICATION)
+            .subject(postNotificationRequest.getSubject())
+            .content(postNotificationRequest.getContent())
+            .writer(admin)
+            .isCommented(false)
+            .build();
+
+        boardRepository.save(noti);
+        List<Member> allUsers = crossMemberService.findAllMemberEntities();
+        String [] tokens = allUsers.stream()
+            .filter( member ->member.getFcmNotification()!= null && member.getFcmNotification().getIsEnabled())
+            .map( member -> member.getFcmNotification().getFcmToken())
+            .toArray(String []::new);
+        LocalDateTime createDate = noti.getCreateDate();
+        final String dateTitle = fcmUtil.makeDateTitle(NOTIFICATION_TITLE, createDate);
+        for(String token: tokens){
+            fcmUtil.sendMessage(token, dateTitle, NOTIFICATION_CONTENT);
+        }
     }
 
     /**

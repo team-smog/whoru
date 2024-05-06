@@ -172,6 +172,30 @@ public class MemberTestUtil implements InitializingBean {
 
     }
 
+    public Member 관리자_멤버_추가(Icon icon){
+
+        FcmNotification fcmNotification = FcmNotification.builder()
+            .fcmToken("admin fcm token")
+            .deviceName("fdafasd")
+            .isEnabled(false)
+            .build();
+
+        fcmRepository.save(fcmNotification);
+
+        return Member.builder()
+            .refreshToken("fdafafdafafa")
+            .boxCount(99)
+            .languageType(LanguageType.KOREAN)
+            .reportCount(0)
+            .fcmNotification(fcmNotification)
+            .icon(icon)
+            .userName("ADMIN")
+            .provider(ProviderType.kakao)
+            .memberIdentifier("admin 1")
+            .role("ROLE_ADMIN")
+            .build();
+    }
+
     public String 유저_AccessToken_만들고_헤더값_리턴(Member member){
         StringBuilder sb = new StringBuilder();
         sb.append(MEMBER_HEADER_PREFIX).append(jwtUtil.createAccessToken(member.getId(), "access", "ROLE_USER"));

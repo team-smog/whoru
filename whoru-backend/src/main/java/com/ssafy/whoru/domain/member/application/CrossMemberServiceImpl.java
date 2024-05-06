@@ -3,6 +3,7 @@ package com.ssafy.whoru.domain.member.application;
 import com.ssafy.whoru.domain.member.dao.MemberRepository;
 import com.ssafy.whoru.domain.member.domain.Member;
 import com.ssafy.whoru.domain.member.exception.MemberNotFoundException;
+import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,12 @@ public class CrossMemberServiceImpl implements CrossMemberService{
     @Override
     public Member findRandomToEntity(Long senderId) {
         Optional<Member> result = memberRepository.findRandom(senderId);
+        return result.orElseThrow(MemberNotFoundException::new);
+    }
+
+    @Override
+    public List<Member> findAllMemberEntities() {
+        Optional<List<Member>> result = memberRepository.findAllByRoleUser();
         return result.orElseThrow(MemberNotFoundException::new);
     }
 }
