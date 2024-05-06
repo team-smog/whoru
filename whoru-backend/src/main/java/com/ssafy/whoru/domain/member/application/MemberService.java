@@ -15,7 +15,9 @@ public interface MemberService {
 
     void logout(Long memberId);
 
-    TokenResponse reGenerateToken(Long memberId);
+
+    TokenResponse reGenerateToken(Long memberId, String refresh);
 
     ProfileResponse getProfile(Long id);
+
 }

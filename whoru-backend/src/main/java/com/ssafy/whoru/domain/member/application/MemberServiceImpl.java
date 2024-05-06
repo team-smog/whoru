@@ -12,10 +12,7 @@ import com.ssafy.whoru.domain.member.dto.LanguageType;
 import com.ssafy.whoru.domain.member.dto.response.ChangeIconResponse;
 import com.ssafy.whoru.domain.member.dto.response.ProfileResponse;
 import com.ssafy.whoru.domain.member.dto.response.TokenResponse;
-import com.ssafy.whoru.domain.member.exception.FcmNotFoundException;
-import com.ssafy.whoru.domain.member.exception.MemberAlreadyIconException;
-import com.ssafy.whoru.domain.member.exception.MemberNotFoundException;
-import com.ssafy.whoru.domain.member.exception.RefreshTokenNotFoundException;
+import com.ssafy.whoru.domain.member.exception.*;
 import com.ssafy.whoru.global.common.dto.RedisKeyType;
 import com.ssafy.whoru.global.error.exception.BusinessLogicException;
 import com.ssafy.whoru.global.error.exception.ErrorCode;
@@ -78,7 +75,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void logout(Long memberId) {
+        log.info("here");
         redisUtil.delete(RedisKeyType.REFRESHTOKEN.makeKey(memberId.toString()));
+        log.info("logout");
     }
 
     @Override
@@ -93,18 +92,21 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public TokenResponse reGenerateToken(Long memberId) {
+    public TokenResponse reGenerateToken(Long memberId,String refresh) {
         Optional<String> valueByKey = redisUtil.findValueByKey(RedisKeyType.REFRESHTOKEN.makeKey(String.valueOf(memberId)));
 
         if (valueByKey.isEmpty()||!jwtUtil.validateToken(valueByKey.get())){
             redisUtil.delete(RedisKeyType.REFRESHTOKEN.makeKey(memberId.toString()));
             throw new RefreshTokenNotFoundException();
         }
-        String createdAccessToken = jwtUtil.createAccessToken(memberId, "access","ROLE_USER");
-        return TokenResponse
-                .builder()
-                .token(createdAccessToken)
-                .build();
+        if(valueByKey.get().equals(refresh)) {
+            String createdAccessToken = jwtUtil.createAccessToken(memberId, "access", "ROLE_USER");
+            return TokenResponse
+                    .builder()
+                    .token(createdAccessToken)
+                    .build();
+        }
+        throw new RefreshTokenExpiredException();
     }
 
     @Override
