@@ -12,6 +12,8 @@ import PullToRefresh from 'react-pull-to-refresh';
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from 'react-intersection-observer';
 import { next } from "million/compiler";
+import { useDispatch, useSelector } from "react-redux";
+import { setReplyMessage } from "@/stores/store";
 
 
 //todo: 
@@ -32,6 +34,9 @@ const MainPage = () => {
     data: InboxData;
     hasNext: boolean;
   }
+
+  const dispatch = useDispatch();
+  const messageId = useSelector((state: any) => state.reply.messageId);
   
   // const [refreshing, setRefreshing] = useState(false);
 
@@ -147,6 +152,10 @@ const MainPage = () => {
   // }, []);
 
   useEffect(() => {
+    console.log("messageId", messageId);
+  }, [messageId]);
+
+  useEffect(() => {
     console.log("firstId", firstId);
   }, [firstId]);
 
@@ -157,6 +166,7 @@ const MainPage = () => {
   const handleRefresh = async () => {
     const res = await fetch(`http://k10d203.p.ssafy.io:18080/api/message/recent?firstid=${firstId}`, {
       headers: {
+        // 'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
         Authorization: `BearereyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImlkIjoyLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE0NzEwMDkxLCJleHAiOjE3NTA3MTAwOTF9.coDlad6k0UadtPqBvTIBFhXByytdncFAvChB0kZnN9g`,
       },
     })
@@ -169,6 +179,7 @@ const MainPage = () => {
     if (!lastId) {
       const res = await fetch(`http://k10d203.p.ssafy.io:18080/api/message?size=${pageParam}`, {
         headers: {
+          // 'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
           Authorization: `BearereyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImlkIjoyLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE0NzEwMDkxLCJleHAiOjE3NTA3MTAwOTF9.coDlad6k0UadtPqBvTIBFhXByytdncFAvChB0kZnN9g`,
         }, 
       })
@@ -182,7 +193,8 @@ const MainPage = () => {
     } else {
       const res = await fetch(`http://k10d203.p.ssafy.io:18080/api/message?lastid=${lastId}&size=${pageParam}`, {
         headers: {
-          Authorization: `BearereyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImlkIjoyLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE0NzEwMDkxLCJleHAiOjE3NTA3MTAwOTF9.coDlad6k0UadtPqBvTIBFhXByytdncFAvChB0kZnN9g`,
+          // 'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+          'Authorization': 'BearereyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImlkIjoyLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE0NzEwMDkxLCJleHAiOjE3NTA3MTAwOTF9.coDlad6k0UadtPqBvTIBFhXByytdncFAvChB0kZnN9g'
         }, 
       })
       const data = await res.json();

@@ -9,6 +9,10 @@ import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
 import "./audioStyles.css";
 import { MessageInfoDetail } from '../../types/mainTypes'
+import { useDispatch, useSelector } from 'react-redux';
+import { setReplyMessage } from '@/stores/store';
+import { useNavigate } from 'react-router-dom'
+
 
 
 interface InboxVoiceComponentProps extends React.HTMLAttributes<HTMLDivElement>{
@@ -17,6 +21,16 @@ interface InboxVoiceComponentProps extends React.HTMLAttributes<HTMLDivElement>{
 }
 
 const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, innerRef, ...props }) => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const messageId = useSelector((state: any) => state.messageId)
+
+  const handleReply = (messageId: number) => {
+    dispatch(setReplyMessage(messageId))
+    console.log('messageId', messageId)
+    navigate('/post')
+  }
+
   return (
     <div className={styles.inboxVoiceComponent} key={message.id} ref={innerRef} {...props}>
       {/* <img src={Header} alt="component-Header" className={styles.inboxVoiceComponentHeader} /> */}
@@ -47,6 +61,10 @@ const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, inne
                       borderRadius: "10px"}}
           />
         </div>
+        <div className={styles.inboxVoiceComponentFooter}>
+          <button className={styles.inboxVoiceComponentFooterButton} onClick={() => handleReply(message.id)}>답장</button>
+          <button className={styles.inboxVoiceComponentFooterReportButton}>신고</button>
+      </div>
       </div>
     </div>
   )

@@ -1,27 +1,33 @@
-import { configureStore, createSlice } from "@reduxjs/toolkit";
+import { configureStore, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-// 카운터 슬라이스 생성
-const counterSlice = createSlice({
-  name: 'counter',
-  initialState: 0,
+
+interface ReplyState {
+  messageId: number | null;
+}
+
+const initialState: ReplyState = {
+  messageId: null,
+};
+
+const replySlice = createSlice({
+  name: 'reply',
+  initialState,
   reducers: {
-    incremented(state) {
-      return state + 1;
-    },
-    decremented(state) {
-      return state - 1;
+    setReplyMessage: (state, action: PayloadAction<number|null>) => {
+      state.messageId = action.payload;
     }
   }
 });
 
 // 슬라이스의 리듀서를 추출
-const { reducer: counterReducer } = counterSlice;
+const { reducer: replyReducer } = replySlice;
 
 // 스토어 구성
 const store = configureStore({
   reducer: {
-    counter: counterReducer
+    reply: replyReducer
   }
 });
 
+export const { setReplyMessage } = replySlice.actions;
 export default store;

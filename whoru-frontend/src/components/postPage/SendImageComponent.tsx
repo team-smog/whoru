@@ -5,9 +5,11 @@ import sqIcon from '../../assets/components/InboxImageComponent/image-component-
 import xIcon from '../../assets/components/InboxImageComponent/image-component-x-button.svg'
 import camerabutton from '../../assets/components/InboxImageComponent/image-component-camera-button.svg'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 
-const SendImageComponent = () => {
+const SendImageComponent = ({ messageId }: { messageId: number | null}) => {
+  const navigate = useNavigate();
   const fileInputRef = useRef(null);
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -76,30 +78,61 @@ const SendImageComponent = () => {
   };
   
   const handleSendClick = async () => {
-    if (imageFile) { // Check if there is a file
-      try {
-        const formData = new FormData();
-        formData.append('file', imageFile); // Add the file to FormData
-        console.log(imageFile);
-  
-        await axios.post('http://k10d203.p.ssafy.io:18080/api/message/file', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            'Authorization': 'BearereyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImlkIjoyLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE0NzEwMDkxLCJleHAiOjE3NTA3MTAwOTF9.coDlad6k0UadtPqBvTIBFhXByytdncFAvChB0kZnN9g'
-          },
-        })
-        .then((res) => {
-          console.log(res.data);
-        })
-  
-        setImageFile(null); // Clear the file
-  
-      } catch (error) {
-        console.error('Error:', error);
+    if (messageId !== null) {
+      if (imageFile) { // Check if there is a file
+        try {
+          const formData = new FormData();
+          formData.append('file', imageFile); // Add the file to FormData
+          console.log(imageFile);
+    
+          await axios.post(`http://k10d203.p.ssafy.io:18080/api/message/${messageId}/file`, formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              // 'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+              'Authorization': 'BearereyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImlkIjoyLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE0NzEwMDkxLCJleHAiOjE3NTA3MTAwOTF9.coDlad6k0UadtPqBvTIBFhXByytdncFAvChB0kZnN9g'
+            },
+          })
+          .then((res) => {
+            console.log(res.data);
+          })
+    
+          setImageFile(null); // Clear the file
+    
+        } catch (error) {
+          console.error('Error:', error);
+        }
       }
+      setImageSrc(null);
+      navigate('/');
+    } else if (messageId === null) {
+      if (imageFile) { // Check if there is a file
+        try {
+          const formData = new FormData();
+          formData.append('file', imageFile); // Add the file to FormData
+          console.log(imageFile);
+    
+          await axios.post('http://k10d203.p.ssafy.io:18080/api/message/file', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              // 'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+              'Authorization': 'BearereyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImlkIjoyLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE0NzEwMDkxLCJleHAiOjE3NTA3MTAwOTF9.coDlad6k0UadtPqBvTIBFhXByytdncFAvChB0kZnN9g'
+            },
+          })
+          .then((res) => {
+            console.log(res.data);
+          })
+    
+          setImageFile(null); // Clear the file
+    
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      }
+      setImageSrc(null);
+      navigate('/');
     }
-    setImageSrc(null);
-  };
+  }
+  
 
   const handleCancelClick = () => {
     setImageSrc(null);

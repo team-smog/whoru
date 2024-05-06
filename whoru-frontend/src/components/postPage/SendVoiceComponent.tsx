@@ -15,8 +15,10 @@ import pausebutton from '@/assets/components/InboxVoiceComponent/voice-component
 import { useVoiceVisualizer, VoiceVisualizer } from "react-voice-visualizer";
 import 'react-h5-audio-player/lib/styles.css';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'
 
-const SendVoiceComponent = () => {
+const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
+    const navigate = useNavigate();
     const [currentRecordType,setCurrentRecordType] = useState<string>("")
     // Initialize the recorder controls using the hook
     const recorderControls = useVoiceVisualizer();
@@ -180,29 +182,58 @@ const SendVoiceComponent = () => {
     }, [bufferFromRecordedBlob]);
 
     const handlePostButtonClick = async () => {
-      if (!recordedBlob) {
+      if (messageId !== null) {
+        if (!recordedBlob) {
+            console.error("No recorded audio to send");
+            return;
+        }
+    
+        const formData = new FormData();
+        let newBlob = new Blob([recordedBlob], {type: 'audio/weba'});
+        formData.append('file', newBlob);
+
+        console.log("newBlob:", newBlob);
+    
+        try {
+            // const response = await axios.post('https://k10d203.p.ssafy.io/api/message/file', formData, {
+            const response = await axios.post(`http://k10d203.p.ssafy.io:18080/api/message/${messageId}/file`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    // 'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+                    'Authorization': 'BearereyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImlkIjoyLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE0NzEwMDkxLCJleHAiOjE3NTA3MTAwOTF9.coDlad6k0UadtPqBvTIBFhXByytdncFAvChB0kZnN9g'
+                }
+            });
+            console.log(response.data);
+            navigate('/');
+        } catch (error) {
+            console.error(error);
+        }
+      } else if (messageId === null) {
+        if (!recordedBlob) {
           console.error("No recorded audio to send");
           return;
-      }
-  
-      const formData = new FormData();
-      let newBlob = new Blob([recordedBlob], {type: 'audio/weba'});
-      formData.append('file', newBlob);
+        }
+    
+        const formData = new FormData();
+        let newBlob = new Blob([recordedBlob], {type: 'audio/weba'});
+        formData.append('file', newBlob);
 
-      console.log("newBlob:", newBlob);
-  
-      try {
-          // const response = await axios.post('https://k10d203.p.ssafy.io/api/message/file', formData, {
-          const response = await axios.post('http://k10d203.p.ssafy.io:18080/api/message/file', formData, {
-              headers: {
-                  'Content-Type': 'multipart/form-data',
-                  // 'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
-                  'Authorization': 'BearereyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImlkIjoyLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE0NzEwMDkxLCJleHAiOjE3NTA3MTAwOTF9.coDlad6k0UadtPqBvTIBFhXByytdncFAvChB0kZnN9g'
-              }
-          });
-          console.log(response.data);
-      } catch (error) {
-          console.error(error);
+        console.log("newBlob:", newBlob);
+    
+        try {
+            // const response = await axios.post('https://k10d203.p.ssafy.io/api/message/file', formData, {
+            const response = await axios.post('http://k10d203.p.ssafy.io:18080/api/message/file', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    // 'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+                    'Authorization': 'BearereyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImlkIjoyLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE0NzEwMDkxLCJleHAiOjE3NTA3MTAwOTF9.coDlad6k0UadtPqBvTIBFhXByytdncFAvChB0kZnN9g'
+                }
+            });
+            console.log(response.data);
+            navigate('/');
+        } catch (error) {
+            console.error(error);
+        }
       }
     };
 
