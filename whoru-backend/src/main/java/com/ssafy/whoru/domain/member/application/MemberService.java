@@ -4,6 +4,7 @@ import com.ssafy.whoru.domain.member.domain.Member;
 import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.domain.member.dto.response.ChangeIconResponse;
+import com.ssafy.whoru.domain.member.dto.response.ProfileResponse;
 import com.ssafy.whoru.domain.member.dto.response.TokenResponse;
 
 public interface MemberService {
@@ -15,4 +16,6 @@ public interface MemberService {
     void logout(Long memberId);
 
     TokenResponse reGenerateToken(Long memberId);
+
+    ProfileResponse getProfile(Long id);
 }

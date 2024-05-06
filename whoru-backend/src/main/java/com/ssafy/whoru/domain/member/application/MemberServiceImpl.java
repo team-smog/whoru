@@ -8,7 +8,9 @@ import com.ssafy.whoru.domain.member.dao.MemberRepository;
 import com.ssafy.whoru.domain.member.domain.FcmNotification;
 import com.ssafy.whoru.domain.member.domain.Member;
 import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
+import com.ssafy.whoru.domain.member.dto.LanguageType;
 import com.ssafy.whoru.domain.member.dto.response.ChangeIconResponse;
+import com.ssafy.whoru.domain.member.dto.response.ProfileResponse;
 import com.ssafy.whoru.domain.member.dto.response.TokenResponse;
 import com.ssafy.whoru.domain.member.exception.FcmNotFoundException;
 import com.ssafy.whoru.domain.member.exception.MemberAlreadyIconException;
@@ -104,5 +106,25 @@ public class MemberServiceImpl implements MemberService {
                 .token(createdAccessToken)
                 .build();
     }
+
+    @Override
+    public ProfileResponse getProfile(Long memberId) {
+        Member byId = crossMemberService.findByIdToEntity(memberId);
+
+        String url = (byId.getIcon()==null) ? "null" : byId.getIcon().getIconUrl();
+        String deviceName = (byId.getFcmNotification()==null)? "null" :byId.getFcmNotification().getDeviceName();
+        boolean alarmStatus = byId.getFcmNotification() == null || byId.getFcmNotification().getIsEnabled();
+
+        return ProfileResponse
+                .builder()
+                .username(byId.getUserName())
+                .deviceName(deviceName)
+                .languageType(LanguageType.KOREAN)
+                .pushAlarm(alarmStatus)
+                .iconUrl(url)
+                .build();
+    }
+
+
 
 }
