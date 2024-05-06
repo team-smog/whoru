@@ -1,4 +1,4 @@
-package com.ssafy.whoru.domain.message.dto.response;
+package com.ssafy.whoru.global.common.dto.response;
 
 import com.ssafy.whoru.global.common.dto.SuccessType;
 import lombok.Getter;

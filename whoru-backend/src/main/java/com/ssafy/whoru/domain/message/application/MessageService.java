@@ -2,11 +2,9 @@ package com.ssafy.whoru.domain.message.application;
 
 import com.ssafy.whoru.domain.message.dto.request.TextSend;
 import com.ssafy.whoru.domain.message.dto.response.MessageResponse;
-import com.ssafy.whoru.domain.message.dto.response.ResponseWithSuccess;
+import com.ssafy.whoru.global.common.dto.response.ResponseWithSuccess;
 import com.ssafy.whoru.domain.message.dto.response.SliceMessageResponse;
-import com.ssafy.whoru.global.common.dto.SuccessType;
 import java.util.List;
-import org.springframework.data.domain.Slice;
 import org.springframework.web.multipart.MultipartFile;
 
 

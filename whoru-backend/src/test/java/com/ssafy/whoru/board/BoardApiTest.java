@@ -10,12 +10,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.ssafy.whoru.TestPrepare;
 import com.ssafy.whoru.domain.board.domain.Board;
 import com.ssafy.whoru.domain.board.dto.request.PostInquiryBoardRequest;
+import com.ssafy.whoru.domain.board.dto.request.PostNotificationRequest;
 import com.ssafy.whoru.domain.collect.domain.Icon;
 import com.ssafy.whoru.domain.member.domain.Member;
 import com.ssafy.whoru.domain.message.domain.Message;
 import com.ssafy.whoru.domain.report.dto.request.PostReportRequest;
 import com.ssafy.whoru.util.BoardTestUtil;
 import com.ssafy.whoru.util.MemberTestUtil;
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -116,13 +118,185 @@ public class BoardApiTest extends TestPrepare {
          * **/
 
         mockMvc.perform(
-                delete("/board/" + member3000.getId())
+                delete("/board/" + board.getId())
                     .header(MemberTestUtil.MEMBER_HEADER_AUTH, header3000)
             )
             .andExpect(status().is2xxSuccessful())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.status").value(HttpStatus.NO_CONTENT.value()));;
 
+    }
+
+    @Test
+    void 공지사항_목록_조회_성공_200() throws Exception{
+        Icon icon = memberTestUtil.아이콘_추가();
+        collectRepository.save(icon);
+
+        Member admin = memberTestUtil.관리자_멤버_추가(icon);
+        memberRepository.save(admin);
+
+        Member member = memberTestUtil.Member3000_멤버추가(icon);
+        memberRepository.save(member);
+
+        String header = memberTestUtil.관리자_AccessToken_만들고_헤더값_리턴(admin);
+
+        memberTestUtil.멤버_보유_아이콘_추가(admin, icon);
+
+        List<Board> notificationList = new ArrayList<>();
+
+        int page = 0;
+        int size = 5;
+
+        for(int i = 0;i<size;i++){
+            notificationList.add(boardTestUtil.공지사항_생성(admin, "공지사항 내용 "+i, "공지사항 제목 "+i));
+        }
+
+        boardRepository.saveAll(notificationList);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("/board/noti?page=").append(page).append("&size=").append(size);
+
+        mockMvc.perform(
+                get(sb.toString())
+                    .header(MemberTestUtil.MEMBER_HEADER_AUTH, header)
+            )
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.status").value(HttpStatus.OK.value()));
+    }
+
+    @Test
+    void 공지사항_목록_조회_성공_204() throws Exception{
+        Icon icon = memberTestUtil.아이콘_추가();
+        collectRepository.save(icon);
+
+        Member admin = memberTestUtil.관리자_멤버_추가(icon);
+        memberRepository.save(admin);
+
+        Member member = memberTestUtil.Member3000_멤버추가(icon);
+        memberRepository.save(member);
+
+        String header = memberTestUtil.관리자_AccessToken_만들고_헤더값_리턴(admin);
+
+        memberTestUtil.멤버_보유_아이콘_추가(admin, icon);
+
+        List<Board> notificationList = new ArrayList<>();
+
+        int page = 0;
+        int size = 5;
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("/board/noti?page=").append(page).append("&size=").append(size);
+
+        mockMvc.perform(
+                get(sb.toString())
+                    .header(MemberTestUtil.MEMBER_HEADER_AUTH, header)
+            )
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.status").value(HttpStatus.NO_CONTENT.value()));
+    }
+
+    @Test
+    void 공지사항_목록_조회_실패_쿼리_파라미터_size_너무작음_400() throws Exception{
+        Icon icon = memberTestUtil.아이콘_추가();
+        collectRepository.save(icon);
+
+        Member admin = memberTestUtil.관리자_멤버_추가(icon);
+        memberRepository.save(admin);
+
+        Member member = memberTestUtil.Member3000_멤버추가(icon);
+        memberRepository.save(member);
+
+        String header = memberTestUtil.관리자_AccessToken_만들고_헤더값_리턴(admin);
+
+        memberTestUtil.멤버_보유_아이콘_추가(admin, icon);
+
+        List<Board> notificationList = new ArrayList<>();
+
+        int page = 0;
+        int size = 5;
+
+        boardRepository.saveAll(notificationList);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("/board/noti?page=").append(page).append("&size=").append(0);
+
+        mockMvc.perform(
+                get(sb.toString())
+                    .header(MemberTestUtil.MEMBER_HEADER_AUTH, header)
+            )
+            .andExpect(status().is4xxClientError())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.errorCode").value(HttpStatus.BAD_REQUEST.value()));
+    }
+
+    @Test
+    void 공지사항_목록_조회_실패_쿼리_파라미터_size_너무_큼_400() throws Exception{
+        Icon icon = memberTestUtil.아이콘_추가();
+        collectRepository.save(icon);
+
+        Member admin = memberTestUtil.관리자_멤버_추가(icon);
+        memberRepository.save(admin);
+
+        Member member = memberTestUtil.Member3000_멤버추가(icon);
+        memberRepository.save(member);
+
+        String header = memberTestUtil.관리자_AccessToken_만들고_헤더값_리턴(admin);
+
+        memberTestUtil.멤버_보유_아이콘_추가(admin, icon);
+
+        List<Board> notificationList = new ArrayList<>();
+
+        int page = 0;
+        int size = 5;
+
+        boardRepository.saveAll(notificationList);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("/board/noti?page=").append(page).append("&size=").append(31);
+
+        mockMvc.perform(
+                get(sb.toString())
+                    .header(MemberTestUtil.MEMBER_HEADER_AUTH, header)
+            )
+            .andExpect(status().is4xxClientError())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.errorCode").value(HttpStatus.BAD_REQUEST.value()));
+    }
+
+    @Test
+    void 공지사항_목록_조회_실패_쿼리_파라미터_page_너무_작음_400() throws Exception{
+        Icon icon = memberTestUtil.아이콘_추가();
+        collectRepository.save(icon);
+
+        Member admin = memberTestUtil.관리자_멤버_추가(icon);
+        memberRepository.save(admin);
+
+        Member member = memberTestUtil.Member3000_멤버추가(icon);
+        memberRepository.save(member);
+
+        String header = memberTestUtil.관리자_AccessToken_만들고_헤더값_리턴(admin);
+
+        memberTestUtil.멤버_보유_아이콘_추가(admin, icon);
+
+        List<Board> notificationList = new ArrayList<>();
+
+        int page = 0;
+        int size = 5;
+
+        boardRepository.saveAll(notificationList);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("/board/noti?page=").append(-1).append("&size=").append(size);
+
+        mockMvc.perform(
+                get(sb.toString())
+                    .header(MemberTestUtil.MEMBER_HEADER_AUTH, header)
+            )
+            .andExpect(status().is4xxClientError())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.errorCode").value(HttpStatus.BAD_REQUEST.value()));
     }
 
 }

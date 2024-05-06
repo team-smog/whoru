@@ -9,7 +9,7 @@ import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.domain.message.application.MessageService;
 import com.ssafy.whoru.domain.message.dto.request.TextSend;
 import com.ssafy.whoru.domain.message.dto.response.MessageResponse;
-import com.ssafy.whoru.domain.message.dto.response.ResponseWithSuccess;
+import com.ssafy.whoru.global.common.dto.response.ResponseWithSuccess;
 import com.ssafy.whoru.domain.message.dto.response.SliceMessageResponse;
 import com.ssafy.whoru.global.common.dto.SuccessType;
 import com.ssafy.whoru.global.common.dto.WrapResponse;

@@ -5,7 +5,7 @@ import com.ssafy.whoru.domain.member.domain.Member;
 import com.ssafy.whoru.domain.message.dao.MessageCustomRepository;
 import com.ssafy.whoru.domain.message.dao.MessageRepository;
 import com.ssafy.whoru.domain.message.dto.response.MessageResponse;
-import com.ssafy.whoru.domain.message.dto.response.ResponseWithSuccess;
+import com.ssafy.whoru.global.common.dto.response.ResponseWithSuccess;
 import com.ssafy.whoru.domain.message.dto.response.SliceMessageResponse;
 import com.ssafy.whoru.global.common.application.S3Service;
 import com.ssafy.whoru.global.common.dto.FileType;
