@@ -6,7 +6,9 @@ import com.ssafy.whoru.domain.board.dto.request.PostInquiryBoardRequest;
 import com.ssafy.whoru.domain.board.dto.request.PostInquiryCommentRequest;
 import com.ssafy.whoru.domain.board.dto.request.PostNotificationRequest;
 import com.ssafy.whoru.domain.board.dto.response.InquiryRecordResponse;
+import com.ssafy.whoru.domain.board.dto.response.NotificationResponse;
 import com.ssafy.whoru.global.common.dto.SliceResponse;
+import com.ssafy.whoru.global.common.dto.response.ResponseWithSuccess;
 
 public interface BoardService {
 
@@ -25,4 +27,6 @@ public interface BoardService {
     public void postNotification(Long adminId, PostNotificationRequest postNotificationRequest);
 
     public void patchNotification(Long adminId, PatchNotificationRequest patchNotificationRequest, Long boardId);
+
+    public ResponseWithSuccess<SliceResponse<NotificationResponse>> findNotifications(int page, int size);
 }

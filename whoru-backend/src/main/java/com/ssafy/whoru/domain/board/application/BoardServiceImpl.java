@@ -12,6 +12,7 @@ import com.ssafy.whoru.domain.board.dto.request.PostInquiryBoardRequest;
 import com.ssafy.whoru.domain.board.dto.request.PostInquiryCommentRequest;
 import com.ssafy.whoru.domain.board.dto.request.PostNotificationRequest;
 import com.ssafy.whoru.domain.board.dto.response.InquiryRecordResponse;
+import com.ssafy.whoru.domain.board.dto.response.NotificationResponse;
 import com.ssafy.whoru.domain.board.exception.BoardNotFoundException;
 import com.ssafy.whoru.domain.board.exception.CommentNotFoundException;
 import com.ssafy.whoru.domain.board.exception.NotSameWriterException;
@@ -19,13 +20,17 @@ import com.ssafy.whoru.domain.member.application.CrossMemberService;
 import com.ssafy.whoru.domain.member.domain.FcmNotification;
 import com.ssafy.whoru.domain.member.domain.Member;
 import com.ssafy.whoru.global.common.dto.SliceResponse;
+import com.ssafy.whoru.global.common.dto.SuccessType;
+import com.ssafy.whoru.global.common.dto.response.ResponseWithSuccess;
 import com.ssafy.whoru.global.util.FCMUtil;
 import jakarta.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.Response;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.data.domain.PageRequest;
@@ -218,6 +223,21 @@ public class BoardServiceImpl implements BoardService{
         if(willChangeContent != null){
             board.updateContent(willChangeContent);
         }
+    }
+
+    @Override
+    public ResponseWithSuccess<SliceResponse<NotificationResponse>> findNotifications(int page, int size) {
+
+        // 페이징 객체 생성
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createDate"));
+        Slice<Board> result = boardRepository.findAllByCommentAndType(pageable, BoardType.NOTIFICATION);
+        Slice<NotificationResponse> body = result.map(board -> modelMapper.map(board, NotificationResponse.class));
+        SliceResponse<NotificationResponse> responseBody = new SliceResponse<>(body);
+        ResponseWithSuccess<SliceResponse<NotificationResponse>> response = new ResponseWithSuccess<>(responseBody);
+        if (result.getContent().isEmpty()){
+            response = new ResponseWithSuccess<>(responseBody, SuccessType.STATUS_204);
+        }
+        return response;
     }
 
     /**
