@@ -13,7 +13,7 @@ const Inquiry = () => {
   return (
     <div>
       <Header info={info} />
-      
+        
       <NavigationBar />
     </div>
   )
