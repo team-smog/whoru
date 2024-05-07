@@ -52,13 +52,13 @@ public interface MemberApiDocs {
 
 
     @Operation(summary = "유저 정보 반환", description = "사용자의 프로필 icon과 닉네임, pushalarm 설정상태, 언어상태를 가져올 수 있다.")
-    @ApiResponse(responseCode = "200",description = "fcm 기기명과 iconUrl은 없을시 null 문자열 반환, pushalarm은 default true 입니다. 언어는 korean 고정상태입니다.(미구현)", content = @Content(schema = @Schema(implementation = ProfileResponse.class)))
+    @ApiResponse(responseCode = "200",description = "fcm 기기명과 iconUrl은 없을시 null 문자열 반환, pushalarm은 default true 입니다. fcmToken은 없으면 빈문자열로 반환 ,언어는 korean 고정상태입니다.(미구현)", content = @Content(schema = @Schema(implementation = ProfileResponse.class)))
     @GetMapping("/profile")
     ResponseEntity<WrapResponse<ProfileResponse>> getProfile(@AuthenticationPrincipal CustomOAuth2User member);
 
     @Operation(summary = "FCM 기기등록", description = "발급받은 토큰을 통해 DB에 fcm 기기를 등록할 수 있다.")
     @ApiResponse(responseCode = "200")
-    @PostMapping("/fcmRegistration")
-    ResponseEntity<WrapResponse<Void>> create(@AuthenticationPrincipal CustomOAuth2User member,String fcmToken);
+    @PatchMapping("/updatefcm")
+    ResponseEntity<WrapResponse<Void>> updateFcm(@AuthenticationPrincipal CustomOAuth2User member,String fcmToken);
 
 }

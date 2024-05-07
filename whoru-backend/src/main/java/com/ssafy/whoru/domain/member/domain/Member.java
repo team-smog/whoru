@@ -3,17 +3,8 @@ package com.ssafy.whoru.domain.member.domain;
 import com.ssafy.whoru.domain.collect.domain.Icon;
 import com.ssafy.whoru.domain.member.dto.LanguageType;
 import com.ssafy.whoru.domain.member.dto.ProviderType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -66,10 +57,8 @@ public class Member {
     @Column(name = "language_type")
     private LanguageType languageType;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fcm_id", referencedColumnName = "id")
+    @OneToOne(mappedBy = "member",cascade = CascadeType.REMOVE)
     private FcmNotification fcmNotification;
-
 
 
     public void updateBoxIncrease() {

@@ -1,13 +1,18 @@
 package com.ssafy.whoru.domain.member.application;
 
 import com.ssafy.whoru.domain.member.dao.FcmRepository;
+import com.ssafy.whoru.domain.member.dao.MemberRepository;
 import com.ssafy.whoru.domain.member.domain.FcmNotification;
 import com.ssafy.whoru.domain.member.domain.Member;
-import com.ssafy.whoru.domain.member.exception.FcmNotRegistrated;
+import com.ssafy.whoru.domain.member.exception.FcmNotRegistratedException;
+import com.ssafy.whoru.global.error.exception.BusinessLogicException;
+import com.ssafy.whoru.global.error.exception.ErrorCode;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -16,6 +21,7 @@ public class FcmServiceImpl implements FcmService{
 
     private final FcmRepository fcmRepository;
     private final CrossMemberService crossMemberService;
+    private final MemberRepository memberRepository;
 
     @Override
     public void changeIsEnabled(FcmNotification fcm) {
@@ -25,20 +31,14 @@ public class FcmServiceImpl implements FcmService{
 
     @Override
     @Transactional
-    public void registrationFcm(Long memberId, String token) {
-        Member member = crossMemberService.findByIdToEntity(memberId);
-        try {
-            FcmNotification fcm = FcmNotification
-                    .builder()
-                    .fcmToken(token)
-                    .isEnabled(true)
-                    .build();
-            FcmNotification save = fcmRepository.save(fcm);
-            member.setFcm(save);
-        }catch(Exception e){
-            throw new FcmNotRegistrated();
-        }
-    }
+    public void updateFcm(Long memberId, String token) {
+        Optional<Member> member = Optional.ofNullable(memberRepository.findById(memberId)
+                .orElseThrow(() -> new BusinessLogicException(ErrorCode.MEMBER_NOT_FOUND)));
 
+        FcmNotification fcmNotification = member.get().getFcmNotification();
+
+        member.get().setFcm(fcmNotification.setFcmToken(token));
+
+    }
 
 }

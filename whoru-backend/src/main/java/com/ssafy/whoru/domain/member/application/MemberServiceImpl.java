@@ -113,11 +113,13 @@ public class MemberServiceImpl implements MemberService {
 
         String url = (byId.getIcon()==null) ? "null" : byId.getIcon().getIconUrl();
         boolean alarmStatus = byId.getFcmNotification() == null || byId.getFcmNotification().getIsEnabled();
+        String fcmToken = (byId.getFcmNotification() == null) ? "" : byId.getFcmNotification().getFcmToken();
 
         return ProfileResponse
                 .builder()
                 .username(byId.getUserName())
                 .languageType(LanguageType.KOREAN)
+                .fcmToken(fcmToken)
                 .pushAlarm(alarmStatus)
                 .iconUrl(url)
                 .build();
