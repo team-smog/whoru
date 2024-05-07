@@ -65,9 +65,10 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         //Response 세팅
         response.addCookie(createCookie("Refresh", refreshToken));
-//        response.sendRedirect(url +"callback" + "?accessToken=" + accessToken   );
+
         log.info("redirect url : "+testUrl);
-        response.sendRedirect(testUrl +"callback" + "?accessToken=" + accessToken);
+        response.sendRedirect(url +"callback" + "?accessToken=" + accessToken);
+//        response.sendRedirect(testUrl +"callback" + "?accessToken=" + accessToken);
     }
 
     private Cookie createCookie(String key, String value) {

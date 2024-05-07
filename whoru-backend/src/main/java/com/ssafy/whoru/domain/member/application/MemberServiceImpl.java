@@ -75,9 +75,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void logout(Long memberId) {
-        log.info("here");
         redisUtil.delete(RedisKeyType.REFRESHTOKEN.makeKey(memberId.toString()));
-        log.info("logout");
     }
 
     @Override
@@ -114,14 +112,14 @@ public class MemberServiceImpl implements MemberService {
         Member byId = crossMemberService.findByIdToEntity(memberId);
 
         String url = (byId.getIcon()==null) ? "null" : byId.getIcon().getIconUrl();
-        String deviceName = (byId.getFcmNotification()==null)? "null" :byId.getFcmNotification().getDeviceName();
         boolean alarmStatus = byId.getFcmNotification() == null || byId.getFcmNotification().getIsEnabled();
+        String fcmToken = (byId.getFcmNotification() == null) ? "" : byId.getFcmNotification().getFcmToken();
 
         return ProfileResponse
                 .builder()
                 .username(byId.getUserName())
-                .deviceName(deviceName)
                 .languageType(LanguageType.KOREAN)
+                .fcmToken(fcmToken)
                 .pushAlarm(alarmStatus)
                 .iconUrl(url)
                 .build();

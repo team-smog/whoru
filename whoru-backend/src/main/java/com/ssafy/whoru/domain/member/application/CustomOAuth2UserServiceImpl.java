@@ -1,6 +1,8 @@
 package com.ssafy.whoru.domain.member.application;
 
+import com.ssafy.whoru.domain.member.dao.FcmRepository;
 import com.ssafy.whoru.domain.member.dao.MemberRepository;
+import com.ssafy.whoru.domain.member.domain.FcmNotification;
 import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.domain.member.dto.ProviderType;
 import com.ssafy.whoru.domain.member.dto.response.KakaoResponse;
@@ -23,6 +25,7 @@ import java.util.Optional;
 public class CustomOAuth2UserServiceImpl extends DefaultOAuth2UserService implements CustomOAuth2UserService{
 
     private final MemberRepository memberRepository;
+    private final FcmRepository fcmRepository;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -64,23 +67,27 @@ public class CustomOAuth2UserServiceImpl extends DefaultOAuth2UserService implem
 
         //없으면 회원가입 시켜주고 저장
         if (existData.isEmpty()){
-            Member member =  Member
+
+
+            Member member = memberRepository.save(Member
                     .builder()
                     .userName(name)
                     .role("ROLE_USER")
                     .provider(providerType)
                     .memberIdentifier(memberIdentifier)
-                    .build();
+                    .fcmNotification(FcmNotification.builder()
+                            .fcmToken("")
+                            .isEnabled(true)
+                            .build())
+                    .build());
 
-
-            Member save = memberRepository.save(member);
 
             MemberDTO memberDTO = MemberDTO
                     .builder()
                     .memberIdentifier(memberIdentifier)
-                    .role(save.getRole())
+                    .role(member.getRole())
                     .userName(name)
-                    .id(save.getId())
+                    .id(member.getId())
                     .build();
 
 

@@ -1,10 +1,6 @@
 package com.ssafy.whoru.domain.member.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,10 +25,11 @@ public class FcmNotification {
     @Builder.Default
     private Boolean isEnabled = true;
 
-    @Column(name = "device_name")
-    private String deviceName;
 
     public void updateNotificationsEnabled(Boolean status) { this.isEnabled = status; }
 
-
+    public FcmNotification setFcmToken(String token) {
+        this.fcmToken = token;
+        return this;
+    }
 }
