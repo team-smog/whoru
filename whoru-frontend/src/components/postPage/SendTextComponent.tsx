@@ -49,9 +49,7 @@ const SendTextComponent = ({ messageId }: { messageId: number | null}) => {
     try {
       if (messageId !== null) {
         await axios.post(
-          // 'https://k10d203.p.ssafy.io/api/message/text',
-            // 'http://192.168.100.208:8080/api/message',
-            `http://k10d203.p.ssafy.io:18080/api/message/${messageId}/text`,
+          'https://k10d203.p.ssafy.io/api/message',
           {
             // senderId: 'your-user-id', // 보내는 사람 userId
             content: text, // text 내용
@@ -60,8 +58,7 @@ const SendTextComponent = ({ messageId }: { messageId: number | null}) => {
           {
             headers: {
               'Content-Type': 'application/json',
-              // 'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
-              'Authorization': 'BearereyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImlkIjoyLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE0NzEwMDkxLCJleHAiOjE3NTA3MTAwOTF9.coDlad6k0UadtPqBvTIBFhXByytdncFAvChB0kZnN9g'
+              Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
             },
           }
         )
@@ -71,9 +68,7 @@ const SendTextComponent = ({ messageId }: { messageId: number | null}) => {
         })
       } else if (messageId === null) {
         await axios.post(
-          // 'https://k10d203.p.ssafy.io/api/message/text',
-            // 'http://192.168.100.208:8080/api/message',
-            `http://k10d203.p.ssafy.io:18080/api/message`,
+          'https://k10d203.p.ssafy.io/api/message',
           {
             // senderId: 'your-user-id', // 보내는 사람 userId
             content: text, // text 내용
@@ -82,8 +77,7 @@ const SendTextComponent = ({ messageId }: { messageId: number | null}) => {
           {
             headers: {
               'Content-Type': 'application/json',
-              // 'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
-              'Authorization': 'BearereyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImlkIjoyLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE0NzEwMDkxLCJleHAiOjE3NTA3MTAwOTF9.coDlad6k0UadtPqBvTIBFhXByytdncFAvChB0kZnN9g'
+              Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
             },
           }
         )

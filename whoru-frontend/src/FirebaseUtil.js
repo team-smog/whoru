@@ -11,7 +11,6 @@ const firebaseConfig = {
 	measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 }
 
-
 // Initialize Firebase
 const app = initializeApp(firebaseConfig)
 const messaging = getMessaging(app)
@@ -24,12 +23,12 @@ const requestPermission = async () => {
 	}
 
 	const token = await getToken(messaging, {
-    vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
-})
+		vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
+	})
 
 	if (token) {
-		console.log('token:', token)
-		console.log(token)
+		// console.log('token:', token)
+		// console.log(token)
 		// 토큰 잘 받아오는지 체크하는 console 나중에 꼭 지울것!!
 		return token
 	} else {

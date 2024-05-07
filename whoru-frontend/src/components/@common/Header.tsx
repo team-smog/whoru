@@ -42,7 +42,7 @@ const Header = (props: {info:IHeaderInfo}) => {
       messagingObject.current = getFirebaseMessagingObject()
     },[])
   if(messagingObject.current !== null){
-    console.log(messagingObject.current)
+    // console.log(messagingObject.current)
       onMessage(messagingObject.current, (body)=>{
         if (body && body.notification) {
           console.log(body.notification.body);

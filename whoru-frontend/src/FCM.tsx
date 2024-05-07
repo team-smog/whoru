@@ -27,7 +27,6 @@ export const FCMComponent = (props: Props) => {
         setText(e.target.value);
     }
     const onClickHandler = () =>{
-    // 여기부분은 axios가 편하시면 바꿔서 사용하시면 됨
         fetch("https://k10d203.p.ssafy.io/message/text",{
             method: "POST",
             headers: {

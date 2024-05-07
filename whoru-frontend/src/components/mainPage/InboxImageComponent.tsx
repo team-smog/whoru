@@ -27,7 +27,7 @@ const InboxImageComponent: React.FC<InboxImageComponentProps> = ({ message, inne
   }
 
   const handleReport = (messageId:number, senderId:number) => {
-    axios.post('http://k10d203.p.ssafy.io:18080/api/report/member',
+    axios.post('http://k10d203.p.ssafy.io/api/report/member',
     {
       messageId: messageId,
       senderId: senderId,
@@ -35,8 +35,7 @@ const InboxImageComponent: React.FC<InboxImageComponentProps> = ({ message, inne
     {
       headers: {
         'Content-Type': 'application/json',
-        // Authorization: `Bearer ${localStorage.getItem('accessToken')}`
-        Authorization: `BearereyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImlkIjoyLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE0NzEwMDkxLCJleHAiOjE3NTA3MTAwOTF9.coDlad6k0UadtPqBvTIBFhXByytdncFAvChB0kZnN9g`,
+        Authorization: `Bearer ${localStorage.getItem('AccessToken')}`
     }}
     )
     .then((res) => {

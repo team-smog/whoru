@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-// import axios from "axios";
 import Header, { IHeaderInfo } from "@/components/@common/Header";
 import Bell from "@/assets/@common/Bell.png"
 import NavigationBar from "@/components/@common/NavigationBar";
@@ -61,10 +60,9 @@ const MainPage = () => {
 
   const handleRefresh = async (): Promise<void> => {
     console.log("firstId", firstId);
-    const res = await fetch(`http://k10d203.p.ssafy.io:18080/api/message/recent?firstid=${firstId}`, {
+    const res = await fetch(`https://k10d203.p.ssafy.io/api/message/recent?firstid=${firstId}`, {
       headers: {
-        // 'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
-        Authorization: `BearereyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImlkIjoyLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE0NzEwMDkxLCJleHAiOjE3NTA3MTAwOTF9.coDlad6k0UadtPqBvTIBFhXByytdncFAvChB0kZnN9g`,
+        Authorization: 'Bearer' + localStorage.getItem('AccessToken'),
       },
     })
     const data = await res.json();
@@ -85,10 +83,9 @@ const MainPage = () => {
     if (lastId === null) {
       console.log("firstId", firstId);
       console.log("lastId", lastId);
-      const res = await fetch(`http://k10d203.p.ssafy.io:18080/api/message?size=${20}`, {
+      const res = await fetch(`https://k10d203.p.ssafy.io/api/message?size=${20}`, {
         headers: {
-          // 'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
-          Authorization: `BearereyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImlkIjoyLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE0NzEwMDkxLCJleHAiOjE3NTA3MTAwOTF9.coDlad6k0UadtPqBvTIBFhXByytdncFAvChB0kZnN9g`,
+          Authorization: 'Bearer' + localStorage.getItem('AccessToken'),
         },
       })
       const data = await res.json();
@@ -107,10 +104,9 @@ const MainPage = () => {
     } else {
       console.log("firstId", firstId);
       console.log("lastId", lastId);
-      const res = await fetch(`http://k10d203.p.ssafy.io:18080/api/message?lastid=${lastId}&size=${20}`, {
+      const res = await fetch(`https://k10d203.p.ssafy.io:18080/api/message?lastid=${lastId}&size=${20}`, {
         headers: {
-          // 'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
-          'Authorization': 'BearereyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImlkIjoyLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE0NzEwMDkxLCJleHAiOjE3NTA3MTAwOTF9.coDlad6k0UadtPqBvTIBFhXByytdncFAvChB0kZnN9g'
+          Authorization: 'Bearer' + localStorage.getItem('AccessToken'),
         },
       })
       const data = await res.json();
@@ -140,7 +136,7 @@ const MainPage = () => {
   //   console.log("data", data);
   // }, [data]);
 
-  const { data, status, fetchNextPage, fetchPreviousPage, isFetchingNextPage, hasNextPage } = useInfiniteQuery({
+  const { data, status, fetchNextPage, isFetchingNextPage, hasNextPage } = useInfiniteQuery({
     queryKey: ['message'],
     queryFn: fetchData,
     initialPageParam: 0,
@@ -151,7 +147,6 @@ const MainPage = () => {
       // console.log({lastPage, allPages});
       // return allPages.length + 1;
       // const nextPage = lastPage.length ? allPages.length : undefined;
-      return 20;
       // return nextPage;
     },
     getPreviousPageParam: (firstPage, allPages) => {
@@ -159,8 +154,6 @@ const MainPage = () => {
       // console.log("allPages", allPages);
       return firstPage.length ? allPages.length + 1 : undefined;
       // console.log({lastPage, allPages});
-
-      return 20;
       // return nextPage;
     },
     refetchOnMount: false,
@@ -181,7 +174,6 @@ const MainPage = () => {
 
   useEffect(() => {
     if (inView && hasNextPage && hasNext){
-      // console.log('Fire!!!');
       fetchNextPage();
     }
   }, [inView, hasNextPage, fetchNextPage])

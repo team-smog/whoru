@@ -195,12 +195,10 @@ const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
         console.log("newBlob:", newBlob);
     
         try {
-            // const response = await axios.post('https://k10d203.p.ssafy.io/api/message/file', formData, {
-            const response = await axios.post(`http://k10d203.p.ssafy.io:18080/api/message/${messageId}/file`, formData, {
+            const response = await axios.post(`https://k10d203.p.ssafy.io/api/message/${messageId}/file`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    // 'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
-                    'Authorization': 'BearereyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImlkIjoyLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE0NzEwMDkxLCJleHAiOjE3NTA3MTAwOTF9.coDlad6k0UadtPqBvTIBFhXByytdncFAvChB0kZnN9g'
+                    Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
                 }
             });
             console.log(response.data);
@@ -221,14 +219,12 @@ const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
         console.log("newBlob:", newBlob);
     
         try {
-            // const response = await axios.post('https://k10d203.p.ssafy.io/api/message/file', formData, {
-            const response = await axios.post('http://k10d203.p.ssafy.io:18080/api/message/file', formData, {
+            const response = await axios.post('https://k10d203.p.ssafy.io/api/message/file', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    // 'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
-                    'Authorization': 'BearereyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImlkIjoyLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE0NzEwMDkxLCJleHAiOjE3NTA3MTAwOTF9.coDlad6k0UadtPqBvTIBFhXByytdncFAvChB0kZnN9g'
+                    Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
                 }
-            });
+            })
             console.log(response.data);
             navigate('/');
         } catch (error) {

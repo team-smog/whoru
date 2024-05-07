@@ -41,9 +41,9 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: (
-      // <AuthWrapper>
+      <AuthWrapper>
         <MainPage />
-      // </AuthWrapper>
+      </AuthWrapper>
     )
   },
   {
@@ -109,9 +109,9 @@ const router = createBrowserRouter([
   {
     path: '/post',
     element: (
-      // <AuthWrapper>
+      <AuthWrapper>
         <PostPage />
-      // </AuthWrapper>
+      </AuthWrapper>
     )
   },
   {
