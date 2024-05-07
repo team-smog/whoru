@@ -4,9 +4,10 @@ import ulIcon from '../../assets/components/InboxImageComponent/image-component-
 import sqIcon from '../../assets/components/InboxImageComponent/image-component-sq-button.svg'
 import xIcon from '../../assets/components/InboxImageComponent/image-component-x-button.svg'
 import { MessageInfoDetail } from '../../types/mainTypes'
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
 import { setReplyMessage } from '@/stores/storeMessageId';
+import axios from 'axios'
 
 
 interface InboxImageComponentProps extends React.HTMLAttributes<HTMLDivElement>{
@@ -17,12 +18,34 @@ interface InboxImageComponentProps extends React.HTMLAttributes<HTMLDivElement>{
 const InboxImageComponent: React.FC<InboxImageComponentProps> = ({ message, innerRef, ...props }) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const messageId = useSelector((state: any) => state.reply.messageId)
+  // const messageId = useSelector((state: any) => state.reply.messageId)
 
   const handleReply = (messageId: number) => {
     dispatch(setReplyMessage(messageId))
     // console.log('messageId', messageId)
     navigate('/post')
+  }
+
+  const handleReport = (messageId:number, senderId:number) => {
+    axios.post('http://k10d203.p.ssafy.io:18080/api/report/member',
+    {
+      messageId: messageId,
+      senderId: senderId,
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        // Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+        Authorization: `BearereyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImlkIjoyLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE0NzEwMDkxLCJleHAiOjE3NTA3MTAwOTF9.coDlad6k0UadtPqBvTIBFhXByytdncFAvChB0kZnN9g`,
+    }}
+    )
+    .then((res) => {
+      console.log(res);
+      alert('신고가 완료되었습니다.');
+    })
+    .catch((err) => {
+      console.log(err);
+    })
   }
 
   const createDate = new Date(message.createDate);
@@ -67,7 +90,7 @@ const InboxImageComponent: React.FC<InboxImageComponentProps> = ({ message, inne
       </div>
       <div className={styles.inboxImageComponentFooter}>
         <button className={styles.inboxImageComponentFooterButton} onClick={() => handleReply(message.id)}>답장</button>
-        <button className={styles.inboxImageComponentFooterReportButton}>신고</button>
+        <button className={styles.inboxImageComponentFooterReportButton} onClick={() => handleReport(message.id, message.senderId)}>신고</button>
       </div>
     </div>
   )

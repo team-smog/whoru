@@ -9,7 +9,7 @@ import InboxVoiceComponent from "@/components/mainPage/InboxVoiceComponent";
 import styles from "./MainPage.module.css";
 import { MessageInfoDetail } from "@/types/mainTypes";
 import PullToRefresh from 'react-pull-to-refresh';
-import { useInfiniteQuery, useQueryClient, useMutation } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from 'react-intersection-observer';
 // import { next } from "million/compiler";
 import { useDispatch, useSelector } from "react-redux";
@@ -57,7 +57,7 @@ const MainPage = () => {
   //   console.log("lastId", lastId);
   // }, [firstId, lastId]);
 
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
 
   const handleRefresh = async (): Promise<void> => {
     console.log("firstId", firstId);
@@ -80,12 +80,12 @@ const MainPage = () => {
   //   await queryClient.invalidateQueries('message');
   // }
   
-  const fetchData = async ({ pageParam }: {pageParam: number}) => {
-
+  // const fetchData = async ({ pageParam }: {pageParam: number}) => {
+  const fetchData = async () => {
     if (lastId === null) {
       console.log("firstId", firstId);
       console.log("lastId", lastId);
-      const res = await fetch(`http://k10d203.p.ssafy.io:18080/api/message?size=${pageParam}`, {
+      const res = await fetch(`http://k10d203.p.ssafy.io:18080/api/message?size=${20}`, {
         headers: {
           // 'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
           Authorization: `BearereyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImlkIjoyLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE0NzEwMDkxLCJleHAiOjE3NTA3MTAwOTF9.coDlad6k0UadtPqBvTIBFhXByytdncFAvChB0kZnN9g`,
@@ -107,7 +107,7 @@ const MainPage = () => {
     } else {
       console.log("firstId", firstId);
       console.log("lastId", lastId);
-      const res = await fetch(`http://k10d203.p.ssafy.io:18080/api/message?lastid=${lastId}&size=${pageParam}`, {
+      const res = await fetch(`http://k10d203.p.ssafy.io:18080/api/message?lastid=${lastId}&size=${20}`, {
         headers: {
           // 'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
           'Authorization': 'BearereyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImlkIjoyLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE0NzEwMDkxLCJleHAiOjE3NTA3MTAwOTF9.coDlad6k0UadtPqBvTIBFhXByytdncFAvChB0kZnN9g'
@@ -140,17 +140,26 @@ const MainPage = () => {
   //   console.log("data", data);
   // }, [data]);
 
-  const { data, status, error, fetchNextPage, isFetchingNextPage, hasNextPage } = useInfiniteQuery({
+  const { data, status, fetchNextPage, fetchPreviousPage, isFetchingNextPage, hasNextPage } = useInfiniteQuery({
     queryKey: ['message'],
     queryFn: fetchData,
-    initialPageParam: 20,
+    initialPageParam: 0,
     getNextPageParam: (lastPage, allPages) => {
-      console.log("lastPage", lastPage);
-      console.log("allPages", allPages);
-      // return lastPage.length ? allPages.length + 1 : undefined;
+      // console.log("lastPage", lastPage);
+      // console.log("allPages", allPages);
+      return lastPage.length ? allPages.length + 1 : undefined;
       // console.log({lastPage, allPages});
       // return allPages.length + 1;
       // const nextPage = lastPage.length ? allPages.length : undefined;
+      return 20;
+      // return nextPage;
+    },
+    getPreviousPageParam: (firstPage, allPages) => {
+      // console.log("firstPage", firstPage);
+      // console.log("allPages", allPages);
+      return firstPage.length ? allPages.length + 1 : undefined;
+      // console.log({lastPage, allPages});
+
       return 20;
       // return nextPage;
     },
@@ -158,7 +167,7 @@ const MainPage = () => {
     refetchOnWindowFocus: false,
   })
 
-  const content = data?.pages.map((messageList: MessageInfoDetail[]) => messageList.map((message, index) => {
+  const content = data?.pages.map((messageList: MessageInfoDetail[]) => messageList.map((message) => {
     // if (messageList.length === index) {
       if (message.contentType === "text") {
         return <InboxTextComponent innerRef={ref} key={message.id} message={message} />;
@@ -178,7 +187,7 @@ const MainPage = () => {
   }, [inView, hasNextPage, fetchNextPage])
 
   useEffect(() => {
-    data
+    console.log("data", data);
   }, [data])
 
   if(status === 'pending') {

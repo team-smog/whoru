@@ -1,13 +1,14 @@
 // import axios from 'axios'
-import { useEffect } from 'react'
+// import { useEffect } from 'react'
 import styles from './InboxTextComponent.module.css'
 import ulIcon from '../../assets/components/InboxTextComponent/text-component-ul-button.svg'
 import sqIcon from '../../assets/components/InboxTextComponent/text-component-sq-button.svg'
 import xIcon from '../../assets/components/InboxTextComponent/text-component-x-button.svg'
 import { MessageInfoDetail } from '../../types/mainTypes'
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
 import { setReplyMessage } from '@/stores/storeMessageId';
+import axios from 'axios'
 
 
 interface InboxTextComponentProps extends React.HTMLAttributes<HTMLDivElement>{
@@ -19,12 +20,34 @@ const InboxTextComponent: React.FC<InboxTextComponentProps> = ({ message, innerR
   // const [content, setContent] = useState<string>("")
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const messageId = useSelector((state: any) => state.reply.messageId);
+  // const messageId = useSelector((state: any) => state.reply.messageId);
 
   const handleSetReplyMessage = (messageId:number) => {
     dispatch(setReplyMessage(messageId));
     navigate('/post');
   };
+
+  const handleReport = (messageId:number, senderId:number) => {
+    axios.post('http://k10d203.p.ssafy.io:18080/api/report/member',
+    {
+      messageId: messageId,
+      senderId: senderId,
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        // Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+        Authorization: `BearereyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImlkIjoyLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE0NzEwMDkxLCJleHAiOjE3NTA3MTAwOTF9.coDlad6k0UadtPqBvTIBFhXByytdncFAvChB0kZnN9g`,
+    }}
+    )
+    .then((res) => {
+      console.log(res);
+      alert('신고가 완료되었습니다.');
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  }
 
   const createDate = new Date(message.createDate);
   const now = new Date();
@@ -67,7 +90,7 @@ const InboxTextComponent: React.FC<InboxTextComponentProps> = ({ message, innerR
           <div className={styles.inboxTextComponentFooter}>
             <button className={styles.inboxTextComponentFooterButton} onClick={() => handleSetReplyMessage(message.id)}>답장</button>
             <button className={styles.inboxTextComponentFooterButton}>번역</button>
-            <button className={styles.inboxTextComponentFooterReportButton}>신고</button>
+            <button className={styles.inboxTextComponentFooterReportButton} onClick={() => handleReport(message.id, message.senderId)}>신고</button>
           </div>
         </div>
       </div>

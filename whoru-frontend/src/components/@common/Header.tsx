@@ -29,7 +29,7 @@ const Header = (props: {info:IHeaderInfo}) => {
   //       })
   //   }
 
-  const [token, setToken] = useState<string>("");
+  const [ ,setToken] = useState<string>("");
   useEffect(() => {
     const resultToken = requestPermission();
     resultToken.then((token) => {
