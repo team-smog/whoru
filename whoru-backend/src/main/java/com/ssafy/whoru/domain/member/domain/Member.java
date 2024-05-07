@@ -82,4 +82,6 @@ public class Member {
 
     public void updateIcon(Icon changeIcon) { this.icon = changeIcon; }
 
+    public void setFcm(FcmNotification fcm){ this.fcmNotification = fcm; }
+
 }

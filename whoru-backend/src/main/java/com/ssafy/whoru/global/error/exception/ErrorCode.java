@@ -43,6 +43,7 @@ public enum ErrorCode {
     FCM_NOT_AVAILABLE(453, "FCM이 설정 되지 않아 작업을 실행할 수 없습니다."),
     FCM_TOKEN_INVALID(422, "토큰이 잘못되거나 변조되어 작업을 실행할 수 없습니다."),
 
+
     // Message
     REPORTED_MESSAGE_EXCEPTION(451, "신고한 메세지에는 답장할 수 없습니다."),
 

@@ -5,6 +5,7 @@ package com.ssafy.whoru.domain.member.api;
 import com.ssafy.whoru.domain.member.application.FcmService;
 import com.ssafy.whoru.domain.member.application.MemberService;
 import com.ssafy.whoru.domain.member.dao.FcmRepository;
+import com.ssafy.whoru.domain.member.dao.MemberRepository;
 import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.domain.member.dto.response.ChangeIconResponse;
 import com.ssafy.whoru.domain.member.dto.response.ProfileResponse;
@@ -29,6 +30,7 @@ public class MemberApi implements MemberApiDocs {
 
     private final MemberService memberService;
     private final FcmService fcmService;
+    private final MemberRepository memberRepository;
 
     @PatchMapping("/icon")
     public ResponseEntity<WrapResponse<ChangeIconResponse>> changeIcon(@AuthenticationPrincipal CustomOAuth2User member, @RequestParam("iconId") int iconId) {
@@ -89,8 +91,8 @@ public class MemberApi implements MemberApiDocs {
     }
 
     @PostMapping("/fcmregistration")
-    public ResponseEntity<WrapResponse<Void>> create(CustomOAuth2User member, String fcmToken) {
-        fcmService.registrationFcm(fcmToken);
+    public ResponseEntity<WrapResponse<Void>> create(@AuthenticationPrincipal CustomOAuth2User member, String fcmToken) {
+        fcmService.registrationFcm(member.getId(),fcmToken);
         return ResponseEntity.ok(WrapResponse.create(SuccessType.SIMPLE_STATUS));
     }
 
