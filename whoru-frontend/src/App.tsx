@@ -11,11 +11,11 @@ import AnnouncementPage from './pages/Announcement/AnnouncementPage';
 import Chacollection from './pages/Chacollection/Chacollection';
 import Inquiry from './pages/Inquiry/Inquiry';
 import AdminPage from './pages/Admin/AdminPage';
-import ReceivePage from './pages/Login/ReceivePage';
-import { useEffect, useRef, useState } from 'react';
-import { getFirebaseMessagingObject } from "./FirebaseUtil"
-import { onMessage } from "firebase/messaging";
-import { requestPermission } from './FirebaseUtil';
+// import ReceivePage from './pages/Login/ReceivePage';
+// import { useEffect, useRef, useState } from 'react';
+// import { getFirebaseMessagingObject } from "./FirebaseUtil"
+// import { onMessage } from "firebase/messaging";
+// import { requestPermission } from './FirebaseUtil';
 
 import CallBackPage from './pages/CallBack/CallBackPage';
 
@@ -130,37 +130,7 @@ const router = createBrowserRouter([
 
 const App = () => {
 
-  const [token, setToken] = useState<string>("");
-  useEffect(() => {
-    const resultToken = requestPermission();
-    resultToken.then((token) => {
-      setToken(token);
-    });
-  }, []);
-
-  const messagingObject = useRef(null);
-  useEffect(()=>{
-      messagingObject.current = getFirebaseMessagingObject()
-    },[])
-  if(messagingObject.current !== null){
-    console.log(messagingObject.current)
-      onMessage(messagingObject.current, (body)=>{
-        if (body && body.notification) {
-          console.log(body.notification.body);
-          alert(body.notification.body);
-        }
-      })
-  }
-
-
-  useEffect(() => {
-    navigator.serviceWorker.register('../public/firebase-messaging-sw.js')
-      .then((registration) => {
-        console.log('Service Worker registered with scope:', registration.scope);
-      }).catch((err) => {
-        console.error('Service Worker registration failed:', err);
-      });
-  }, []);
+  
 
 
   return (

@@ -1,8 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import Bell from "@/assets/@common/Bell.png"
-import { getFirebaseMessagingObject } from "../../FirebaseUtil"
+import { useEffect, useRef, useState } from "react";
+import { getFirebaseMessagingObject, requestPermission } from "@/FirebaseUtil"
 import { onMessage } from "firebase/messaging";
-import { useEffect, useRef } from "react";
+// import { requestPermission } from './FirebaseUtil';
 
 export interface IHeaderInfo {
   left_1: React.ReactNode | null;
@@ -27,6 +28,38 @@ const Header = (props: {info:IHeaderInfo}) => {
   //         }
   //       })
   //   }
+
+  const [token, setToken] = useState<string>("");
+  useEffect(() => {
+    const resultToken = requestPermission();
+    resultToken.then((token) => {
+      setToken(token);
+    });
+  }, []);
+
+  const messagingObject = useRef(null);
+  useEffect(()=>{
+      messagingObject.current = getFirebaseMessagingObject()
+    },[])
+  if(messagingObject.current !== null){
+    console.log(messagingObject.current)
+      onMessage(messagingObject.current, (body)=>{
+        if (body && body.notification) {
+          console.log(body.notification.body);
+          alert(body.notification.body);
+        }
+      })
+  }
+
+
+  useEffect(() => {
+    navigator.serviceWorker.register('../public/firebase-messaging-sw.js')
+      .then((registration) => {
+        console.log('Service Worker registered with scope:', registration.scope);
+      }).catch((err) => {
+        console.error('Service Worker registration failed:', err);
+      });
+  }, []);
 
   const {left_1, left_2, center, right} = props.info;
 

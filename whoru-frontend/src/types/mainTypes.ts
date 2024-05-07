@@ -1,12 +1,14 @@
 export type MessageInfoDetail = {
-  id: number;
-  senderId: number;
-  receiverId: number;
   content: string;
   contentType: string;
-  readStatus: boolean;
+  createDate: string;
+  id: number;
+  isReported: boolean;
   isResponse: boolean;
   parentId: number;
-  isReported: boolean;
+  readDate: string;
+  readStatus: boolean;
+  receiverId: number;
   responseStatus: boolean;
+  senderId: number;
 }

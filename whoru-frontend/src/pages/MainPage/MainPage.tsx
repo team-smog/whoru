@@ -1,5 +1,5 @@
-import { useState, useEffect,useRef } from "react";
-import axios from "axios";
+import { useState, useEffect } from "react";
+// import axios from "axios";
 import Header, { IHeaderInfo } from "@/components/@common/Header";
 import Bell from "@/assets/@common/Bell.png"
 import NavigationBar from "@/components/@common/NavigationBar";
@@ -9,11 +9,11 @@ import InboxVoiceComponent from "@/components/mainPage/InboxVoiceComponent";
 import styles from "./MainPage.module.css";
 import { MessageInfoDetail } from "@/types/mainTypes";
 import PullToRefresh from 'react-pull-to-refresh';
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { useInView } from 'react-intersection-observer';
-import { next } from "million/compiler";
+// import { next } from "million/compiler";
 import { useDispatch, useSelector } from "react-redux";
-import { setReplyMessage } from "@/stores/store";
+import { setFirstId, setLastId } from "@/stores/storeMessageId";
 
 
 //todo: 
@@ -26,144 +26,41 @@ const MainPage = () => {
     right: <img src={Bell} alt="Alarm"/>
   }
 
-  interface InboxData {
-    content: MessageInfoDetail[];
-  }
+  // interface InboxData {
+  //   content: MessageInfoDetail[];
+  // }
 
-  interface ResponseData {
-    data: InboxData;
-    hasNext: boolean;
-  }
+  // interface ResponseData {
+  //   data: InboxData;
+  //   hasNext: boolean;
+  // }
+
+  // const messageId = useSelector((state: any) => state.reply.messageId);
 
   const dispatch = useDispatch();
-  const messageId = useSelector((state: any) => state.reply.messageId);
+  const firstId = useSelector((state: any) => state.message.firstId);
+  const lastId = useSelector((state: any) => state.message.lastId);
+  const [hasNext,setHasNext] = useState<boolean | null>(null);
+
+  // const [ lastId, setLastId ] = useState<number | null>(null);
+  // const [ firstId, setFirstId ] = useState<number | null>(null);
   
-  // const [refreshing, setRefreshing] = useState(false);
-
-  // const [messageInfo, setMessageInfo] = useState<MessageInfoDetail[]>();
-  // const [messageInfo, setMessageInfo] = useState<MessageInfoDetail[]>();
-  // const messageInfoSize: number = 20;
-  // const [lastId, setLastId] = useState<string | null>(null);
-  // const [hasMore, setHasMore] = useState(true);
-
-  
-
-  // useEffect(() => {
-  //   // axios.get<ResponseData>(`https://k10d203.p.ssafy.io/api/message?lastid=${lastId}&size=${messageInfoSize}`, {
-  //   axios.get<ResponseData>(`http://192.168.100.208:8080/api/message?size=${messageInfoSize}`, {
-  //     headers: {
-  //       // Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-  //       Authorization: 'BearereyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImlkIjoyLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE0NzEwMDkxLCJleHAiOjE3NTA3MTAwOTF9.coDlad6k0UadtPqBvTIBFhXByytdncFAvChB0kZnN9g',
-  //     },
-  //   })
-  //   .then((res) => {
-  //     console.log(res);
-  //     setMessageInfo(res.data.data.content);
-  //     setHasMore(res.data.hasNext);
-  //     setLastId(res.data.data.content[res.data.data.content.length - 1].id);
-  //   })
-  //   .catch((err) => {
-  //     console.log(err);
-  //   });
-  // }, []);
-
-  // const handleRefresh = (): Promise<void> => {
-    // // setRefreshing(true);
-    // return axios.get<ResponseData>(`https://k10d203.p.ssafy.io/api/message/resent`, {
-    //   headers: {
-    //     Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-    //   },
-    // })
-    // .then((res) => {
-    //   // setMessageInfo(prevMessageInfo => [...res.data.data.content, ...(prevMessageInfo || [])]);
-    //   // setLastId(res.data.data.content[res.data.data.content.length - 1].id);
-    //   // setHasMore(res.data.hasNext);
-    // })
-    // .catch((err) => {
-    //   console.log(err);
-    // })
-    // .finally(() => {
-    //   // setRefreshing(false);
-    // });
-  // };
-
-  // const fetchMoreData = () => {
-  //   console.log('fetchMoreData');
-  //   // axios.get<ResponseData>(`https://k10d203.p.ssafy.io/api/message?lastid=${lastId}&size=${messageInfoSize}`, {
-  //   axios.get<ResponseData>(`http://192.168.100.208:8080/api/message?lastid=${lastId}&size=${messageInfoSize}`, {
-  //     headers: {
-  //       // Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-  //       Authorization: 'BearereyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImlkIjoyLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE0NzEwMDkxLCJleHAiOjE3NTA3MTAwOTF9.coDlad6k0UadtPqBvTIBFhXByytdncFAvChB0kZnN9g',
-  //     },
-  //   })
-  //   .then((res) => {
-  //     if (res.data.data.content.length > 0) {
-  //       setMessageInfo(prevMessageInfo => [...(prevMessageInfo || []), ...res.data.data.content]);
-  //       setLastId(res.data.data.content[res.data.data.content.length - 1].id);
-  //       setHasMore(res.data.hasNext);
-  //     } else {
-  //       setHasMore(false);
-  //     }
-  //   })
-  //   .catch((err) => {
-  //     console.log(err);
-  //   });
-  // };
-
-  // useEffect(()=>{
-  //   if(!targetRef.current){
-  //       return;
-  //   }
-  //   const observer = new IntersectionObserver((entries)=>{
-  //       console.log(entries[0].isIntersecting);
-  //       setIntersecting(entries[0].isIntersecting);
-  //   });
-  //   observer.observe(targetRef.current);
-  //   return ()=>{
-  //       observer.disconnect();
-  //   }
-  // },[isSuccess])
-
-
-  // useEffect(()=>{
-  //     if(intersecting && hasMore ){
-  //       fetchMoreData();
-  //     }
-  // },[intersecting, hasMore])
-
-  const [ lastId, setLastId ] = useState<number | null>(null);
-  const [ firstId, setFirstId ] = useState<number | null>(null);
-  const [ messageList, setMessageList ] = useState<MessageInfoDetail[]>([]);
 
   const { ref, inView } = useInView();
 
   // useEffect(() => {
-  //   axios.get<ResponseData>(`http://k10d203.p.ssafy.io:18080/api/message?size=${20}`, {
-  //     headers: {
-  //       Authorization: `BearereyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImlkIjoyLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE0NzEwMDkxLCJleHAiOjE3NTA3MTAwOTF9.coDlad6k0UadtPqBvTIBFhXByytdncFAvChB0kZnN9g`,
-  //     },
-  //   })
-  //   .then((res) => {
-  //     console.log(res);
-  //   })
-  //   .catch((err) => {
-  //     console.log(err);
-  //   });
-  // }, []);
+  //   console.log("messageId", messageId);
+  // }, [messageId]);
 
-  useEffect(() => {
-    console.log("messageId", messageId);
-  }, [messageId]);
+  // useEffect(() => {
+  //   console.log("firstId", firstId);
+  //   console.log("lastId", lastId);
+  // }, [firstId, lastId]);
 
-  useEffect(() => {
+  const queryClient = useQueryClient();
+
+  const handleRefresh = async (): Promise<void> => {
     console.log("firstId", firstId);
-  }, [firstId]);
-
-  useEffect(() => {
-    console.log("lastId", lastId);
-  }, [lastId]);
-
-  const handleRefresh = async () => {
     const res = await fetch(`http://k10d203.p.ssafy.io:18080/api/message/recent?firstid=${firstId}`, {
       headers: {
         // 'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
@@ -174,50 +71,91 @@ const MainPage = () => {
     console.log(data);
     return data.data.content;
   }
+
+  // const Refresh = async ():Promise<void> => {
+  //   queryClient.setQueryData(['message'], {
+  //     pages: [],
+  //     pageParams: [],
+  //   });
+  //   await queryClient.invalidateQueries('message');
+  // }
   
   const fetchData = async ({ pageParam }: {pageParam: number}) => {
-    if (!lastId) {
+
+    if (lastId === null) {
+      console.log("firstId", firstId);
+      console.log("lastId", lastId);
       const res = await fetch(`http://k10d203.p.ssafy.io:18080/api/message?size=${pageParam}`, {
         headers: {
           // 'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
           Authorization: `BearereyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImlkIjoyLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE0NzEwMDkxLCJleHAiOjE3NTA3MTAwOTF9.coDlad6k0UadtPqBvTIBFhXByytdncFAvChB0kZnN9g`,
-        }, 
+        },
       })
       const data = await res.json();
       console.log(data);
-      setFirstId(data.data.content[0].id);
-      // console.log("firstId", firstId);
-      setLastId(data.data.content[data.data.content.length - 1].id);
-      // console.log("lastId", lastId);
+      console.log(data.data.hasNext);
+      setHasNext(data.data.hasNext);
+      // console.log(data.data.content[0].id);
+      // console.log(data.data.content[data.data.content.length - 1].id);
+      // setFirstId(data.data.content[0].id);
+      dispatch(setFirstId(data.data.content[0].id));
+      console.log("firstId", firstId);
+      // setLastId(data.data.content[data.data.content.length - 1].id);
+      dispatch(setLastId(data.data.content[data.data.content.length - 1].id));
+      console.log("lastId", lastId);
       return data.data.content;
     } else {
+      console.log("firstId", firstId);
+      console.log("lastId", lastId);
       const res = await fetch(`http://k10d203.p.ssafy.io:18080/api/message?lastid=${lastId}&size=${pageParam}`, {
         headers: {
           // 'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
           'Authorization': 'BearereyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImlkIjoyLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE0NzEwMDkxLCJleHAiOjE3NTA3MTAwOTF9.coDlad6k0UadtPqBvTIBFhXByytdncFAvChB0kZnN9g'
-        }, 
+        },
       })
       const data = await res.json();
-      // console.log(data);
+      console.log(data);
+      setHasNext(data.data.hasNext);
+      // console.log(data.data.content[0].id);
       // setFirstId(data.data.content[0].id);
-      setLastId(data.data.content[data.data.content.length - 1].id);
-      // console.log("lastId", lastId);
+      dispatch(setFirstId(data.data.content[0].id));
+      console.log("firstId", firstId);
+      // setLastId(data.data.content[data.data.content.length - 1].id);
+      dispatch(setLastId(data.data.content[data.data.content.length - 1].id));
+      console.log("lastId", lastId);
 
       return data.data.content;
     }
   }
+
+  // useEffect(() => {
+  //   fetchData({pageParam: 20});
+  //   return () => {
+  //     console.log('cleanup');
+  //     queryClient.removeQueries({ queryKey: ['message'] });
+  //   }
+  // }, []);
+
+  // useEffect(() => {
+  //   console.log("data", data);
+  // }, [data]);
 
   const { data, status, error, fetchNextPage, isFetchingNextPage, hasNextPage } = useInfiniteQuery({
     queryKey: ['message'],
     queryFn: fetchData,
     initialPageParam: 20,
     getNextPageParam: (lastPage, allPages) => {
+      console.log("lastPage", lastPage);
+      console.log("allPages", allPages);
+      // return lastPage.length ? allPages.length + 1 : undefined;
       // console.log({lastPage, allPages});
       // return allPages.length + 1;
       // const nextPage = lastPage.length ? allPages.length : undefined;
       return 20;
       // return nextPage;
-    }
+    },
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
   })
 
   const content = data?.pages.map((messageList: MessageInfoDetail[]) => messageList.map((message, index) => {
@@ -233,11 +171,15 @@ const MainPage = () => {
   }));
 
   useEffect(() => {
-    if (inView && hasNextPage){
+    if (inView && hasNextPage && hasNext){
       // console.log('Fire!!!');
       fetchNextPage();
     }
   }, [inView, hasNextPage, fetchNextPage])
+
+  useEffect(() => {
+    data
+  }, [data])
 
   if(status === 'pending') {
     return <p>Loading...</p>

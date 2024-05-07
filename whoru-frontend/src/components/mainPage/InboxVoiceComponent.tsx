@@ -10,7 +10,7 @@ import 'react-h5-audio-player/lib/styles.css';
 import "./audioStyles.css";
 import { MessageInfoDetail } from '../../types/mainTypes'
 import { useDispatch, useSelector } from 'react-redux';
-import { setReplyMessage } from '@/stores/store';
+import { setReplyMessage } from '@/stores/storeMessageId';
 import { useNavigate } from 'react-router-dom'
 
 
@@ -31,13 +31,33 @@ const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, inne
     navigate('/post')
   }
 
+  const createDate = new Date(message.createDate);
+  const now = new Date();
+
+  const diffInMilliseconds = now.getTime() - createDate.getTime();
+  const diffInSeconds = Math.floor(diffInMilliseconds / 1000);
+  const diffInMinutes = Math.floor(diffInSeconds / 60);
+  const diffInHours = Math.floor(diffInMinutes / 60);
+  const diffInDays = Math.floor(diffInHours / 24);
+
+  let timeFromNow = '';
+  if (diffInDays > 0) {
+    timeFromNow = `${diffInDays}일 전`;
+  } else if (diffInHours > 0) {
+    timeFromNow = `${diffInHours}시간 전`;
+  } else if (diffInMinutes > 0) {
+    timeFromNow = `${diffInMinutes}분 전`;
+  } else {
+    timeFromNow = `${diffInSeconds}초 전`;
+  }
+
   return (
     <div className={styles.inboxVoiceComponent} key={message.id} ref={innerRef} {...props}>
       {/* <img src={Header} alt="component-Header" className={styles.inboxVoiceComponentHeader} /> */}
       <div className={styles.inboxVoiceComponentHeader} key={message.id} {...props}>
         <div className={styles.inboxVoiceComponentHeaderText}>
           <p className={styles.inboxVoiceComponentHeaderTextTitle}>익명 메세지</p>
-          <p className={styles.inboxVoiceComponentHeaderTime}>1분전</p>
+          <p className={styles.inboxVoiceComponentHeaderTime}>{timeFromNow}</p>
         </div>
         <div className={styles.inboxVoiceComponentHeaderIcons}>
           <img src={back} alt="back-icon" />

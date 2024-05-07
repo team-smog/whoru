@@ -7,7 +7,7 @@ import xIcon from '../../assets/components/InboxTextComponent/text-component-x-b
 import { MessageInfoDetail } from '../../types/mainTypes'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
-import { setReplyMessage } from '@/stores/store';
+import { setReplyMessage } from '@/stores/storeMessageId';
 
 
 interface InboxTextComponentProps extends React.HTMLAttributes<HTMLDivElement>{
@@ -26,13 +26,34 @@ const InboxTextComponent: React.FC<InboxTextComponentProps> = ({ message, innerR
     navigate('/post');
   };
 
+  const createDate = new Date(message.createDate);
+  const now = new Date();
+
+  const diffInMilliseconds = now.getTime() - createDate.getTime();
+  const diffInSeconds = Math.floor(diffInMilliseconds / 1000);
+  const diffInMinutes = Math.floor(diffInSeconds / 60);
+  const diffInHours = Math.floor(diffInMinutes / 60);
+  const diffInDays = Math.floor(diffInHours / 24);
+
+  let timeFromNow = '';
+  if (diffInDays > 0) {
+    timeFromNow = `${diffInDays}일 전`;
+  } else if (diffInHours > 0) {
+    timeFromNow = `${diffInHours}시간 전`;
+  } else if (diffInMinutes > 0) {
+    timeFromNow = `${diffInMinutes}분 전`;
+  } else {
+    timeFromNow = `${diffInSeconds}초 전`;
+  }
+  
+
 
   return (
     <div className={styles.inboxTextComponent} key={message.id} ref={innerRef} {...props}>
       <div className={styles.inboxTextComponentHeader} key={message.id} {...props}>
         <div className={styles.inboxTextComponentHeaderText}>
           <p className={styles.inboxTextComponentHeaderTextTitle}>익명 메세지</p>
-          <p className={styles.inboxTextComponentHeaderTime}>시간계산</p>
+          <p className={styles.inboxTextComponentHeaderTime}>{timeFromNow}</p>
         </div>
         <div className={styles.inboxTextComponentHeaderIcons}>
           <img src={ulIcon} alt="ul-icon" />
