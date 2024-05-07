@@ -43,7 +43,7 @@ public interface MemberApiDocs {
 
     @Operation(summary = "로그아웃",description = "토큰을 받아 유저를 로그아웃 합니다.")
     @PostMapping("/logout")
-    ResponseEntity<WrapResponse<Void>> logout(@AuthenticationPrincipal CustomOAuth2User member, HttpServletResponse response);
+    ResponseEntity<WrapResponse<Void>> logout(@AuthenticationPrincipal CustomOAuth2User member, HttpServletRequest request, HttpServletResponse response);
 
     @Operation(summary = "accessToken 재발급 ",description = "토큰을 받아 유저의 accessToken을 재발급합니다.")
     @ApiResponse(responseCode = "200", description = "TokenResponse", content = @Content(schema = @Schema(implementation = TokenResponse.class)))
@@ -51,9 +51,14 @@ public interface MemberApiDocs {
     ResponseEntity<WrapResponse<TokenResponse>> regenerateToken(@AuthenticationPrincipal CustomOAuth2User member, HttpServletRequest request);
 
 
-    @Operation(summary = "유저 정보 반환", description = "사용자의 프로필 icon과 닉네임, pushalarm 설정상태, 언어상태, fcm 기기명을 가져올 수 있다.")
+    @Operation(summary = "유저 정보 반환", description = "사용자의 프로필 icon과 닉네임, pushalarm 설정상태, 언어상태를 가져올 수 있다.")
     @ApiResponse(responseCode = "200",description = "fcm 기기명과 iconUrl은 없을시 null 문자열 반환, pushalarm은 default true 입니다. 언어는 korean 고정상태입니다.(미구현)", content = @Content(schema = @Schema(implementation = ProfileResponse.class)))
     @GetMapping("/profile")
     ResponseEntity<WrapResponse<ProfileResponse>> getProfile(@AuthenticationPrincipal CustomOAuth2User member);
+
+    @Operation(summary = "FCM 기기등록", description = "발급받은 토큰을 통해 DB에 fcm 기기를 등록할 수 있다.")
+    @ApiResponse(responseCode = "200")
+    @PostMapping("/fcmRegistration")
+    ResponseEntity<WrapResponse<Void>> create(@AuthenticationPrincipal CustomOAuth2User member,String fcmToken);
 
 }

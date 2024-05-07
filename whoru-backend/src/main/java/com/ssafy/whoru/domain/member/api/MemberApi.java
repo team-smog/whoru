@@ -2,7 +2,9 @@
 
 package com.ssafy.whoru.domain.member.api;
 
+import com.ssafy.whoru.domain.member.application.FcmService;
 import com.ssafy.whoru.domain.member.application.MemberService;
+import com.ssafy.whoru.domain.member.dao.FcmRepository;
 import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.domain.member.dto.response.ChangeIconResponse;
 import com.ssafy.whoru.domain.member.dto.response.ProfileResponse;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 public class MemberApi implements MemberApiDocs {
 
     private final MemberService memberService;
+    private final FcmService fcmService;
 
     @PatchMapping("/icon")
     public ResponseEntity<WrapResponse<ChangeIconResponse>> changeIcon(@AuthenticationPrincipal CustomOAuth2User member, @RequestParam("iconId") int iconId) {
@@ -41,15 +44,20 @@ public class MemberApi implements MemberApiDocs {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<WrapResponse<Void>> logout(@AuthenticationPrincipal CustomOAuth2User member, HttpServletResponse response) {
-
-        Cookie cookie = new Cookie("Refresh", null);
-        cookie.setPath("/");
-        cookie.setHttpOnly(true);
-        cookie.setMaxAge(0);
-        response.addCookie(cookie);
-
+    public ResponseEntity<WrapResponse<Void>> logout(@AuthenticationPrincipal CustomOAuth2User member, HttpServletRequest request, HttpServletResponse response) {
         memberService.logout(member.getId());
+        Cookie[] cookies = request.getCookies();
+        Cookie myCookie;
+        for(Cookie c : cookies){
+            if(c.getName().equals("Refresh")){
+                myCookie = c;
+                myCookie.setHttpOnly(true);
+                myCookie.setPath("/");
+                myCookie.setMaxAge(0);
+                response.addCookie(myCookie);
+                break;
+            }
+        }
         return ResponseEntity.ok(WrapResponse.create(SuccessType.SIMPLE_STATUS));
     }
 
@@ -79,5 +87,13 @@ public class MemberApi implements MemberApiDocs {
         ProfileResponse response = memberService.getProfile(member.getId());
         return ResponseEntity.ok(WrapResponse.create(response,SuccessType.SIMPLE_STATUS));
     }
+
+    @PostMapping("/fcmregistration")
+    public ResponseEntity<WrapResponse<Void>> create(CustomOAuth2User member, String fcmToken) {
+        fcmService.registrationFcm(fcmToken);
+        return ResponseEntity.ok(WrapResponse.create(SuccessType.SIMPLE_STATUS));
+    }
+
+
 
 }

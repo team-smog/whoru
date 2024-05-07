@@ -11,6 +11,5 @@ public class ProfileResponse {
     private String username;
     private String iconUrl;
     private boolean pushAlarm;
-    private String deviceName;
     private LanguageType languageType;
 }

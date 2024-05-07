@@ -17,4 +17,20 @@ public class FcmServiceImpl implements FcmService{
         fcm.updateNotificationsEnabled(!fcm.getIsEnabled());
         fcmRepository.save(fcm);
     }
+
+    @Override
+    public void registrationFcm(String token) {
+        try {
+            FcmNotification fcm = FcmNotification
+                    .builder()
+                    .fcmToken(token)
+                    .isEnabled(true)
+                    .build();
+            fcmRepository.save(fcm);
+        }catch(Exception e){
+
+        }
+    }
+
+
 }

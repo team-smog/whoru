@@ -29,9 +29,6 @@ public class FcmNotification {
     @Builder.Default
     private Boolean isEnabled = true;
 
-    @Column(name = "device_name")
-    private String deviceName;
-
     public void updateNotificationsEnabled(Boolean status) { this.isEnabled = status; }
 
 
