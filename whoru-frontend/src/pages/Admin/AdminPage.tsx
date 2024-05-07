@@ -2,7 +2,7 @@ import Header, { IHeaderInfo } from "@/components/@common/Header";
 import InquiryPage from "@/components/Admin/InquiryPage/Inquiry";
 import NotificationPage from "@/components/Admin/NotificationPage/Notification";
 import ReportPage from "@/components/Admin/ReportPage/Report";
-import { useInquiryDetail } from "@/hooks/Admin/useAdmin";
+import { useInquiryDetail, useNotificationDetail } from "@/hooks/Admin/useAdmin";
 import { useState } from "react";
 
 export type InquiryInfo = {
@@ -18,9 +18,13 @@ export type InquiryInfo = {
 
 export type NotificationInfo = {
   id: number;
-  title:string;
-  date: string;
+  subject: string;
+  writerName: string;
   content: string;
+  boardType: string;
+  createDate: string;
+  updateDate: string;
+  isCommented: boolean;
 }
 
 export type ReportInfo = {
@@ -34,13 +38,13 @@ export type ReportInfo = {
 
 
 export type AdminData = {
-  notification_info: NotificationInfo[];
   report_info: ReportInfo[];
 }
 
 const AdminPage = () => {
   const [selectedTab, setSelectedTab] = useState<string>('Notification');
   const {data: inquiryData} = useInquiryDetail(1, 10, 0);
+  const {data: notificationData} = useNotificationDetail(1, 10);
 
   const info: IHeaderInfo = {
     left_1: "Admin",
@@ -50,20 +54,6 @@ const AdminPage = () => {
   }
 
   const dummies : AdminData = {
-    notification_info:[
-      {
-        id:1,
-        title:'[공지] 점검사항',
-        date: '2024.04.24',
-        content: '궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁'
-      },
-      {
-        id:2,
-        title:'[공지] 업데이트',
-        date: '2024.04.25',
-        content: '궁시렁궁시렁궁시렁궁시렁'
-      },
-    ],
     report_info:[
       {
         id: 1,
@@ -95,7 +85,10 @@ const AdminPage = () => {
   const renderForm = () => {
     switch (selectedTab) {
       case 'Notification':
-        return <NotificationPage data={dummies.notification_info} />;
+        if (notificationData) {
+          return <NotificationPage data={notificationData.notification_info} />;
+        }
+        break;
       case 'Inquiry':
         if (inquiryData) {
           return <InquiryPage data={inquiryData.inquiry_info} />;
