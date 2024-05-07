@@ -93,19 +93,15 @@ public class MemberTestUtil implements InitializingBean {
     }
 
     public Member Member3000_멤버추가(Icon icon){
-        FcmNotification fcm = FcmNotification.builder()
-            .fcmToken(MEMBER3000_FCM_TOKEN)
-            .deviceName("IPhone")
-            .build();
-
-        fcmRepository.save(fcm);
 
         return Member.builder()
                 .icon(icon)
                 .provider(ProviderType.kakao)
                 .memberIdentifier("1")
                 .boxCount(3)
-                .fcmNotification(fcm)
+                .fcmNotification(FcmNotification.builder()
+                        .fcmToken(MEMBER3000_FCM_TOKEN)
+                        .build())
                 .createDate(LocalDateTime.now())
                 .refreshToken("fdafasfasfasfafdfa")
                 .reportCount(0)
@@ -116,19 +112,15 @@ public class MemberTestUtil implements InitializingBean {
 
     public Member Member3001_멤버추가(Icon icon){
 
-        FcmNotification fcm = FcmNotification.builder()
-            .fcmToken(MEMBER3001_FCM_TOKEN)
-            .deviceName("Galaxy S20")
-            .build();
-
-        fcmRepository.save(fcm);
 
         return Member.builder()
                 .icon(icon)
                 .provider(ProviderType.kakao)
                 .memberIdentifier("2")
                 .boxCount(3)
-                .fcmNotification(fcm)
+                .fcmNotification(FcmNotification.builder()
+                        .fcmToken(MEMBER3001_FCM_TOKEN)
+                        .build())
                 .createDate(LocalDateTime.now())
                 .refreshToken("fdafasfasfasfafdfa")
                 .reportCount(0)
@@ -150,19 +142,15 @@ public class MemberTestUtil implements InitializingBean {
 
     public Member Member_Error_Fcm_token멤버추가(Icon icon){
 
-        FcmNotification fcm = FcmNotification.builder()
-            .fcmToken(MEMBER_ERROR_FCM_TOKEN)
-            .deviceName("Galaxy S20")
-            .build();
-
-        fcmRepository.save(fcm);
 
         return Member.builder()
                 .icon(icon)
                 .provider(ProviderType.kakao)
                 .memberIdentifier("3")
                 .boxCount(3)
-                .fcmNotification(fcm)
+                .fcmNotification(FcmNotification.builder()
+                        .fcmToken(MEMBER_ERROR_FCM_TOKEN)
+                        .build())
                 .createDate(LocalDateTime.now())
                 .refreshToken("fdafadfas")
                 .reportCount(0)
@@ -174,20 +162,15 @@ public class MemberTestUtil implements InitializingBean {
 
     public Member 관리자_멤버_추가(Icon icon){
 
-        FcmNotification fcmNotification = FcmNotification.builder()
-            .fcmToken("admin fcm token")
-            .deviceName("fdafasd")
-            .isEnabled(false)
-            .build();
-
-        fcmRepository.save(fcmNotification);
-
         return Member.builder()
             .refreshToken("fdafafdafafa")
             .boxCount(99)
             .languageType(LanguageType.KOREAN)
             .reportCount(0)
-            .fcmNotification(fcmNotification)
+            .fcmNotification(FcmNotification.builder()
+                    .fcmToken("admin fcm token")
+                    .isEnabled(false)
+                    .build())
             .icon(icon)
             .userName("ADMIN")
             .provider(ProviderType.kakao)

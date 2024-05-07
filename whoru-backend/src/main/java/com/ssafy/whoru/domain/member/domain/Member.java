@@ -57,7 +57,7 @@ public class Member {
     @Column(name = "language_type")
     private LanguageType languageType;
 
-    @OneToOne(mappedBy = "member",cascade = CascadeType.REMOVE)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private FcmNotification fcmNotification;
 
 

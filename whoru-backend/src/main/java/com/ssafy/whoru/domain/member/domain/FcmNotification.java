@@ -25,9 +25,6 @@ public class FcmNotification {
     @Builder.Default
     private Boolean isEnabled = true;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", nullable = false, updatable = false)
-    private Member member;
 
     public void updateNotificationsEnabled(Boolean status) { this.isEnabled = status; }
 

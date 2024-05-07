@@ -68,23 +68,18 @@ public class CustomOAuth2UserServiceImpl extends DefaultOAuth2UserService implem
         //없으면 회원가입 시켜주고 저장
         if (existData.isEmpty()){
 
+
             Member member = memberRepository.save(Member
                     .builder()
                     .userName(name)
                     .role("ROLE_USER")
                     .provider(providerType)
                     .memberIdentifier(memberIdentifier)
+                    .fcmNotification(FcmNotification.builder()
+                            .fcmToken("")
+                            .isEnabled(true)
+                            .build())
                     .build());
-
-            fcmRepository.save(FcmNotification.builder()
-                    .fcmToken("")
-                    .isEnabled(true)
-                    .member(member)
-                    .build()
-            );
-
-
-
 
 
             MemberDTO memberDTO = MemberDTO
