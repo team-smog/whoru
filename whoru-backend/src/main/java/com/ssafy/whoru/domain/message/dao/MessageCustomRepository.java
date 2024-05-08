@@ -10,6 +10,4 @@ public interface MessageCustomRepository {
 
     Slice<Message> findAllBySizeWithNotReported(Long lastId, Integer size, Member receiver);
 
-    List<Message> findAllByRecent(Long firstId, Integer size, Member receiver);
-
 }

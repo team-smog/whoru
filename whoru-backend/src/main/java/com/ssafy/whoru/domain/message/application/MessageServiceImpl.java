@@ -249,7 +249,7 @@ public class MessageServiceImpl implements MessageService{
     @Transactional
     public ResponseWithSuccess<List<MessageResponse>> getRecentMessages(Long firstId, Integer size, Long receiverId) {
         Member receiver = memberService.findByIdToEntity(receiverId);
-        List<Message> messages = messageCustomRepository.findAllByRecent(firstId, size, receiver);
+        List<Message> messages = messageRepository.findRecentMessages(receiver.getId(), firstId, size);
         List<MessageResponse> body = messages.stream()
             .map(message -> {
                 message.updateReadDate();

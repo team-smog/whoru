@@ -1,10 +1,17 @@
 package com.ssafy.whoru.domain.message.dao;
 
 
+import static com.querydsl.jpa.JPAExpressions.select;
+import static com.querydsl.jpa.JPAExpressions.selectFrom;
 import static com.ssafy.whoru.domain.message.domain.QMessage.message;
 
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.StringPath;
+import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.jpa.JPQLQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.whoru.domain.member.domain.Member;
 import com.ssafy.whoru.domain.member.domain.QMember;
@@ -12,6 +19,7 @@ import com.ssafy.whoru.domain.message.domain.Message;
 import com.ssafy.whoru.domain.message.domain.QMessage;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.query.criteria.JpaSubQuery;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -45,19 +53,5 @@ public class MessageCustomRepositoryImpl implements MessageCustomRepository{
         }
 
         return new SliceImpl<Message>(content, PageRequest.ofSize(size), hasNext);
-    }
-
-    @Override
-    public List<Message> findAllByRecent(Long firstId, Integer size, Member receiver) {
-        BooleanExpression whereConditions =
-            message.id.between(firstId+1, firstId+size)
-            .and(message.receiver.id.eq(receiver.getId()));
-
-        return jpaQueryFactory.
-            selectFrom(message)
-            .where(
-                whereConditions
-            ).orderBy(message.id.desc())
-            .limit(size).fetch();
     }
 }
