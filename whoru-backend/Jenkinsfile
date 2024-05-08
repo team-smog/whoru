@@ -11,7 +11,7 @@ pipeline {
     stages {
         stage('clone'){
             steps{
-                git branch: 'BE', credentialsId: 'GitLab-Last', url: 'https://lab.ssafy.com/s10-final/S10P31D203.git'
+                git branch: 'BE_develop', credentialsId: 'GitLab-Last', url: 'https://lab.ssafy.com/s10-final/S10P31D203.git'
             }
         }
         stage('Gradle build') {
