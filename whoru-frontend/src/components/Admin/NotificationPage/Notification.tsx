@@ -67,13 +67,13 @@ const Notification = ({data} : {data : NotificationInfo[]}) => {
                 </div>
               </div>
             )}
-            <div className="fixed bottom-10 w-full max-w-[500px] m-auto px-4" onClick={handleCreateModalOpen}>
-              <button className="bg-gray-200 w-full rounded-[10px] text-text_color p-2 text-[14px]">공지사항 작성</button>
-            </div>
           </div>
         ))}
+      <div className="fixed bottom-10 w-full max-w-[500px] m-auto px-4" onClick={handleCreateModalOpen}>
+        <button className="bg-gray-200 w-full rounded-[10px] text-text_color p-2 text-[14px]">공지사항 작성</button>
       </div>
-      <div className="fixed bottom-5 left-0 right-0 mx-auto flex justify-center">
+      </div>
+      <div className="fixed bottom-3 left-0 right-0 mx-auto flex justify-center">
         <button onClick={handlePrevPage} disabled={currentPage === 1}>이전</button>
         {Array.from({ length: totalPages }, (_, index) => (
             <button key={index + 1} onClick={() => handleClickPage(index + 1)}>{index + 1}</button>
