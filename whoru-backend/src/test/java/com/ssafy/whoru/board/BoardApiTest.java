@@ -50,7 +50,6 @@ public class BoardApiTest extends TestPrepare {
         PostInquiryBoardRequest request = PostInquiryBoardRequest.builder()
             .subject("테스트")
             .content("테스트 문의사항입니다.")
-            .memberId(member3000.getId())
             .build();
 
         mockMvc.perform(
