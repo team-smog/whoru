@@ -97,4 +97,10 @@ public class MemberApi implements MemberApiDocs {
 
 
 
+    @GetMapping("/gettoken")
+    public ResponseEntity<WrapResponse<TokenResponse>> getToken(CustomOAuth2User member) {
+        TokenResponse response = memberService.getToken(member.getId());
+        return ResponseEntity.ok(WrapResponse.create(response,SuccessType.SIMPLE_STATUS));
+    }
+
 }

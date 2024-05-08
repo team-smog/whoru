@@ -39,8 +39,8 @@ public enum ErrorCode {
     ALREADY_BAN_MEMBER(409, "이미 이용정지된 사용자입니다."),
 
     // FCM
-    NOT_SAVED_FCM(456,"FCM 저장에 실패하였습니다."),
-    FCM_NOT_AVAILABLE(453, "FCM이 설정 되지 않아 작업을 실행할 수 없습니다."),
+    FCM_TOKEN_NOT_FOUND(204,"토큰을 찾을 수 없는 신규 이용자 입니다."),
+    FCM_NOT_AVAILABLE(204, "FCM이 설정 되지 않아 작업을 실행할 수 없습니다."),
     FCM_TOKEN_INVALID(422, "토큰이 잘못되거나 변조되어 작업을 실행할 수 없습니다."),
 
 
