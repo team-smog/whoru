@@ -1,0 +1,33 @@
+.rhap_play-pause-button {
+  path {
+    fill: #ffffff;
+  }
+}
+
+.rhap_container svg {
+  path {
+    fill: #ffffff;
+  }
+}
+
+.rhap_time {
+  color: #ffffff;
+}
+
+.rhap_progress-bar {
+  box-sizing: border-box;
+  position: relative;
+  z-index: 0;
+  width: 100%;
+  height: 5px;
+  background-color: #dddddd;
+  border-radius: 2px;
+}
+
+.rhap_progress-filled {
+  height: 100%;
+  position: absolute;
+  z-index: 2;
+  background-color: #868686;
+  border-radius: 2px;
+}
