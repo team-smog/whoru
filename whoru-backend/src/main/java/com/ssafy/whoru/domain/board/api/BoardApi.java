@@ -39,9 +39,9 @@ public class BoardApi implements BoardApiDocs{
      * 문의사항 작성 요청 API
      * **/
     @PostMapping("/inquiry")
-    public ResponseEntity<WrapResponse<Void>> postInquiryBoard(@RequestBody PostInquiryBoardRequest request) {
+    public ResponseEntity<WrapResponse<Void>> postInquiryBoard(@AuthenticationPrincipal CustomOAuth2User member, @RequestBody PostInquiryBoardRequest request) {
 
-        boardService.postInquiryBoard(request);
+        boardService.postInquiryBoard(member.getId(), request);
         return ResponseEntity.ok(WrapResponse.create(SuccessType.STATUS_201));
     }
 
