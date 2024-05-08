@@ -16,8 +16,6 @@
     "axios": "^1.6.8",
     "dayjs": "^1.11.10",
     "framer-motion": "^11.0.27",
-    "localforage": "^1.10.0",
-    "match-sorter": "^6.3.4",
     "million": "^3.0.6",
     "react": "^18.2.0",
     "react-cookie": "^7.1.4",
@@ -28,7 +26,6 @@
     "react-router-dom": "^6.22.3",
     "react-voice-visualizer": "^1.8.1",
     "redux": "^5.0.1",
-    "sort-by": "^1.2.0",
     "sweetalert2": "^11.10.7"
   },
   "devDependencies": {

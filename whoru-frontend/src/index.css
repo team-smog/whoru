@@ -1,5 +1,6 @@
 @tailwind base;
 @tailwind components;
+<<<<<<< HEAD
 @tailwind utilities;
 
 html, body, #root {
@@ -22,3 +23,6 @@ html, body, #root {
 ::-webkit-scrollbar {
   width: 0px;
 }
+=======
+@tailwind utilities;
+>>>>>>> master

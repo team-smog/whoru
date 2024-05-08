@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import './App.css'
 import { Navigate, RouterProvider, createBrowserRouter } from 'react-router-dom';
 import MainPage from './pages/MainPage/MainPage';
@@ -123,11 +124,16 @@ const router = createBrowserRouter([
 ])
 
 const App = () => {
+=======
+import './App.css';
+
+function App() {
+>>>>>>> master
   return (
     <>
-      <RouterProvider router={router} />
+      
     </>
   )
-};
+}
 
 export default App;

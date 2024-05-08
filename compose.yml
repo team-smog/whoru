@@ -1,0 +1,26 @@
+version: '3'
+services:
+  frontend:
+    container_name: frontend
+    image: frontend
+    restart: unless-stopped
+    networks:
+      - whoru
+    volumes:
+      - /config/front/d203front.conf:/etc/nginx/conf.d/d203front.conf
+
+  backend:
+    container_name: backend
+    image: backend
+    networks:
+      - whoru
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - TZ=Asia/Seoul
+    restart: unless-stopped
+    volumes:
+      - /var/log/whoru/logs:/logs
+
+networks:
+  whoru:
+    external: true
