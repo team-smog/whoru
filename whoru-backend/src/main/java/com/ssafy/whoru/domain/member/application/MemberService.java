@@ -20,4 +20,5 @@ public interface MemberService {
 
     ProfileResponse getProfile(Long id);
 
+    TokenResponse getToken(Long id);
 }

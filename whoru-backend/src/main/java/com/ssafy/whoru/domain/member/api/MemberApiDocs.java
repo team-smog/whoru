@@ -61,4 +61,11 @@ public interface MemberApiDocs {
     @PatchMapping("/updatefcm")
     ResponseEntity<WrapResponse<Void>> updateFcm(@AuthenticationPrincipal CustomOAuth2User member,String fcmToken);
 
+    @Operation(summary = "fcmToken get", description = "사용자의 fcm 토큰을 가져올 수 있다.")
+    @ApiResponse(responseCode = "200",description = "access토큰을 토대로 사용자의 fcm 토큰을 가져온다. ", content = @Content(schema = @Schema(implementation = TokenResponse.class)))
+    @ApiResponse(responseCode = "204",description = "fcm 토큰이 없을때 반환된다.")
+    @ApiResponse(responseCode = "453",description = "fcm이 설정되지 않았을 때 반환된다.")
+    @GetMapping("/gettoken")
+    ResponseEntity<WrapResponse<TokenResponse>> getToken(@AuthenticationPrincipal CustomOAuth2User member);
+
 }

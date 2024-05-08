@@ -125,6 +125,19 @@ public class MemberServiceImpl implements MemberService {
                 .build();
     }
 
+    @Override
+    public TokenResponse getToken(Long id) {
+        Optional<Member> byId = Optional.ofNullable(memberRepository.findById(id)
+                .orElseThrow(FcmTokenNotFoundException::new));
+        if(byId.get().getFcmNotification()== null){
+            throw new FcmNotFoundException();
+        }
+        return TokenResponse
+                .builder()
+                .token(byId.get().getFcmNotification().getFcmToken())
+                .username(byId.get().getUserName())
+                .build();
+    }
 
 
 }
