@@ -10,7 +10,7 @@
 
 ### 반영 브랜치
 
-feat/S10P22D203-1/login/FE -> BE
+feat/S10P22D203-1/login/FE -> front/back
 
 ### 변경 사항
 
@@ -20,4 +20,4 @@ feat/S10P22D203-1/login/FE -> BE
 ### 테스트 결과
 
 - [] Postman 테스트 결과 이상 없습니다.
-- [] JUNIT5 테스트 결과 이상 없습니다.
+- [] local ci 테스트 결과 이상 없습니다.
