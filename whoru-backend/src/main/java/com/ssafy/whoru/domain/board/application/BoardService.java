@@ -12,7 +12,7 @@ import com.ssafy.whoru.global.common.dto.response.ResponseWithSuccess;
 
 public interface BoardService {
 
-    public void postInquiryBoard(PostInquiryBoardRequest request);
+    public void postInquiryBoard(Long memberId, PostInquiryBoardRequest request);
 
     public SliceResponse<InquiryRecordResponse> getInquiryBoard(Long memberId, int page, int size);
 

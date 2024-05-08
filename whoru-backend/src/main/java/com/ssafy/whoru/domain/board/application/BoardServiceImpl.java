@@ -60,9 +60,9 @@ public class BoardServiceImpl implements BoardService{
     private static final String NOTIFICATION_CONTENT = "새로운 공지사항이 올라왔어요";
 
     @Override
-    public void postInquiryBoard(PostInquiryBoardRequest request) {
+    public void postInquiryBoard(Long memberId, PostInquiryBoardRequest request) {
 
-        Member member = crossMemberService.findByIdToEntity(request.getMemberId());
+        Member member = crossMemberService.findByIdToEntity(memberId);
 
         boardRepository.save(Board.builder()
                 .boardType(BoardType.INQUIRY)

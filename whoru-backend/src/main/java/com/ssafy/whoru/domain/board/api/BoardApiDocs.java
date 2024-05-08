@@ -35,8 +35,8 @@ public interface BoardApiDocs {
     @Operation(summary = "문의사항 작성 요청", description = "사용자는 문의사항을 작성할 수 있다.")
     @Parameter(content = @Content(schema = @Schema(implementation = PostInquiryBoardRequest.class)))
     @ApiResponse(responseCode = "201")
-    @PostMapping("")
-    public ResponseEntity<WrapResponse<Void>> postInquiryBoard(@RequestBody PostInquiryBoardRequest request);
+    @PostMapping("/inquiry")
+    public ResponseEntity<WrapResponse<Void>> postInquiryBoard(@AuthenticationPrincipal CustomOAuth2User member, @RequestBody PostInquiryBoardRequest request);
 
     @Operation(summary = "사용자 문의사항 조회 API", description = "사용자는 자신이 작성한 문의사항들을 조회할 수 있다.")
     @Parameters( value = {
