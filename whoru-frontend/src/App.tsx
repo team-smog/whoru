@@ -1,13 +1,10 @@
-<<<<<<< HEAD
 import './App.css'
 import { Navigate, RouterProvider, createBrowserRouter } from 'react-router-dom';
 import MainPage from './pages/MainPage/MainPage';
 import LoginPage from './pages/Login/LoginPage';
 import AlarmPage from './pages/Alarm/AlarmPage';
 import ProfilePage from './pages/Profile/ProfilePage';
-import AskPage from './pages/Ask/AskPage';
 import PostPage from './pages/Post/PostPage';
-import AskPostPage from './pages/AskPost/AskPostPage';
 import AnnouncementPage from './pages/Announcement/AnnouncementPage';
 import Chacollection from './pages/Chacollection/Chacollection';
 import Inquiry from './pages/Inquiry/Inquiry';
@@ -62,22 +59,6 @@ const router = createBrowserRouter([
     )
   },
   {
-    path: '/profile/ask',
-    element: (
-      <AuthWrapper>
-        <AskPage />
-      </AuthWrapper>
-    )
-  },
-  {
-    path: '/profile/ask/post',
-    element: (
-      <AuthWrapper>
-        <AskPostPage />
-      </AuthWrapper>
-    )
-  },
-  {
     path : '/announcement',
     element: (
       <AuthWrapper>
@@ -124,14 +105,10 @@ const router = createBrowserRouter([
 ])
 
 const App = () => {
-=======
-import './App.css';
 
-function App() {
->>>>>>> master
   return (
     <>
-      
+      <RouterProvider router={router} />
     </>
   )
 }
