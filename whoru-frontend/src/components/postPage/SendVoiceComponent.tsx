@@ -22,6 +22,7 @@ const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
     const [currentRecordType,setCurrentRecordType] = useState<string>("")
     // Initialize the recorder controls using the hook
     const recorderControls = useVoiceVisualizer();
+    const accessToken = localStorage.getItem('AccessToken');
     const {
         // ... (Extracted controls and states, if necessary)
         error,
@@ -198,13 +199,15 @@ const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
             const response = await axios.post(`https://k10d203.p.ssafy.io/api/message/${messageId}/file`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
+                    Authorization: `Bearer ${accessToken}`
                 }
             });
             console.log(response.data);
             navigate('/');
         } catch (error) {
             console.error(error);
+            alert('음성 전송에 실패했습니다.');
+            navigate('/');
         }
       } else if (messageId === null) {
         if (!recordedBlob) {
@@ -222,13 +225,15 @@ const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
             const response = await axios.post('https://k10d203.p.ssafy.io/api/message/file', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
+                    Authorization: `Bearer ${accessToken}`
                 }
             })
             console.log(response.data);
             navigate('/');
         } catch (error) {
             console.error(error);
+            alert('음성 전송에 실패했습니다.');
+            navigate('/');
         }
       }
     };

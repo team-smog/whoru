@@ -16,7 +16,7 @@ const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage((payload) => {
     // 백그라운드 메세지 핸들러, 백그라운드 메세지는 Service-worker에서만 작동함!    
-    console.log('[firebase-messaging-sw.js] Received background message ㅎㅇ ', payload);
+    console.log('Received background message', payload);
     const notificationTitle = 'Background Message Title'; // 메세지 제목
     const notificationOptions = {
         body: payload.body, // 매세지 내용

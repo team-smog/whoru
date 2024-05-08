@@ -13,6 +13,7 @@ const SendImageComponent = ({ messageId }: { messageId: number | null}) => {
   const fileInputRef = useRef(null);
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const accessToken = localStorage.getItem('AccessToken');
   // const [imageSrc] = useState(null);
 
   const handleUploadAreaClick = () => {
@@ -84,50 +85,53 @@ const SendImageComponent = ({ messageId }: { messageId: number | null}) => {
           const formData = new FormData();
           formData.append('file', imageFile); // Add the file to FormData
           console.log(imageFile);
+          // console.log(accessToken)
+          console.log("답장 이미지")
     
           await axios.post(`https://k10d203.p.ssafy.io/api/message/${messageId}/file`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
-              Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
+              Authorization: `Bearer ${accessToken}`
             },
           })
           .then((res) => {
             console.log(res.data);
+            setImageFile(null); // Clear the file
+            setImageSrc(null);
+            navigate('/');
           })
-    
-          setImageFile(null); // Clear the file
-    
         } catch (error) {
           console.error('Error:', error);
+          alert('이미지 전송에 실패했습니다.');
+          navigate('/');
         }
       }
-      setImageSrc(null);
-      navigate('/');
     } else if (messageId === null) {
       if (imageFile) { // Check if there is a file
         try {
           const formData = new FormData();
           formData.append('file', imageFile); // Add the file to FormData
           console.log(imageFile);
+          // console.log(accessToken)
     
           await axios.post('https://k10d203.p.ssafy.io/api/message/file', formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
-              Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
+              Authorization: `Bearer ${accessToken}`,
             },
           })
           .then((res) => {
             console.log(res.data);
+            setImageFile(null); // Clear the file
+            setImageSrc(null);
+            navigate('/');
           })
-    
-          setImageFile(null); // Clear the file
-    
         } catch (error) {
           console.error('Error:', error);
+          alert('이미지 전송에 실패했습니다.');
+          navigate('/');
         }
       }
-      setImageSrc(null);
-      navigate('/');
     }
   }
   

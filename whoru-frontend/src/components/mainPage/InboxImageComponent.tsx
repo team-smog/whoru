@@ -19,6 +19,7 @@ const InboxImageComponent: React.FC<InboxImageComponentProps> = ({ message, inne
   const dispatch = useDispatch()
   const navigate = useNavigate()
   // const messageId = useSelector((state: any) => state.reply.messageId)
+  const accessToken = localStorage.getItem('AccessToken')
 
   const handleReply = (messageId: number) => {
     dispatch(setReplyMessage(messageId))
@@ -35,7 +36,7 @@ const InboxImageComponent: React.FC<InboxImageComponentProps> = ({ message, inne
     {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('AccessToken')}`
+        Authorization: `Bearer ${accessToken}`
     }}
     )
     .then((res) => {

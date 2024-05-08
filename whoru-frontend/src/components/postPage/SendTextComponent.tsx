@@ -13,6 +13,7 @@ const SendTextComponent = ({ messageId }: { messageId: number | null}) => {
 
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [text, setText] = useState("");
+  const accessToken = localStorage.getItem('AccessToken');
 
   const onChangeText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.currentTarget.value);
@@ -58,7 +59,7 @@ const SendTextComponent = ({ messageId }: { messageId: number | null}) => {
           {
             headers: {
               'Content-Type': 'application/json',
-              Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
+              Authorization: `Bearer ${accessToken}`
             },
           }
         )
@@ -77,7 +78,7 @@ const SendTextComponent = ({ messageId }: { messageId: number | null}) => {
           {
             headers: {
               'Content-Type': 'application/json',
-              Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
+              Authorization: `Bearer ${accessToken}`
             },
           }
         )
@@ -86,8 +87,14 @@ const SendTextComponent = ({ messageId }: { messageId: number | null}) => {
           navigate('/');
         })
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
+      if (error.response.data.errorCode === 400) {
+        alert('메세지 내용이 너무 짧습니다.');
+      } else {
+        alert('메세지 전송에 실패했습니다.');
+        navigate('/');
+      }
     }
   };
 

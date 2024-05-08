@@ -15,28 +15,6 @@ export interface IHeaderInfo {
 const Header = (props: {info:IHeaderInfo}) => {
   const navigate = useNavigate();
 
-  // const messagingObject = useRef(null);
-  //   useEffect(()=>{
-  //       messagingObject.current = getFirebaseMessagingObject()
-  //       console.log(messagingObject.current)
-  //   },[])
-  //   if(messagingObject.current !== null){
-  //       onMessage(messagingObject.current, (body)=>{
-  //         if (body && body.notification) {
-  //           console.log(body.notification.body);
-  //           alert(body.notification.body);
-  //         }
-  //       })
-  //   }
-
-  const [ ,setToken] = useState<string>("");
-  useEffect(() => {
-    const resultToken = requestPermission();
-    resultToken.then((token) => {
-      setToken(token);
-    });
-  }, []);
-
   const messagingObject = useRef(null);
   useEffect(()=>{
       messagingObject.current = getFirebaseMessagingObject()

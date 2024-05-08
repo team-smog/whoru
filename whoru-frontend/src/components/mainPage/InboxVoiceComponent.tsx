@@ -24,6 +24,7 @@ interface InboxVoiceComponentProps extends React.HTMLAttributes<HTMLDivElement>{
 const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, innerRef, ...props }) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const accessToken = localStorage.getItem('AccessToken')
   // const messageId = useSelector((state: any) => state.messageId)
 
   const handleReply = (messageId: number) => {
@@ -41,7 +42,7 @@ const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, inne
     {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('AccessToken')}`
+        Authorization: `Bearer ${accessToken}`
     }}
     )
     .then((res) => {

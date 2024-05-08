@@ -19,6 +19,7 @@ const InboxTextComponent: React.FC<InboxTextComponentProps> = ({ message, innerR
   const dispatch = useDispatch()
   const navigate = useNavigate()
   // const messageId = useSelector((state: any) => state.reply.messageId);
+  const accessToken = localStorage.getItem('AccessToken');
 
   const handleSetReplyMessage = (messageId:number) => {
     dispatch(setReplyMessage(messageId));
@@ -34,7 +35,7 @@ const InboxTextComponent: React.FC<InboxTextComponentProps> = ({ message, innerR
     {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('AccessToken')}`
+        Authorization: `Bearer ${accessToken}`
     }}
     )
     .then((res) => {
@@ -86,7 +87,7 @@ const InboxTextComponent: React.FC<InboxTextComponentProps> = ({ message, innerR
           <p className={styles.inboxTextComponentBodyMainText}>{message.content}</p>
           <div className={styles.inboxTextComponentFooter}>
             <button className={styles.inboxTextComponentFooterButton} onClick={() => handleSetReplyMessage(message.id)}>답장</button>
-            <button className={styles.inboxTextComponentFooterButton}>번역</button>
+            {/* <button className={styles.inboxTextComponentFooterButton}>번역</button> */}
             <button className={styles.inboxTextComponentFooterReportButton} onClick={() => handleReport(message.id, message.senderId)}>신고</button>
           </div>
         </div>

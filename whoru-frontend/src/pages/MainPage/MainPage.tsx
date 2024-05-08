@@ -13,10 +13,9 @@ import { useInView } from 'react-intersection-observer';
 // import { next } from "million/compiler";
 import { useDispatch, useSelector } from "react-redux";
 import { setFirstId, setLastId } from "@/stores/storeMessageId";
-
+import { requestPermission } from "@/FirebaseUtil";
 
 //todo: 
-
 const MainPage = () => {
   const info: IHeaderInfo = {
     left_1: "Main",
@@ -25,201 +24,73 @@ const MainPage = () => {
     right: <img src={Bell} alt="Alarm"/>
   }
 
-  // interface InboxData {
-  //   content: MessageInfoDetail[];
-  // }
 
-  // interface ResponseData {
-  //   data: InboxData;
-  //   hasNext: boolean;
-  // }
+  interface ResponseData {
+    data: {
+      content: MessageInfoDetail[];
+      hasNext: boolean;
+    }
+  }
 
-  // const messageId = useSelector((state: any) => state.reply.messageId);
 
-  const dispatch = useDispatch();
-  const firstId = useSelector((state: any) => state.message.firstId);
-  const lastId = useSelector((state: any) => state.message.lastId);
-  const [hasNext,setHasNext] = useState<boolean | null>(null);
+  const accessToken = localStorage.getItem('AccessToken');
 
-  // const [ lastId, setLastId ] = useState<number | null>(null);
-  // const [ firstId, setFirstId ] = useState<number | null>(null);
-  
+  const [firstId, setFirstId] = useState<number>(0);
+  const [lastId, setLastId] = useState<number>(0);
+  const [hasNext, setHasNext] = useState<boolean>(true);
+  const [serverState, setServerState] = useState<any[]>([]);
 
-  const { ref, inView } = useInView();
-
-  // useEffect(() => {
-  //   console.log("messageId", messageId);
-  // }, [messageId]);
-
-  // useEffect(() => {
-  //   console.log("firstId", firstId);
-  //   console.log("lastId", lastId);
-  // }, [firstId, lastId]);
-
-  // const queryClient = useQueryClient();
-
-  const handleRefresh = async (): Promise<void> => {
-    console.log("firstId", firstId);
-    const res = await fetch(`https://k10d203.p.ssafy.io/api/message/recent?firstid=${firstId}`, {
+  const fetchOld = async ():Promise<ResponseData> => {
+    const response = await fetch(`https://k10d203.p.ssafy.io/api/message?size=20`, {
+      method: 'GET',
       headers: {
-        Authorization: 'Bearer' + localStorage.getItem('AccessToken'),
-      },
-    })
-    const data = await res.json();
-    console.log(data);
-    return data.data.content;
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`
+    }});
+     
+    return response.json();
   }
 
-  // const Refresh = async ():Promise<void> => {
-  //   queryClient.setQueryData(['message'], {
-  //     pages: [],
-  //     pageParams: [],
-  //   });
-  //   await queryClient.invalidateQueries('message');
-  // }
-  
-  // const fetchData = async ({ pageParam }: {pageParam: number}) => {
-  const fetchData = async () => {
-    if (lastId === null) {
-      console.log("firstId", firstId);
-      console.log("lastId", lastId);
-      const res = await fetch(`https://k10d203.p.ssafy.io/api/message?size=${20}`, {
-        headers: {
-          Authorization: 'Bearer' + localStorage.getItem('AccessToken'),
-        },
-      })
-      const data = await res.json();
-      console.log(data);
-      console.log(data.data.hasNext);
-      setHasNext(data.data.hasNext);
-      // console.log(data.data.content[0].id);
-      // console.log(data.data.content[data.data.content.length - 1].id);
-      // setFirstId(data.data.content[0].id);
-      dispatch(setFirstId(data.data.content[0].id));
-      console.log("firstId", firstId);
-      // setLastId(data.data.content[data.data.content.length - 1].id);
-      dispatch(setLastId(data.data.content[data.data.content.length - 1].id));
-      console.log("lastId", lastId);
-      return data.data.content;
-    } else {
-      console.log("firstId", firstId);
-      console.log("lastId", lastId);
-      const res = await fetch(`https://k10d203.p.ssafy.io:18080/api/message?lastid=${lastId}&size=${20}`, {
-        headers: {
-          Authorization: 'Bearer' + localStorage.getItem('AccessToken'),
-        },
-      })
-      const data = await res.json();
-      console.log(data);
-      setHasNext(data.data.hasNext);
-      // console.log(data.data.content[0].id);
-      // setFirstId(data.data.content[0].id);
-      dispatch(setFirstId(data.data.content[0].id));
-      console.log("firstId", firstId);
-      // setLastId(data.data.content[data.data.content.length - 1].id);
-      dispatch(setLastId(data.data.content[data.data.content.length - 1].id));
-      console.log("lastId", lastId);
-
-      return data.data.content;
-    }
+  const fetchRecent = async () => {
+    const response = await fetch(`https://k10d203.p.ssafy.io/api/message?size=20&firstId=${firstId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`
+    }});
+    const data = await response.json();
+    return data;
   }
 
-  // useEffect(() => {
-  //   fetchData({pageParam: 20});
-  //   return () => {
-  //     console.log('cleanup');
-  //     queryClient.removeQueries({ queryKey: ['message'] });
-  //   }
-  // }, []);
-
-  // useEffect(() => {
-  //   console.log("data", data);
-  // }, [data]);
-
-  const { data, status, fetchNextPage, isFetchingNextPage, hasNextPage } = useInfiniteQuery({
-    queryKey: ['message'],
-    queryFn: fetchData,
-    initialPageParam: 0,
-    getNextPageParam: (lastPage, allPages) => {
-      // console.log("lastPage", lastPage);
-      // console.log("allPages", allPages);
-      return lastPage.length ? allPages.length + 1 : undefined;
-      // console.log({lastPage, allPages});
-      // return allPages.length + 1;
-      // const nextPage = lastPage.length ? allPages.length : undefined;
-      // return nextPage;
-    },
-    getPreviousPageParam: (firstPage, allPages) => {
-      // console.log("firstPage", firstPage);
-      // console.log("allPages", allPages);
-      return firstPage.length ? allPages.length + 1 : undefined;
-      // console.log({lastPage, allPages});
-      // return nextPage;
-    },
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-  })
-
-  const content = data?.pages.map((messageList: MessageInfoDetail[]) => messageList.map((message) => {
-    // if (messageList.length === index) {
-      if (message.contentType === "text") {
-        return <InboxTextComponent innerRef={ref} key={message.id} message={message} />;
-      } else if (message.contentType === "image") {
-        return <InboxImageComponent innerRef={ref} key={message.id} message={message} />;
-      } else if (message.contentType === "voice") {
-        return <InboxVoiceComponent innerRef={ref} key={message.id} message={message} />;
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data } = await fetchOld();
+      const { content, hasNext } = data;
+      setHasNext(hasNext);
+      if (content.length > 0) {
+        setFirstId(content[0].id);
+        setLastId(content[content.length - 1].id);
+        setServerState(content);
       }
-    // }
-  }));
-
-  useEffect(() => {
-    if (inView && hasNextPage && hasNext){
-      fetchNextPage();
     }
-  }, [inView, hasNextPage, fetchNextPage])
-
-  useEffect(() => {
-    console.log("data", data);
-  }, [data])
-
-  if(status === 'pending') {
-    return <p>Loading...</p>
-  }
-
-  if(status === 'error') {
-    // return <p>Error: {error.message}</p>
-  }
-
+    fetchData();
+  },[]);
+  
   return (
       <div className={styles.mainPage}>
         <Header info={info} />
-        <div className={styles.mainPageBody}>
-          <PullToRefresh onRefresh={handleRefresh}>
-            <div className={styles.mainPageBodyContainer}>
-              {content}
-              {/* <button 
-                ref={ref}
-                onClick={() => fetchNextPage}
-                disabled={!hasNextPage || isFetchingNextPage}
-              >
-                {isFetchingNextPage? 'Loading More ...' : hasNextPage ? 'Load More' : 'Nothing more to load'}
-              </button> */}
-              {/* {messageList.map((message: MessageInfoDetail) => {
-                if (message.contentType === "text") {
-                  return <InboxTextComponent key={message.id} message={message} />;
-                } else if (message.contentType === "image") {
-                  return <InboxImageComponent key={message.id} message={message} />;
-                } else if (message.contentType === "voice") {
-                  return <InboxVoiceComponent key={message.id} message={message} />;
-                }
-              })} */}
-              {isFetchingNextPage && <div style={{textAlign:"center"}}>Loading</div>}
-            </div>
-            
-        
-
-          </PullToRefresh>
+        <div>
+          {serverState.map((message: MessageInfoDetail) => {
+            if (message.contentType === 'text') {
+              return <InboxTextComponent message={message} key={message.id} />
+            } else if (message.contentType === 'image') {
+              return <InboxImageComponent message={message} key={message.id} />
+            } else if (message.contentType === 'voice') {
+              return <InboxVoiceComponent message={message} key={message.id} />
+            }
+          })}
         </div>
+        
         <NavigationBar />
     </div>
   );

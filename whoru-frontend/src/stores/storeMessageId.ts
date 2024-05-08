@@ -30,11 +30,13 @@ const replySlice = createSlice({
 });
 
 const messageSlice = createSlice({
-  name: 'messageFLId',
+  name: 'message',
   initialState: messageIdInitialState,
   reducers: {
     setFirstId: (state, action: PayloadAction<number|null>) => {
+      // console.log(action)
       state.firstId = action.payload;
+      console.log(state.firstId)
     },
     setLastId: (state, action: PayloadAction<number|null>) => {
       state.lastId = action.payload;
