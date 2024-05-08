@@ -1,4 +1,4 @@
-import naver from '@/assets/login/btnG_icon_square.png'
+import naver from '@/assets/components/login/btnG_icon_square.png'
 
 const NaverLogin = () => {
   return (

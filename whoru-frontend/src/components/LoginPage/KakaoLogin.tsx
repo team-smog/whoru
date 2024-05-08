@@ -1,4 +1,4 @@
-import kakao from '@/assets/login/kakao_login_medium_wide.png'
+import kakao from '@/assets/components/login/kakao_login_medium_wide.png'
 
 const KakaoLogin = () => {
   // const link = "https://k10d203.p.ssafy.io/api/oauth2/authorization/kakao?redirect_uri=https://k10d203.p.ssafy.io/callback"

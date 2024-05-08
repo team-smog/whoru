@@ -3,7 +3,7 @@ import InquiryPage from "@/components/Admin/InquiryPage/Inquiry";
 import NotificationPage from "@/components/Admin/NotificationPage/Notification";
 import ReportPage from "@/components/Admin/ReportPage/Report";
 import { useInquiryDetail, useNotificationDetail } from "@/hooks/Admin/useAdmin";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export type InquiryInfo = {
   id: number;
@@ -43,8 +43,12 @@ export type AdminData = {
 
 const AdminPage = () => {
   const [selectedTab, setSelectedTab] = useState<string>('Notification');
-  const {data: inquiryData} = useInquiryDetail(1, 10, 0);
-  const {data: notificationData} = useNotificationDetail(1, 10);
+  const { data: inquiryData } = useInquiryDetail(1, 10, 0);
+  const { data: notificationData } = useNotificationDetail(1, 10);
+
+  useEffect(() => {
+    console.log(selectedTab);
+  }, [selectedTab]);
 
   const info: IHeaderInfo = {
     left_1: "Admin",
@@ -107,7 +111,6 @@ const AdminPage = () => {
     } else {
       setSelectedTab(type);
     }
-    console.log(selectedTab)
   }
 
   return (

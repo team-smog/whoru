@@ -14,21 +14,21 @@ export const getInquiryReq = async (page: number, size: number, condition: numbe
   return res.data;
 }
 
-export const getNotificationReq = async (page:number, size:number) => {
+export const getNotificationReq = async (page:number, size:number = 10) => {
   const res = await axiosAuthInstance.get(`/board/noti`, {
-    params: { page: page, size: size },
+    params: {page:page, size},
     headers: { Authorization: `Bearer ${localStorage.getItem('AccessToken')}` }
   });
   console.log(res.data)
-  return res.data.data;
+  return res.data;
 };
 
 export const postNotificationReq = async(formData: { subject: string, content: string }): Promise<APIResponse<string>> => {
-  const {data} = await axiosAuthInstance.post(`/admin/board/noti`, JSON.stringify(formData), {
+  const res = await axiosAuthInstance.post(`/admin/board/noti`, JSON.stringify(formData), {
     headers: {
       'Content-Type' : 'application/json',
     }
   });
-  console.log(data);
-  return data;
+  console.log(res.data);
+  return res.data;
 };
