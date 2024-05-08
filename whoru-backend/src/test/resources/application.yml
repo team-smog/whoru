@@ -1,0 +1,98 @@
+spring:
+  test:
+    url: ENC(Y9N17hSVJ/BGs+yNO4j6XHnKs3emRRC27OhBuN3zstU=)
+
+  local:
+    website: ENC(Y9N17hSVJ/BGs+yNO4j6XHnKs3emRRC27OhBuN3zstU=)
+
+  h2:
+    console:
+      enabled: true
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:whoru;
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+  data:
+    redis:
+      port: 6379
+      host: localhost
+      password:
+  jwt:
+    expire:
+      access: 3600000
+      refresh: 1209600000
+
+    secret: ENC(FZm2+cnNzBUJNDxOUQFnvLAXbbvCJtgr+kRiw4avSMhdYVmMOyqnQMJ1Xprtr2oslRDtdew6FNcEJschjZzcW9PQEPgufl1uJuga5slxY00=)
+  security:
+    oauth2:
+      client:
+        registration:
+          #          naver:
+          #            client-name: naver
+          #            client-id: ${social.naver-client-id}
+          #            client-secret: ${social.naver-secret-key}
+          #            redirect-uri: http://localhost:8080/login/oauth2/code/naver
+          #            authorization-grant-type: authorization_code
+          #            scope: name,email
+          #          google:
+          #            client-name: google
+          #            client-id: ${social.google-client-id}
+          #            client-secret: ${social.google-secret-key}
+          #            redirect-uri: http://localhost:8080/login/oauth2/code/google
+          #            authorization-grant-type: authorization_code
+          #            scope: profile,email
+          kakao:
+            client-name: kakao
+            client-id: ENC(QWkDLnmvcGEJ15Kc7QzgL6KdrR7v2oWXAqZEtNlyAicIwqDocmGJ/x+7gAh2bfLt)
+            client-secret: ENC(4DHQkCzKfmC/d8wSaVCr1oUO/0lk/Z2QJArqVoG1kZu4+1QSvglXtovvi4Nx6jzs)
+            redirect-uri: https://k10p31d203.p.ssafy.io/api/login/oauth2/code/kakao
+            authorization-grant-type: authorization_code
+            client-authentication-method: client_secret_post
+            scope:
+              - profile_nickname
+
+
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-info-authentication-method: header
+            user-name-attribute: id
+
+server:
+  servlet:
+    context-path: /api
+
+#FCM 설정
+fcm:
+  type: service_account
+  project:
+    id: whoru-29e56
+  private:
+    key: "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDHOhWfGllxURPO\ns3S/QqskuSrrh6KCxUE/jEiBv8E86wCmjcGFNHyd6zb1NQ6RzXmHBD0DbG3sL765\nWmbRD1pD4y0DVtVJrlD0Q2XO8w5Or69ycMEtYLuJkCitBgQwIiHLHUdSO9HYkhRL\nlo8j+22A5h1kVeld7AASMaMs9eRpjYcS/B9w/l1NEZIwPcfuZOaw2A8wylbtKY+k\nE/SaZjn4RBmpUqmY/SPM5jT6tRIYetqVL/3B6Pv7R+kUuJhkWMYYxRiQiS7faXRy\nNCiCEr0T9+kB1L8EM/Z1Y9sIzhelGQpzfMAsnqgJN2VrD1UYu9EQQV7RHpsHVJQ2\nVnhA+/tDAgMBAAECggEAOOZMdY/jersywoa7ccKbOZZO/UzUK7Alpf4tWS1IhdsC\naQ80dZRbgQjEPf0kx5ydOGQL/vXRYTLzsGFy2wOc/qWb3gfHS89m3JSBN71wWSXR\nIIi2i3zEoxHSpDQDLzIYX7fhfkmKceWquTnrcNXm3Pkb7OOijooQLSITHgyuazyY\n5tuF9VZAy879uQsHby0pqUOlifl4ypraqhD9tAyVNY5ZZcNnDb/SfAChuap4iSdl\n69849agDrdsBT8fy5wTr6N3NxATdtqlOXGeSWQtnVyOoof/naFKqtOj6p4M6FIP+\nRkNrsasQtbOSIPWZD2ENtEleGFUBILZt3/gTjgAgHQKBgQDuU5nsSPikjZ5Vpwmr\n+8uioH/3tTD9mRoegM6pPgJDDnyrNBlhSP1SDdAgxa2ErAyuJp2bxctEekZG9VrR\n4YYSLuQFAyEieona4J4rjRmOm+HnBGKCGmb7rsHry+4qVyBPo6Au8IHzW2pxPmQw\n/8IPwQIGmu3On+/aP3X9HCVPzwKBgQDWADa62SFatCRjTZT2pAXUYM1LAKfszozG\nUAiUDAbxhAVjnEgCIG6npOEjirhmkLyqQcqMwSzcCz6abp8GrWNvJ7lO/sYMKwFv\nww6BuacQ7tR9tBpEu8NEu8N7wX0p7nv9vK8Hu0HXMjRFwfNHwQDaNDa6ywXW5CXW\nk//Xl8HmTQKBgQCDJM/bfOANtLw/B7bDw7/vkoA4b6Uwt3Hu/RQ7fxrBiZRCpV2d\n8gsrftxbXEu6aO5lWmx6DmJnIR3Q6Cx8t6wOD2178JfoICQBpH6FGpTIq7CobfpC\n+4JV1nlxZnt9IwptqG15xvDLWC9/d0SszeAcySlzNwfLHqleoHMtv7IscwKBgQCz\nnrpRWq6EU2+3agb+fe3mtNmbepF4UmYWjlak7PNnBEkBsss9/brjO6E9E9JzREkX\nHuHEAuCEUWvac79G+4Haap0/kNjqna43AKHMgOeZbt0sJV9nEbJ0nqUV2vITn/iy\noQzIkIRS+/CkHIb2UylD/U9yubXNCPI5iT/U1awKgQKBgGTC6IYcsFwtj8PU8L6Q\nRNk7DlSsn7qp9eRrgiwqfJnvBcEX9Kzzm31ai/VHVQoOaoIwH7q7Vj5fwB6hLE19\nAgyJaPy22rWFUOcVzWaYG7ME3sePzpL9Rn/ddTeUkGBXsPppY+2r2P7thMSUsleQ\nDv7U5f+elLAzZ+AdAJLEBR5t\n-----END PRIVATE KEY-----\n"
+    id: ENC(FqmiHDF82hSN7/11L6hzPSNtOXDjUV6oSKggvBcnzbO7+zocFyfAjQTeuaCVjF6uK8zJ3uP3EM0=)
+  client:
+    email: ENC(diekEuFeGTTk4sMKbDGUrzD1fizBYEFRs291crrdb/396SScwdBM3JVzieOGSCyYduuUvHBccZzV45e+P28EkON5v4NRYUFI)
+    id: ENC(CqJ2blw8dH0F+5t992QLozw8WVaVOABPR9VxEVLf53A=)
+    x509:
+      cert:
+        url: ENC(Le+VRWF1RXAdcqN/eTi4YNtuspZ13n38Cdkd4l5X5e8zGr7BL3UE3Q55Th6UgylhkSxN43YBbY9RegeaUiGFzO9ht7x8BZx3+3itOU9ADLUreAJ1/gH6IpfcZ8ZkcGWoDuLYYZ5PmbkwMsCiHDZoTcQV/v4q92yV)
+  auth:
+    uri: https://accounts.google.com/o/oauth2/auth
+    provider:
+      x509:
+        cert:
+          url: https://www.googleapis.com/oauth2/v1/certs
+  token:
+    uri: https://oauth2.googleapis.com/token
+  universe:
+    domain: googleapis.com
