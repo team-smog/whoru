@@ -14,3 +14,8 @@
 	border-top: 1px solid #df93f8;
 	border-bottom: 1px solid #c4aff1;
 }
+
+.loading-element {
+  height: 0;
+  transition: height 0.3s ease-out;
+}

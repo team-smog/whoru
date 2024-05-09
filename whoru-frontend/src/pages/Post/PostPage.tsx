@@ -64,16 +64,6 @@ const PostPage = () => {
         {messageType === "voice" && <SendVoiceComponent messageId = {messageId}/>}
         {messageType === "image" && <SendImageComponent messageId = {messageId}/>}
       </div>
-
-      {/* <div className={styles.postPageSliderContainer}>
-        <SendTextComponent />
-      </div>
-      <div className={styles.postPageSliderContainer}>
-        <SendVoiceComponent />
-      </div>
-      <div className={styles.postPageSliderContainer}>
-        <SendImageComponent />
-      </div> */}
       <NavigationBar />
     </div>
   )

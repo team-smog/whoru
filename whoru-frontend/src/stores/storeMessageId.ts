@@ -36,7 +36,7 @@ const messageSlice = createSlice({
     setFirstId: (state, action: PayloadAction<number|null>) => {
       // console.log(action)
       state.firstId = action.payload;
-      console.log(state.firstId)
+      // console.log(state.firstId)
     },
     setLastId: (state, action: PayloadAction<number|null>) => {
       state.lastId = action.payload;

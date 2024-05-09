@@ -34,7 +34,7 @@ const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, inne
   }
 
   const handleReport = (messageId:number, senderId:number) => {
-    axios.post('http://k10d203.p.ssafy.io/api/report/member',
+    axios.post('https://k10d203.p.ssafy.io/api/report/member',
     {
       messageId: messageId,
       senderId: senderId,
