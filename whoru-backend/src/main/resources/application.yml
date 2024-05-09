@@ -27,7 +27,7 @@ spring:
   #JPA 설정
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create
     show-sql: true
     # SQL 포매터
     properties:
