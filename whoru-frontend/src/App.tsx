@@ -4,20 +4,12 @@ import MainPage from './pages/MainPage/MainPage';
 import LoginPage from './pages/Login/LoginPage';
 import AlarmPage from './pages/Alarm/AlarmPage';
 import ProfilePage from './pages/Profile/ProfilePage';
-import AskPage from './pages/Ask/AskPage';
 import PostPage from './pages/Post/PostPage';
-import AskPostPage from './pages/AskPost/AskPostPage';
 import AnnouncementPage from './pages/Announcement/AnnouncementPage';
 import Chacollection from './pages/Chacollection/Chacollection';
 import Inquiry from './pages/Inquiry/Inquiry';
 import AdminPage from './pages/Admin/AdminPage';
-// import ReceivePage from './pages/Login/ReceivePage';
-// import { useEffect, useRef, useState } from 'react';
-// import { getFirebaseMessagingObject } from "./FirebaseUtil"
-// import { onMessage } from "firebase/messaging";
-// import { requestPermission } from './FirebaseUtil';
-
-import CallBackPage from './pages/CallBack/CallBackPage';
+import CallBackPage from './pages/Login/CallBackPage';
 
 interface AuthWrapperProps {
   children: React.ReactNode;
@@ -63,22 +55,6 @@ const router = createBrowserRouter([
     element: (
       <AuthWrapper>
         <ProfilePage />
-      </AuthWrapper>
-    )
-  },
-  {
-    path: '/profile/ask',
-    element: (
-      <AuthWrapper>
-        <AskPage />
-      </AuthWrapper>
-    )
-  },
-  {
-    path: '/profile/ask/post',
-    element: (
-      <AuthWrapper>
-        <AskPostPage />
       </AuthWrapper>
     )
   },
@@ -130,14 +106,11 @@ const router = createBrowserRouter([
 
 const App = () => {
 
-  
-
-
   return (
     <>
       <RouterProvider router={router} />
     </>
   )
-};
+}
 
 export default App;

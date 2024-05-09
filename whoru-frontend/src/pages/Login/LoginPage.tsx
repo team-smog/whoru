@@ -1,5 +1,5 @@
-import logo from '@/assets/logo.png'
-import cd from '@/assets/cd.png'
+import logo from '@/assets/components/login/logo.png'
+import cd from '@/assets/components/login/cd.png'
 import KakaoLogin from '@/components/LoginPage/KakaoLogin';
 import NaverLogin from '@/components/LoginPage/NaverLogin';
 

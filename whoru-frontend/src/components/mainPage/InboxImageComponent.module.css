@@ -87,3 +87,92 @@
   border-left: 1.5px solid #423752;
   color: #656565;
 }
+.InboxImageComponent {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+  width: 95%;
+  min-height: 110px;
+  background: #ffffff;
+  border: 3px solid #423752;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 4px auto;
+}
+
+.inboxImageComponentHeader {
+  width: 100%;
+  min-height: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background: #A2B4FE;
+  border-bottom: 3px solid #423752;
+}
+
+.inboxImageComponentHeaderText {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.inboxImageComponentHeaderTextTitle {
+  font-size: 12px;
+  margin: auto 12px;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.inboxImageComponentHeaderTime {
+  font-size: 10px;
+  color: #ffffff;
+}
+
+.inboxImageComponentHeaderIcons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.inboxImageComponentHeaderIcons img {
+  width: 30px;
+  height: 100%;
+  padding: 0px 4px;
+  border-left: 3px solid #6A7BC4;
+}
+
+.inboxImageComponentBody {
+  /* max-height: 500px; */
+}
+
+.inboxImageComponentBodyMain {
+  width: 100%;
+}
+
+.inboxImageComponentFooter {
+  width: 100%;
+  height: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  background: #A2B4FE;
+  border-top: 3px solid #423752;
+}
+
+.inboxImageComponentFooterButton {
+  width: 100%;
+  height: 100%;
+  background: #E08EDC;
+  background: linear-gradient(0deg, #A2B4FE 0%, #FFC2FC 100%);
+  border-right : 1.5px solid #423752;
+  color: #ffffff;
+}
+
+.inboxImageComponentFooterReportButton {
+  width: 100%;
+  height: 100%;
+  background: #E2E0FF;
+  border-left: 1.5px solid #423752;
+  color: #656565;
+}

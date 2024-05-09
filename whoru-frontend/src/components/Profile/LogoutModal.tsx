@@ -2,7 +2,7 @@ import Modal from '../@common/Modal';
 import { useNavigate } from 'react-router-dom';
 import useLogout from '@/hooks/Logout/useLogout';
 import Swal from 'sweetalert2';
-import Sad from '@/assets/Sad.png';
+import Sad from '@/assets/@common/Sad.png';
 
 const LogoutModal = ({ onClose }: { onClose: () => void }) => {
   const navigate = useNavigate();
