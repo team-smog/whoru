@@ -26,9 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
-import java.util.Optional;
 
-import static com.ssafy.whoru.domain.member.domain.QMember.member;
 
 
 @Slf4j
@@ -117,7 +115,14 @@ public class MemberServiceImpl implements MemberService {
 
         return ProfileResponse
                 .builder()
-                .username(byId.getUserName())
+                .id(memberId)
+                .provider(byId.getProvider())
+                .memberIdentifier(byId.getMemberIdentifier())
+                .boxCount(byId.getBoxCount())
+                .role(byId.getRole())
+                .createDate(byId.getCreateDate())
+                .reportCount(byId.getReportCount())
+                .userName(byId.getUserName())
                 .languageType(LanguageType.KOREAN)
                 .fcmToken(fcmToken)
                 .pushAlarm(alarmStatus)
