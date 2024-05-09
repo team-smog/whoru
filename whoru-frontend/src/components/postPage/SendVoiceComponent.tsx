@@ -14,12 +14,15 @@ import postbutton from '@/assets/components/InboxVoiceComponent/voice-component-
 import pausebutton from '@/assets/components/InboxVoiceComponent/voice-component-pause-button.svg'
 import { useVoiceVisualizer, VoiceVisualizer } from "react-voice-visualizer";
 import 'react-h5-audio-player/lib/styles.css';
-// import axios from 'axios';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom'
 
-const SendVoiceComponent = () => {
+const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
+    const navigate = useNavigate();
     const [currentRecordType,setCurrentRecordType] = useState<string>("")
     // Initialize the recorder controls using the hook
     const recorderControls = useVoiceVisualizer();
+    const accessToken = localStorage.getItem('AccessToken');
     const {
         // ... (Extracted controls and states, if necessary)
         error,
@@ -179,27 +182,61 @@ const SendVoiceComponent = () => {
       console.log("bufferFromRecordedBlob:", bufferFromRecordedBlob);
     }, [bufferFromRecordedBlob]);
 
-    // const handlePostButtonClick = async () => {
-    //   if (!recordedBlob) {
-    //       console.error("No recorded audio to send");
-    //       return;
-    //   }
-  
-    //   const formData = new FormData();
-    //   formData.append('audio', recordedBlob, 'audio.webm');
-  
-    //   try {
-    //       const response = await axios.post('https://S10P31D203WRU.com//message/file', formData, {
-    //           headers: {
-    //               'Content-Type': 'multipart/form-data',
-    //               'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
-    //           }
-    //       });
-    //       console.log(response.data);
-    //   } catch (error) {
-    //       console.error(error);
-    //   }
-    // };
+    const handlePostButtonClick = async () => {
+      if (messageId !== null) {
+        if (!recordedBlob) {
+            console.error("No recorded audio to send");
+            return;
+        }
+    
+        const formData = new FormData();
+        let newBlob = new Blob([recordedBlob], {type: 'audio/weba'});
+        formData.append('file', newBlob);
+
+        console.log("newBlob:", newBlob);
+    
+        try {
+            const response = await axios.post(`https://k10d203.p.ssafy.io/api/message/${messageId}/file`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    Authorization: `Bearer ${accessToken}`
+                }
+            });
+            console.log(response.data);
+            navigate('/');
+        } catch (error) {
+            console.error(error);
+            alert('음성 전송에 실패했습니다.');
+            navigate('/');
+        }
+      } else if (messageId === null) {
+        if (!recordedBlob) {
+          console.error("No recorded audio to send");
+          return;
+        }
+    
+        const formData = new FormData();
+        let newBlob = new Blob([recordedBlob], {type: 'audio/weba'});
+        formData.append('file', newBlob);
+
+        console.log("newBlob:", newBlob);
+    
+        try {
+            const response = await axios.post('https://k10d203.p.ssafy.io/api/message/file', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    Authorization: `Bearer ${accessToken}`
+                }
+            })
+            console.log(response.data);
+            navigate('/');
+        } catch (error) {
+            console.error(error);
+            alert('음성 전송에 실패했습니다.');
+            navigate('/');
+        }
+      }
+    };
 
   return (
     <div className={styles.sendVoiceComponent}>
@@ -250,7 +287,7 @@ const SendVoiceComponent = () => {
                 height="100px"
                 backgroundColor="transparent"
                 mainBarColor="#ffffff"
-                barWidth={8}
+                barWidth={4}
                 gap={1}
                 speed={1}
                 isDefaultUIShown={false}
@@ -274,7 +311,7 @@ const SendVoiceComponent = () => {
                     <img 
                       src={postbutton} 
                       alt="post-icon" 
-                      // onClick={handlePostButtonClick}
+                      onClick={handlePostButtonClick}
                     />
                     {isPausedRecordedAudio ?
                       <img src={startbutton} alt="start-icon" onClick={recorderControls.togglePauseResume}/>

@@ -4,41 +4,52 @@ import ulIcon from '../../assets/components/InboxImageComponent/image-component-
 import sqIcon from '../../assets/components/InboxImageComponent/image-component-sq-button.svg'
 import xIcon from '../../assets/components/InboxImageComponent/image-component-x-button.svg'
 import camerabutton from '../../assets/components/InboxImageComponent/image-component-camera-button.svg'
-// import axios from 'axios'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 
-const SendImageComponent = () => {
+const SendImageComponent = ({ messageId }: { messageId: number | null}) => {
+  const navigate = useNavigate();
   const fileInputRef = useRef(null);
-  // const [imageSrc, setImageSrc] = useState(null);
-  const [imageSrc] = useState(null);
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const accessToken = localStorage.getItem('AccessToken');
+  // const [imageSrc] = useState(null);
 
   const handleUploadAreaClick = () => {
-    // fileInputRef.current.click();
+    if (fileInputRef.current) {
+      (fileInputRef.current as HTMLInputElement).click();
+    }
   };
 
-  const handleFileChange = () => {
-    // const file = event.target.files[0];
-    // if (file) {
-    //   const reader = new FileReader();
-    //   reader.onloadend = () => {
-    //     setImageSrc(reader.result);
-    //   };
-    //   reader.readAsDataURL(file); 
-    // }
-  };
+  // const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const files = event.target.files;
+  //   if (files) {
+  //     const file = files[0];
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       setImageSrc(reader.result as string | null);
+  //     };
+  //     reader.readAsDataURL(file); 
+  //   }
+  // };
 
   // const handleSendClick = async () => {
   //   if (imageSrc) {
   //     try {
   //       const formData = new FormData();
-  //       formData.append('image', imageSrc);
+  //       formData.append('file', imageSrc);
 
-  //       const response = await axios.post('https://S10P31D203WRU.com//message/file', formData, { //TODO: 서버 URL을 입력
+  //       // await axios.post('https://k10d203.p.ssafy.io/api/message/file', formData, {
+  //       await axios.post('http://k10d203.p.ssafy.io:18080/api/message/file', formData, {
   //         headers: {
   //           'Content-Type': 'multipart/form-data',
-  //           'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
+  //           'Authorization': 'BearereyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImlkIjoyLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE0NzEwMDkxLCJleHAiOjE3NTA3MTAwOTF9.coDlad6k0UadtPqBvTIBFhXByytdncFAvChB0kZnN9g'
   //         },
-  //       });
+  //       })
+  //       .then((res) => {
+  //         console.log(res.data);
+  //       })
 
   //       setImageSrc(null);
 
@@ -47,6 +58,87 @@ const SendImageComponent = () => {
   //     }
   //   }
   // };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files) {
+      const file = files[0];
+      setImageFile(file); // Save the file instead of its Data URL
+
+      // Create a new FileReader object
+      const reader = new FileReader();
+
+      // Set the image source to the result of the FileReader
+      reader.onloadend = () => {
+        setImageSrc(reader.result as string | null);
+      };
+
+      // Start reading the file as Data URL
+      reader.readAsDataURL(file);
+    }
+  };
+  
+  const handleSendClick = async () => {
+    if (messageId !== null) {
+      if (imageFile) { // Check if there is a file
+        try {
+          const formData = new FormData();
+          formData.append('file', imageFile); // Add the file to FormData
+          console.log(imageFile);
+          // console.log(accessToken)
+          console.log("답장 이미지")
+    
+          await axios.post(`https://k10d203.p.ssafy.io/api/message/${messageId}/file`, formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: `Bearer ${accessToken}`
+            },
+          })
+          .then((res) => {
+            console.log(res.data);
+            setImageFile(null); // Clear the file
+            setImageSrc(null);
+            navigate('/');
+          })
+        } catch (error) {
+          console.error('Error:', error);
+          alert('이미지 전송에 실패했습니다.');
+          navigate('/');
+        }
+      }
+    } else if (messageId === null) {
+      if (imageFile) { // Check if there is a file
+        try {
+          const formData = new FormData();
+          formData.append('file', imageFile); // Add the file to FormData
+          console.log(imageFile);
+          // console.log(accessToken)
+    
+          await axios.post('https://k10d203.p.ssafy.io/api/message/file', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: `Bearer ${accessToken}`,
+            },
+          })
+          .then((res) => {
+            console.log(res.data);
+            setImageFile(null); // Clear the file
+            setImageSrc(null);
+            navigate('/');
+          })
+        } catch (error) {
+          console.error('Error:', error);
+          alert('이미지 전송에 실패했습니다.');
+          navigate('/');
+        }
+      }
+    }
+  }
+  
+
+  const handleCancelClick = () => {
+    setImageSrc(null);
+  };
 
   return (
     <div className={styles.sendImageComponent}>
@@ -84,11 +176,11 @@ const SendImageComponent = () => {
       <div className={styles.sendImageComponentFooter}>
         <button 
           className={styles.sendImageComponentFooterButton} 
-          // onClick={handleSendClick}
+          onClick={handleSendClick}
         >
           전송
         </button>
-        <button className={styles.sendImageComponentFooterReportButton}>취소</button>
+        <button className={styles.sendImageComponentFooterReportButton} onClick={handleCancelClick}>취소</button>
       </div>
     </div>
   )
