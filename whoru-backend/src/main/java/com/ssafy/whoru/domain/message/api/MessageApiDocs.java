@@ -7,6 +7,7 @@ package com.ssafy.whoru.domain.message.api;
 import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.domain.message.dto.request.TextSend;
 import com.ssafy.whoru.domain.message.dto.response.MessageResponse;
+import com.ssafy.whoru.domain.message.dto.response.SendResponse;
 import com.ssafy.whoru.domain.message.dto.response.SliceMessageResponse;
 import com.ssafy.whoru.global.common.dto.WrapResponse;
 import com.ssafy.whoru.global.error.ErrorResponse;
@@ -33,12 +34,12 @@ public interface MessageApiDocs {
 
     @Operation(summary = "Text 메세지 전송", description = "Text 메세지를 작성자 고유번호와 함께 보내어 content를 랜덤한 사용자에게 전송합니다.")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "201", description = "Text 메세지 전송 완료", content = @Content(schema = @Schema(implementation = WrapResponse.class))),
+        @ApiResponse(responseCode = "201", description = "Text 메세지 전송 완료", useReturnTypeSchema = true),
         @ApiResponse(responseCode = "400", description = "content 길이가 2 미만일때 발생", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
         @ApiResponse(responseCode = "400", description = "content 길이가 200 초과일때 발생", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
         @ApiResponse(responseCode = "403", description = "정지된 유저 메세지 전송 권한거부", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
     })
-    ResponseEntity<WrapResponse<Void>> sendTextMessage(CustomOAuth2User member, @RequestBody @Valid TextSend textSend);
+    ResponseEntity<WrapResponse<SendResponse>> sendTextMessage(CustomOAuth2User member, @RequestBody @Valid TextSend textSend);
 
     @Operation(summary = "Text 답장 메세지 전송", description = "Text 답장메세지를 작성자 고유번호, 내용, 어떤 메세지에 대한 답장인지를 담아서 전송합니다.")
     @ApiResponses(value = {
@@ -62,13 +63,13 @@ public interface MessageApiDocs {
         }
     )
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "201", description = "이미지 / 보이스 메세지 전송 성공",  content = @Content(schema = @Schema(implementation = WrapResponse.class))),
+        @ApiResponse(responseCode = "201", description = "이미지 / 보이스 메세지 전송 성공", useReturnTypeSchema = true),
         @ApiResponse(responseCode = "415", description = "허용되지 않는 확장자를 넣은 경우", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
         @ApiResponse(responseCode = "403", description = "정지된 유저 메세지 전송 권한거부", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
         @ApiResponse(responseCode = "400", description = "업로드된 파일이 손상된 경우", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
         @ApiResponse(responseCode = "503", description = "AW3 Upload 에 실패했을 때", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    ResponseEntity<WrapResponse<Void>> sendFileMessage(
+    ResponseEntity<WrapResponse<SendResponse>> sendFileMessage(
         CustomOAuth2User member,
         @RequestPart @Schema(description = "업로드 할 파일", format = "binary", allowableValues = {"image/jpeg", "image/gif", "image/png", "audio/mpeg", "audio/wav"}) MultipartFile file
     );

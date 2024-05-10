@@ -9,6 +9,7 @@ import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.domain.message.application.MessageService;
 import com.ssafy.whoru.domain.message.dto.request.TextSend;
 import com.ssafy.whoru.domain.message.dto.response.MessageResponse;
+import com.ssafy.whoru.domain.message.dto.response.SendResponse;
 import com.ssafy.whoru.global.common.dto.response.ResponseWithSuccess;
 import com.ssafy.whoru.domain.message.dto.response.SliceMessageResponse;
 import com.ssafy.whoru.global.common.dto.SuccessType;
@@ -43,9 +44,9 @@ public class MessageApi implements MessageApiDocs{
     MessageService service;
 
     @PostMapping("")
-    public ResponseEntity<WrapResponse<Void>> sendTextMessage(@AuthenticationPrincipal CustomOAuth2User member, @RequestBody @Valid TextSend textSend) {
-        service.sendTextMessageToRandomMember(textSend, member.getId());
+    public ResponseEntity<WrapResponse<SendResponse>> sendTextMessage(@AuthenticationPrincipal CustomOAuth2User member, @RequestBody @Valid TextSend textSend) {
         return ResponseEntity.ok(WrapResponse.create(
+                service.sendTextMessageToRandomMember(textSend, member.getId()),
                 SuccessType.STATUS_201
         ));
     }
@@ -67,10 +68,10 @@ public class MessageApi implements MessageApiDocs{
         MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_GIF_VALUE, MediaType.IMAGE_PNG_VALUE,
         MediaType.APPLICATION_JSON_VALUE, "audio/mpeg", "audio/wav", "audio/weba", "audio/webm"
     })
-    public ResponseEntity<WrapResponse<Void>> sendFileMessage(@AuthenticationPrincipal CustomOAuth2User member, @RequestPart MultipartFile file){
-        service.sendMediaMessageToRandomMember(file, member.getId());
+    public ResponseEntity<WrapResponse<SendResponse>> sendFileMessage(@AuthenticationPrincipal CustomOAuth2User member, @RequestPart MultipartFile file){
         return ResponseEntity.ok(WrapResponse.create(
-           SuccessType.STATUS_201
+            service.sendMediaMessageToRandomMember(file, member.getId()),
+            SuccessType.STATUS_201
         ));
     }
 
