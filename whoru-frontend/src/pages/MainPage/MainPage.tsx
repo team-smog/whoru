@@ -98,7 +98,7 @@ const MainPage = () => {
     try {
       // console.log("token1",token)
       await fetch(`https://k10d203.p.ssafy.io/api/member/updatefcm?fcmToken=${token}`, {
-        method: 'PATCH',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
