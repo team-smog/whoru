@@ -2,17 +2,16 @@ package com.ssafy.whoru.global.handler;
 
 import com.ssafy.whoru.domain.member.dao.MemberRepository;
 import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
-import com.ssafy.whoru.domain.member.dao.TokenRepository;
 import com.ssafy.whoru.global.common.dto.RedisKeyType;
 import com.ssafy.whoru.global.util.JWTUtil;
 import com.ssafy.whoru.global.util.RedisUtil;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -64,20 +63,16 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         redisUtil.insert(RedisKeyType.REFRESHTOKEN.makeKey(String.valueOf(userId)),refreshToken,time/1000);
 
         //Response 세팅
-        response.addCookie(createCookie("Refresh", refreshToken));
+        ResponseCookie refreshCookie = ResponseCookie.from("Refresh", refreshToken)
+                .maxAge(60 * 60 * 60 * 60)
+                .path("/")
+                .secure(true)
+                .sameSite("None")
+                .httpOnly(true)
+                .build();
+        response.addHeader("Set-Cookie", refreshCookie.toString());
 
         response.sendRedirect(url +"callback" + "?accessToken=" + accessToken);
 //        response.sendRedirect(testUrl +"callback" + "?accessToken=" + accessToken);
-    }
-
-    private Cookie createCookie(String key, String value) {
-
-        Cookie cookie = new Cookie(key, value);
-        cookie.setMaxAge(60*60*60*60);
-        //cookie.setSecure(true);  https
-        cookie.setPath("/");
-        cookie.setHttpOnly(true);
-
-        return cookie;
     }
 }
