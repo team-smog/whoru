@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import Bell from "@/assets/@common/Bell.png"
 
 export interface IHeaderInfo {
   left_1: React.ReactNode | null;
