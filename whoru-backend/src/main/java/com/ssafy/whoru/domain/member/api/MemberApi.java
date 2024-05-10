@@ -54,6 +54,7 @@ public class MemberApi implements MemberApiDocs {
                 if ("Refresh".equals(cookie.getName())) {
                     ResponseCookie expiredCookie = ResponseCookie.from(cookie.getName(), null)
                             .path("/")
+                            .domain("k10d203.p.ssafy.io")
                             .maxAge(0)
                             .secure(true)
                             .sameSite("None")

@@ -64,6 +64,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         //Response 세팅
         ResponseCookie refreshCookie = ResponseCookie.from("Refresh", refreshToken)
+                .domain("k10d203.p.ssafy.io")
                 .path("/")
                 .maxAge(7 * 24 * 60 * 60)
                 .secure(true)
