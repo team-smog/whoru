@@ -10,7 +10,7 @@ import 'react-h5-audio-player/lib/styles.css';
 import "./audioStyles.css";
 import { MessageInfoDetail } from '../../types/mainTypes'
 import { useDispatch } from 'react-redux';
-import { setReplyMessage } from '@/stores/storeMessageId';
+import { setReplyMessage } from '@/stores/store';
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
@@ -40,7 +40,7 @@ const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, inne
 
   const handleReport = (messageId:number, senderId:number) => {
     if (confirm('정말로 신고하시겠습니까?')) {
-      axios.post('http://k10d203.p.ssafy.io/api/report/member',
+      axios.post('https://k10d203.p.ssafy.io/api/report/member',
       {
         messageId: messageId,
         senderId: senderId,

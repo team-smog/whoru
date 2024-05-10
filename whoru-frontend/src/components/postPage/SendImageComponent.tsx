@@ -6,10 +6,13 @@ import xIcon from '../../assets/components/InboxImageComponent/image-component-x
 import camerabutton from '../../assets/components/InboxImageComponent/image-component-camera-button.svg'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { setBoxCount } from '@/stores/store'
+import { useDispatch } from 'react-redux'
 
 
 const SendImageComponent = ({ messageId }: { messageId: number | null}) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const fileInputRef = useRef(null);
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -124,6 +127,9 @@ const SendImageComponent = ({ messageId }: { messageId: number | null}) => {
             console.log(res.data);
             setImageFile(null); // Clear the file
             setImageSrc(null);
+            if (res.data.data.randomBoxProvided === true) {
+              dispatch(setBoxCount());
+            }
             navigate('/');
           })
         } catch (error) {

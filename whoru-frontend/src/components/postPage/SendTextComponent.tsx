@@ -5,12 +5,12 @@ import sqIcon from '../../assets/components/InboxTextComponent/text-component-sq
 import xIcon from '../../assets/components/InboxTextComponent/text-component-x-button.svg'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
-// import { requestPermission } from '../../FirebaseUtil'
-// import { FCMComponent } from '../../FCM';
+import { setBoxCount } from '@/stores/store'
+import { useDispatch } from 'react-redux'
 
 const SendTextComponent = ({ messageId }: { messageId: number | null}) => {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [text, setText] = useState("");
   const accessToken = localStorage.getItem('AccessToken');
@@ -84,6 +84,9 @@ const SendTextComponent = ({ messageId }: { messageId: number | null}) => {
         )
         .then((res) => {
           console.log(res);
+          if (res.data.data.randomBoxProvided === true) {
+            dispatch(setBoxCount());
+          }
           navigate('/');
         })
       }
