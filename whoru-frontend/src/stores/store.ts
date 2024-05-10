@@ -56,11 +56,16 @@ const boxCounterSlice = createSlice({
   name: 'boxCounter',
   initialState: boxCounterInitialState,
   reducers: {
-    setBoxCount: (state) => {
+    setBoxCountP: (state) => {
       if (state.boxCount !== null) {
         state.boxCount += 1;
       }
-    }
+    },
+    setBoxCountM: (state) => {
+      if (state.boxCount !== null) {
+        state.boxCount -= 1;
+      }
+    },
   }
 });
 
@@ -82,5 +87,5 @@ const store = configureStore({
 
 export const { setReplyMessage } = replySlice.actions;
 export const { setFirstId, setLastId } = messageSlice.actions;
-export const { setBoxCount } = boxCounterSlice.actions;
+export const { setBoxCountP, setBoxCountM } = boxCounterSlice.actions;
 export default store;
