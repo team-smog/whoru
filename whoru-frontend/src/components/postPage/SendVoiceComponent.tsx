@@ -16,7 +16,7 @@ import { useVoiceVisualizer, VoiceVisualizer } from "react-voice-visualizer";
 import 'react-h5-audio-player/lib/styles.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'
-import { setBoxCount } from '@/stores/store';
+import { setBoxCountP } from '@/stores/store';
 import { useDispatch } from 'react-redux';
 
 const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
@@ -233,7 +233,7 @@ const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
             })
             console.log(response.data);
             if (response.data.data.randomBoxProvided === true) {
-                dispatch(setBoxCount());
+                dispatch(setBoxCountP());
             }
             navigate('/');
         } catch (error) {
