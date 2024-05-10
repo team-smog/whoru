@@ -11,6 +11,8 @@ import com.ssafy.whoru.domain.board.dto.request.PatchNotificationRequest;
 import com.ssafy.whoru.domain.board.dto.request.PostInquiryBoardRequest;
 import com.ssafy.whoru.domain.board.dto.request.PostInquiryCommentRequest;
 import com.ssafy.whoru.domain.board.dto.request.PostNotificationRequest;
+import com.ssafy.whoru.domain.board.dto.response.CommentDto;
+import com.ssafy.whoru.domain.board.dto.response.InquiryDetailResponse;
 import com.ssafy.whoru.domain.board.dto.response.InquiryRecordResponse;
 import com.ssafy.whoru.domain.board.dto.response.NotificationResponse;
 import com.ssafy.whoru.domain.board.exception.BoardNotFoundException;
@@ -33,6 +35,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.Response;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -86,30 +89,29 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     @Transactional(readOnly = true)
-    public SliceResponse<InquiryRecordResponse> getInquiryBoard(Long memberId, int page, int size) {
+    public SliceResponse<InquiryDetailResponse> getInquiryBoard(Long memberId, int page, int size) {
 
         Member member = crossMemberService.findByIdToEntity(memberId);
 
         // 페이징 객체 생성
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createDate"));
 
-        Slice<Board> result = boardRepository.findByMember(member, pageable);
+        Slice<Board> result = boardRepository.findByMember(member, pageable, BoardType.INQUIRY);
 
 
         isCommentExist(result);
 
         // Entity to DTO
-        Slice<InquiryRecordResponse> response = result.map(board -> modelMapper.map(board, InquiryRecordResponse.class));
+        Slice<InquiryDetailResponse> response = result.map(board -> modelMapper.map(board, InquiryDetailResponse.class));
 
         return new SliceResponse<>(response);
 
     }
 
 
-
     @Override
     @Transactional(readOnly = true)
-    public SliceResponse<InquiryRecordResponse> getTotalInquiry(int page, int size,
+    public SliceResponse<InquiryDetailResponse> getTotalInquiry(int page, int size,
         int condition) {
 
         // 페이징 객체 생성
@@ -131,7 +133,7 @@ public class BoardServiceImpl implements BoardService{
         isCommentExist(result);
 
         // Entity to DTO
-        Slice<InquiryRecordResponse> response = result.map(board -> modelMapper.map(board, InquiryRecordResponse.class));
+        Slice<InquiryDetailResponse> response = result.map(board -> modelMapper.map(board, InquiryDetailResponse.class));
 
         return new SliceResponse<>(response);
     }
@@ -251,6 +253,13 @@ public class BoardServiceImpl implements BoardService{
                 map().setWriterName(source.getWriter().getUserName());
             }
         });
+
+        modelMapper.addMappings(new PropertyMap<Comment, CommentDto>() {
+            protected void configure() {
+                map().setCommenterName(source.getCommenter().getUserName());
+            }
+        });
+
     }
 
 }
