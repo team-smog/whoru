@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import Header, { IHeaderInfo } from "@/components/@common/Header";
-import Bell from "@/assets/@common/Bell.png"
 import NavigationBar from "@/components/@common/NavigationBar";
 import InboxTextComponent from "@/components/mainPage/InboxTextComponent";
 import InboxImageComponent from "@/components/mainPage/InboxImageComponent";
@@ -22,7 +21,7 @@ const MainPage = () => {
     left_1: "Main",
     left_2: null,
     center: null,
-    right: <img src={Bell} alt="Alarm"/>
+    right: null
   }
 
   const dispatch = useDispatch();

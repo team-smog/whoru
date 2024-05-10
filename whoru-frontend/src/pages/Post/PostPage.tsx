@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import Header, { IHeaderInfo } from "@/components/@common/Header";
-import Bell from "@/assets/@common/Bell.png"
 import NavigationBar from "@/components/@common/NavigationBar";
 import styles from "./PostPage.module.css";
 import SendTextComponent from "@/components/postPage/SendTextComponent";
@@ -14,7 +13,7 @@ const PostPage = () => {
     left_1: "Send",
     left_2: null,
     center: null,
-    right: <img src={Bell} alt="Alarm"/>
+    right: null
   }
 
   const [messageType, setMessageType] = useState("text");

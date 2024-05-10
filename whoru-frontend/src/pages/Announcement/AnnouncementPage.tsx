@@ -1,5 +1,4 @@
 import Header, { IHeaderInfo } from "@/components/@common/Header";
-import Bell from "@/assets/@common/Bell.png"
 import NavigationBar from "@/components/@common/NavigationBar";
 
 const Announcement = () => {
@@ -7,7 +6,7 @@ const Announcement = () => {
     left_1: null,
     left_2: null,
     center: '공지사항',
-    right: <img src={Bell} alt="Alarm"/>
+    right: null
   }
 
   return (

@@ -4,7 +4,6 @@ import ProfileInfo from '../../components/Profile/ProfileInfo'
 import ProfileActions from '../../components/Profile/ProfileActions'
 import ProfileSettingsModal from '../../components/Profile/ProfileSettingsModal'
 import NavigationBar from '@/components/@common/NavigationBar'
-import Bell from '@/assets/@common/Bell.png'
 
 const ProfilePage = () => {
 	const navigate = useNavigate()
@@ -17,7 +16,7 @@ const ProfilePage = () => {
 		left_1: 'Profile',
 		left_2: null,
 		center: null,
-		right: <img src={Bell} alt="Alarm" />,
+		right: null,
 	}
 
 	return (

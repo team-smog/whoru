@@ -2,7 +2,6 @@ import './App.css'
 import { Navigate, RouterProvider, createBrowserRouter } from 'react-router-dom';
 import MainPage from './pages/MainPage/MainPage';
 import LoginPage from './pages/Login/LoginPage';
-import AlarmPage from './pages/Alarm/AlarmPage';
 import ProfilePage from './pages/Profile/ProfilePage';
 import PostPage from './pages/Post/PostPage';
 import AnnouncementPage from './pages/Announcement/AnnouncementPage';
@@ -41,14 +40,6 @@ const router = createBrowserRouter([
   {
     path: '/login',
     element: <LoginPage />
-  },
-  {
-    path: '/alarm',
-    element: (
-      <AuthWrapper>
-        <AlarmPage />
-      </AuthWrapper>
-    )
   },
   {
     path: '/profile',
