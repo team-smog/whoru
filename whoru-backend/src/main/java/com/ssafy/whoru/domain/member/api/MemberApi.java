@@ -45,7 +45,7 @@ public class MemberApi implements MemberApiDocs {
         return ResponseEntity.ok(WrapResponse.create(SuccessType.SIMPLE_STATUS));
     }
 
-    @GetMapping("/logout")
+    @PostMapping("/logout")
     public ResponseEntity<WrapResponse<Void>> logout(@AuthenticationPrincipal CustomOAuth2User member, @RequestParam String fcmToken, HttpServletRequest request, HttpServletResponse response) {
         memberService.logout(member.getId(), fcmToken);
         Cookie[] cookies = request.getCookies();
@@ -55,8 +55,7 @@ public class MemberApi implements MemberApiDocs {
                     ResponseCookie expiredCookie = ResponseCookie.from(cookie.getName(), cookie.getValue())
                             .path("/")
                             .maxAge(0)
-                            .domain(request.getServerName())
-                            .secure(cookie.getSecure())
+                            .secure(true)
                             .sameSite("None")
                             .httpOnly(true)
                             .build();

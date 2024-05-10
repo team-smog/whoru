@@ -66,7 +66,6 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         ResponseCookie refreshCookie = ResponseCookie.from("Refresh", refreshToken)
                 .path("/")
                 .maxAge(7 * 24 * 60 * 60)
-                .domain(request.getServerName())
                 .secure(true)
                 .sameSite("None")
                 .httpOnly(true)
