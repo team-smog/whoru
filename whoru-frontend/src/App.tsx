@@ -139,7 +139,6 @@ const router = createBrowserRouter([
 			</AuthWrapper>
 		),
 	},
-
 	{
 		path: '/admin',
 		element: (

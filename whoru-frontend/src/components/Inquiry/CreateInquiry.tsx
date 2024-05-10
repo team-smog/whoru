@@ -10,8 +10,8 @@ import './Inquriy.css'
 
 const CreateInquiry = () => {
 	const info: IHeaderInfo = {
-		left_1: <img src={Backspace} alt="" onClick={() => navigate(-1)} />,
-		left_2: null,
+    left_1: null,
+		left_2: <img src={Backspace} alt=""/>,
 		center: '문의사항',
 		right: <img src={Bell} alt="Alarm" />,
 	}

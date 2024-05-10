@@ -15,12 +15,19 @@ interface Inquiry {
 	content: string
 	writerName: string
 	updateDate: string
+	comment: {
+		id: number
+		createDate: string
+		updateDate: string
+		content: string
+		commenterName: string
+	} | null
 }
 
 function InquiryDetail() {
 	const info: IHeaderInfo = {
-    left_1: null,
-		left_2: <img src={Backspace} alt="" onClick={() => navigate(-1)} />,
+		left_1: null,
+		left_2: <img src={Backspace} alt="" />,
 		center: '문의사항',
 		right: <img src={Bell} alt="Alarm" />,
 	}
@@ -43,7 +50,7 @@ function InquiryDetail() {
 			icon: 'warning',
 			showCancelButton: true,
 			confirmButtonColor: '#5959E7',
-			cancelButtonColor: 'gray-500',
+			cancelButtonColor: '#d33',
 			confirmButtonText: '예, 삭제합니다',
 			cancelButtonText: '아니오, 취소합니다',
 		}).then((result) => {
@@ -55,7 +62,7 @@ function InquiryDetail() {
 						},
 					})
 					.then((response) => {
-            navigate('/inquiry')
+						navigate('/inquiry')
 						console.log(response)
 					})
 			}
@@ -78,19 +85,41 @@ function InquiryDetail() {
 						<p>Loading...</p>
 					) : inquiry ? (
 						<div>
-							<div className=" border-b-[0.5px] mx-8">
+							<div className="border-b-[0.5px] mx-8">
 								<div className="w-full mx-auto">
 									<div className="flex flex-col justify-center items-center">
 										<div className="flex flex-col justify-evenly w-full px-4 pb-2">
-											<p className="text-[16px]">{inquiry.subject}</p>
-											<p className="text-[12x] text-[#858585]">{formatDate(inquiry.updateDate)}</p>
+											<p className="text-[16px] word-wrap break-word">{inquiry.subject}</p>
+											<p className="text-[14px] text-[#858585]">{formatDate(inquiry.updateDate)}</p>
 										</div>
 									</div>
 								</div>
 							</div>
 							<div className="flex px-12 pt-4">
-								<p className="text-xs">{inquiry.content}</p>
+								<p className="text-xs word-wrap:break-word scrollable-content">{inquiry.content}</p>
 							</div>
+							{inquiry.comment && (
+								<div className="w-full mx-auto fixed bottom-52 overflow-y-auto">
+									<div className="border-b-[0.5px] mx-8">
+										<div className="flex justify-center items-center">
+											<div className="flex flex-col justify-evenly w-full px-4 pb-2">
+												<p className="text-[16px]">{inquiry.comment.commenterName}</p>
+											</div>
+										</div>
+									</div>
+									<div
+										className="w-full max-w-[500px] max-h-[300px] px-12 pt-2 min-h-20"
+										style={{
+											overflowWrap: 'break-word',
+											overflow: 'auto',
+											whiteSpace: 'normal',
+										}}
+									>
+										<p className="text-xs">{inquiry.comment.content}</p>
+										<p className="text-[12px] text-[#858585]">{formatDate(inquiry.comment.createDate)}</p>
+									</div>
+								</div>
+							)}
 							<div className="flex justify-center">
 								<button
 									className="text-sm fixed bottom-20 flex justify-center bg-[#C4AFF1] w-4/5 h-10 rounded-lg items-center"
