@@ -92,10 +92,10 @@ const InboxTextComponent: React.FC<InboxTextComponentProps> = ({ message, innerR
         <div className={styles.inboxTextComponentBodyMain}>
           <p className={styles.inboxTextComponentBodyMainText}>{message.content}</p>
             <div className={styles.inboxTextComponentFooter}>
-              <button className={message.responseStatus ? styles.inboxTextComponentFooterButtonDisable : styles.inboxTextComponentFooterButton} 
+              <button className={message.responseStatus || message.isResponse ? styles.inboxTextComponentFooterButtonDisable : styles.inboxTextComponentFooterButton} 
                 onClick={() => handleReply(message.id)}
                 style={replyButtonStyle}
-                disabled={message.responseStatus}
+                disabled={message.responseStatus || message.isResponse}
               >
                 답장
               </button>

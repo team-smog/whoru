@@ -78,7 +78,7 @@ const InboxImageComponent: React.FC<InboxImageComponentProps> = ({ message, inne
     <div className={styles.InboxImageComponent} key={message.id} ref={innerRef} {...props}>
       <div className={styles.inboxImageComponentHeader} key={message.id} {...props}>
         <div className={styles.inboxImageComponentHeaderText}>
-          <p className={styles.inboxImageComponentHeaderTextTitle}>{message.responseStatus ? "답장 메세지" : "익명 메세지"}</p>
+          <p className={styles.inboxImageComponentHeaderTextTitle}>{message.isResponse ? "답장 메세지" : "익명 메세지"}</p>
           <p className={styles.inboxImageComponentHeaderTime}>{timeFromNow}</p>
         </div>
         <div className={styles.inboxImageComponentHeaderIcons}>
@@ -95,10 +95,10 @@ const InboxImageComponent: React.FC<InboxImageComponentProps> = ({ message, inne
           />
       </div>
       <div className={styles.inboxImageComponentFooter}>
-        <button className={message.responseStatus ? styles.inboxImageComponentFooterButtonDisable : styles.inboxImageComponentFooterButton} 
+        <button className={message.responseStatus || message.isResponse ? styles.inboxImageComponentFooterButtonDisable : styles.inboxImageComponentFooterButton} 
             onClick={() => handleReply(message.id)}
             style={replyButtonStyle}
-            disabled={message.responseStatus}
+            disabled={message.responseStatus || message.isResponse}
           >
             답장
           </button>

@@ -87,7 +87,7 @@ const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, inne
       {/* <img src={Header} alt="component-Header" className={styles.inboxVoiceComponentHeader} /> */}
       <div className={styles.inboxVoiceComponentHeader} key={message.id} {...props}>
         <div className={styles.inboxVoiceComponentHeaderText}>
-          <p className={styles.inboxVoiceComponentHeaderTextTitle}>익명 메세지</p>
+          <p className={styles.inboxVoiceComponentHeaderTextTitle}>{message.isResponse ? "답장 메세지" : "익명 메세지"}</p>
           <p className={styles.inboxVoiceComponentHeaderTime}>{timeFromNow}</p>
         </div>
         <div className={styles.inboxVoiceComponentHeaderIcons}>
@@ -113,10 +113,10 @@ const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, inne
           />
         </div>
         <div className={styles.inboxVoiceComponentFooter}>
-          <button className={message.responseStatus ? styles.inboxVoiceComponentFooterButtonDisable : styles.inboxVoiceComponentFooterButton} 
+          <button className={message.responseStatus || message.isResponse ? styles.inboxVoiceComponentFooterButtonDisable : styles.inboxVoiceComponentFooterButton} 
             onClick={() => handleReply(message.id)}
             style={replyButtonStyle}
-            disabled={message.responseStatus}
+            disabled={message.responseStatus || message.isResponse}
           >
             답장
           </button>
