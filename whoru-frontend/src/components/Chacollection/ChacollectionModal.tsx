@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import Confetti from 'react-confetti'
 import OpenImage from '@/assets/@common/Randomopenbox.png'
 import Cancel from '@/assets/@common/Cancel.png'
 import './Modal.css'
-
 
 interface Icon {
 	id: string
@@ -12,11 +12,18 @@ interface Icon {
 	isDuplicat: boolean
 }
 
-const ProfileSettingsModal = () => {
+interface ChacollectionModalProps {
+	onAction: () => void
+}
+
+const ChacollectionModal: React.FC<ChacollectionModalProps> = ({ onAction }) => {
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const [imageSrc, setImageSrc] = useState(OpenImage)
-	const [drawnImages, setDrawnImages] = useState<Icon[]>([])
+	const [drawnImages] = useState<Icon[]>([])
 	const [remainingChances, setRemainingChances] = useState(3)
+	const [isAnimating, setIsAnimating] = useState(false)
+	const [showConfetti, setShowConfetti] = useState(false)
+	const [isShaking, setIsShaking] = useState(false)
 
 	const handleNotificationSettingsClick = () => {
 		setIsModalOpen(true)
@@ -24,65 +31,52 @@ const ProfileSettingsModal = () => {
 
 	const closeModal = () => {
 		setIsModalOpen(false)
+		setShowConfetti(false)
+		setImageSrc(OpenImage) // Close 모달에서도 상자 이미지로 리셋
 	}
-  useEffect(()=>{
-    console.log(localStorage.getItem('AccessToken'))
-  },[])
+
+	useEffect(() => {
+		console.log(localStorage.getItem('AccessToken'))
+	}, [])
 
 	const fetchUserIcons = async () => {
-    try {
-      console.log("Requesting random icon...");
-        const randomIconResponse = await axios.post(
-            'https://k10d203.p.ssafy.io/api/collects/icons/redeem-random',
-            {},
-            {
-                headers: {
-                    Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImlkIjoxLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTcxNDcxMDA5MSwiZXhwIjoxNzUwNzEwMDkxfQ.YrzEzS-Bc1lYHTuUygb6nom3ZaMN_DWZcR2M46LSGDY'
-                }
-            }
-        );
-        console.log(randomIconResponse.data);
-  
-      console.log('Random Icon Status:', randomIconResponse.data.status);
-      console.log('Random Icon Message:', randomIconResponse.data.msg);
-  
-      if (randomIconResponse.data) {
-        const allIconsResponse = await axios.get('https://k10d203.p.ssafy.io/api/collects/icons', {
-          headers:{
-            'Content-Type':'application/json',
-            'Authorization':'Bearer ' + localStorage.getItem('AccessToken'),
-          },
-        });
-  
-        console.log('All Icons Status:', allIconsResponse.data.status);
-        console.log('All Icons Message:', allIconsResponse.data.msg);
-  
-        if (allIconsResponse.data && allIconsResponse.data.data) {
-          setDrawnImages([...allIconsResponse.data.data, randomIconResponse.data])
-        } else {
-          console.error('No icons data received:', allIconsResponse.data)
-        }
-      }
-    } catch (error) {
-      console.error('Error fetching icons:', error)
-    }
-  }
-  
+		setIsShaking(true)
+		setTimeout(async () => {
+			try {
+				const response = await axios.post(
+					'https://k10d203.p.ssafy.io/api/collects/icons/redeem-random',
+					{},
+					{
+						headers: {
+							Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
+						},
+					}
+				)
+				onAction()
+				setImageSrc(response.data.data.iconUrl)
+				setShowConfetti(true)
+				setIsShaking(false)
+				setTimeout(() => setShowConfetti(false), 5000)
+			} catch (error) {
+				console.error('Error fetching icons:', error)
+				setIsShaking(false)
+			}
+		}, 800) // Give time for the shake animation
+	}
 
-	const getRandomImage = () => {
-		if (drawnImages.length > 0) {
-			const randomIndex = Math.floor(Math.random() * drawnImages.length)
-			return drawnImages[randomIndex].iconUrl
-		}
-		return OpenImage
+	const applyAnimation = () => {
+		setIsAnimating(true)
+		setTimeout(() => {
+			setIsAnimating(false)
+		}, 500)
 	}
 
 	const handleImageClick = () => {
 		if (remainingChances > 0) {
 			setRemainingChances((prevChances) => prevChances - 1)
+			setImageSrc(OpenImage) // Reset to box image each time before shaking
 			fetchUserIcons()
-      const randomImage = getRandomImage()
-			setImageSrc(randomImage)
+			applyAnimation()
 		} else {
 			alert('박스 개수가 부족합니다.')
 		}
@@ -103,9 +97,23 @@ const ProfileSettingsModal = () => {
 							</button>
 						</div>
 						<hr className="border-1 border-black" />
-						<div className="flex justify-center">
-							<img src={imageSrc} alt="Image" onClick={handleImageClick} />
+						<div className="flex align-middle justify-center">
+							<img
+								className={`w-24 h-24 ${isShaking ? 'shake' : ''} ${isAnimating ? 'image-animation' : ''}`}
+								src={imageSrc}
+								alt="Image"
+								onClick={handleImageClick}
+							/>
 						</div>
+						{showConfetti && (
+							<Confetti
+								width={window.innerWidth}
+								height={window.innerHeight}
+								numberOfPieces={200}
+								recycle={false}
+								colors={['#ff5f6d', '#ffc371', '#48c6ef', '#6f86d6']}
+							/>
+						)}
 						<p className="flex justify-center pt-2 text-sm">
 							남은 기회 : {remainingChances > 0 ? remainingChances : 0}회
 						</p>
@@ -132,4 +140,4 @@ const ProfileSettingsModal = () => {
 	)
 }
 
-export default ProfileSettingsModal
+export default ChacollectionModal

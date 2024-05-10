@@ -4,7 +4,7 @@ import Profile from '@/assets/@common/Profile.png'
 
 const ProfileInfo = () => {
 	const [userInfo, setUserInfo] = useState({
-		username: '',
+		userName: '',
 		iconUrl: Profile,
 		pushAlarm: true,
 		deviceName: '',
@@ -21,7 +21,6 @@ const ProfileInfo = () => {
 				})
 				console.log('사용자 정보:', response.data)
 				if (response.data && response.data.data) {
-					// iconUrl이 'null'이면 기본 이미지(Profile)를 사용합니다.
 					const iconUrl = response.data.data.iconUrl !== 'null' ? response.data.data.iconUrl : Profile
 					setUserInfo((prev) => ({ ...prev, ...response.data.data, iconUrl: iconUrl }))
 				} else {
@@ -34,6 +33,7 @@ const ProfileInfo = () => {
 
 		fetchUserInfo()
 	}, [])
+  
 
 	return (
 		<div className="flex flex-row justify-center">
@@ -41,7 +41,7 @@ const ProfileInfo = () => {
 				<img src={userInfo.iconUrl} alt="Profile" />
 			</div>
 			<div className="pt-20 pl-6">
-				<p className="text-xl pt-6">{userInfo.username || '이름 없음'}</p>
+				<p className="text-xl pt-6">{userInfo.userName || '이름 없음'}</p>
 			</div>
 		</div>
 	)

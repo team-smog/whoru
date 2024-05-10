@@ -27,9 +27,9 @@ const ProfilePage = () => {
 				<ProfileInfo />
 			</div>
       <div className='pt-10'>
-			<hr className="border-1 border-black mt-10 px-10" />
-			<ProfileActions />
-			<hr className="border-1 border-black pt-5 px-10" />
+        <hr className="border-1 border-black mt-10 px-10" />
+        <ProfileActions />
+        <hr className="border-1 border-black pt-5 px-10" />
       </div>
 			<p className="pl-12 pt-4">언어 설정</p>
 			<ProfileSettingsModal />

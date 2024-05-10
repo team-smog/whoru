@@ -4,7 +4,9 @@ import Cancel from '@/assets/@common/Cancel.png'
 import './Profile.css'
 
 const ProfileSettingsModal = () => {
-	const [isPushNotificationEnabled, setIsPushNotificationEnabled] = useState(true)
+	const [isPushNotificationEnabled, setIsPushNotificationEnabled] = useState(
+		localStorage.getItem('isPushNotificationEnabled') === 'false' ? false : true
+	)
 	const [isModalOpen, setIsModalOpen] = useState(false)
 
 	useEffect(() => {
@@ -15,8 +17,9 @@ const ProfileSettingsModal = () => {
 						Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
 					},
 				})
-				if (response.data && response.data.pushAlarm != undefined) {
+				if (response.data && response.data.pushAlarm !== undefined) {
 					setIsPushNotificationEnabled(response.data.pushAlarm)
+					localStorage.setItem('isPushNotificationEnabled', String(response.data.pushAlarm))
 				}
 			} catch (error) {
 				console.error('사용자 설정 정보를 불러오는 중 에러 발생:', error)
@@ -28,8 +31,10 @@ const ProfileSettingsModal = () => {
 
 	const handleToggleChange = () => {
 		setIsPushNotificationEnabled((prevState) => {
-			updatePushNotificationSetting(!prevState)
-			return !prevState
+			const newState = !prevState
+			updatePushNotificationSetting(newState)
+			localStorage.setItem('isPushNotificationEnabled', String(newState))
+			return newState
 		})
 	}
 
@@ -37,13 +42,11 @@ const ProfileSettingsModal = () => {
 		try {
 			const response = await axios.patch(
 				'https://k10d203.p.ssafy.io/api/member/push-alarm',
-				{
-					pushAlarm: isEnabled,
-				},
+				{ pushAlarm: isEnabled },
 				{
 					headers: {
 						'Content-Type': 'application/json',
-						'Authorization': 'Bearer ' + localStorage.getItem('AccessToken'),
+						Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
 					},
 				}
 			)

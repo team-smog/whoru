@@ -1,7 +1,6 @@
 import Header, { IHeaderInfo } from '@/components/@common/Header'
 import Bell from '@/assets/@common/Bell.png'
 import NavigationBar from '@/components/@common/NavigationBar'
-import ChacollectionInfo from '../../components/Chacollection/ChacollectionInfo'
 import ChacollectionProfile from '../../components/Chacollection/ChacollectionProfile'
 
 const Chacollection = () => {
@@ -15,9 +14,6 @@ const Chacollection = () => {
 		<>
 			<div>
 				<Header info={info} />
-			</div>
-			<div>
-				<ChacollectionInfo />
 			</div>
 			<div>
 				<ChacollectionProfile />
