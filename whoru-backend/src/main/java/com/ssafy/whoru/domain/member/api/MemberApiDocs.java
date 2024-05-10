@@ -42,7 +42,7 @@ public interface MemberApiDocs {
     ResponseEntity<WrapResponse<Void>> setPush(@AuthenticationPrincipal CustomOAuth2User member);
 
     @Operation(summary = "로그아웃",description = "리프레시 토큰과 FCM 토큰을 받아 해당 FCM토큰을 마킹하고 유저를 로그아웃 합니다.")
-    @PostMapping("/logout")
+    @GetMapping("/logout")
     ResponseEntity<WrapResponse<Void>> logout(@AuthenticationPrincipal CustomOAuth2User member, @RequestParam String fcmToken, HttpServletRequest request, HttpServletResponse response);
 
     @Operation(summary = "accessToken 재발급 ",description = "토큰을 받아 유저의 accessToken을 재발급합니다.")
