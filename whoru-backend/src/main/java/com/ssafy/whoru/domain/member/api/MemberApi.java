@@ -52,12 +52,12 @@ public class MemberApi implements MemberApiDocs {
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if ("Refresh".equals(cookie.getName())) {
-                    ResponseCookie expiredCookie = ResponseCookie.from(cookie.getName(), "")
+                    ResponseCookie expiredCookie = ResponseCookie.from(cookie.getName(), cookie.getValue())
                             .path(cookie.getPath() != null ? cookie.getPath() : "/")
                             .httpOnly(true)
                             .secure(cookie.getSecure())
                             .maxAge(0)
-                            .sameSite("Strict")
+                            .sameSite("None")
                             .build();
                     response.addHeader("Set-Cookie", expiredCookie.toString());
                     break;
