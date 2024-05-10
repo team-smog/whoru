@@ -7,7 +7,7 @@ import SendTextComponent from "@/components/postPage/SendTextComponent";
 import SendImageComponent from "@/components/postPage/SendImageComponent";
 import SendVoiceComponent from "@/components/postPage/SendVoiceComponent";
 import { useDispatch, useSelector } from "react-redux";
-import { setReplyMessage } from "@/stores/storeMessageId";
+import { setReplyMessage } from "@/stores/store";
 
 const PostPage = () => {
   const info: IHeaderInfo = {

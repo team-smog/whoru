@@ -19,6 +19,14 @@ const messageIdInitialState: MessageIdState = {
   lastId: null,
 };
 
+interface boxCountState {
+  boxCount: number | null;
+}
+
+const boxCounterInitialState: boxCountState = {
+  boxCount: 0,
+}
+
 const replySlice = createSlice({
   name: 'reply',
   initialState,
@@ -44,19 +52,35 @@ const messageSlice = createSlice({
   }
 });
 
+const boxCounterSlice = createSlice({
+  name: 'boxCounter',
+  initialState: boxCounterInitialState,
+  reducers: {
+    setBoxCount: (state) => {
+      if (state.boxCount !== null) {
+        state.boxCount += 1;
+      }
+    }
+  }
+});
+
 
 // 슬라이스의 리듀서를 추출
 const { reducer: replyReducer } = replySlice;
 const { reducer: messageReducer } = messageSlice;
+const { reducer: boxCounterReducer } = boxCounterSlice;
 
 // 스토어 구성
 const store = configureStore({
   reducer: {
     reply: replyReducer,
-    message: messageReducer
+    message: messageReducer,
+    boxCounter: boxCounterReducer,
+
   }
 });
 
 export const { setReplyMessage } = replySlice.actions;
 export const { setFirstId, setLastId } = messageSlice.actions;
+export const { setBoxCount } = boxCounterSlice.actions;
 export default store;

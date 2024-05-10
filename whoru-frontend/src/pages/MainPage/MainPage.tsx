@@ -10,7 +10,7 @@ import { MessageInfoDetail } from "@/types/mainTypes";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from 'react-intersection-observer';
 import { useDispatch, useSelector } from "react-redux";
-import { setFirstId, setLastId } from "@/stores/storeMessageId";
+import { setFirstId, setLastId } from "@/stores/store";
 import axios from "axios";
 import { requestPermission } from "@/FirebaseUtil.js";
 
@@ -115,6 +115,7 @@ const MainPage = () => {
     const token = FCMSetToken();
     token.then((res) => {
       fetchDataFCM(res);
+      console.log("res token",res);
       localStorage.setItem('FCMToken', res);
     })
     // fetchDataFCM(token);
@@ -127,7 +128,7 @@ const MainPage = () => {
 
   const { ref, inView } = useInView();
 
-  const handleRefresh = async (fId:number): Promise<void> => {
+  const handleRefresh = async (fId:number): Promise<MessageInfoDetail[]> => {
     console.log("fId", fId);
     const res = await fetch(`https://k10d203.p.ssafy.io/api/message/recent?firstid=${fId}`, {
       headers: {
@@ -212,6 +213,9 @@ const MainPage = () => {
   const addF = async () => {
     const newMessages = await handleRefresh(firstId);
     console.log("newMessages", newMessages);
+    if (newMessages.length !== 0) {
+      dispatch(setFirstId(newMessages[0].id));
+    }
     setServerData([newMessages, ...serverData]);
   }
 

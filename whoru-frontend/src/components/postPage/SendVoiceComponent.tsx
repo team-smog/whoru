@@ -16,51 +16,54 @@ import { useVoiceVisualizer, VoiceVisualizer } from "react-voice-visualizer";
 import 'react-h5-audio-player/lib/styles.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'
+import { setBoxCount } from '@/stores/store';
+import { useDispatch } from 'react-redux';
 
 const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [currentRecordType,setCurrentRecordType] = useState<string>("")
     // Initialize the recorder controls using the hook
     const recorderControls = useVoiceVisualizer();
     const accessToken = localStorage.getItem('AccessToken');
     const {
         // ... (Extracted controls and states, if necessary)
-        error,
+        // error,
         audioRef,
         isRecordingInProgress,
-        isPausedRecording,
+        // isPausedRecording,
         // audioData,
         // recordingTime,
-        mediaRecorder,
-        duration,
+        // mediaRecorder,
+        // duration,
         // currentAudioTime,
-        audioSrc,
+        // audioSrc,
         isPausedRecordedAudio,
-        isProcessingRecordedAudio,
+        // isProcessingRecordedAudio,
         isCleared,
         isAvailableRecordedAudio,
         recordedBlob,
-        bufferFromRecordedBlob,
-        formattedDuration,
+        // bufferFromRecordedBlob,
+        // formattedDuration,
         formattedRecordingTime,
         // formattedRecordedAudioCurrentTime,
-        isProcessingOnResize,
-        isProcessingStartRecording,
+        // isProcessingOnResize,
+        // isProcessingStartRecording,
     } = recorderControls;
 
     // Get the recorded audio blob
-    useEffect(() => {
-      if (!recordedBlob) return;
+    // useEffect(() => {
+    //   if (!recordedBlob) return;
 
-      console.log("recordedBlob:", recordedBlob);
-    }, [recordedBlob, error]);
+    //   console.log("recordedBlob:", recordedBlob);
+    // }, [recordedBlob, error]);
 
     // Get the error when it occurs
-    useEffect(() => {
-      if (!error) return;
+    // useEffect(() => {
+    //   if (!error) return;
 
-      console.error("error:", error);
-    }, [error]);
+    //   console.error("error:", error);
+    // }, [error]);
 
     useEffect(() => {
       if (!isRecordingInProgress) return;
@@ -72,23 +75,23 @@ const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
       console.log("isRecordingInProgress:", isRecordingInProgress);
     }, [isRecordingInProgress]);
 
-    useEffect(() => {
-      if (!isPausedRecording) return;
+    // useEffect(() => {
+    //   if (!isPausedRecording) return;
 
-      console.log("isPausedRecording:", isPausedRecording);
-    }, [isPausedRecording]);
+    //   console.log("isPausedRecording:", isPausedRecording);
+    // }, [isPausedRecording]);
 
-    useEffect(() => {
-      if (!isPausedRecordedAudio) return;
+    // useEffect(() => {
+    //   if (!isPausedRecordedAudio) return;
 
-      console.log("isPausedRecordedAudio:", isPausedRecordedAudio);
-    }, [isPausedRecordedAudio]);
+    //   console.log("isPausedRecordedAudio:", isPausedRecordedAudio);
+    // }, [isPausedRecordedAudio]);
 
-    useEffect(() => {
-      if (!isProcessingRecordedAudio) return;
+    // useEffect(() => {
+    //   if (!isProcessingRecordedAudio) return;
 
-      console.log("isProcessingRecordedAudio:", isProcessingRecordedAudio);
-    }, [isProcessingRecordedAudio]);
+    //   console.log("isProcessingRecordedAudio:", isProcessingRecordedAudio);
+    // }, [isProcessingRecordedAudio]);
 
     useEffect(() => {
       if (!isCleared) return;
@@ -97,7 +100,7 @@ const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
         setCurrentRecordType("cleared")
       }
 
-      console.log("isCleared:", isCleared);
+      // console.log("isCleared:", isCleared);
     }, [isCleared]);
 
     useEffect(() => {
@@ -107,20 +110,20 @@ const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
         setCurrentRecordType("audio")
       }
 
-      console.log("isAvailableRecordedAudio:", isAvailableRecordedAudio);
+      // console.log("isAvailableRecordedAudio:", isAvailableRecordedAudio);
     }, [isAvailableRecordedAudio]);
 
-    useEffect(() => {
-      if (!isProcessingOnResize) return;
+    // useEffect(() => {
+    //   if (!isProcessingOnResize) return;
 
-      console.log("isProcessingOnResize:", isProcessingOnResize);
-    }, [isProcessingOnResize]);
+    //   console.log("isProcessingOnResize:", isProcessingOnResize);
+    // }, [isProcessingOnResize]);
 
-    useEffect(() => {
-      if (!isProcessingStartRecording) return;
+    // useEffect(() => {
+    //   if (!isProcessingStartRecording) return;
 
-      console.log("isProcessingStartRecording:", isProcessingStartRecording);
-    }, [isProcessingStartRecording]);
+    //   console.log("isProcessingStartRecording:", isProcessingStartRecording);
+    // }, [isProcessingStartRecording]);
 
     // useEffect(() => {
     //   if (!audioData) return;
@@ -134,17 +137,17 @@ const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
     //   console.log("recordingTime:", recordingTime);
     // }, [recordingTime]);
 
-    useEffect(() => {
-      if (!mediaRecorder) return;
+    // useEffect(() => {
+    //   if (!mediaRecorder) return;
 
-      console.log("mediaRecorder:", mediaRecorder);
-    }, [mediaRecorder]);
+    //   console.log("mediaRecorder:", mediaRecorder);
+    // }, [mediaRecorder]);
 
-    useEffect(() => {
-      if (!duration) return;
+    // useEffect(() => {
+    //   if (!duration) return;
 
-      console.log("duration:", duration);
-    }, [duration]);
+    //   console.log("duration:", duration);
+    // }, [duration]);
 
     // useEffect(() => {
     //   if (!currentAudioTime) return;
@@ -152,23 +155,23 @@ const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
     //   console.log("currentAudioTime:", currentAudioTime);
     // }, [currentAudioTime]);
 
-    useEffect(() => {
-      if (!audioSrc) return;
+    // useEffect(() => {
+    //   if (!audioSrc) return;
 
-      console.log("audioSrc:", audioSrc);
-    }, [audioSrc]);
+    //   console.log("audioSrc:", audioSrc);
+    // }, [audioSrc]);
 
-    useEffect(() => {
-      if (!formattedDuration) return;
+    // useEffect(() => {
+    //   if (!formattedDuration) return;
 
-      console.log("formattedDuration:", formattedDuration);
-    }, [formattedDuration]);
+    //   console.log("formattedDuration:", formattedDuration);
+    // }, [formattedDuration]);
 
-    useEffect(() => {
-      if (!formattedRecordingTime) return;
+    // useEffect(() => {
+    //   if (!formattedRecordingTime) return;
 
-      console.log("formattedRecordingTime:", formattedRecordingTime);
-    }, [formattedRecordingTime]);
+    //   console.log("formattedRecordingTime:", formattedRecordingTime);
+    // }, [formattedRecordingTime]);
 
     // useEffect(() => {
     //   if (!formattedRecordedAudioCurrentTime) return;
@@ -176,16 +179,16 @@ const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
     //   console.log("formattedRecordedAudioCurrentTime:", formattedRecordedAudioCurrentTime);
     // }, [formattedRecordedAudioCurrentTime]);
 
-    useEffect(() => {
-      if (!bufferFromRecordedBlob) return;
+    // useEffect(() => {
+    //   if (!bufferFromRecordedBlob) return;
 
-      console.log("bufferFromRecordedBlob:", bufferFromRecordedBlob);
-    }, [bufferFromRecordedBlob]);
+    //   console.log("bufferFromRecordedBlob:", bufferFromRecordedBlob);
+    // }, [bufferFromRecordedBlob]);
 
     const handlePostButtonClick = async () => {
       if (messageId !== null) {
         if (!recordedBlob) {
-            console.error("No recorded audio to send");
+            // console.error("No recorded audio to send");
             return;
         }
     
@@ -211,7 +214,7 @@ const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
         }
       } else if (messageId === null) {
         if (!recordedBlob) {
-          console.error("No recorded audio to send");
+          // console.error("No recorded audio to send");
           return;
         }
     
@@ -229,6 +232,9 @@ const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
                 }
             })
             console.log(response.data);
+            if (response.data.data.randomBoxProvided === true) {
+                dispatch(setBoxCount());
+            }
             navigate('/');
         } catch (error) {
             console.error(error);
