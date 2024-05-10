@@ -1,7 +1,9 @@
 package com.ssafy.whoru.domain.message.application;
 
 import com.ssafy.whoru.domain.member.application.CrossMemberService;
+import com.ssafy.whoru.domain.member.domain.FcmNotification;
 import com.ssafy.whoru.domain.member.domain.Member;
+import com.ssafy.whoru.domain.member.exception.FcmNotFoundException;
 import com.ssafy.whoru.domain.message.dao.MessageCustomRepository;
 import com.ssafy.whoru.domain.message.dao.MessageRepository;
 import com.ssafy.whoru.domain.message.dto.response.MessageResponse;
@@ -96,9 +98,13 @@ public class MessageServiceImpl implements MessageService{
         }
 
         // fcm 발송
-        if(receiver.getFcmNotification().getIsEnabled()){
-            fcmUtil.sendMessage(receiver.getFcmNotification().getFcmToken());
+        List<FcmNotification> fcmNotifications = receiver.getFcmNotifications();
+        for(FcmNotification fcmNotification: fcmNotifications){
+            if(fcmNotification.getMark()) continue;
+            if(!fcmNotification.getIsEnabled()) continue;
+            fcmUtil.sendMessage(fcmNotification.getFcmToken(), fcmNotification.getId());
         }
+
 
         // message 전송
         messageRepository.save(
@@ -143,8 +149,11 @@ public class MessageServiceImpl implements MessageService{
                 .isResponse(true)
                 .build();
 
-        fcmUtil.sendMessage(targetMessage.getSender().getFcmNotification().getFcmToken());
-
+        Member receiver = targetMessage.getSender();
+        List<FcmNotification> fcmNotifications = receiver.getFcmNotifications();
+        for(FcmNotification fcmNotification: fcmNotifications){
+            fcmUtil.sendMessage(fcmNotification.getFcmToken(), fcmNotification.getId());
+        }
         messageRepository.save(responseMessage);
     }
 
@@ -200,7 +209,11 @@ public class MessageServiceImpl implements MessageService{
         );
 
         // fcm 발송
-        fcmUtil.sendMessage(receiver.getFcmNotification().getFcmToken());
+        List<FcmNotification> fcmNotifications = receiver.getFcmNotifications();
+        for(FcmNotification fcmNotification: fcmNotifications){
+            fcmUtil.sendMessage(fcmNotification.getFcmToken(), fcmNotification.getId());
+        }
+
 
     }
 
@@ -242,7 +255,10 @@ public class MessageServiceImpl implements MessageService{
         messageRepository.save(responseMessage);
 
         // fcm 발송
-        fcmUtil.sendMessage(message.getReceiver().getFcmNotification().getFcmToken());
+        List<FcmNotification> fcmNotifications = message.getSender().getFcmNotifications();
+        for(FcmNotification fcmNotification: fcmNotifications){
+            fcmUtil.sendMessage(fcmNotification.getFcmToken(), fcmNotification.getId());
+        }
     }
 
     @Override

@@ -10,7 +10,6 @@ import lombok.*;
 public class ProfileResponse {
     private String username;
     private String iconUrl;
-    private String fcmToken;
     private boolean pushAlarm;
     private LanguageType languageType;
 }

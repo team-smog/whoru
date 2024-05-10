@@ -37,7 +37,6 @@ public interface MessageApiDocs {
         @ApiResponse(responseCode = "400", description = "content 길이가 2 미만일때 발생", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
         @ApiResponse(responseCode = "400", description = "content 길이가 200 초과일때 발생", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
         @ApiResponse(responseCode = "403", description = "정지된 유저 메세지 전송 권한거부", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-        @ApiResponse(responseCode = "422", description = "받는사람의 FCM 토큰이 비었거나 null 상태일때", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     ResponseEntity<WrapResponse<Void>> sendTextMessage(CustomOAuth2User member, @RequestBody @Valid TextSend textSend);
 
@@ -49,7 +48,6 @@ public interface MessageApiDocs {
         @ApiResponse(responseCode = "400", description = "messageId의 크기가 1미만일때 발생", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
         @ApiResponse(responseCode = "403", description = "정지된 유저 메세지 전송 권한거부", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
         @ApiResponse(responseCode = "451", description = "신고된 메세지 답장 전송 권한거부", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-        @ApiResponse(responseCode = "422", description = "받는사람의 FCM 토큰이 비었거나 null 상태일때", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     ResponseEntity<WrapResponse<Void>> sendTextResponseMessage(
         CustomOAuth2User member,
@@ -68,7 +66,6 @@ public interface MessageApiDocs {
         @ApiResponse(responseCode = "415", description = "허용되지 않는 확장자를 넣은 경우", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
         @ApiResponse(responseCode = "403", description = "정지된 유저 메세지 전송 권한거부", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
         @ApiResponse(responseCode = "400", description = "업로드된 파일이 손상된 경우", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-        @ApiResponse(responseCode = "422", description = "받는사람의 FCM 토큰이 비었거나 null 상태일때", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
         @ApiResponse(responseCode = "503", description = "AW3 Upload 에 실패했을 때", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     ResponseEntity<WrapResponse<Void>> sendFileMessage(
@@ -89,7 +86,6 @@ public interface MessageApiDocs {
         @ApiResponse(responseCode = "403", description = "정지된 유저 메세지 전송 권한거부", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
         @ApiResponse(responseCode = "451", description = "신고된 메세지 답장 전송 권한거부", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
         @ApiResponse(responseCode = "400", description = "업로드된 파일이 손상된 경우", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-        @ApiResponse(responseCode = "422", description = "받는사람의 FCM 토큰이 비었거나 null 상태일때", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
         @ApiResponse(responseCode = "503", description = "AW3 Upload 에 실패했을 때", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     ResponseEntity<WrapResponse<Void>> sendFileResponseMessage(

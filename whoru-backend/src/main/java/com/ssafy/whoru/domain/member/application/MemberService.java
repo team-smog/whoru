@@ -13,12 +13,12 @@ public interface MemberService {
 
     void setPush(Long memberId);
 
-    void logout(Long memberId);
+    void logout(Long memberId, String fcmToken);
 
 
     TokenResponse reGenerateToken(Long memberId, String refresh);
 
     ProfileResponse getProfile(Long id);
 
-    TokenResponse getToken(Long id);
+//    TokenResponse getToken(Long id);
 }

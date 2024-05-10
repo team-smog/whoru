@@ -25,6 +25,7 @@ import com.ssafy.whoru.global.common.dto.response.ResponseWithSuccess;
 import com.ssafy.whoru.global.util.FCMUtil;
 import jakarta.annotation.PostConstruct;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -198,16 +199,21 @@ public class BoardServiceImpl implements BoardService{
             .build();
 
         boardRepository.save(noti);
-        List<Member> allUsers = crossMemberService.findAllMemberEntities();
-        String [] tokens = allUsers.stream()
-            .filter( member ->member.getFcmNotification()!= null && member.getFcmNotification().getIsEnabled())
-            .map( member -> member.getFcmNotification().getFcmToken())
-            .toArray(String []::new);
+        List<Member> allMembers = crossMemberService.findAllMemberEntities();
+        List<String> fcmTokens = new ArrayList<>();
+        String notiTitle = fcmUtil.makeDateTitle(NOTIFICATION_TITLE, noti.getCreateDate());
+        for(Member member: allMembers){
+            List<FcmNotification> fcmNotifications = member.getFcmNotifications();
+            for(FcmNotification fcmNotification: fcmNotifications){
+                if(fcmNotification.getMark()) continue;
+                if(!fcmNotification.getIsEnabled()) continue;
+                fcmUtil.sendMessage(fcmNotification.getFcmToken(), fcmNotification.getId(), notiTitle, NOTIFICATION_CONTENT );
+            }
+        }
+
         LocalDateTime createDate = noti.getCreateDate();
         final String dateTitle = fcmUtil.makeDateTitle(NOTIFICATION_TITLE, createDate);
-        for(String token: tokens){
-            fcmUtil.sendMessage(token, dateTitle, NOTIFICATION_CONTENT);
-        }
+
     }
 
     @Override

@@ -44,9 +44,9 @@ public class MemberTestUtil implements InitializingBean {
     @Autowired
     MemberIconRepository memberIconRepository;
 
-    static final String MEMBER3000_FCM_TOKEN = "cfMx6tEB1EUp2Eb484bePq:APA91bG_iJU6Olx_aSkQSB7Q6j8wyCyRtx5Gb9jfDRLigIaYdRKJbY14kD34nIZjwWIepkxmm02WlOHaLvbbDck8FamulUEttEcGEKzseph_p3X1tkjpXWqvwCh8I-jiKkzE9RYJJ2uI";
+    static final String MEMBER3000_FCM_TOKEN = "dqOx-CjHHuSaY8Otgy6qZK:APA91bF-VONyDxVU967mKKz1VoDFm1KQJsDhb_9skx6ZkFg4o4T7cu2OvBGXkhP5a-L44f_zjYxDvSjXx8Kh57V2NitZlKVNyJ9yxvnVMbdtr5KDq6JULFYqFitMxUMPzhgDtGwsNcrr";
 
-    static final String MEMBER3001_FCM_TOKEN = "e8cnURUUWvX7vbwch21Egk:APA91bGgQKlqD7xsbbUstiypDx7KuAwOBi1TvxaR0Cvgqhjf8o3gVuRpBAqeiRFbo0Vj70CCx1CVyDb5b6nmwHzZOuIMyAFIBpzhqpsmwY-oR6GiAXqNJEV40xng934TA6Pse2ykBhV7";
+    static final String MEMBER3001_FCM_TOKEN = "fb2WjAsrMh5Qi42mwf4nvj:APA91bGWkGHezTWzwYWmLBsxRY575VSWzDO4_ezLJVlQy25FooRJZLpwms77Cv4_gk1Ta0ebnYBEOH0E8Mn9DEjzktjD7vQSev4YKImrsZh6itTHy0xxp_SOzlsx0s3DHcdY4tzK1FsE";
 
     static final String MEMBER_ERROR_FCM_TOKEN = "";
 
@@ -76,11 +76,9 @@ public class MemberTestUtil implements InitializingBean {
         collectRepository.save(icon);
         Member member1 = Member3000_멤버추가(icon);
         Member member2 = Member3001_멤버추가(icon);
-        memberRepository.save(member1);
-        memberRepository.save(member2);
+
         memberInfoList.add(member1);
         memberInfoList.add(member2);
-
         return memberInfoList;
     }
 
@@ -94,39 +92,59 @@ public class MemberTestUtil implements InitializingBean {
 
     public Member Member3000_멤버추가(Icon icon){
 
-        return Member.builder()
+        /*
+        * .fcmNotification(FcmNotification.builder()
+                        .fcmToken(MEMBER3000_FCM_TOKEN)
+                        .build())
+        * */
+        Member member = Member.builder()
                 .icon(icon)
                 .provider(ProviderType.kakao)
                 .memberIdentifier("1")
                 .boxCount(3)
-                .fcmNotification(FcmNotification.builder()
-                        .fcmToken(MEMBER3000_FCM_TOKEN)
-                        .build())
                 .createDate(LocalDateTime.now())
                 .refreshToken("fdafasfasfasfafdfa")
                 .reportCount(0)
                 .userName("MEMBER3000")
                 .languageType(LanguageType.KOREAN)
                 .build();
+        memberRepository.save(member);
+
+        FcmNotification fcmNotification = FcmNotification.builder()
+            .isEnabled(true)
+            .fcmToken(MEMBER3000_FCM_TOKEN)
+            .mark(false)
+            .member(member)
+            .build();
+        fcmNotification.addNotification(member);
+        fcmRepository.save(fcmNotification);
+        return member;
     }
 
     public Member Member3001_멤버추가(Icon icon){
 
+        Member member = Member.builder()
+            .icon(icon)
+            .provider(ProviderType.kakao)
+            .memberIdentifier("1")
+            .boxCount(3)
+            .createDate(LocalDateTime.now())
+            .refreshToken("fdafasfasfasfafdfa")
+            .reportCount(0)
+            .userName("MEMBER3001")
+            .languageType(LanguageType.KOREAN)
+            .build();
+        memberRepository.save(member);
 
-        return Member.builder()
-                .icon(icon)
-                .provider(ProviderType.kakao)
-                .memberIdentifier("2")
-                .boxCount(3)
-                .fcmNotification(FcmNotification.builder()
-                        .fcmToken(MEMBER3001_FCM_TOKEN)
-                        .build())
-                .createDate(LocalDateTime.now())
-                .refreshToken("fdafasfasfasfafdfa")
-                .reportCount(0)
-                .userName("MEMBER3001")
-                .languageType(LanguageType.KOREAN)
-                .build();
+        FcmNotification fcmNotification = FcmNotification.builder()
+            .isEnabled(true)
+            .fcmToken(MEMBER3001_FCM_TOKEN)
+            .member(member)
+            .mark(false)
+            .build();
+        fcmNotification.addNotification(member);
+        fcmRepository.save(fcmNotification);
+        return member;
     }
 
     public void 멤버_보유_아이콘_추가(Member member, Icon icon) {
@@ -141,42 +159,54 @@ public class MemberTestUtil implements InitializingBean {
     }
 
     public Member Member_Error_Fcm_token멤버추가(Icon icon){
+        Member member = Member.builder()
+            .icon(icon)
+            .provider(ProviderType.kakao)
+            .memberIdentifier("1")
+            .boxCount(3)
+            .createDate(LocalDateTime.now())
+            .refreshToken("fdafasfasfasfafdfa")
+            .reportCount(0)
+            .userName("ERROR_MEMBER")
+            .languageType(LanguageType.KOREAN)
+            .build();
+        memberRepository.save(member);
 
-
-        return Member.builder()
-                .icon(icon)
-                .provider(ProviderType.kakao)
-                .memberIdentifier("3")
-                .boxCount(3)
-                .fcmNotification(FcmNotification.builder()
-                        .fcmToken(MEMBER_ERROR_FCM_TOKEN)
-                        .build())
-                .createDate(LocalDateTime.now())
-                .refreshToken("fdafadfas")
-                .reportCount(0)
-                .userName("MEMBER_ERROR_FCM_TOKEN")
-                .languageType(LanguageType.KOREAN)
-                .build();
+        FcmNotification fcmNotification = FcmNotification.builder()
+            .isEnabled(true)
+            .fcmToken(MEMBER_ERROR_FCM_TOKEN)
+            .mark(false)
+            .member(member)
+            .build();
+        fcmRepository.save(fcmNotification);
+        return member;
 
     }
 
     public Member 관리자_멤버_추가(Icon icon){
 
-        return Member.builder()
-            .refreshToken("fdafafdafafa")
-            .boxCount(99)
-            .languageType(LanguageType.KOREAN)
-            .reportCount(0)
-            .fcmNotification(FcmNotification.builder()
-                    .fcmToken("admin fcm token")
-                    .isEnabled(false)
-                    .build())
+        Member member = Member.builder()
             .icon(icon)
-            .userName("ADMIN")
             .provider(ProviderType.kakao)
-            .memberIdentifier("admin 1")
+            .memberIdentifier("1")
+            .boxCount(3)
+            .createDate(LocalDateTime.now())
+            .refreshToken("fdafasfasfasfafdfa")
+            .reportCount(0)
+            .userName("ADMIN_MEMBER")
             .role("ROLE_ADMIN")
+            .languageType(LanguageType.KOREAN)
             .build();
+        memberRepository.save(member);
+
+        FcmNotification fcmNotification = FcmNotification.builder()
+            .isEnabled(true)
+            .fcmToken(MEMBER3000_FCM_TOKEN)
+            .mark(false)
+            .member(member)
+            .build();
+        fcmRepository.save(fcmNotification);
+        return member;
     }
 
     public String 유저_AccessToken_만들고_헤더값_리턴(Member member){

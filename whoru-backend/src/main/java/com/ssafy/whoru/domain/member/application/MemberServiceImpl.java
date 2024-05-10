@@ -19,6 +19,7 @@ import com.ssafy.whoru.global.error.exception.ErrorCode;
 import com.ssafy.whoru.global.error.exception.SimpleException;
 import com.ssafy.whoru.global.util.JWTUtil;
 import com.ssafy.whoru.global.util.RedisUtil;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -39,14 +40,13 @@ public class MemberServiceImpl implements MemberService {
     private final CrossMemberService crossMemberService;
     private final MemberRepository memberRepository;
 
-    private final FcmService fcmService;
+    private final CrossFcmService crossFcmService;
     private final CrossCollectService collectService;
 
     private final ModelMapper modelMapper;
 
     private final RedisUtil redisUtil;
     private final JWTUtil jwtUtil;
-    private final FcmServiceImpl fcmServiceImpl;
 
 
     @Override
@@ -74,19 +74,20 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void logout(Long memberId) {
+    public void logout(Long memberId, String fcmToken) {
+        crossFcmService.markingUnusedToken(memberId, fcmToken);
         redisUtil.delete(RedisKeyType.REFRESHTOKEN.makeKey(memberId.toString()));
     }
 
     @Override
-    @Transactional
+//    @Transactional
     public void setPush(Long memberId) {
         Member byId = crossMemberService.findByIdToEntity(memberId);
-        FcmNotification fcm = byId.getFcmNotification();
-        if (fcm == null) {
+        List<FcmNotification> fcm = byId.getFcmNotifications();
+        if (fcm.isEmpty()) {
             throw new FcmNotFoundException();
         }
-        fcmService.changeIsEnabled(fcm);
+        crossFcmService.changeEnabled(byId);
     }
 
     @Override
@@ -112,32 +113,43 @@ public class MemberServiceImpl implements MemberService {
         Member byId = crossMemberService.findByIdToEntity(memberId);
 
         String url = (byId.getIcon()==null) ? "null" : byId.getIcon().getIconUrl();
-        boolean alarmStatus = byId.getFcmNotification() == null || byId.getFcmNotification().getIsEnabled();
-        String fcmToken = (byId.getFcmNotification() == null) ? "" : byId.getFcmNotification().getFcmToken();
+        List<FcmNotification> fcmNotifications = byId.getFcmNotifications();
+        boolean alarmStatus = true;
+        for(FcmNotification fcmNotification: fcmNotifications){
+            if(fcmNotification.getMark()) continue; // 삭제 될 예정인 fcm토큰은 신경안써도됨
+            if(!fcmNotification.getIsEnabled()){
+                alarmStatus = false;
+                break;
+            }
+        }
 
         return ProfileResponse
                 .builder()
                 .username(byId.getUserName())
                 .languageType(LanguageType.KOREAN)
-                .fcmToken(fcmToken)
                 .pushAlarm(alarmStatus)
                 .iconUrl(url)
                 .build();
     }
 
-    @Override
-    public TokenResponse getToken(Long id) {
-        Optional<Member> byId = Optional.ofNullable(memberRepository.findById(id)
-                .orElseThrow(FcmTokenNotFoundException::new));
-        if(byId.get().getFcmNotification()== null){
-            throw new FcmNotFoundException();
-        }
-        return TokenResponse
-                .builder()
-                .token(byId.get().getFcmNotification().getFcmToken())
-                .username(byId.get().getUserName())
-                .build();
-    }
+    // Get FCM Token을 할 필요가 없음
+    // 사유: 이제 해당 회원이 발급받는 모든 FCM Token은 관리 아래에 둠
+    // 그리고 사용하지 않는 토큰은 주기적으로 삭제함
+
+//    @Override
+//    public TokenResponse getToken(Long id) {
+//        Optional<Member> byId = Optional.ofNullable(memberRepository.findById(id)
+//                .orElseThrow(FcmTokenNotFoundException::new));
+//        if(byId.get().getFcmNotification()== null){
+//            throw new FcmNotFoundException();
+//        }
+//        return TokenResponse
+//                .builder()
+//                .token(byId.get().getFcmNotification().getFcmToken())
+//                .username(byId.get().getUserName())
+//                .build();
+//        return null;
+//    }
 
 
 }
