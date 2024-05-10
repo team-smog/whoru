@@ -34,9 +34,9 @@ const router = createBrowserRouter([
 	{
 		path: '/',
 		element: (
-			// <AuthWrapper>
+			<AuthWrapper>
 				<MainPage />
-			// </AuthWrapper>
+			</AuthWrapper>
 		),
 	},
 	{
