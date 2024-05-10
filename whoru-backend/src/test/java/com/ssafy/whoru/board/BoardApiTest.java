@@ -38,7 +38,6 @@ public class BoardApiTest extends TestPrepare {
         collectRepository.save(icon);
 
         Member member3000 = memberTestUtil.Member3000_멤버추가(icon);
-        memberRepository.save(member3000);
 
         String header3000 = memberTestUtil.유저_AccessToken_만들고_헤더값_리턴(member3000);
 
@@ -72,7 +71,6 @@ public class BoardApiTest extends TestPrepare {
         collectRepository.save(icon);
 
         Member member3000 = memberTestUtil.Member3000_멤버추가(icon);
-        memberRepository.save(member3000);
 
         String header3000 = memberTestUtil.유저_AccessToken_만들고_헤더값_리턴(member3000);
 
@@ -103,7 +101,6 @@ public class BoardApiTest extends TestPrepare {
         collectRepository.save(icon);
 
         Member member3000 = memberTestUtil.Member3000_멤버추가(icon);
-        memberRepository.save(member3000);
 
         String header3000 = memberTestUtil.유저_AccessToken_만들고_헤더값_리턴(member3000);
 
@@ -132,10 +129,8 @@ public class BoardApiTest extends TestPrepare {
         collectRepository.save(icon);
 
         Member admin = memberTestUtil.관리자_멤버_추가(icon);
-        memberRepository.save(admin);
 
         Member member = memberTestUtil.Member3000_멤버추가(icon);
-        memberRepository.save(member);
 
         String header = memberTestUtil.관리자_AccessToken_만들고_헤더값_리턴(admin);
 
@@ -170,10 +165,8 @@ public class BoardApiTest extends TestPrepare {
         collectRepository.save(icon);
 
         Member admin = memberTestUtil.관리자_멤버_추가(icon);
-        memberRepository.save(admin);
 
         Member member = memberTestUtil.Member3000_멤버추가(icon);
-        memberRepository.save(member);
 
         String header = memberTestUtil.관리자_AccessToken_만들고_헤더값_리턴(admin);
 
@@ -202,10 +195,8 @@ public class BoardApiTest extends TestPrepare {
         collectRepository.save(icon);
 
         Member admin = memberTestUtil.관리자_멤버_추가(icon);
-        memberRepository.save(admin);
 
         Member member = memberTestUtil.Member3000_멤버추가(icon);
-        memberRepository.save(member);
 
         String header = memberTestUtil.관리자_AccessToken_만들고_헤더값_리턴(admin);
 
@@ -236,10 +227,8 @@ public class BoardApiTest extends TestPrepare {
         collectRepository.save(icon);
 
         Member admin = memberTestUtil.관리자_멤버_추가(icon);
-        memberRepository.save(admin);
 
         Member member = memberTestUtil.Member3000_멤버추가(icon);
-        memberRepository.save(member);
 
         String header = memberTestUtil.관리자_AccessToken_만들고_헤더값_리턴(admin);
 
@@ -270,10 +259,8 @@ public class BoardApiTest extends TestPrepare {
         collectRepository.save(icon);
 
         Member admin = memberTestUtil.관리자_멤버_추가(icon);
-        memberRepository.save(admin);
 
         Member member = memberTestUtil.Member3000_멤버추가(icon);
-        memberRepository.save(member);
 
         String header = memberTestUtil.관리자_AccessToken_만들고_헤더값_리턴(admin);
 

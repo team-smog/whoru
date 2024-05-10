@@ -6,9 +6,12 @@ import com.ssafy.whoru.domain.member.dto.ProviderType;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -57,8 +60,11 @@ public class Member {
     @Column(name = "language_type")
     private LanguageType languageType;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    private FcmNotification fcmNotification;
+//    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+//    private FcmNotification fcmNotification;
+    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @Default
+    private List<FcmNotification> fcmNotifications = new ArrayList<>();
 
 
     public void updateBoxIncrease() {
@@ -71,6 +77,5 @@ public class Member {
 
     public void updateIcon(Icon changeIcon) { this.icon = changeIcon; }
 
-    public void setFcm(FcmNotification fcm){ this.fcmNotification = fcm; }
 
 }

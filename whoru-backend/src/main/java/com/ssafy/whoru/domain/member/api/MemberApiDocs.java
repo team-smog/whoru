@@ -41,9 +41,9 @@ public interface MemberApiDocs {
     @PatchMapping("/push-alarm")
     ResponseEntity<WrapResponse<Void>> setPush(@AuthenticationPrincipal CustomOAuth2User member);
 
-    @Operation(summary = "로그아웃",description = "토큰을 받아 유저를 로그아웃 합니다.")
+    @Operation(summary = "로그아웃",description = "리프레시 토큰과 FCM 토큰을 받아 해당 FCM토큰을 마킹하고 유저를 로그아웃 합니다.")
     @PostMapping("/logout")
-    ResponseEntity<WrapResponse<Void>> logout(@AuthenticationPrincipal CustomOAuth2User member, HttpServletRequest request, HttpServletResponse response);
+    ResponseEntity<WrapResponse<Void>> logout(@AuthenticationPrincipal CustomOAuth2User member, @RequestParam String fcmToken, HttpServletRequest request, HttpServletResponse response);
 
     @Operation(summary = "accessToken 재발급 ",description = "토큰을 받아 유저의 accessToken을 재발급합니다.")
     @ApiResponse(responseCode = "200", description = "TokenResponse", content = @Content(schema = @Schema(implementation = TokenResponse.class)))
@@ -61,11 +61,11 @@ public interface MemberApiDocs {
     @PatchMapping("/updatefcm")
     ResponseEntity<WrapResponse<Void>> updateFcm(@AuthenticationPrincipal CustomOAuth2User member,String fcmToken);
 
-    @Operation(summary = "fcmToken get", description = "사용자의 fcm 토큰을 가져올 수 있다.")
-    @ApiResponse(responseCode = "200",description = "access토큰을 토대로 사용자의 fcm 토큰을 가져온다. ", content = @Content(schema = @Schema(implementation = TokenResponse.class)))
-    @ApiResponse(responseCode = "204",description = "fcm 토큰이 없을때 반환된다.")
-    @ApiResponse(responseCode = "453",description = "fcm이 설정되지 않았을 때 반환된다.")
-    @GetMapping("/gettoken")
-    ResponseEntity<WrapResponse<TokenResponse>> getToken(@AuthenticationPrincipal CustomOAuth2User member);
+//    @Operation(summary = "fcmToken get", description = "사용자의 fcm 토큰을 가져올 수 있다.")
+//    @ApiResponse(responseCode = "200",description = "access토큰을 토대로 사용자의 fcm 토큰을 가져온다. ", content = @Content(schema = @Schema(implementation = TokenResponse.class)))
+//    @ApiResponse(responseCode = "204",description = "fcm 토큰이 없을때 반환된다.")
+//    @ApiResponse(responseCode = "453",description = "fcm이 설정되지 않았을 때 반환된다.")
+//    @GetMapping("/gettoken")
+//    ResponseEntity<WrapResponse<TokenResponse>> getToken(@AuthenticationPrincipal CustomOAuth2User member);
 
 }

@@ -101,8 +101,6 @@ public class ReportApiTest extends TestPrepare {
         Icon icon = memberTestUtil.아이콘_추가();
         collectRepository.save(icon);
         Member member3000 = memberTestUtil.Member3000_멤버추가(icon);
-        memberRepository.save(member3000);
-
         String header3000 = memberTestUtil.유저_AccessToken_만들고_헤더값_리턴(member3000);
 
         /**
@@ -129,11 +127,10 @@ public class ReportApiTest extends TestPrepare {
         Icon icon = memberTestUtil.아이콘_추가();
         collectRepository.save(icon);
         Member member3000 = memberTestUtil.Member3000_멤버추가(icon);
-        Member member = memberRepository.save(member3000);
 
         String header3000 = memberTestUtil.유저_AccessToken_만들고_헤더값_리턴(member3000);
 
-        memberTestUtil.유저_정지_먹이기(member);
+        memberTestUtil.유저_정지_먹이기(member3000);
         /**
          * 사용자 이용정지 요청 API 호출
          * **/

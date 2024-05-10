@@ -1,10 +1,13 @@
 package com.ssafy.whoru.domain.message.application;
 
 import com.ssafy.whoru.domain.member.application.CrossMemberService;
+import com.ssafy.whoru.domain.member.domain.FcmNotification;
 import com.ssafy.whoru.domain.member.domain.Member;
+import com.ssafy.whoru.domain.member.exception.FcmNotFoundException;
 import com.ssafy.whoru.domain.message.dao.MessageCustomRepository;
 import com.ssafy.whoru.domain.message.dao.MessageRepository;
 import com.ssafy.whoru.domain.message.dto.response.MessageResponse;
+import com.ssafy.whoru.domain.message.dto.response.SendResponse;
 import com.ssafy.whoru.global.common.dto.response.ResponseWithSuccess;
 import com.ssafy.whoru.domain.message.dto.response.SliceMessageResponse;
 import com.ssafy.whoru.global.common.application.S3Service;
@@ -64,12 +67,14 @@ public class MessageServiceImpl implements MessageService{
     static final Integer EMPTY_MESSAGE = 0;
 
     @Override
-    public void sendTextMessageToRandomMember(TextSend textSend, Long senderId) {
+    public SendResponse sendTextMessageToRandomMember(TextSend textSend, Long senderId) {
 
         // 정지여부 체크
         if(messageUtil.isBanned(senderId)){
             throw new BannedSenderException();
         }
+        SendResponse sendResponse = new SendResponse(false);
+
         // randombox 카운트
         String key = RedisKeyType.TODAY_BOX.makeKey(String.valueOf(senderId));
         Optional<String> boxCount = redisUtil.findValueByKey(key);
@@ -88,6 +93,8 @@ public class MessageServiceImpl implements MessageService{
             // db상에 boxcount도 증가시켜야 하고
             sender.updateBoxIncrease();
 
+            sendResponse.setRandomBoxProvided(true);
+
             // redis에서도 새롭게 +1 된 값을 반영해야 함
             // 날짜 바뀌는 시간 구하기
             LocalDateTime next = LocalDate.now().plusDays(1).atStartOfDay();
@@ -96,9 +103,13 @@ public class MessageServiceImpl implements MessageService{
         }
 
         // fcm 발송
-        if(receiver.getFcmNotification().getIsEnabled()){
-            fcmUtil.sendMessage(receiver.getFcmNotification().getFcmToken());
+        List<FcmNotification> fcmNotifications = receiver.getFcmNotifications();
+        for(FcmNotification fcmNotification: fcmNotifications){
+            if(fcmNotification.getMark()) continue;
+            if(!fcmNotification.getIsEnabled()) continue;
+            fcmUtil.sendMessage(fcmNotification.getFcmToken(), fcmNotification.getId());
         }
+
 
         // message 전송
         messageRepository.save(
@@ -114,6 +125,7 @@ public class MessageServiceImpl implements MessageService{
                         .responseStatus(false)
                         .build()
         );
+        return sendResponse;
     }
 
     @Override
@@ -143,13 +155,16 @@ public class MessageServiceImpl implements MessageService{
                 .isResponse(true)
                 .build();
 
-        fcmUtil.sendMessage(targetMessage.getSender().getFcmNotification().getFcmToken());
-
+        Member receiver = targetMessage.getSender();
+        List<FcmNotification> fcmNotifications = receiver.getFcmNotifications();
+        for(FcmNotification fcmNotification: fcmNotifications){
+            fcmUtil.sendMessage(fcmNotification.getFcmToken(), fcmNotification.getId());
+        }
         messageRepository.save(responseMessage);
     }
 
     @Override
-    public void sendMediaMessageToRandomMember(MultipartFile file, Long senderId) {
+    public SendResponse sendMediaMessageToRandomMember(MultipartFile file, Long senderId) {
         if(messageUtil.isBanned(senderId)){
             throw new BannedSenderException();
         }
@@ -163,6 +178,8 @@ public class MessageServiceImpl implements MessageService{
         String key = RedisKeyType.TODAY_BOX.makeKey(String.valueOf(senderId));
         Optional<String> boxCount = redisUtil.findValueByKey(key);
 
+        SendResponse sendResponse = new SendResponse(false);
+
         // 현재 redis에 남아있는 오늘의 박스 얻은 횟수 가져오기
         Integer presentBoxCount = BOX_COUNT_INIT;
         if(boxCount.isPresent()){
@@ -172,6 +189,8 @@ public class MessageServiceImpl implements MessageService{
         if(presentBoxCount < BOX_LIMIT){
             // db상에 boxcount도 증가시켜야 하고
             sender.updateBoxIncrease();
+
+            sendResponse.setRandomBoxProvided(true);
 
             // redis에서도 새롭게 +1 된 값을 반영해야 함
             // 날짜 바뀌는 시간 구하기
@@ -200,7 +219,12 @@ public class MessageServiceImpl implements MessageService{
         );
 
         // fcm 발송
-        fcmUtil.sendMessage(receiver.getFcmNotification().getFcmToken());
+        List<FcmNotification> fcmNotifications = receiver.getFcmNotifications();
+        for(FcmNotification fcmNotification: fcmNotifications){
+            fcmUtil.sendMessage(fcmNotification.getFcmToken(), fcmNotification.getId());
+        }
+
+        return sendResponse;
 
     }
 
@@ -242,7 +266,10 @@ public class MessageServiceImpl implements MessageService{
         messageRepository.save(responseMessage);
 
         // fcm 발송
-        fcmUtil.sendMessage(message.getReceiver().getFcmNotification().getFcmToken());
+        List<FcmNotification> fcmNotifications = message.getSender().getFcmNotifications();
+        for(FcmNotification fcmNotification: fcmNotifications){
+            fcmUtil.sendMessage(fcmNotification.getFcmToken(), fcmNotification.getId());
+        }
     }
 
     @Override

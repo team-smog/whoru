@@ -45,11 +45,9 @@ public class MemberApi implements MemberApiDocs {
         return ResponseEntity.ok(WrapResponse.create(SuccessType.SIMPLE_STATUS));
     }
 
-    @PostMapping("/logout")
-    public ResponseEntity<WrapResponse<Void>> logout(@AuthenticationPrincipal CustomOAuth2User member, HttpServletRequest request, HttpServletResponse response) {
-
-        memberService.logout(member.getId());
-
+    @GetMapping("/logout")
+    public ResponseEntity<WrapResponse<Void>> logout(@AuthenticationPrincipal CustomOAuth2User member, @RequestParam String fcmToken, HttpServletRequest request, HttpServletResponse response) {
+        memberService.logout(member.getId(), fcmToken);
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
@@ -94,7 +92,7 @@ public class MemberApi implements MemberApiDocs {
         return ResponseEntity.ok(WrapResponse.create(response,SuccessType.SIMPLE_STATUS));
     }
 
-    @PatchMapping("/updatefcm")
+    @PostMapping("/updatefcm")
     public ResponseEntity<WrapResponse<Void>> updateFcm(@AuthenticationPrincipal CustomOAuth2User member, String fcmToken) {
         fcmService.updateFcm(member.getId(),fcmToken);
         return ResponseEntity.ok(WrapResponse.create(SuccessType.SIMPLE_STATUS));
@@ -102,10 +100,10 @@ public class MemberApi implements MemberApiDocs {
 
 
 
-    @GetMapping("/gettoken")
-    public ResponseEntity<WrapResponse<TokenResponse>> getToken(CustomOAuth2User member) {
-        TokenResponse response = memberService.getToken(member.getId());
-        return ResponseEntity.ok(WrapResponse.create(response,SuccessType.SIMPLE_STATUS));
-    }
+//    @GetMapping("/gettoken")
+//    public ResponseEntity<WrapResponse<TokenResponse>> getToken(CustomOAuth2User member) {
+//        TokenResponse response = memberService.getToken(member.getId());
+//        return ResponseEntity.ok(WrapResponse.create(response,SuccessType.SIMPLE_STATUS));
+//    }
 
 }
