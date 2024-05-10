@@ -28,28 +28,30 @@ const InboxImageComponent: React.FC<InboxImageComponentProps> = ({ message, inne
     dispatch(setReplyMessage(messageId))
     // console.log('messageId', messageId)
     navigate('/post')
-    window.location.reload()
   }
 
   const handleReport = (messageId:number, senderId:number) => {
-    axios.post('http://k10d203.p.ssafy.io/api/report/member',
-    {
-      messageId: messageId,
-      senderId: senderId,
-    },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`
-    }}
-    )
-    .then((res) => {
-      console.log(res);
-      alert('신고가 완료되었습니다.');
-    })
-    .catch((err) => {
-      console.log(err);
-    })
+    if (confirm('정말로 신고하시겠습니까?')) {
+      axios.post('http://k10d203.p.ssafy.io/api/report/member',
+      {
+        messageId: messageId,
+        senderId: senderId,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`
+      }}
+      )
+      .then((res) => {
+        console.log(res);
+        alert('신고가 완료되었습니다.');
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+    } 
   }
 
   const createDate = new Date(message.createDate);
@@ -76,7 +78,7 @@ const InboxImageComponent: React.FC<InboxImageComponentProps> = ({ message, inne
     <div className={styles.InboxImageComponent} key={message.id} ref={innerRef} {...props}>
       <div className={styles.inboxImageComponentHeader} key={message.id} {...props}>
         <div className={styles.inboxImageComponentHeaderText}>
-          <p className={styles.inboxImageComponentHeaderTextTitle}>{message.responseStatus ? "답장 메세지" : "익명 메세지"}</p>
+          <p className={styles.inboxImageComponentHeaderTextTitle}>{message.isResponse ? "답장 메세지" : "익명 메세지"}</p>
           <p className={styles.inboxImageComponentHeaderTime}>{timeFromNow}</p>
         </div>
         <div className={styles.inboxImageComponentHeaderIcons}>
@@ -93,10 +95,10 @@ const InboxImageComponent: React.FC<InboxImageComponentProps> = ({ message, inne
           />
       </div>
       <div className={styles.inboxImageComponentFooter}>
-        <button className={message.responseStatus ? styles.inboxImageComponentFooterButtonDisable : styles.inboxImageComponentFooterButton} 
+        <button className={message.responseStatus || message.isResponse ? styles.inboxImageComponentFooterButtonDisable : styles.inboxImageComponentFooterButton} 
             onClick={() => handleReply(message.id)}
             style={replyButtonStyle}
-            disabled={message.responseStatus}
+            disabled={message.responseStatus || message.isResponse}
           >
             답장
           </button>

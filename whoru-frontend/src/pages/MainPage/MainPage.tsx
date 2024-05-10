@@ -98,7 +98,7 @@ const MainPage = () => {
     try {
       // console.log("token1",token)
       await fetch(`https://k10d203.p.ssafy.io/api/member/updatefcm?fcmToken=${token}`, {
-        method: 'PATCH',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
@@ -147,7 +147,7 @@ const MainPage = () => {
         },
       }) 
       .then((res) => {
-        if (res.data && res.data.data && res.data.data.content) {
+        if (res.data && res.data.data && res.data.data.content && res.data.data.content.length > 0) {
           dispatch(setFirstId(res.data.data.content[0].id));
           dispatch(setLastId(res.data.data.content[res.data.data.content.length - 1].id));
           setHasNext(res.data.data.hasNext);

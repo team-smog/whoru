@@ -27,28 +27,30 @@ const InboxTextComponent: React.FC<InboxTextComponentProps> = ({ message, innerR
   const handleReply = (messageId:number) => {
     dispatch(setReplyMessage(messageId));
     navigate('/post');
-    window.location.reload()
   };
 
   const handleReport = (messageId:number, senderId:number) => {
-    axios.post('http://k10d203.p.ssafy.io/api/report/member',
-    {
-      messageId: messageId,
-      senderId: senderId,
-    },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`
-    }}
-    )
-    .then((res) => {
-      console.log(res);
-      alert('신고가 완료되었습니다.');
-    })
-    .catch((err) => {
-      console.log(err);
-    })
+    if (confirm('정말로 신고하시겠습니까?')) {
+      axios.post('http://k10d203.p.ssafy.io/api/report/member',
+      {
+        messageId: messageId,
+        senderId: senderId,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`
+      }}
+      )
+      .then((res) => {
+        console.log(res);
+        alert('신고가 완료되었습니다.');
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+    } 
   }
 
   const createDate = new Date(message.createDate);
@@ -90,10 +92,10 @@ const InboxTextComponent: React.FC<InboxTextComponentProps> = ({ message, innerR
         <div className={styles.inboxTextComponentBodyMain}>
           <p className={styles.inboxTextComponentBodyMainText}>{message.content}</p>
             <div className={styles.inboxTextComponentFooter}>
-              <button className={message.responseStatus ? styles.inboxTextComponentFooterButtonDisable : styles.inboxTextComponentFooterButton} 
+              <button className={message.responseStatus || message.isResponse ? styles.inboxTextComponentFooterButtonDisable : styles.inboxTextComponentFooterButton} 
                 onClick={() => handleReply(message.id)}
                 style={replyButtonStyle}
-                disabled={message.responseStatus}
+                disabled={message.responseStatus || message.isResponse}
               >
                 답장
               </button>
