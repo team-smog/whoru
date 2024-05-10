@@ -19,6 +19,7 @@ import axios from 'axios'
 interface InboxVoiceComponentProps extends React.HTMLAttributes<HTMLDivElement>{
   message: MessageInfoDetail;
   innerRef?: React.Ref<HTMLDivElement>;
+  
 }
 
 const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, innerRef, ...props }) => {
@@ -27,10 +28,15 @@ const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, inne
   const accessToken = localStorage.getItem('AccessToken')
   // const messageId = useSelector((state: any) => state.messageId)
 
+  const replyButtonStyle = message.responseStatus ?  {backgroundColor: 'gray'} : {}
+  const reportButtonStyle = message.isReported ? { backgroundColor: 'gray' } : {}
+
+
   const handleReply = (messageId: number) => {
     dispatch(setReplyMessage(messageId))
     console.log('messageId', messageId)
     navigate('/post')
+    window.location.reload()
   }
 
   const handleReport = (messageId:number, senderId:number) => {
@@ -48,6 +54,7 @@ const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, inne
     .then((res) => {
       console.log(res);
       alert('신고가 완료되었습니다.');
+      location.reload();
     })
     .catch((err) => {
       console.log(err);
@@ -105,8 +112,20 @@ const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, inne
           />
         </div>
         <div className={styles.inboxVoiceComponentFooter}>
-          <button className={styles.inboxVoiceComponentFooterButton} onClick={() => handleReply(message.id)}>답장</button>
-          <button className={styles.inboxVoiceComponentFooterReportButton} onClick={() => handleReport(message.id, message.senderId)}>신고</button>
+          <button className={message.responseStatus ? styles.inboxVoiceComponentFooterButtonDisable : styles.inboxVoiceComponentFooterButton} 
+            onClick={() => handleReply(message.id)}
+            style={replyButtonStyle}
+            disabled={message.responseStatus}
+          >
+            답장
+          </button>
+          <button className={styles.inboxVoiceComponentFooterReportButton} 
+            onClick={() => handleReport(message.id, message.senderId)}
+            style={reportButtonStyle}
+            disabled={message.isReported}
+          >
+            신고
+        </button>
       </div>
       </div>
     </div>

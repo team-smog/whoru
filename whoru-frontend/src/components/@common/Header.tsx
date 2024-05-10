@@ -1,5 +1,9 @@
+import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Bell from "@/assets/@common/Bell.png"
+import { getFirebaseMessagingObject } from "@/FirebaseUtil.js";
+import { onMessage } from "firebase/messaging";
+import Swal from "sweetalert2";
 
 export interface IHeaderInfo {
   left_1: React.ReactNode | null;
@@ -10,8 +14,37 @@ export interface IHeaderInfo {
 
 const Header = (props: {info:IHeaderInfo}) => {
   const navigate = useNavigate();
+  const messagingObject = useRef(null);
+
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'center',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+  })
 
   const {left_1, left_2, center, right} = props.info;
+
+  useEffect(()=>{
+    messagingObject.current = getFirebaseMessagingObject()
+  },[])
+  if(messagingObject.current !== null){
+      // console.log(messagingObject.current);
+      onMessage(messagingObject.current, (body)=>{
+        if (body.data) {
+          const { content } = body.data;
+          Toast.fire({
+            icon: 'success',
+            title: content
+          })
+        }
+      })
+  }
 
   return(
     <div className="max-w-[500px] w-full z-[2] h-12 px-4 top-0 flex fixed justify-between items-center">

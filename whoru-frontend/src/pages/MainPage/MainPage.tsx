@@ -25,6 +25,13 @@ const MainPage = () => {
     right: <img src={Bell} alt="Alarm"/>
   }
 
+  useEffect(() => {
+    return () => {
+      dispatch(setFirstId(null));
+      dispatch(setLastId(null));
+    }
+  }, []);
+
   const dispatch = useDispatch();
   const firstId = useSelector((state: any) => state.message.firstId);
   const lastId = useSelector((state: any) => state.message.lastId);
@@ -78,36 +85,19 @@ const MainPage = () => {
     }
   }
 
-  const [ tokenFCM, setTokenFCM] = useState<string|null>(null);
-  const [ myTokenFCM, setMyTokenFCM] = useState<string|null>(null);
+  // const [ myTokenFCM, setMyTokenFCM] = useState<string|null>(null);
 
   const FCMSetToken = async () => {
-    const token = await requestPermission();
-    setMyTokenFCM(token);
+    // const token = await requestPermission();
+    // console.log("token",token)
+    // return token;
+    return await requestPermission();
   }
-
-  const getTokenFCM = async () => {
+  
+  const fetchDataFCM = async (token: string) => {
     try {
-      const FCMResponse = await fetch('https://k10d203.p.ssafy.io/api/member/gettoken', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
-        },
-      });
-      const FCMData = await FCMResponse.json();
-      // console.log("FCMData", FCMData);
-      setTokenFCM(FCMData.data.token);
-      // console.log("tokenFCM :", tokenFCM);
-      console.log("getTokenFCM 확인");
-    } catch (error: any) {
-      console.error(error);
-    }
-  }
-
-  const fetchDataFCM = async () => {
-    try {
-      await fetch(`https://k10d203.p.ssafy.io/api/member/updatefcm?fcmToken=${myTokenFCM}`, {
+      // console.log("token1",token)
+      await fetch(`https://k10d203.p.ssafy.io/api/member/updatefcm?fcmToken=${token}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -122,20 +112,13 @@ const MainPage = () => {
   };
 
   useEffect(() => {
-    const confirmFCM = async () => {
-      FCMSetToken();
-      getTokenFCM();
-      console.log("myTokenFCM ?", myTokenFCM);
-      console.log("tokenFCM ?", tokenFCM);
-      if ((myTokenFCM !== null) && (tokenFCM !== null) && (myTokenFCM !== tokenFCM)) {
-        if (myTokenFCM !== tokenFCM) {
-          fetchDataFCM();
-        }
-      }
-    }
-
-    confirmFCM();
-  }, [tokenFCM, myTokenFCM]);
+    const token = FCMSetToken();
+    token.then((res) => {
+      fetchDataFCM(res);
+      localStorage.setItem('FCMToken', res);
+    })
+    // fetchDataFCM(token);
+  }, []);
 
   useEffect(() => {
     console.log("firstId", firstId);
@@ -202,7 +185,7 @@ const MainPage = () => {
     getNextPageParam: (lastPage, allPages) => {
       return lastPage && lastPage.length ? allPages && allPages.length : undefined;
     },
-    refetchOnMount: false,
+    refetchOnMount: true,
     refetchOnWindowFocus: false,
   })
 

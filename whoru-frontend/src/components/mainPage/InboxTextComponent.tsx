@@ -21,9 +21,13 @@ const InboxTextComponent: React.FC<InboxTextComponentProps> = ({ message, innerR
   // const messageId = useSelector((state: any) => state.reply.messageId);
   const accessToken = localStorage.getItem('AccessToken');
 
-  const handleSetReplyMessage = (messageId:number) => {
+  const replyButtonStyle = message.responseStatus ?  {backgroundColor: 'gray'} : {}
+  const reportButtonStyle = message.isReported ? { backgroundColor: 'gray' } : {}
+
+  const handleReply = (messageId:number) => {
     dispatch(setReplyMessage(messageId));
     navigate('/post');
+    window.location.reload()
   };
 
   const handleReport = (messageId:number, senderId:number) => {
@@ -73,7 +77,7 @@ const InboxTextComponent: React.FC<InboxTextComponentProps> = ({ message, innerR
     <div className={styles.inboxTextComponent} key={message.id} ref={innerRef} {...props}>
       <div className={styles.inboxTextComponentHeader} key={message.id} {...props}>
         <div className={styles.inboxTextComponentHeaderText}>
-          <p className={styles.inboxTextComponentHeaderTextTitle}>익명 메세지</p>
+          <p className={styles.inboxTextComponentHeaderTextTitle}>{message.responseStatus ? "답장 메세지" : "익명 메세지"}</p>
           <p className={styles.inboxTextComponentHeaderTime}>{timeFromNow}</p>
         </div>
         <div className={styles.inboxTextComponentHeaderIcons}>
@@ -85,10 +89,21 @@ const InboxTextComponent: React.FC<InboxTextComponentProps> = ({ message, innerR
       <div className={styles.inboxTextComponentBody}>
         <div className={styles.inboxTextComponentBodyMain}>
           <p className={styles.inboxTextComponentBodyMainText}>{message.content}</p>
-          <div className={styles.inboxTextComponentFooter}>
-            <button className={styles.inboxTextComponentFooterButton} onClick={() => handleSetReplyMessage(message.id)}>답장</button>
-            {/* <button className={styles.inboxTextComponentFooterButton}>번역</button> */}
-            <button className={styles.inboxTextComponentFooterReportButton} onClick={() => handleReport(message.id, message.senderId)}>신고</button>
+            <div className={styles.inboxTextComponentFooter}>
+              <button className={message.responseStatus ? styles.inboxTextComponentFooterButtonDisable : styles.inboxTextComponentFooterButton} 
+                onClick={() => handleReply(message.id)}
+                style={replyButtonStyle}
+                disabled={message.responseStatus}
+              >
+                답장
+              </button>
+              <button className={styles.inboxTextComponentFooterReportButton} 
+                onClick={() => handleReport(message.id, message.senderId)}
+                style={reportButtonStyle}
+                disabled={message.isReported}
+              >
+                신고
+            </button>
           </div>
         </div>
       </div>
