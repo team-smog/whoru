@@ -39,25 +39,27 @@ const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, inne
   }
 
   const handleReport = (messageId:number, senderId:number) => {
-    axios.post('https://k10d203.p.ssafy.io/api/report/member',
-    {
-      messageId: messageId,
-      senderId: senderId,
-    },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`
-    }}
-    )
-    .then((res) => {
-      console.log(res);
-      alert('신고가 완료되었습니다.');
-      window.location.reload()
-    })
-    .catch((err) => {
-      console.log(err);
-    })
+    if (confirm('정말로 신고하시겠습니까?')) {
+      axios.post('http://k10d203.p.ssafy.io/api/report/member',
+      {
+        messageId: messageId,
+        senderId: senderId,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`
+      }}
+      )
+      .then((res) => {
+        console.log(res);
+        alert('신고가 완료되었습니다.');
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+    } 
   }
 
   const createDate = new Date(message.createDate);
