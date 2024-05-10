@@ -25,36 +25,36 @@ public class MemberResponse {
     private String refreshToken;
     private LanguageType languageType;
     private FcmNotification fcmNotification;
-    public static MemberResponse toDto(Member member){
-        return MemberResponse.builder()
-                .id(member.getId())
-                .userName(member.getUserName())
-                .memberIdentifier(member.getMemberIdentifier())
-                .providerType(member.getProvider())
-                .iconId(member.getIcon())
-                .boxCount(member.getBoxCount())
-                .createDate(member.getCreateDate())
-                .reportCount(member.getReportCount())
-                .refreshToken(member.getRefreshToken())
-                .languageType(member.getLanguageType())
-                .fcmNotification(member.getFcmNotification())
-                .build();
-    }
+//    public static MemberResponse toDto(Member member){
+//        return MemberResponse.builder()
+//                .id(member.getId())
+//                .userName(member.getUserName())
+//                .memberIdentifier(member.getMemberIdentifier())
+//                .providerType(member.getProvider())
+//                .iconId(member.getIcon())
+//                .boxCount(member.getBoxCount())
+//                .createDate(member.getCreateDate())
+//                .reportCount(member.getReportCount())
+//                .refreshToken(member.getRefreshToken())
+//                .languageType(member.getLanguageType())
+//                .fcmNotification(member.getFcmNotification())
+//                .build();
+//    }
 
-    public Member toEntity(){
-        return Member.builder()
-                .id(getId())
-                .userName(getUserName())
-                .memberIdentifier(getMemberIdentifier())
-                .provider(getProviderType())
-                .icon(getIconId())
-                .boxCount(getBoxCount())
-                .createDate(getCreateDate())
-                .reportCount(getReportCount())
-                .refreshToken(getRefreshToken())
-                .languageType(getLanguageType())
-                .fcmNotification(getFcmNotification())
-                .build();
-    }
+//    public Member toEntity(){
+//        return Member.builder()
+//                .id(getId())
+//                .userName(getUserName())
+//                .memberIdentifier(getMemberIdentifier())
+//                .provider(getProviderType())
+//                .icon(getIconId())
+//                .boxCount(getBoxCount())
+//                .createDate(getCreateDate())
+//                .reportCount(getReportCount())
+//                .refreshToken(getRefreshToken())
+//                .languageType(getLanguageType())
+//                .fcmNotification(getFcmNotification())
+//                .build();
+//    }
 
 }

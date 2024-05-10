@@ -36,7 +36,6 @@ public class MemberApiTest extends TestPrepare {
         collectRepository.save(icon2);
 
         Member member3000 = memberTestUtil.Member3000_멤버추가(icon);
-        memberRepository.save(member3000);
 
         String header3000 = memberTestUtil.유저_AccessToken_만들고_헤더값_리턴(member3000);
 

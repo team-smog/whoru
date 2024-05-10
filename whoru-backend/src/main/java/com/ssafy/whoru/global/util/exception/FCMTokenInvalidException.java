@@ -1,12 +1,12 @@
 package com.ssafy.whoru.global.util.exception;
 
 import com.ssafy.whoru.global.error.exception.ErrorCode;
-import com.ssafy.whoru.global.error.exception.SimpleException;
+import lombok.Getter;
+import lombok.Setter;
 
-public class FCMTokenInvalidException extends SimpleException {
-
-
-    public FCMTokenInvalidException() {
-        super(ErrorCode.FCM_TOKEN_INVALID);
-    }
-}
+//@Setter
+//@Getter
+//public class FCMTokenInvalidException extends RuntimeException {
+//    final ErrorCode errorCode = ErrorCode.FCM_TOKEN_INVALID;
+//    public FCMTokenInvalidException(){}
+//}
