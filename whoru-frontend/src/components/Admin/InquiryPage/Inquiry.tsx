@@ -3,8 +3,6 @@ import { useState } from "react";
 import InquiryModal from "./InquiryModal";
 
 const Inquiry = ({ data }: { data: InquiryInfo[] }) => {
-  // 데이터가 없어서 일단 넣어둠
-  data = data || [];
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 10;
   const totalPages = Math.ceil(data.length / itemsPerPage);

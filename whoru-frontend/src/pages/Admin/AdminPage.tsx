@@ -90,12 +90,13 @@ const AdminPage = () => {
     switch (selectedTab) {
       case 'Notification':
         if (notificationData) {
-          return <NotificationPage data={notificationData.notification_info} />;
+          console.log(notificationData)
+          return <NotificationPage data={notificationData.content} />;
         }
         break;
       case 'Inquiry':
         if (inquiryData) {
-          return <InquiryPage data={inquiryData.inquiry_info} />;
+          return <InquiryPage data={inquiryData.content} />;
         }
         break;
       case 'Report':

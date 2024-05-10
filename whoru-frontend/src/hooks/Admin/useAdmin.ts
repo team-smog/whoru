@@ -1,18 +1,17 @@
-import { getInquiryReq, getNotificationReq, postNotificationReq } from "@/service/Admin/api"
-import { IInquiryRes, INotification } from "@/types/Admin"
-import { APIResponse } from "@/types/model"
+import { getInquiryReq, getNotificationReq, patchNotificationReq, postNotificationReq } from "@/service/Admin/api"
+import { IInquiry, INotification } from "@/types/Admin"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
 export const useInquiryDetail = (page: number, size: number, condition: number) => {
-  return useQuery<APIResponse<IInquiryRes>, Error>({
+  return useQuery<IInquiry, Error>({
     queryKey: ['IInquiryRes', page, size, condition],
     queryFn: () => getInquiryReq(page, size, condition)
   })
 }
 
 export const useNotificationDetail = (page: number, size: number) => {
-  return useQuery<APIResponse<INotification[]>, Error>({
-    queryKey: ['INotificationRes', page, size],
+  return useQuery<INotification, Error>({
+    queryKey: [page],
     queryFn: () => getNotificationReq(page, size),
   });
 };
@@ -29,3 +28,14 @@ export const useNotificationCreate = () => {
     }
   })
 }
+
+export const useNotificationEdit = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ boardId, formData }: { boardId: number; formData: { subject: string; content: string } }) => 
+      patchNotificationReq({ boardId, formData }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['INotificationRes']});
+    }
+  });
+};

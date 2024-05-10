@@ -7,8 +7,8 @@ const NotificationCreateModal = ({ onClose }: { onClose: () => void }) => {
   const [content, setContent] = useState<string>('');
   const { mutate } = useNotificationCreate();
 
-  console.log(subject)
-  console.log(content)
+  // console.log(subject)
+  // console.log(content)
 
   const handleNotificationCreate = () => {
     const formData = {
