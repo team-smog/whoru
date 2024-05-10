@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import Bell from "@/assets/@common/Bell.png"
 import { getFirebaseMessagingObject } from "@/FirebaseUtil.js";
 import { onMessage } from "firebase/messaging";
 import Swal from "sweetalert2";
@@ -62,9 +61,9 @@ const Header = (props: {info:IHeaderInfo}) => {
       </div>
       <div className="flex-1 flex justify-center">{center && <p className="text-white">{center}</p>}</div>
       <div className="flex flex-1 justify-end items-center relative">
-        <button onClick={() => navigate('/alarm')}>
-          {right && <img src={Bell} alt="Alarm" className="w-6 h-6"/>}
-        </button>
+        <div>
+          {right}
+        </div>
       </div>
     </div>
   )

@@ -1,16 +1,15 @@
 import Header, { IHeaderInfo } from '@/components/@common/Header'
-import Bell from '@/assets/@common/Bell.png'
 import NavigationBar from '@/components/@common/NavigationBar'
 import InquiryManage from '@/components/Inquiry/InquiryManage'
 import Backspace from '@/assets/@common/Backspace.png'
 
 const Inquiry = () => {
-	const info: IHeaderInfo = {
-		left_1: null,
-		left_2: <img src={Backspace} alt="" />,
-		center: '문의사항',
-		right: <img src={Bell} alt="Alarm" />,
-	}
+  const info: IHeaderInfo = {
+    left_1: null,
+    left_2: <img src={Backspace} alt="" />,
+    center: '문의사항',
+    right: null
+  }
 
 	return (
 		<div>

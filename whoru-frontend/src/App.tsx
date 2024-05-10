@@ -2,18 +2,15 @@ import './App.css'
 import { Navigate, RouterProvider, createBrowserRouter } from 'react-router-dom'
 import MainPage from './pages/MainPage/MainPage'
 import LoginPage from './pages/Login/LoginPage'
-import AlarmPage from './pages/Alarm/AlarmPage'
 import ProfilePage from './pages/Profile/ProfilePage'
-import AskPage from './pages/Ask/AskPage'
 import PostPage from './pages/Post/PostPage'
-import AskPostPage from './pages/AskPost/AskPostPage'
 import AnnouncementPage from './pages/Announcement/AnnouncementPage'
 import AnnouncementDetail from './components/Announcement/AnnouncementDetail'
 import Chacollection from './pages/Chacollection/Chacollection'
 import Inquiry from './pages/Inquiry/Inquiry'
 import InquiryDetail from './components/Inquiry/InquiryDetail'
 import AdminPage from './pages/Admin/AdminPage'
-import CallBackPage from './pages/CallBack/CallBackPage'
+import CallBackPage from './pages/Login/CallBackPage'
 import CreateInquiry from './components/Inquiry/CreateInquiry'
 
 interface AuthWrapperProps {
@@ -44,34 +41,10 @@ const router = createBrowserRouter([
 		element: <LoginPage />,
 	},
 	{
-		path: '/alarm',
-		element: (
-			<AuthWrapper>
-				<AlarmPage />
-			</AuthWrapper>
-		),
-	},
-	{
 		path: '/profile',
 		element: (
 			<AuthWrapper>
 				<ProfilePage />
-			</AuthWrapper>
-		),
-	},
-	{
-		path: '/profile/ask',
-		element: (
-			<AuthWrapper>
-				<AskPage />
-			</AuthWrapper>
-		),
-	},
-	{
-		path: '/profile/ask/post',
-		element: (
-			<AuthWrapper>
-				<AskPostPage />
 			</AuthWrapper>
 		),
 	},

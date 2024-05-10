@@ -1,5 +1,4 @@
 import Header, { IHeaderInfo } from '@/components/@common/Header'
-import Bell from '@/assets/@common/Bell.png'
 import NavigationBar from '@/components/@common/NavigationBar'
 import ChacollectionProfile from '../../components/Chacollection/ChacollectionProfile'
 
@@ -8,7 +7,7 @@ const Chacollection = () => {
 		left_1: null,
 		left_2: null,
 		center: '캐릭터 도감',
-		right: <img src={Bell} alt="Alarm" />,
+		right: null,
 	}
 	return (
 		<>

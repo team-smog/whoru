@@ -1,12 +1,12 @@
-export interface IInquiryRes {
-  content: IInquiry[];
+export interface IInquiry {
+  content: IInquiryRes[];
   currentPage: number;
   size: number;
   first:boolean;
   last:boolean;
 }
 
-export interface IInquiry {
+export interface IInquiryRes {
   id: number;
   subject: string;
   writerName: string;
