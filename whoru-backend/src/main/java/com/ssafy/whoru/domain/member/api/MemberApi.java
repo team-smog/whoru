@@ -54,6 +54,7 @@ public class MemberApi implements MemberApiDocs {
                 if ("Refresh".equals(cookie.getName())) {
                     ResponseCookie expiredCookie = ResponseCookie.from(cookie.getName(), cookie.getValue())
                             .path(cookie.getPath() != null ? cookie.getPath() : "/")
+                            .domain(request.getServerName())
                             .httpOnly(true)
                             .secure(cookie.getSecure())
                             .maxAge(0)
