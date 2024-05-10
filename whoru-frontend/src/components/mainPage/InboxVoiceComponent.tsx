@@ -36,7 +36,6 @@ const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, inne
     dispatch(setReplyMessage(messageId))
     console.log('messageId', messageId)
     navigate('/post')
-    window.location.reload()
   }
 
   const handleReport = (messageId:number, senderId:number) => {
@@ -54,7 +53,7 @@ const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, inne
     .then((res) => {
       console.log(res);
       alert('신고가 완료되었습니다.');
-      location.reload();
+      window.location.reload()
     })
     .catch((err) => {
       console.log(err);

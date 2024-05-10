@@ -28,7 +28,6 @@ const InboxImageComponent: React.FC<InboxImageComponentProps> = ({ message, inne
     dispatch(setReplyMessage(messageId))
     // console.log('messageId', messageId)
     navigate('/post')
-    window.location.reload()
   }
 
   const handleReport = (messageId:number, senderId:number) => {
@@ -46,6 +45,7 @@ const InboxImageComponent: React.FC<InboxImageComponentProps> = ({ message, inne
     .then((res) => {
       console.log(res);
       alert('신고가 완료되었습니다.');
+      window.location.reload();
     })
     .catch((err) => {
       console.log(err);
