@@ -52,7 +52,7 @@ public class MemberApi implements MemberApiDocs {
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if ("Refresh".equals(cookie.getName())) {
-                    ResponseCookie expiredCookie = ResponseCookie.from(cookie.getName(), cookie.getValue())
+                    ResponseCookie expiredCookie = ResponseCookie.from(cookie.getName(), null)
                             .path("/")
                             .maxAge(0)
                             .secure(true)
