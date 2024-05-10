@@ -6,6 +6,7 @@ import com.ssafy.whoru.domain.board.dto.request.PatchInquiryCommentRequest;
 import com.ssafy.whoru.domain.board.dto.request.PatchNotificationRequest;
 import com.ssafy.whoru.domain.board.dto.request.PostInquiryCommentRequest;
 import com.ssafy.whoru.domain.board.dto.request.PostNotificationRequest;
+import com.ssafy.whoru.domain.board.dto.response.InquiryDetailResponse;
 import com.ssafy.whoru.domain.board.dto.response.InquiryRecordResponse;
 import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.global.common.dto.SliceResponse;
@@ -71,13 +72,13 @@ public class BoardAdminApi implements BoardAdminApiDocs{
      * @return
      */
     @GetMapping("/inquiry")
-    public ResponseEntity<WrapResponse<SliceResponse<InquiryRecordResponse>>> getTotalInquiry(@RequestParam("page") @Min(value = 0, message = "page는 최소 0이상이어야 합니다.") int page,
+    public ResponseEntity<WrapResponse<SliceResponse<InquiryDetailResponse>>> getTotalInquiry(@RequestParam("page") @Min(value = 0, message = "page는 최소 0이상이어야 합니다.") int page,
         @RequestParam(value = "size", required = false) @Min(value = 1, message = "size는 최소 1이상이어야 합니다.") @Max(value = 30, message = "size는 최대 30까지만 적용됩니다.") int size,
         @RequestParam("condition") @Min(value = 0, message = "조건값은 0 또는 1이어야 합니다.") @Max(value = 1, message = "조건값은 0 또는 1이어야 합니다.") int condition) {
 
         checkedAuth();
 
-        SliceResponse<InquiryRecordResponse> response = boardService.getTotalInquiry(page, size, condition);
+        SliceResponse<InquiryDetailResponse> response = boardService.getTotalInquiry(page, size, condition);
         return ResponseEntity.ok(WrapResponse.create(response, SuccessType.SIMPLE_STATUS));
     }
 

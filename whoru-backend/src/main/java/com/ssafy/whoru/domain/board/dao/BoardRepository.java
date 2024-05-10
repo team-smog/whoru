@@ -10,8 +10,8 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
 
-    @Query("SELECT b FROM Board b WHERE b.writer = :member")
-    public Slice<Board> findByMember(Member member, Pageable pageable);
+    @Query("SELECT b FROM Board b WHERE b.writer = :member AND b.boardType = :type")
+    public Slice<Board> findByMember(Member member, Pageable pageable, BoardType type);
 
     @Query("SELECT b FROM Board b WHERE b.boardType = :type")
     public Slice<Board> findAllByType(Pageable pageable, BoardType type);
