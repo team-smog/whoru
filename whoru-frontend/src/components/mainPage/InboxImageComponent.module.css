@@ -74,7 +74,6 @@
 .inboxImageComponentFooterButton {
   width: 100%;
   height: 100%;
-  background: #E08EDC;
   background: linear-gradient(0deg, #A2B4FE 0%, #FFC2FC 100%);
   border-right : 1.5px solid #423752;
   color: #ffffff;
@@ -87,6 +86,7 @@
   border-left: 1.5px solid #423752;
   color: #656565;
 }
+
 .InboxImageComponent {
   display: flex;
   flex-direction: column;
@@ -163,10 +163,18 @@
 .inboxImageComponentFooterButton {
   width: 100%;
   height: 100%;
-  background: #E08EDC;
   background: linear-gradient(0deg, #A2B4FE 0%, #FFC2FC 100%);
   border-right : 1.5px solid #423752;
   color: #ffffff;
+}
+
+.inboxImageComponentFooterButtonDisable {
+	width: 100%;
+	height: 100%;
+	/* background: linear-gradient(0deg, #a2b4fe 0%, #ffc2fc 100%); */
+	background: gray;
+	border-right: 1.5px solid #423752;
+	color: #656565;
 }
 
 .inboxImageComponentFooterReportButton {

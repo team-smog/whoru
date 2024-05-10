@@ -21,10 +21,14 @@ const InboxImageComponent: React.FC<InboxImageComponentProps> = ({ message, inne
   // const messageId = useSelector((state: any) => state.reply.messageId)
   const accessToken = localStorage.getItem('AccessToken')
 
+  const replyButtonStyle = message.responseStatus ?  {backgroundColor: 'gray'} : {}
+  const reportButtonStyle = message.isReported ? { backgroundColor: 'gray' } : {}
+
   const handleReply = (messageId: number) => {
     dispatch(setReplyMessage(messageId))
     // console.log('messageId', messageId)
     navigate('/post')
+    window.location.reload()
   }
 
   const handleReport = (messageId:number, senderId:number) => {
@@ -72,7 +76,7 @@ const InboxImageComponent: React.FC<InboxImageComponentProps> = ({ message, inne
     <div className={styles.InboxImageComponent} key={message.id} ref={innerRef} {...props}>
       <div className={styles.inboxImageComponentHeader} key={message.id} {...props}>
         <div className={styles.inboxImageComponentHeaderText}>
-          <p className={styles.inboxImageComponentHeaderTextTitle}>익명 메세지</p>
+          <p className={styles.inboxImageComponentHeaderTextTitle}>{message.responseStatus ? "답장 메세지" : "익명 메세지"}</p>
           <p className={styles.inboxImageComponentHeaderTime}>{timeFromNow}</p>
         </div>
         <div className={styles.inboxImageComponentHeaderIcons}>
@@ -89,8 +93,20 @@ const InboxImageComponent: React.FC<InboxImageComponentProps> = ({ message, inne
           />
       </div>
       <div className={styles.inboxImageComponentFooter}>
-        <button className={styles.inboxImageComponentFooterButton} onClick={() => handleReply(message.id)}>답장</button>
-        <button className={styles.inboxImageComponentFooterReportButton} onClick={() => handleReport(message.id, message.senderId)}>신고</button>
+        <button className={message.responseStatus ? styles.inboxImageComponentFooterButtonDisable : styles.inboxImageComponentFooterButton} 
+            onClick={() => handleReply(message.id)}
+            style={replyButtonStyle}
+            disabled={message.responseStatus}
+          >
+            답장
+          </button>
+          <button className={styles.inboxVoiceComponentFooterReportButton} 
+            onClick={() => handleReport(message.id, message.senderId)}
+            style={reportButtonStyle}
+            disabled={message.isReported}
+          >
+            신고
+        </button>
       </div>
     </div>
   )

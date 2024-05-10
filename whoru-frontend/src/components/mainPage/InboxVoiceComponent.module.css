@@ -87,10 +87,19 @@
 .inboxVoiceComponentFooterButton {
 	width: 100%;
 	height: 100%;
-	background: #e08edc;
 	background: linear-gradient(0deg, #a2b4fe 0%, #ffc2fc 100%);
+	/* background: #e08edc; */
 	border-right: 1.5px solid #423752;
 	color: #ffffff;
+}
+
+.inboxVoiceComponentFooterButtonDisable {
+	width: 100%;
+	height: 100%;
+	/* background: linear-gradient(0deg, #a2b4fe 0%, #ffc2fc 100%); */
+	background: gray;
+	border-right: 1.5px solid #423752;
+	color: #656565;
 }
 
 .inboxVoiceComponentFooterReportButton {
