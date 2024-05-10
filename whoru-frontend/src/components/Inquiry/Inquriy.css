@@ -1,0 +1,37 @@
+.transparent-input {
+  background-color: transparent;
+  color: #333; 
+  border: none; 
+  padding: 8px;
+  width: 100%;
+}
+
+.transparent-input:focus {
+  outline: none;
+  border-color: none;
+}
+
+.transparent-input::placeholder {
+  color: #aaa;
+}
+
+.textarea {
+  height: 300px;
+  resize: none;
+  overflow-y: auto;
+}
+
+.my-popup-style {
+  width: 400px;
+}
+
+.my-title-style {
+  color: black;
+  font-size: 20px;
+}
+
+.my-confirm-button, .my-deny-button {
+  background-color: blue;
+  color: white;
+  width: 100px;
+}
