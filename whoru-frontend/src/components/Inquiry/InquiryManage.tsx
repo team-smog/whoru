@@ -23,7 +23,7 @@ interface InquiryListProps {
 const InquiryManager = () => {
 	const [inquiries, setInquiries] = useState<Inquiry[]>([])
 	const [currentPage, setCurrentPage] = useState(0)
-	const [pageSize, setPageSize] = useState(9)
+	const [pageSize] = useState(9)
 	const [loading, setLoading] = useState(true)
 	const [isLastPage, setIsLastPage] = useState(false)
 	const navigate = useNavigate()
@@ -32,7 +32,7 @@ const InquiryManager = () => {
 		fetchInquiries()
 	}, [currentPage, pageSize])
 
-	const InquiryList: React.FC<InquiryListProps> = ({ inquiries, handleDetailPage }) => {
+	const InquiryList: React.FC<InquiryListProps> = ({ inquiries}) => {
 		return (
 			<div>
 				{inquiries.map((inquiry) => (
@@ -105,7 +105,7 @@ const InquiryManager = () => {
 
 	return (
 		<div className="pt-10">
-			{loading && <p>Loading...</p>}
+			{loading}
       <div className='flex justify-center'>
 			<button className='text-sm fixed bottom-32 flex justify-center bg-[#C4AFF1] w-4/5 h-10 rounded-lg items-center' onClick={goToCreatePage}>문의사항 작성하기</button>
       </div>

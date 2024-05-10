@@ -77,7 +77,7 @@ const AnnouncementInfo = () => {
 
 	return (
 		<div>
-			{loading && <p className='pl-5'>Loading...</p>}
+			{loading}
 			{announcements.map((announcement) => (
 				<div className="pl-5 pr-5" key={announcement.id} onClick={() => goToDetailPage(announcement.id, announcement)}>
 					<p className="text-sm">{announcement.subject}</p>
