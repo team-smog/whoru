@@ -16,11 +16,13 @@ const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage((payload) => {
     // 백그라운드 메세지 핸들러, 백그라운드 메세지는 Service-worker에서만 작동함!    
-    console.log('Received background message', payload);
-    const notificationTitle = 'Background Message Title'; // 메세지 제목
+    console.log('payload : ', payload)
+    // const notificationTitle = 'Background Message Title'; // 메세지 제목
+    const { content, title } = payload.data; 
     const notificationOptions = {
-        body: payload.body, // 매세지 내용
+        body: content, // 매세지 내용
         icon: '/firebase-logo.png' // 로고 이미지 들어가는곳
     };
-    self.registration.showNotification(notificationTitle, notificationOptions);
+    
+    self.registration.showNotification(title, notificationOptions);
 });

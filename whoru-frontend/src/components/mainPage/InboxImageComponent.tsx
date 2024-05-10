@@ -21,6 +21,9 @@ const InboxImageComponent: React.FC<InboxImageComponentProps> = ({ message, inne
   // const messageId = useSelector((state: any) => state.reply.messageId)
   const accessToken = localStorage.getItem('AccessToken')
 
+  const replyButtonStyle = message.responseStatus ?  {backgroundColor: 'gray'} : {}
+  const reportButtonStyle = message.isReported ? { backgroundColor: 'gray' } : {}
+
   const handleReply = (messageId: number) => {
     dispatch(setReplyMessage(messageId))
     // console.log('messageId', messageId)
@@ -28,24 +31,27 @@ const InboxImageComponent: React.FC<InboxImageComponentProps> = ({ message, inne
   }
 
   const handleReport = (messageId:number, senderId:number) => {
-    axios.post('http://k10d203.p.ssafy.io/api/report/member',
-    {
-      messageId: messageId,
-      senderId: senderId,
-    },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`
-    }}
-    )
-    .then((res) => {
-      console.log(res);
-      alert('신고가 완료되었습니다.');
-    })
-    .catch((err) => {
-      console.log(err);
-    })
+    if (confirm('정말로 신고하시겠습니까?')) {
+      axios.post('http://k10d203.p.ssafy.io/api/report/member',
+      {
+        messageId: messageId,
+        senderId: senderId,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`
+      }}
+      )
+      .then((res) => {
+        console.log(res);
+        alert('신고가 완료되었습니다.');
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+    } 
   }
 
   const createDate = new Date(message.createDate);
@@ -72,7 +78,7 @@ const InboxImageComponent: React.FC<InboxImageComponentProps> = ({ message, inne
     <div className={styles.InboxImageComponent} key={message.id} ref={innerRef} {...props}>
       <div className={styles.inboxImageComponentHeader} key={message.id} {...props}>
         <div className={styles.inboxImageComponentHeaderText}>
-          <p className={styles.inboxImageComponentHeaderTextTitle}>익명 메세지</p>
+          <p className={styles.inboxImageComponentHeaderTextTitle}>{message.isResponse ? "답장 메세지" : "익명 메세지"}</p>
           <p className={styles.inboxImageComponentHeaderTime}>{timeFromNow}</p>
         </div>
         <div className={styles.inboxImageComponentHeaderIcons}>
@@ -89,8 +95,20 @@ const InboxImageComponent: React.FC<InboxImageComponentProps> = ({ message, inne
           />
       </div>
       <div className={styles.inboxImageComponentFooter}>
-        <button className={styles.inboxImageComponentFooterButton} onClick={() => handleReply(message.id)}>답장</button>
-        <button className={styles.inboxImageComponentFooterReportButton} onClick={() => handleReport(message.id, message.senderId)}>신고</button>
+        <button className={message.responseStatus || message.isResponse ? styles.inboxImageComponentFooterButtonDisable : styles.inboxImageComponentFooterButton} 
+            onClick={() => handleReply(message.id)}
+            style={replyButtonStyle}
+            disabled={message.responseStatus || message.isResponse}
+          >
+            답장
+          </button>
+          <button className={styles.inboxVoiceComponentFooterReportButton} 
+            onClick={() => handleReport(message.id, message.senderId)}
+            style={reportButtonStyle}
+            disabled={message.isReported}
+          >
+            신고
+        </button>
       </div>
     </div>
   )

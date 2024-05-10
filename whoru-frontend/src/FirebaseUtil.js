@@ -20,20 +20,20 @@ const requestPermission = async () => {
 		console.log('알림받기가 꺼져있습니다.')
 		return ''
 	}
-
-	const token = await getToken(messaging, {
-		vapidKey: "BOJrA8KgnUI2pEEzLEfsVNjlEPB9vmvh_0Km-lsp714IRV9cgwgc5mi3ynx5uCBHzhbiPeMJ8v9_EH9oP_x_Emc"
-	})
-
-	if (token) {
-		console.log('token:', token)
-		// console.log(token)
-		// 토큰 잘 받아오는지 체크하는 console 나중에 꼭 지울것!!
-		return token
-	} else {
-		return ''
+	let token = ''
+	try{
+		token = await getToken(messaging, {
+			vapidKey: "BOJrA8KgnUI2pEEzLEfsVNjlEPB9vmvh_0Km-lsp714IRV9cgwgc5mi3ynx5uCBHzhbiPeMJ8v9_EH9oP_x_Emc"
+		})
+	} catch (err) {
+		token = await getToken(messaging, {
+			vapidKey: "BOJrA8KgnUI2pEEzLEfsVNjlEPB9vmvh_0Km-lsp714IRV9cgwgc5mi3ynx5uCBHzhbiPeMJ8v9_EH9oP_x_Emc"
+		})
 	}
+	return token
 }
+
+
 
 function getFirebaseMessagingObject() {
 	return messaging

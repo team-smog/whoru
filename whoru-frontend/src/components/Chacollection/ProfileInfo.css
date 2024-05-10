@@ -16,3 +16,7 @@
 .chacollection-profile-wrapper {
   margin-top: 60px;
 }
+
+.unavailable-icon {
+  background-color: rgba(128, 128, 128, 0.5);
+}

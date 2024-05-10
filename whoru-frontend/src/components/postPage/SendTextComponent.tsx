@@ -50,7 +50,7 @@ const SendTextComponent = ({ messageId }: { messageId: number | null}) => {
     try {
       if (messageId !== null) {
         await axios.post(
-          'https://k10d203.p.ssafy.io/api/message',
+          `https://k10d203.p.ssafy.io/api/message/${messageId}/text`,
           {
             // senderId: 'your-user-id', // 보내는 사람 userId
             content: text, // text 내용

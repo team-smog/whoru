@@ -3,7 +3,7 @@ pipeline {
     stages{
         stage('Front clone'){
             steps{
-                git branch: 'FE', credentialsId: 'GitLab-Last', url: 'https://lab.ssafy.com/s10-final/S10P31D203.git'
+                git branch: 'FE_develop', credentialsId: 'GitLab-Last', url: 'https://lab.ssafy.com/s10-final/S10P31D203.git'
             }
         }
 

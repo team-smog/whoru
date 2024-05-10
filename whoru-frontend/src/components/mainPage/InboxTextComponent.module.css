@@ -1,114 +1,129 @@
 .inboxTextComponent {
-    display: flex;
-    flex-direction: column;
-    /* justify-content: center; */
-    align-items: center;
-    width: 95%;
-    min-height: 110px;
-    background: #ffffff;
-    border: 3px solid #423752;
-    border-radius: 10px;
-    overflow: hidden;
-    margin: 4px auto;
+	display: flex;
+	flex-direction: column;
+	/* justify-content: center; */
+	align-items: center;
+	width: 95%;
+	min-height: 110px;
+	background: #ffffff;
+	border: 3px solid #423752;
+	border-radius: 10px;
+	overflow: hidden;
+	margin: 4px auto;
 }
 
 .inboxTextComponentHeader {
-    width: 100%;
-    height: 30px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    background: #D78DDD;
-    border-bottom: 3px solid #423752;
+	width: 100%;
+	height: 30px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	background: #d78ddd;
+	border-bottom: 3px solid #423752;
 }
 
 .inboxTextComponentHeaderText {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
 }
 
 .inboxTextComponentHeaderTextTitle {
-  font-size: 12px;
-  margin: auto 12px;
-  font-weight: bold;
-  color: #ffffff;
+	font-size: 12px;
+	margin: auto 12px;
+	font-weight: bold;
+	color: #ffffff;
 }
 
 .inboxTextComponentHeaderTime {
-  font-size: 10px;
-  color: #ffffff;
+	font-size: 10px;
+	color: #ffffff;
 }
 
 .inboxTextComponentHeaderIcons {
-    display: flex;
-    flex-direction: row;
-    margin: auto 12px;
+	display: flex;
+	flex-direction: row;
+	margin: auto 12px;
 }
 
 .inboxTextComponentHeaderIcons img {
-    width: 18px;
-    height: 18px;
-    margin: 0 2.5px;
+	width: 18px;
+	height: 18px;
+	margin: 0 2.5px;
 }
 
 .inboxTextComponentBody {
-  width: 100%;
-  min-height: 100px;
-  background: #ffffff;
-  padding: 4px;
+	width: 100%;
+	min-height: 100px;
+	background: #ffffff;
+	padding: 4px;
 }
 
 .inboxTextComponentBodyMain {
-  width: 100%;
-  min-height: 88px;
-  border: 3px solid #423752;
-  border-radius: 10px;
-  font-size: 12px;
-  background: #E08EDC;
-  background: linear-gradient(0deg, #E08EDC 0%, #AFA4F4 100%);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+	width: 100%;
+	min-height: 88px;
+	border: 3px solid #423752;
+	border-radius: 10px;
+	font-size: 12px;
+	background: #e08edc;
+	background: linear-gradient(0deg, #e08edc 0%, #afa4f4 100%);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 
 .inboxTextComponentBodyMainText {
-  margin: 12px;
-  font-size: 16px;
-  color: #ffffff;
+	margin: 12px;
+	font-size: 16px;
+	color: #ffffff;
 }
 
 .inboxTextComponentFooter {
-  width: 100%;
-  height: 30px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  margin-bottom: 8px;
+	width: 100%;
+	height: 30px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	margin-bottom: 8px;
 }
 
 .inboxTextComponentFooterButton {
-  width: 56px;
-  height: 24px;
-  font-size: 10px;
-  margin: auto 12px;
-  border: 3px solid #423752;
-  border-radius: 6px;
-  padding: 2px 4px;
-  background: #E08EDC;
-  background: linear-gradient(165deg, #FFC2FC 0%, #9786FF 100%);
-  color: #ffffff;
+	width: 56px;
+	height: 24px;
+	font-size: 10px;
+	margin: auto 12px;
+	border: 3px solid #423752;
+	border-radius: 6px;
+	padding: 2px 4px;
+	background: #e08edc;
+	background: linear-gradient(165deg, #ffc2fc 0%, #9786ff 100%);
+	color: #ffffff;
 }
 
 .inboxTextComponentFooterReportButton {
-  width: 56px;
-  height: 24px;
-  font-size: 10px;
-  margin: auto 12px;
-  border: 3px solid #423752;
-  border-radius: 6px;
-  padding: 2px 4px;
-  background: #E2E0FF;
-  color: #656565;
+	width: 56px;
+	height: 24px;
+	font-size: 10px;
+	margin: auto 12px;
+	border: 3px solid #423752;
+	border-radius: 6px;
+	padding: 2px 4px;
+	background: #e2e0ff;
+	color: #656565;
+}
+
+.inboxTextComponentFooterButtonDisable {
+	width: 56px;
+	height: 24px;
+	font-size: 10px;
+	margin: auto 12px;
+	border: 3px solid #423752;
+	border-radius: 6px;
+	padding: 2px 4px;
+	background: gray;
+	color: #656565;
+}
+.replyDisables {
+	color: #9d9d9d;
 }

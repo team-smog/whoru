@@ -19,6 +19,7 @@ import axios from 'axios'
 interface InboxVoiceComponentProps extends React.HTMLAttributes<HTMLDivElement>{
   message: MessageInfoDetail;
   innerRef?: React.Ref<HTMLDivElement>;
+  
 }
 
 const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, innerRef, ...props }) => {
@@ -27,6 +28,10 @@ const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, inne
   const accessToken = localStorage.getItem('AccessToken')
   // const messageId = useSelector((state: any) => state.messageId)
 
+  const replyButtonStyle = message.responseStatus ?  {backgroundColor: 'gray'} : {}
+  const reportButtonStyle = message.isReported ? { backgroundColor: 'gray' } : {}
+
+
   const handleReply = (messageId: number) => {
     dispatch(setReplyMessage(messageId))
     console.log('messageId', messageId)
@@ -34,24 +39,27 @@ const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, inne
   }
 
   const handleReport = (messageId:number, senderId:number) => {
-    axios.post('https://k10d203.p.ssafy.io/api/report/member',
-    {
-      messageId: messageId,
-      senderId: senderId,
-    },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`
-    }}
-    )
-    .then((res) => {
-      console.log(res);
-      alert('신고가 완료되었습니다.');
-    })
-    .catch((err) => {
-      console.log(err);
-    })
+    if (confirm('정말로 신고하시겠습니까?')) {
+      axios.post('http://k10d203.p.ssafy.io/api/report/member',
+      {
+        messageId: messageId,
+        senderId: senderId,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`
+      }}
+      )
+      .then((res) => {
+        console.log(res);
+        alert('신고가 완료되었습니다.');
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+    } 
   }
 
   const createDate = new Date(message.createDate);
@@ -79,7 +87,7 @@ const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, inne
       {/* <img src={Header} alt="component-Header" className={styles.inboxVoiceComponentHeader} /> */}
       <div className={styles.inboxVoiceComponentHeader} key={message.id} {...props}>
         <div className={styles.inboxVoiceComponentHeaderText}>
-          <p className={styles.inboxVoiceComponentHeaderTextTitle}>익명 메세지</p>
+          <p className={styles.inboxVoiceComponentHeaderTextTitle}>{message.isResponse ? "답장 메세지" : "익명 메세지"}</p>
           <p className={styles.inboxVoiceComponentHeaderTime}>{timeFromNow}</p>
         </div>
         <div className={styles.inboxVoiceComponentHeaderIcons}>
@@ -105,8 +113,20 @@ const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, inne
           />
         </div>
         <div className={styles.inboxVoiceComponentFooter}>
-          <button className={styles.inboxVoiceComponentFooterButton} onClick={() => handleReply(message.id)}>답장</button>
-          <button className={styles.inboxVoiceComponentFooterReportButton} onClick={() => handleReport(message.id, message.senderId)}>신고</button>
+          <button className={message.responseStatus || message.isResponse ? styles.inboxVoiceComponentFooterButtonDisable : styles.inboxVoiceComponentFooterButton} 
+            onClick={() => handleReply(message.id)}
+            style={replyButtonStyle}
+            disabled={message.responseStatus || message.isResponse}
+          >
+            답장
+          </button>
+          <button className={styles.inboxVoiceComponentFooterReportButton} 
+            onClick={() => handleReport(message.id, message.senderId)}
+            style={reportButtonStyle}
+            disabled={message.isReported}
+          >
+            신고
+        </button>
       </div>
       </div>
     </div>
