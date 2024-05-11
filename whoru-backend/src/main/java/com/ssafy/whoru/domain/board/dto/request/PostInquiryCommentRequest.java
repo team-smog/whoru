@@ -9,7 +9,5 @@ public class PostInquiryCommentRequest {
 
     private Long boardId;
 
-    private Long commenterId;
-
     private String content;
 }

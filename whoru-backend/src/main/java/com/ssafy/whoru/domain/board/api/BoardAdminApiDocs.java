@@ -37,7 +37,7 @@ public interface BoardAdminApiDocs {
     @Parameter(content = @Content(schema = @Schema(implementation = PostInquiryCommentRequest.class)))
     @ApiResponse(responseCode = "201")
     @PostMapping("/comment")
-    public ResponseEntity<WrapResponse<Void>> postComment(@RequestBody PostInquiryCommentRequest request);
+    public ResponseEntity<WrapResponse<Void>> postComment(@AuthenticationPrincipal CustomOAuth2User admin, @RequestBody PostInquiryCommentRequest request);
 
     @Operation(summary = "문의사항 조회 요청", description = "관리자는 전체 문의사항을 작성할 수 있다.")
     @Parameters( value = {

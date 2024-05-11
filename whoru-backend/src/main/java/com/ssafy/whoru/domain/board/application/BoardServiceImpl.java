@@ -141,10 +141,10 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     @Transactional
-    public void postComment(PostInquiryCommentRequest request) {
+    public void postComment(Long adminId, PostInquiryCommentRequest request) {
 
         // 관리자 조회
-        Member member = crossMemberService.findByIdToEntity(request.getCommenterId());
+        Member member = crossMemberService.findByIdToEntity(adminId);
 
         // 게시글 조회
         Optional<Board> board = Optional.of(boardRepository.findById(request.getBoardId())
