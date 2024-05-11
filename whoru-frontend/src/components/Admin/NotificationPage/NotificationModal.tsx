@@ -3,9 +3,9 @@ import { useNotificationEdit } from '@/hooks/Admin/useAdmin'
 import { useState } from 'react'
 
 const NotificationModal = ({ boardId, onClose }: { boardId: number | null; onClose: () => void }) => {
-	const [subject, setSubject] = useState<string>('')
-	const [content, setContent] = useState<string>('')
-	const { mutate } = useNotificationEdit()
+	const [subject, setSubject] = useState<string>('');
+	const [content, setContent] = useState<string>('');
+	const { mutate } = useNotificationEdit();
 
 	// console.log(subject)
 	// console.log(content)

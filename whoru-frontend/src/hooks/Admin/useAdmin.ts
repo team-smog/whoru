@@ -1,7 +1,9 @@
-import { getInquiryReq, getNotificationReq, patchNotificationReq, postNotificationReq } from '@/service/Admin/api'
+import { getInquiryReq, getNotificationReq, patchNotificationReq, postInquiryCommentReq, postNotificationReq } from '@/service/Admin/api'
 import { IInquiry } from '@/types/Admin'
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
+
+// 조회
 export const useInquiryDetail = (page: number, size: number, condition: number) => {
 	return useQuery<IInquiry, Error>({
 		queryKey: ['IInquiryRes', page, size, condition],
@@ -23,11 +25,10 @@ export const useNotificationDetail = () => {
 		},
 	})
 }
-// queryKey: ['INotificationRes', props],
-//     queryFn: ({ pageParam }) => getNotificationReq(page, size = 10), initialPageParam: 0,
 
+// 작성
 export const useNotificationCreate = () => {
-	const queryClient = useQueryClient()
+	const queryClient = useQueryClient();
 
 	return useMutation({
 		mutationKey: ['subject, content'],
@@ -39,6 +40,18 @@ export const useNotificationCreate = () => {
 	})
 }
 
+export const useInquiryCreate = () => {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: ({boardId, commenterId, content} : {boardId: number, commenterId: number, content: string}) => postInquiryCommentReq({boardId, commenterId, content}),
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ['IInquiryRes']})
+		}
+	})
+}
+
+// 수정
 export const useNotificationEdit = () => {
 	const queryClient = useQueryClient()
 	return useMutation({

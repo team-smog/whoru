@@ -2,7 +2,7 @@ import { useState } from 'react'
 import NotificationCreateModal from './NotificationCreateModal'
 import { useIntersectionObserver } from '@/hooks/useIntersectionObserver'
 import { useNotificationDetail } from '@/hooks/Admin/useAdmin'
-import NotificationItem from './NotificationItem'
+import NotificationItem from './NotificationItems'
 
 const Notification = () => {
 	const [isNotificationCreateModalOpen, setIsNotificationCreateModalOpen] = useState<boolean>(false)
