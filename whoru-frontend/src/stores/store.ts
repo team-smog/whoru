@@ -81,7 +81,6 @@ const store = configureStore({
     reply: replyReducer,
     message: messageReducer,
     boxCounter: boxCounterReducer,
-
   }
 });
 

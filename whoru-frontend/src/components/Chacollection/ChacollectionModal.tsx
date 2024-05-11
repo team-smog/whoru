@@ -4,6 +4,8 @@ import Confetti from 'react-confetti'
 import OpenImage from '@/assets/@common/Randomopenbox.png'
 import Cancel from '@/assets/@common/Cancel.png'
 import './Modal.css'
+import { setBoxCountM } from '@/stores/store'
+import { useDispatch, useSelector } from 'react-redux'
 
 interface Icon {
 	id: string
@@ -17,10 +19,12 @@ interface ChacollectionModalProps {
 }
 
 const ChacollectionModal: React.FC<ChacollectionModalProps> = ({ onAction }) => {
+	const dispatch = useDispatch()
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const [imageSrc, setImageSrc] = useState(OpenImage)
 	const [drawnImages] = useState<Icon[]>([])
-	const [remainingChances, setRemainingChances] = useState(3)
+	// const [remainingChances, setRemainingChances] = useState(3)
+	const boxCount = useSelector((state: any) => state.boxCount)
 	const [isAnimating, setIsAnimating] = useState(false)
 	const [showConfetti, setShowConfetti] = useState(false)
 	const [isShaking, setIsShaking] = useState(false)
@@ -72,8 +76,9 @@ const ChacollectionModal: React.FC<ChacollectionModalProps> = ({ onAction }) => 
 	}
 
 	const handleImageClick = () => {
-		if (remainingChances > 0) {
-			setRemainingChances((prevChances) => prevChances - 1)
+		if (boxCount > 0) {
+			// setRemainingChances((prevChances) => prevChances - 1)
+			dispatch(setBoxCountM())
 			setImageSrc(OpenImage) // Reset to box image each time before shaking
 			fetchUserIcons()
 			applyAnimation()
@@ -115,12 +120,12 @@ const ChacollectionModal: React.FC<ChacollectionModalProps> = ({ onAction }) => 
 							/>
 						)}
 						<p className="flex justify-center pt-2 text-sm">
-							남은 기회 : {remainingChances > 0 ? remainingChances : 0}회
+							남은 기회 : {boxCount > 0 ? boxCount : 0}회
 						</p>
 						<div
 							className="modalbutton"
 							onClick={handleImageClick}
-							style={{ cursor: remainingChances > 0 ? 'pointer' : 'not-allowed' }}
+							style={{ cursor: boxCount > 0 ? 'pointer' : 'not-allowed' }}
 						>
 							캐릭터 뽑기
 						</div>
