@@ -8,6 +8,7 @@ import com.ssafy.whoru.domain.board.dto.request.PostNotificationRequest;
 import com.ssafy.whoru.domain.board.dto.response.InquiryDetailResponse;
 import com.ssafy.whoru.domain.board.dto.response.InquiryRecordResponse;
 import com.ssafy.whoru.domain.board.dto.response.NotificationResponse;
+import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.global.common.dto.SliceResponse;
 import com.ssafy.whoru.global.common.dto.response.ResponseWithSuccess;
 
@@ -19,7 +20,7 @@ public interface BoardService {
 
     public SliceResponse<InquiryDetailResponse> getTotalInquiry(int page, int size, int condition);
 
-    public void postComment(PostInquiryCommentRequest request);
+    public void postComment(Long adminId, PostInquiryCommentRequest request);
 
     public void deleteInquiryBoard(Long memberId, Long boardId);
 

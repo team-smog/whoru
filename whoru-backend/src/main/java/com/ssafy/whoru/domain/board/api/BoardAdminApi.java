@@ -55,12 +55,12 @@ public class BoardAdminApi implements BoardAdminApiDocs{
      * 관리자 문의사항 답글 API
      * **/
     @PostMapping("/comment")
-    public ResponseEntity<WrapResponse<Void>> postComment(@RequestBody PostInquiryCommentRequest request) {
+    public ResponseEntity<WrapResponse<Void>> postComment(@AuthenticationPrincipal CustomOAuth2User admin, @RequestBody PostInquiryCommentRequest request) {
 
 
         checkedAuth();
 
-        boardService.postComment(request);
+        boardService.postComment(admin.getId(), request);
         return ResponseEntity.ok(WrapResponse.create(SuccessType.STATUS_201));
     }
 

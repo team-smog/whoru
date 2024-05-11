@@ -49,7 +49,6 @@ public class AdminApiTest extends TestPrepare {
          * 문의사항 답글 작성 API 호출
          * **/
         PostInquiryCommentRequest request = PostInquiryCommentRequest.builder()
-            .commenterId(admin.getId())
             .boardId(board.getId())
             .content("문의사항에 대한 테스트 답글입니다.")
             .build();
