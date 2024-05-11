@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import Header, { IHeaderInfo } from '@/components/@common/Header'
-import Bell from '@/assets/@common/Bell.png'
 import NavigationBar from '@/components/@common/NavigationBar'
 import { useParams, useLocation, useNavigate } from 'react-router-dom'
 import { format } from 'date-fns'
@@ -29,7 +28,7 @@ function InquiryDetail() {
 		left_1: null,
 		left_2: <img src={Backspace} alt="" />,
 		center: '문의사항',
-		right: <img src={Bell} alt="Alarm" />,
+		right: null,
 	}
 
 	let { id } = useParams()

@@ -3,7 +3,6 @@ import Swal from 'sweetalert2'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import Header, { IHeaderInfo } from '@/components/@common/Header'
-import Bell from '@/assets/@common/Bell.png'
 import NavigationBar from '@/components/@common/NavigationBar'
 import Backspace from '@/assets/@common/Backspace.png'
 import './Inquriy.css'
@@ -13,7 +12,7 @@ const CreateInquiry = () => {
     left_1: null,
 		left_2: <img src={Backspace} alt=""/>,
 		center: '문의사항',
-		right: <img src={Bell} alt="Alarm" />,
+		right: null,
 	}
 
 	const [subject, setSubject] = useState<string>('')

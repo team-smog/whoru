@@ -8,8 +8,12 @@ const NotificationItem = ({ data }: { data: INotificationRes }) => {
 	const [isNotificationModalOpen, setIsNotificationModalOpen] = useState<boolean>(false)
 
 	const isOpenAccordion = (id: number) => {
-		setOpenId((prev) => (prev === id ? null : id))
-	}
+    if (openId === id) {
+      setOpenId(null);
+    } else {
+      setOpenId(id);
+    }
+  };
 
 	const handleModalOpen = (id: number) => {
 		setBoardId(id)
@@ -19,9 +23,9 @@ const NotificationItem = ({ data }: { data: INotificationRes }) => {
 
 	return (
 		<>
-			<div className="px-8 py-3" onClick={() => isOpenAccordion(data.id)}>
+			<div className={`{ mx-4 px-4 py-3 ${openId === data.id ? null : 'mx-4 px-4 py-3 border-b-[0.5px] border-gray-200' }}`} onClick={() => isOpenAccordion(data.id)}>
 				<div className="text-[14px] text-text_color">{data.subject}</div>
-				<div className="text-[12px] text-gray-400 pl-1">{data.createDate}</div>
+				<div className="text-[12px] text-gray-400">{data.createDate}</div>
 			</div>
 			{openId === data.id && (
 				<div className="mx-8 py-3 text-text_color border rounded-[10px] min-h-[250px] relative">

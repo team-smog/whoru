@@ -40,20 +40,25 @@ const Inquiry = ({ data }: { data: InquiryInfo[] }) => {
       <div className="w-full max-w-[500px]">
         {currentData.map((inquiry) => (
           <div key={inquiry.id}>
-            <div className="px-8 py-3" onClick={() => isOpenAccordion(inquiry.id)}>
+            <div className={`{ mx-4 px-4 py-3 ${openId === inquiry.id ? null : 'mx-4 px-4 py-3 border-b-[0.5px] border-gray-200' }}`} onClick={() => isOpenAccordion(inquiry.id)}>
               <div className="text-[14px] text-text_color">{inquiry.subject}</div>
               <div className="text-[12px] text-gray-400 pl-1">{inquiry.createDate}</div>
             </div>
             {openId === inquiry.id && (
-              <div className="mx-8 py-3 text-text_color border rounded-[10px]">
+              <div className="mx-8 py-3 text-text_color border rounded-[10px] min-h-[250px] relative">
                 <div className="flex px-4">
                   <div className="text-text_color text-[12px]">작성자 </div>
                   <div className="flex items-end text-gray-400 text-[10px] pl-2"> {inquiry.writerName}</div>
                 </div>
                 <div className="border-b-[0.5px] my-2 mx-2"></div>
                 <div className="text-text_color px-4 text-[12px]">{inquiry.content}</div>
-                <div className="flex items-center justify-center h-8 mt-8 mx-4 bg-gray-200 text-[14px] text-text_color rounded-[10px]" onClick={handleOpenModal}>
-                  <div>답글 작성하기</div>
+                <div className="absolute bottom-3 w-full flex justify-center max-w-[500px] m-auto px-4" >
+                  <button
+                    className="justify-center w-[300px] flex items-center h-8 bg-gray-200 text-[14px] rounded-[10px] text-text_color"
+                    onClick={handleOpenModal}
+                  >
+                    답글 작성하기
+                  </button>
                 </div>
               </div>
             )}
