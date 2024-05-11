@@ -53,6 +53,7 @@ public class MemberApi implements MemberApiDocs {
         log.info("service end");
         if (cookies != null) {
             for (Cookie cookie : cookies) {
+                log.info(cookie.getName());
                 if ("Refresh".equals(cookie.getName())) {
                     log.info("동일한 Refresh 쿠키 발견");
                     ResponseCookie expiredCookie = ResponseCookie.from(cookie.getName(), null)
