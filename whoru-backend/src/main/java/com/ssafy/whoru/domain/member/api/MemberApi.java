@@ -47,14 +47,15 @@ public class MemberApi implements MemberApiDocs {
 
     @GetMapping("/logout")
     public ResponseEntity<WrapResponse<Void>> logout(@AuthenticationPrincipal CustomOAuth2User member, @RequestParam String fcmToken, HttpServletRequest request, HttpServletResponse response) {
+        log.info("controller start");
         memberService.logout(member.getId(), fcmToken);
         Cookie[] cookies = request.getCookies();
+        log.info("service end");
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if ("Refresh".equals(cookie.getName())) {
                     ResponseCookie expiredCookie = ResponseCookie.from(cookie.getName(), null)
                             .path("/")
-                            .domain("k10d203.p.ssafy.io")
                             .maxAge(0)
                             .secure(true)
                             .sameSite("None")

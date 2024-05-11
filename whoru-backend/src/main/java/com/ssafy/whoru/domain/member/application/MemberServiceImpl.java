@@ -73,7 +73,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void logout(Long memberId, String fcmToken) {
+        log.info("fcm before");
         crossFcmService.markingUnusedToken(memberId, fcmToken);
+        log.info("fcm after");
         redisUtil.delete(RedisKeyType.REFRESHTOKEN.makeKey(memberId.toString()));
     }
 
