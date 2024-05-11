@@ -37,7 +37,7 @@ const Report = ({ data }: { data: ReportInfo[] }) => {
       </div>
       <div>
         {filteredData.map((item) => (
-          <div key={item.id} className="p-2 mx-4 border-b border-gray-200" onClick={() => handleReportClick(item)}>
+          <div key={item.id} className="p-2 mx-4 border-b-[0.5px] border-gray-200" onClick={() => handleReportClick(item)}>
             <p className='text-text_color text-[14px]'>[{item.report_type}] 신고사항 {item.message_id}</p>
             <p className='text-[12px] text-gray-400'>{item.report_date}</p>
           </div>

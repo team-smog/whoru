@@ -2,6 +2,7 @@ import { axiosAuthInstance } from '@/apis/axiosInstance'
 import { IInquiry, INotification } from '@/types/Admin'
 import { APIResponse } from '@/types/model'
 
+// 조회
 export const getInquiryReq = async (page: number, size: number, condition: number): Promise<IInquiry> => {
 	const res = await axiosAuthInstance.get(`/admin/board/inquiry`, {
 		params: { page, size, condition },
@@ -20,6 +21,7 @@ export const getNotificationReq = async (page: number, size: number): Promise<IN
 	return res.data.data
 }
 
+// 작성
 export const postNotificationReq = async (formData: {
 	subject: string
 	content: string
@@ -33,6 +35,18 @@ export const postNotificationReq = async (formData: {
 	return res.data
 }
 
+export const postInquiryCommentReq = async ( {boardId, commenterId, content} : {boardId:number, commenterId:number; content:string;}): Promise<APIResponse<string>> => {
+	const res = await axiosAuthInstance.post(`/admin/board/comment`, {boardId, commenterId, content}, {
+		headers: {
+			'Content-Type' : 'application/json',
+		},
+	})
+	console.log(res.data)
+	return res.data;
+}
+
+
+// 수정
 export const patchNotificationReq = async ({
 	boardId,
 	formData,
@@ -49,3 +63,4 @@ export const patchNotificationReq = async ({
 	console.log(res.data)
 	return res.data
 }
+

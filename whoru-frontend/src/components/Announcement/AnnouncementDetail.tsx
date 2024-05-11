@@ -1,5 +1,4 @@
 import Header, { IHeaderInfo } from '@/components/@common/Header'
-import Bell from '@/assets/@common/Bell.png'
 import NavigationBar from '@/components/@common/NavigationBar'
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
@@ -25,7 +24,7 @@ const AnnouncementDetail = () => {
 		left_1: null,
 		left_2: <img src={Backspace} alt=""/>,
 		center: '공지사항',
-		right: <img src={Bell} alt="Alarm" />,
+		right: null,
 	}
 	const [announcement, setAnnouncement] = useState<Announcement | null>(null)
 	const [loading, setLoading] = useState<boolean>(true)
