@@ -17,6 +17,7 @@ export const useNotificationDetail = () => {
 		queryFn: ({ pageParam }) => getNotificationReq(pageParam, 10),
 		initialPageParam: 0,
 		getNextPageParam: (lastPage, allPages) => {
+			if (!lastPage || lastPage.last === undefined) return undefined;
 			const nextPage = allPages.length
 			// 마지막 페이지면
 			if (lastPage.last) return

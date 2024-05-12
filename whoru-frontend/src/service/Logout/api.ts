@@ -7,6 +7,7 @@ export const logoutApi = async () => {
 		headers: {
 			Authorization: `Bearer ${accesstoken}`,
 		},
+		withCredentials: true
 	})
 	console.log(res.data);
 
