@@ -14,7 +14,13 @@ export interface IInquiryRes {
   boardType: string;
   createDate: string;
   updateDate: string;
-  isCommented: boolean;
+  comment: {
+    id: number;
+    commenterName:string;
+    content: string;
+    createDate: string;
+    updateDate: string;
+  };
 }
 
 export interface INotification {
