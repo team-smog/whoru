@@ -1,4 +1,4 @@
-import { getInquiryReq, getNotificationReq, patchNotificationReq, postInquiryCommentReq, postNotificationReq } from '@/service/Admin/api'
+import { getInquiryReq, getNotificationReq, patchInquiryReq, patchNotificationReq, postInquiryCommentReq, postNotificationReq } from '@/service/Admin/api'
 import { IInquiry } from '@/types/Admin'
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
@@ -54,13 +54,24 @@ export const useInquiryCreate = () => {
 
 // 수정
 export const useNotificationEdit = () => {
-	const queryClient = useQueryClient()
+	const queryClient = useQueryClient();
 	return useMutation({
 		mutationFn: ({ boardId, formData }: { boardId: number; formData: { subject: string; content: string } }) =>
 			patchNotificationReq({ boardId, formData }),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['INotificationRes'] })
 			
+		},
+	})
+}
+
+export const useInquiryEdit = () => {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: ({commentId, content} : {commentId:number; content:string}) => patchInquiryReq(commentId, content),
+		onSuccess: () => {
+			queryClient.invalidateQueries({queryKey: ['IInquiryRes']})
 		},
 	})
 }
