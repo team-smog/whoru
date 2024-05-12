@@ -2,21 +2,19 @@ import Header, { IHeaderInfo } from '@/components/@common/Header'
 import InquiryPage from '@/components/Admin/InquiryPage/Inquiry'
 import NotificationPage from '@/components/Admin/NotificationPage/Notification'
 import ReportPage from '@/components/Admin/ReportPage/Report'
-import { useInquiryDetail } from '@/hooks/Admin/useAdmin'
-import { IInquiryRes } from '@/types/Admin'
+
 import { useEffect, useState } from 'react'
 
-export type InquiryInfo = IInquiryRes 
-// {
-// 	id: number
-// 	subject: string
-// 	writerName: string
-// 	createDate: string
-// 	updateDate: string
-// 	content: string
-// 	boardType: string
-// 	isCommented: boolean
-// }
+export type InquiryInfo = {
+	id: number
+	subject: string
+	writerName: string
+	createDate: string
+	updateDate: string
+	content: string
+	boardType: string
+	isCommented: boolean
+}
 
 export type NotificationInfo = {
 	id: number
@@ -44,9 +42,6 @@ export type AdminData = {
 
 const AdminPage = () => {
 	const [selectedTab, setSelectedTab] = useState<string>('Notification');
-	const [page] = useState<number>(0);
-	const [size] = useState<number>(10);
-	const { data: inquiryData } = useInquiryDetail(page, size, 0);
 
 	useEffect(() => {
 		console.log(selectedTab);
@@ -125,7 +120,7 @@ const AdminPage = () => {
 				</div>
 				<div className="py-4">
 					{selectedTab === 'Notification' && <NotificationPage />}
-					{selectedTab === 'Inquiry' && inquiryData && <InquiryPage data={inquiryData.content} />}
+					{selectedTab === 'Inquiry' && <InquiryPage />}
 					{selectedTab === 'Report' && <ReportPage data={dummies.report_info} />}
 				</div>
 			</div>
