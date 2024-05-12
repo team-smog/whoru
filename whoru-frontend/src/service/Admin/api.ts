@@ -64,3 +64,12 @@ export const patchNotificationReq = async ({
 	return res.data
 }
 
+export const patchInquiryReq = async (commentId:number, content:string):Promise<APIResponse<string>> => {
+	const res = await axiosAuthInstance.patch(`admin/board/${commentId}`, JSON.stringify(content), {
+		headers: {
+			'Content-Type' : 'application/json'
+		}
+	})
+	console.log(res.data)
+	return res.data
+}

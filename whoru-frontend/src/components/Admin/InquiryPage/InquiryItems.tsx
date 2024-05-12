@@ -1,8 +1,10 @@
 import { IInquiryRes } from '@/types/Admin'
 import { useState } from 'react'
+import InquiryEditModal from './InquiryEditModal';
 
 const InquiryItems = ({ data }: { data: IInquiryRes }) => {
 	const [openId, setOpenId] = useState<number | null>(null);
+	const [isInquiryEditModalOpen, setIsInquiryEditModalOpen] = useState<boolean>(false)
 
 	const isOpenAccordion = (id: number) => {
 		if (openId === id) {
@@ -10,6 +12,10 @@ const InquiryItems = ({ data }: { data: IInquiryRes }) => {
 		} else {
 			setOpenId(id)
 		}
+	}
+
+	const handleOpenModal = () => {
+		setIsInquiryEditModalOpen(true)
 	}
 
 	return (
@@ -43,14 +49,15 @@ const InquiryItems = ({ data }: { data: IInquiryRes }) => {
           <div className='text-[10px] text-gray-400 pl-4'>{data.comment.updateDate}</div>
 					<div className="border-b-[0.5px] my-2 mx-2"></div>
 					<div className="text-text_color px-4 text-[12px]">{data.comment.content}</div>
-					<div className="absolute bottom-3 w-full flex justify-center max-w-[500px] m-auto px-4">
-            <div className="justify-center w-full flex items-center h-8 bg-gray-200 text-[14px] rounded-[10px] text-text_color">
+					<div className="absolute bottom-3 w-full flex justify-center max-w-[500px] m-auto px-4" onClick={handleOpenModal}>
+            <button className="justify-center w-full flex items-center h-8 bg-gray-200 text-[14px] rounded-[10px] text-text_color">
               수정하기
-            </div>
+            </button>
           </div>
 				</div>
 			)}
 			<div className="w-full max-w-[500px] border h-1 bg-gray-200 mt-4"></div>
+			{isInquiryEditModalOpen && (<InquiryEditModal commentId={data.comment.id} onClose={() => setIsInquiryEditModalOpen(false)} />)}
 		</>
 	)
 }
