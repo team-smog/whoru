@@ -60,3 +60,18 @@ export interface IReportRes {
   reportId: number;
   reportType: string;
 }
+
+export interface IReportDetail {
+  id: number;
+  senderId: number;
+  receiverId: number;
+  content: string;
+  contentType: string;
+  readStatus: boolean;
+  isResponse: boolean;
+  parentId: number;
+  isReported: boolean;
+  responseStatus: boolean;
+  createDate: string;
+  readDate: string;
+}
