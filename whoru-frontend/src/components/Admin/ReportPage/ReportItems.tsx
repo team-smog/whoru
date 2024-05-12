@@ -3,13 +3,15 @@ import ReportModal from '@/components/Admin/ReportPage/ReportModal'
 import { useState } from 'react'
 
 const ReportItems = ({ data }: { data: IReportRes }) => {
-	const [isReportModalOpen, setIsReportModalOpen] = useState<boolean>(false)
-	const [reportId, setReportId] = useState<number | null>(null)
+	const [isReportModalOpen, setIsReportModalOpen] = useState<boolean>(false);
+	const [messageId, setMessageId] = useState<number | null>(null);
+	const [reportId, setReportId] = useState<number|null>(null);
 
 	const handleOpenModal = (id: number) => {
-		//   // 신고내역 클릭 시 데이터 넘기기 위해
+		// 신고내역 클릭 시 데이터 넘기기 위해
 		setIsReportModalOpen(true)
-		setReportId(id)
+		setMessageId(id)
+		setReportId(data.reportId)
 	}
 
 	return (
@@ -23,7 +25,7 @@ const ReportItems = ({ data }: { data: IReportRes }) => {
 				<div className="text-text_color text-[14px]">[{data.reportType}] 신고사항</div>
 				<div className="text-gray-400 text-[12px]">{data.reportDate}</div>
 			</div>
-			{isReportModalOpen && <ReportModal reportId={reportId} onClose={() => setIsReportModalOpen(false)} />}
+			{isReportModalOpen && <ReportModal messageId={messageId} reportId={reportId} onClose={() => setIsReportModalOpen(false)} />}
 		</>
 	)
 }
