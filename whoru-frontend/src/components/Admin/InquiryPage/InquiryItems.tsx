@@ -2,7 +2,7 @@ import { IInquiryRes } from '@/types/Admin'
 import { useState } from 'react'
 import InquiryEditModal from './InquiryEditModal';
 
-const InquiryItems = ({ data }: { data: IInquiryRes }) => {
+const InquiryItems = ({ data, onSelectItem }: { data: IInquiryRes, onSelectItem:(id:number) => void }) => {
 	const [openId, setOpenId] = useState<number | null>(null);
 	const [isInquiryEditModalOpen, setIsInquiryEditModalOpen] = useState<boolean>(false)
 
@@ -12,10 +12,11 @@ const InquiryItems = ({ data }: { data: IInquiryRes }) => {
 		} else {
 			setOpenId(id)
 		}
+		onSelectItem(id);
 	}
 
 	const handleOpenModal = () => {
-		setIsInquiryEditModalOpen(true)
+		setIsInquiryEditModalOpen(true);
 	}
 
 	return (

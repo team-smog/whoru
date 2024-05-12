@@ -1,13 +1,21 @@
 import { getInquiryReq, getNotificationReq, patchInquiryReq, patchNotificationReq, postInquiryCommentReq, postNotificationReq } from '@/service/Admin/api'
-import { IInquiry } from '@/types/Admin'
-import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 
 
 // 조회
-export const useInquiryDetail = (page: number, size: number, condition: number) => {
-	return useQuery<IInquiry, Error>({
-		queryKey: ['IInquiryRes', page, size, condition],
-		queryFn: () => getInquiryReq(page, size, condition),
+export const useInquiryDetail = () => {
+	return useInfiniteQuery({
+		queryKey: ['IInquiryRes'],
+		queryFn: ({ pageParam }) => getInquiryReq(pageParam, 10, 0),
+		initialPageParam: 0,
+		getNextPageParam: (lastPage, allPages) => {
+			if (!lastPage || lastPage.last === undefined) return undefined;
+			const nextPage = allPages.length
+			// 마지막 페이지면
+			if (lastPage.last) return
+
+			return nextPage
+		},
 	})
 }
 
