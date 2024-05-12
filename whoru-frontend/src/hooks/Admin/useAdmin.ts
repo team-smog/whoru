@@ -89,7 +89,7 @@ export const useNotificationCreate = () => {
 
 // 문의사항 작성
 export const useInquiryCreate = () => {
-	const queryClient = useQueryClient()
+	const queryClient = useQueryClient();
 	
 	return useMutation({
 		mutationFn: ({ boardId, commenterId, content }: { boardId: number; commenterId: number; content: string }) =>
@@ -102,9 +102,12 @@ export const useInquiryCreate = () => {
 
 // 유저 신고
 export const useReportUser = () => {
+	const queryClient = useQueryClient();
+
 	return useMutation({
 		mutationFn: ({senderId, reportId} : {senderId:number; reportId:number;}) => postReportUser(senderId, reportId),
 		onSuccess: () => {
+			queryClient.invalidateQueries({queryKey: ['IReportRes']})
 			console.log('신고했음 ㅅㄱ')
 		}
 	})
