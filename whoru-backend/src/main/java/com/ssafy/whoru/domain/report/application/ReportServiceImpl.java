@@ -76,6 +76,9 @@ public class ReportServiceImpl implements ReportService{
             .reportType(ReportType.SPAM)
             .build());
 
+        //해당 사용자 report 카운트 증가
+        sender.increaseReportCount();
+
         log.info(String.valueOf(LocalDateTime.now()));
         //메시지 로우 value 수정
         message.updateIsReported(true);

@@ -73,6 +73,8 @@ public class Member {
 
     public void updateBoxDecrease() { this.boxCount--; }
 
+    public void increaseReportCount() {this.reportCount++; }
+
     public void updateReportcountZeroInit() { this.reportCount = 0; }
 
     public void updateIcon(Icon changeIcon) { this.icon = changeIcon; }
