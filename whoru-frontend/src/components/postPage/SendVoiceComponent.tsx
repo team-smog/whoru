@@ -18,7 +18,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom'
 import { setBoxCountP } from '@/stores/store';
 import { useDispatch } from 'react-redux';
-import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
+import toWav from 'audiobuffer-to-wav';
+
 
 const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
     const navigate = useNavigate();
@@ -27,7 +28,6 @@ const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
     // Initialize the recorder controls using the hook
     const recorderControls = useVoiceVisualizer();
     const accessToken = localStorage.getItem('AccessToken');
-    const ffmpeg = createFFmpeg();
     const {
         // ... (Extracted controls and states, if necessary)
         // error,
@@ -187,14 +187,6 @@ const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
     //   console.log("bufferFromRecordedBlob:", bufferFromRecordedBlob);
     // }, [bufferFromRecordedBlob]);
 
-    async function convertToMp3(inputFile:Blob) {
-      await ffmpeg.load();
-      ffmpeg.FS('writeFile', 'input', await fetchFile(inputFile));
-      await ffmpeg.run('-i', 'input', 'output.mp3');
-      const data = ffmpeg.FS('readFile', 'output.mp3');
-      return new Blob([data.buffer], { type: 'audio/mp3' });
-    }
-
     const handlePostButtonClick = async () => {
       if (messageId !== null) {
         if (!recordedBlob) {
@@ -206,11 +198,22 @@ const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
         // let newBlob = new Blob([recordedBlob], {type: 'audio/weba'});
         // formData.append('file', newBlob);
 
-        const mp3Blob = await convertToMp3(recordedBlob);
-        const formData = new FormData();
-        formData.append('audio', mp3Blob);
+        // const mp3Blob = await convertToMp3(recordedBlob);
+
+        // const formData = new FormData();
+        // formData.append('audio', mp3Blob);
 
         // console.log("newBlob:", newBlob);
+
+        const audioContext = new AudioContext();
+        const audioBuffer = await audioContext.decodeAudioData(await recordedBlob.arrayBuffer());
+        const wav = toWav(audioBuffer);
+        const blob = new Blob([new Uint8Array(wav)], { type: 'audio/wav' });
+
+        console.log("blob:", blob);
+
+        const formData = new FormData();
+        formData.append('file', blob);
     
         try {
             const response = await axios.post(`https://k10d203.p.ssafy.io/api/message/${messageId}/file`, formData, {
@@ -236,11 +239,21 @@ const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
         // let newBlob = new Blob([recordedBlob], {type: 'audio/weba'});
         // formData.append('file', newBlob);
 
-        const mp3Blob = await convertToMp3(recordedBlob);
-        const formData = new FormData();
-        formData.append('audio', mp3Blob);
+        // const mp3Blob = await convertToMp3(recordedBlob);
+        // const formData = new FormData();
+        // formData.append('audio', mp3Blob);
 
         // console.log("newBlob:", newBlob);
+
+        const audioContext = new AudioContext();
+        const audioBuffer = await audioContext.decodeAudioData(await recordedBlob.arrayBuffer());
+        const wav = toWav(audioBuffer);
+        const blob = new Blob([new Uint8Array(wav)], { type: 'audio/wav' });
+
+        console.log("blob:", blob);
+
+        const formData = new FormData();
+        formData.append('file', blob);
     
         try {
             const response = await axios.post('https://k10d203.p.ssafy.io/api/message/file', formData, {
