@@ -107,7 +107,7 @@ public class ReportApiTest extends TestPrepare {
          * 사용자 이용정지 요청 API 호출
          * **/
         StringBuffer sb = new StringBuffer();
-        sb.append("/report/").append("/ban");
+        sb.append("/report/").append("/ban/").append(member3000.getId());
         mockMvc.perform(
                 post(sb.toString())
                     .contentType(MediaType.APPLICATION_JSON)
@@ -135,7 +135,7 @@ public class ReportApiTest extends TestPrepare {
          * 사용자 이용정지 요청 API 호출
          * **/
         StringBuffer sb = new StringBuffer();
-        sb.append("/report/").append("/ban");
+        sb.append("/report/").append("/ban/").append(member3000.getId());
         mockMvc.perform(
                 post(sb.toString())
                     .contentType(MediaType.APPLICATION_JSON)
