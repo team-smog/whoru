@@ -33,7 +33,7 @@ pipeline {
         }
         stage('back-deploy') {
             steps {
-                sh 'docker run -it -d -v /var/log/whoru/logs:/logs --name backend --net whoru backend'
+                sh 'docker run -it -d -v /var/log/whoru/logs:/logs --name backend --net whoru -e TZ=Asia/Seoul backend'
             }
         }
     }
