@@ -19,6 +19,7 @@ import { useNavigate } from 'react-router-dom'
 import { setBoxCountP } from '@/stores/store';
 import { useDispatch } from 'react-redux';
 import toWav from 'audiobuffer-to-wav';
+import Swal from 'sweetalert2'
 
 
 const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
@@ -226,7 +227,11 @@ const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
             navigate('/');
         } catch (error) {
             console.error(error);
-            alert('음성 전송에 실패했습니다.');
+            Swal.fire({
+              icon: 'error',
+              title: '실패',
+              text: '음성 전송에 실패했습니다.',
+            });
             navigate('/');
         }
       } else if (messageId === null) {
@@ -269,7 +274,11 @@ const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
             navigate('/');
         } catch (error) {
             console.error(error);
-            alert('음성 전송에 실패했습니다.');
+            Swal.fire({
+              icon: 'error',
+              title: '실패',
+              text: '음성 전송에 실패했습니다.',
+            });
             navigate('/');
         }
       }
