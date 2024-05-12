@@ -23,6 +23,7 @@ import com.ssafy.whoru.domain.message.util.MessageUtil;
 import com.ssafy.whoru.global.common.dto.RedisKeyType;
 import com.ssafy.whoru.global.common.dto.SuccessType;
 import com.ssafy.whoru.global.common.exception.S3UploadException;
+import com.ssafy.whoru.global.error.exception.BusinessLogicException;
 import com.ssafy.whoru.global.util.FCMUtil;
 import com.ssafy.whoru.global.util.RedisUtil;
 import java.util.List;
@@ -289,6 +290,15 @@ public class MessageServiceImpl implements MessageService{
             response.setSuccessType(SuccessType.STATUS_204);
         }
         return response;
+    }
+
+    @Override
+    public MessageResponse findMessage(Long messageId) {
+
+        Message result = messageRepository.findById(messageId)
+            .orElseThrow(MessageNotFoundException::new);
+
+        return modelMapper.map(result, MessageResponse.class);
     }
 
     @Override

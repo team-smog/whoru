@@ -21,4 +21,6 @@ public interface MessageService {
     ResponseWithSuccess<SliceMessageResponse> getOldMessages(Long lastId, Integer size, Long receiverId);
 
     ResponseWithSuccess<List<MessageResponse>> getRecentMessages(Long firstId, Integer size, Long receiverId);
+
+    MessageResponse findMessage(Long messageId);
 }

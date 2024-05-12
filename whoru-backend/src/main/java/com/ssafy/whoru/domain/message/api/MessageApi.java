@@ -118,4 +118,11 @@ public class MessageApi implements MessageApiDocs{
             response.getSuccessType()
         ));
     }
+
+    @GetMapping("/{messageId}")
+    public ResponseEntity<WrapResponse<?>> findMessage(@PathVariable("messageId") Long messageId) {
+
+        MessageResponse response = service.findMessage(messageId);
+        return ResponseEntity.ok(WrapResponse.create(response, SuccessType.SIMPLE_STATUS));
+    }
 }
