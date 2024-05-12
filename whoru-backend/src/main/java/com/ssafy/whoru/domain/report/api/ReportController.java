@@ -39,10 +39,10 @@ public class ReportController implements ReportControllerDocs {
         return ResponseEntity.ok(WrapResponse.create(SuccessType.STATUS_201));
     }
 
-    @PostMapping("/ban")
-    public ResponseEntity<WrapResponse<Void>> banMember(@AuthenticationPrincipal CustomOAuth2User member) {
+    @PostMapping("/ban/{memberId}")
+    public ResponseEntity<WrapResponse<Void>> banMember(@PathVariable("memberId") Long memberId) {
 
-        reportService.banMember(member.getId());
+        reportService.banMember(memberId);
         return ResponseEntity.ok(WrapResponse.create(SuccessType.STATUS_201));
     }
 
