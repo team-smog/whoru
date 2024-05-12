@@ -17,6 +17,7 @@ import com.ssafy.whoru.domain.report.exception.DuplicatedReportException;
 import com.ssafy.whoru.domain.report.util.ReportUtil;
 import com.ssafy.whoru.global.common.dto.RedisKeyType;
 import com.ssafy.whoru.global.util.RedisUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +30,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class ReportServiceImpl implements ReportService{
 
@@ -74,6 +76,7 @@ public class ReportServiceImpl implements ReportService{
             .reportType(ReportType.SPAM)
             .build());
 
+        log.info(String.valueOf(LocalDateTime.now()));
         //메시지 로우 value 수정
         message.updateIsReported(true);
 
