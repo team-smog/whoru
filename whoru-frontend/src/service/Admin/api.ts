@@ -1,5 +1,5 @@
 import { axiosAuthInstance } from '@/apis/axiosInstance'
-import { IInquiry, INotification } from '@/types/Admin'
+import { IInquiry, INotification, IReport } from '@/types/Admin'
 import { APIResponse } from '@/types/model'
 
 // 조회
@@ -17,6 +17,16 @@ export const getNotificationReq = async (page: number, size: number): Promise<IN
 		params: { page, size },
 		headers: { Authorization: `Bearer ${localStorage.getItem('AccessToken')}` },
 	})
+	console.log(res.data.data)
+	return res.data.data
+}
+
+export const getReportReq = async (page: number, size: number, condition?:string) : Promise<IReport> => {	
+	const res = await axiosAuthInstance.get(`/report/list`, {
+		params: {page, size, condition},
+		headers: {Authorization: `Bearer ${localStorage.getItem('AccessToken')}`}
+	})
+	console.log(res.data)
 	console.log(res.data.data)
 	return res.data.data
 }
