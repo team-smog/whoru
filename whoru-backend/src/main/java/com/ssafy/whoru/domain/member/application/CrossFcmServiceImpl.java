@@ -9,9 +9,11 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CrossFcmServiceImpl implements CrossFcmService{
 
     private final FcmRepository fcmRepository;
@@ -35,6 +37,7 @@ public class CrossFcmServiceImpl implements CrossFcmService{
     @Override
     @Transactional
     public void markingUnusedToken(Long memberId, String token) {
+        log.info("fcm : {}, memberId : {}", token, memberId);
         marking(fcmRepository.findFcmNotificationByMemberAndFcmToken(memberId, token));
     }
 
@@ -42,7 +45,9 @@ public class CrossFcmServiceImpl implements CrossFcmService{
         if(daoResult.isEmpty()){
             return;
         }
+        
         FcmNotification fcmNotification = daoResult.get();
+        log.info("fcm entity {} ", fcmNotification);
         fcmNotification.updateMark(true);
     }
 }
