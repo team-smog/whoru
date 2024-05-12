@@ -7,6 +7,7 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { setBoxCountP } from '@/stores/store'
 import { useDispatch } from 'react-redux'
+import Swal from 'sweetalert2'
 
 const SendTextComponent = ({ messageId }: { messageId: number | null}) => {
   const navigate = useNavigate();
@@ -93,9 +94,17 @@ const SendTextComponent = ({ messageId }: { messageId: number | null}) => {
     } catch (error: any) {
       console.error(error);
       if (error.response.data.errorCode === 400) {
-        alert('메세지 내용이 너무 짧습니다.');
+        Swal.fire({
+          icon: 'error',
+          title: '실패',
+          text: '메세지가 너무 짧습니다',
+        });
       } else {
-        alert('메세지 전송에 실패했습니다.');
+        Swal.fire({
+          icon: 'error',
+          title: '실패',
+          text: '메세지 전송에 실패했습니다.',
+        });
         navigate('/');
       }
     }
