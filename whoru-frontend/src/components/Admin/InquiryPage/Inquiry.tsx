@@ -6,17 +6,17 @@ import InquiryModal from './InquiryModal';
 const Inquiry = ({ data }: { data: InquiryInfo[] }) => {
     const [boardId, setBoardId] = useState<number | null>(null);
     const [isInquiryModalOpen, setIsInquiryModalOpen] = useState<boolean>(false);
-    const [activeInquiryId, setActiveInquiryId] = useState<number | null>(null);
+    const [inquiryId, setInquiryId] = useState<number | null>(null);
 
     const handleOpenModal = () => {
-        if (activeInquiryId !== null) {
-            setBoardId(activeInquiryId);
+        if (inquiryId !== null) {
+            setBoardId(inquiryId);
             setIsInquiryModalOpen(true);
         }
     };
 
     const handleInquiryClick = (id: number) => {
-        setActiveInquiryId(id);
+			setInquiryId(id);
     };
 
     return (
@@ -29,7 +29,7 @@ const Inquiry = ({ data }: { data: InquiryInfo[] }) => {
                         </div>
                     ))}
                 </div>
-                {activeInquiryId && (
+                {inquiryId && (
                     <button
                         className="fixed bottom-5 left-1/2 transform -translate-x-1/2 flex items-center justify-center w-[300px] h-8 bg-gray-200 text-[14px] rounded-[10px] text-text_color"
                         onClick={handleOpenModal}
@@ -42,7 +42,7 @@ const Inquiry = ({ data }: { data: InquiryInfo[] }) => {
                         boardId={boardId}
                         onClose={() => {
                             setIsInquiryModalOpen(false);
-                            setActiveInquiryId(null);
+                            setInquiryId(null);
                         }}
                     />
                 )}
