@@ -8,6 +8,7 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { setBoxCountP } from '@/stores/store'
 import { useDispatch } from 'react-redux'
+import Swal from 'sweetalert2'
 
 
 const SendImageComponent = ({ messageId }: { messageId: number | null}) => {
@@ -105,7 +106,11 @@ const SendImageComponent = ({ messageId }: { messageId: number | null}) => {
           })
         } catch (error) {
           console.error('Error:', error);
-          alert('이미지 전송에 실패했습니다.');
+          Swal.fire({
+            icon: 'error',
+            title: '실패',
+            text: '이미지 전송에 실패했습니다.',
+          });
           navigate('/');
         }
       }
@@ -134,7 +139,11 @@ const SendImageComponent = ({ messageId }: { messageId: number | null}) => {
           })
         } catch (error) {
           console.error('Error:', error);
-          alert('이미지 전송에 실패했습니다.');
+          Swal.fire({
+            icon: 'error',
+            title: '실패',
+            text: '이미지 전송에 실패했습니다.',
+          });
           navigate('/');
         }
       }

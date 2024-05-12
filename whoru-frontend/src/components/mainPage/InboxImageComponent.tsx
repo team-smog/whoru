@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
 import { setReplyMessage } from '@/stores/store';
 import axios from 'axios'
+import Swal from 'sweetalert2'
 
 
 interface InboxImageComponentProps extends React.HTMLAttributes<HTMLDivElement>{
@@ -31,27 +32,34 @@ const InboxImageComponent: React.FC<InboxImageComponentProps> = ({ message, inne
   }
 
   const handleReport = (messageId:number, senderId:number) => {
-    if (confirm('정말로 신고하시겠습니까?')) {
-      axios.post('https://k10d203.p.ssafy.io/api/report/member',
-      {
-        messageId: messageId,
-        senderId: senderId,
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`
-      }}
-      )
-      .then((res) => {
-        console.log(res);
-        alert('신고가 완료되었습니다.');
-        window.location.reload();
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-    } 
+    Swal.fire({
+      title: '정말로 신고하시겠습니까?',
+      showDenyButton: true,
+      confirmButtonText: `신고`,
+      denyButtonText: `취소`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios.post('https://k10d203.p.ssafy.io/api/report/member',
+        {
+          messageId: messageId,
+          senderId: senderId,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`
+        }}
+        )
+        .then((res) => {
+          console.log(res);
+          Swal.fire('신고가 완료되었습니다.', '', 'success');
+          window.location.reload();
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+      }
+    })
   }
 
   const createDate = new Date(message.createDate);

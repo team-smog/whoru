@@ -115,7 +115,7 @@ const MainPage = () => {
     token.then((res) => {
       fetchDataFCM(res);
       console.log("res token",res);
-      localStorage.setItem('FCMToken', res);
+      // localStorage.setItem('FCMToken', res);
     })
     // fetchDataFCM(token);
   }, []);
