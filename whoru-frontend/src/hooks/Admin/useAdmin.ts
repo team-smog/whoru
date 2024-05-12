@@ -1,13 +1,14 @@
 import {
 	getInquiryReq,
 	getNotificationReq,
+	getReportDetailReq,
 	getReportReq,
 	patchInquiryReq,
 	patchNotificationReq,
 	postInquiryCommentReq,
 	postNotificationReq,
 } from '@/service/Admin/api'
-import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 // 문의사항 조회
 export const useInquiryDetail = () => {
@@ -57,6 +58,14 @@ export const useReportDetail = () => {
 
 			return nextPage
 		},
+	})
+}
+
+// 신고 세부사항 조회
+export const useReportDetailItem = (messageId:number|null) => {
+	return useQuery({
+		queryKey: ['report'],
+		queryFn: () => getReportDetailReq(messageId),
 	})
 }
 
