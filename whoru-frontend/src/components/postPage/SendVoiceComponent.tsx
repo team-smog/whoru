@@ -207,7 +207,6 @@ const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
         // formData.append('file', newBlob);
 
         const mp3Blob = await convertToMp3(recordedBlob);
-
         const formData = new FormData();
         formData.append('audio', mp3Blob);
 
@@ -233,11 +232,15 @@ const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
           return;
         }
     
-        const formData = new FormData();
-        let newBlob = new Blob([recordedBlob], {type: 'audio/weba'});
-        formData.append('file', newBlob);
+        // const formData = new FormData();
+        // let newBlob = new Blob([recordedBlob], {type: 'audio/weba'});
+        // formData.append('file', newBlob);
 
-        console.log("newBlob:", newBlob);
+        const mp3Blob = await convertToMp3(recordedBlob);
+        const formData = new FormData();
+        formData.append('audio', mp3Blob);
+
+        // console.log("newBlob:", newBlob);
     
         try {
             const response = await axios.post('https://k10d203.p.ssafy.io/api/message/file', formData, {
