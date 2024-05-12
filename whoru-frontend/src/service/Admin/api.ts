@@ -66,6 +66,21 @@ export const postInquiryCommentReq = async ( {boardId, commenterId, content} : {
 	return res.data;
 }
 
+// 신고
+export const postReportUser = async (senderId:number, reportId:number):Promise<APIResponse<number>> => {
+	const res = await axiosAuthInstance.post(`/report/ban/${senderId}`,{},{
+		params: {
+			reportId,
+		},
+		headers: {
+			'Content-Type' : 'application/json'
+		}
+	})
+	console.log(res.data)
+	console.log(res.data.data)
+	return res.data
+}
+
 
 // 수정
 export const patchNotificationReq = async ({
@@ -94,3 +109,4 @@ export const patchInquiryReq = async (commentId:number, content:string):Promise<
 	console.log(res.data)
 	return res.data
 }
+

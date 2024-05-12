@@ -7,6 +7,7 @@ import {
 	patchNotificationReq,
 	postInquiryCommentReq,
 	postNotificationReq,
+	postReportUser,
 } from '@/service/Admin/api'
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
@@ -69,6 +70,8 @@ export const useReportDetailItem = (messageId:number|null) => {
 	})
 }
 
+
+
 // 공지사항 작성
 export const useNotificationCreate = () => {
 	const queryClient = useQueryClient()
@@ -83,18 +86,30 @@ export const useNotificationCreate = () => {
 	})
 }
 
+
 // 문의사항 작성
 export const useInquiryCreate = () => {
 	const queryClient = useQueryClient()
-
+	
 	return useMutation({
 		mutationFn: ({ boardId, commenterId, content }: { boardId: number; commenterId: number; content: string }) =>
-			postInquiryCommentReq({ boardId, commenterId, content }),
+		postInquiryCommentReq({ boardId, commenterId, content }),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['IInquiryRes'] })
 		},
 	})
 }
+
+// 유저 신고
+export const useReportUser = () => {
+	return useMutation({
+		mutationFn: ({senderId, reportId} : {senderId:number; reportId:number;}) => postReportUser(senderId, reportId),
+		onSuccess: () => {
+			console.log('신고했음 ㅅㄱ')
+		}
+	})
+}
+
 
 // 공지사항 수정
 export const useNotificationEdit = () => {
