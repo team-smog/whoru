@@ -11,12 +11,14 @@ import com.ssafy.whoru.domain.report.domain.Report;
 import com.ssafy.whoru.domain.report.dto.ReportType;
 import com.ssafy.whoru.domain.report.dto.request.PostReportRequest;
 import com.ssafy.whoru.domain.report.dto.response.ReportRecordResponse;
+import com.ssafy.whoru.domain.report.exception.ReportNotFoundException;
 import com.ssafy.whoru.global.common.dto.SliceResponse;
 import com.ssafy.whoru.domain.report.exception.AlreadyBanException;
 import com.ssafy.whoru.domain.report.exception.DuplicatedReportException;
 import com.ssafy.whoru.domain.report.util.ReportUtil;
 import com.ssafy.whoru.global.common.dto.RedisKeyType;
 import com.ssafy.whoru.global.util.RedisUtil;
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
@@ -87,7 +89,7 @@ public class ReportServiceImpl implements ReportService{
 
     @Override
     @Transactional
-    public void banMember(Long memberId) {
+    public void banMember(Long memberId, Long reportId) {
 
         // 정지여부 체크
         if(reportUtil.isBanned(memberId)){
@@ -101,6 +103,12 @@ public class ReportServiceImpl implements ReportService{
             .member(member)
             .endDate(LocalDateTime.now().plusDays(3))
             .build());
+
+        Report report = reportRepository.findById(reportId)
+            .orElseThrow(ReportNotFoundException::new);
+
+        //리뷰 완료 더티체킹
+        report.updateReviewedStatus();
 
         // Redis 갱신
         // DB IO Time과의 차이가 있을 수 있기 때문에 Duration으로 현재 값 비교.

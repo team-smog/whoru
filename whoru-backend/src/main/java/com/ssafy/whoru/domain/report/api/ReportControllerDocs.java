@@ -37,7 +37,7 @@ public interface ReportControllerDocs {
 
     @Operation(summary = "사용자 이용 정지", description = "관리자는 사용자 신고 내역을 확인 후 이용 정지를 시킬 수 있다.")
     @PostMapping("/ban/{memberId}")
-    public ResponseEntity<WrapResponse<Void>> banMember(@PathVariable("memberId") Long memberId);
+    public ResponseEntity<WrapResponse<Void>> banMember(@PathVariable("memberId") Long memberId, @RequestParam("reportId") Long reportId);
 
     @GetMapping("/list")
     @Operation(summary = "사용자 신고 내역 조회", description = "사용자 신고 내역을 Slice 처리하여 응답")

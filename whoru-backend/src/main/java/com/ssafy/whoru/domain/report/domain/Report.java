@@ -48,4 +48,6 @@ public class Report {
     @Column(name = "report_type")
     private ReportType reportType;
 
+    public void updateReviewedStatus() { this.isReviewed = !this.isReviewed; }
+
 }

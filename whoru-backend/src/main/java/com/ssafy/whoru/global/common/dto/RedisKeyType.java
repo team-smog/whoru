@@ -30,6 +30,7 @@ public enum RedisKeyType {
         Arrays.stream(keyFrags)
                 .forEach((keyName) -> sb.append(SEPARATOR).append(keyName));
 
+        System.out.println(sb);
         return sb.toString();
     }
 }
