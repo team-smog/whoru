@@ -41,3 +41,22 @@ export interface INotificationRes {
   updateDate: string;
   isCommented: boolean;
 }
+
+export interface IReport {
+  content: IReportRes[];
+  currentPage: number;
+  size: number;
+  first: boolean;
+  last: boolean;
+}
+
+export interface IReportRes {
+  id: number;
+  messageId: number;
+  senderId: number;
+  memberId: number;
+  isReviewed: boolean;
+  reportDate : string;
+  reportId: number;
+  reportType: string;
+}

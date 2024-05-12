@@ -5,40 +5,40 @@ import ReportPage from '@/components/Admin/ReportPage/Report'
 
 import { useEffect, useState } from 'react'
 
-export type InquiryInfo = {
-	id: number
-	subject: string
-	writerName: string
-	createDate: string
-	updateDate: string
-	content: string
-	boardType: string
-	isCommented: boolean
-}
+// export type InquiryInfo = {
+// 	id: number
+// 	subject: string
+// 	writerName: string
+// 	createDate: string
+// 	updateDate: string
+// 	content: string
+// 	boardType: string
+// 	isCommented: boolean
+// }
 
-export type NotificationInfo = {
-	id: number
-	subject: string
-	writerName: string
-	content: string
-	boardType: string
-	createDate: string
-	updateDate: string
-	isCommented: boolean
-}
+// export type NotificationInfo = {
+// 	id: number
+// 	subject: string
+// 	writerName: string
+// 	content: string
+// 	boardType: string
+// 	createDate: string
+// 	updateDate: string
+// 	isCommented: boolean
+// }
 
-export type ReportInfo = {
-	id: number
-	report_type: string
-	report_date: number
-	member_id: number
-	message_id: number
-	content: string
-}
+// export type ReportInfo = {
+// 	id: number
+// 	report_type: string
+// 	report_date: number
+// 	member_id: number
+// 	message_id: number
+// 	content: string
+// }
 
-export type AdminData = {
-	report_info: ReportInfo[]
-}
+// export type AdminData = {
+// 	report_info: ReportInfo[]
+// }
 
 const AdminPage = () => {
 	const [selectedTab, setSelectedTab] = useState<string>('Notification');
@@ -52,38 +52,6 @@ const AdminPage = () => {
 		left_2: null,
 		center: null,
 		right: null,
-	}
-
-	const dummies: AdminData = {
-		report_info: [
-			{
-				id: 1,
-				report_type: '비속어',
-				report_date: 20240501,
-				member_id: 10211423,
-				message_id: 1000001,
-				content:
-					'궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁',
-			},
-			{
-				id: 2,
-				report_type: '음란',
-				report_date: 20240502,
-				member_id: 12222222,
-				message_id: 1000002,
-				content:
-					'궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁',
-			},
-			{
-				id: 3,
-				report_type: '광고',
-				report_date: 20240503,
-				member_id: 13333333,
-				message_id: 1000003,
-				content:
-					'궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁궁시렁',
-			},
-		],
 	}
 
 	const handleUserTab = (type: string) => {
@@ -121,7 +89,7 @@ const AdminPage = () => {
 				<div className="py-4">
 					{selectedTab === 'Notification' && <NotificationPage />}
 					{selectedTab === 'Inquiry' && <InquiryPage />}
-					{selectedTab === 'Report' && <ReportPage data={dummies.report_info} />}
+					{selectedTab === 'Report' && <ReportPage />}
 				</div>
 			</div>
 		</div>

@@ -1,15 +1,22 @@
-import { getInquiryReq, getNotificationReq, patchInquiryReq, patchNotificationReq, postInquiryCommentReq, postNotificationReq } from '@/service/Admin/api'
+import {
+	getInquiryReq,
+	getNotificationReq,
+	getReportReq,
+	patchInquiryReq,
+	patchNotificationReq,
+	postInquiryCommentReq,
+	postNotificationReq,
+} from '@/service/Admin/api'
 import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 
-
-// 조회
+// 문의사항 조회
 export const useInquiryDetail = () => {
 	return useInfiniteQuery({
 		queryKey: ['IInquiryRes'],
 		queryFn: ({ pageParam }) => getInquiryReq(pageParam, 10, 0),
 		initialPageParam: 0,
 		getNextPageParam: (lastPage, allPages) => {
-			if (!lastPage || lastPage.last === undefined) return undefined;
+			if (!lastPage || lastPage.last === undefined) return undefined
 			const nextPage = allPages.length
 			// 마지막 페이지면
 			if (lastPage.last) return
@@ -19,13 +26,14 @@ export const useInquiryDetail = () => {
 	})
 }
 
+// 공지사항 조회
 export const useNotificationDetail = () => {
 	return useInfiniteQuery({
 		queryKey: ['INotificationRes'],
 		queryFn: ({ pageParam }) => getNotificationReq(pageParam, 10),
 		initialPageParam: 0,
 		getNextPageParam: (lastPage, allPages) => {
-			if (!lastPage || lastPage.last === undefined) return undefined;
+			if (!lastPage || lastPage.last === undefined) return undefined
 			const nextPage = allPages.length
 			// 마지막 페이지면
 			if (lastPage.last) return
@@ -35,9 +43,26 @@ export const useNotificationDetail = () => {
 	})
 }
 
-// 작성
+// 신고사항 조회
+export const useReportDetail = () => {
+	return useInfiniteQuery({
+		queryKey: ['IReportRes'],
+		queryFn: ({ pageParam=0 }) => getReportReq(pageParam, 12),
+		initialPageParam: 0,
+		getNextPageParam: (lastPage, allPages) => {
+			if (!lastPage || lastPage.last === undefined) return undefined
+			const nextPage = allPages.length
+			// 마지막 페이지면
+			if (lastPage.last) return
+
+			return nextPage
+		},
+	})
+}
+
+// 공지사항 작성
 export const useNotificationCreate = () => {
-	const queryClient = useQueryClient();
+	const queryClient = useQueryClient()
 
 	return useMutation({
 		mutationKey: ['subject, content'],
@@ -49,37 +74,39 @@ export const useNotificationCreate = () => {
 	})
 }
 
+// 문의사항 작성
 export const useInquiryCreate = () => {
-	const queryClient = useQueryClient();
+	const queryClient = useQueryClient()
 
 	return useMutation({
-		mutationFn: ({boardId, commenterId, content} : {boardId: number, commenterId: number, content: string}) => postInquiryCommentReq({boardId, commenterId, content}),
+		mutationFn: ({ boardId, commenterId, content }: { boardId: number; commenterId: number; content: string }) =>
+			postInquiryCommentReq({ boardId, commenterId, content }),
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['IInquiryRes']})
-		}
+			queryClient.invalidateQueries({ queryKey: ['IInquiryRes'] })
+		},
 	})
 }
 
-// 수정
+// 공지사항 수정
 export const useNotificationEdit = () => {
-	const queryClient = useQueryClient();
+	const queryClient = useQueryClient()
 	return useMutation({
 		mutationFn: ({ boardId, formData }: { boardId: number; formData: { subject: string; content: string } }) =>
 			patchNotificationReq({ boardId, formData }),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['INotificationRes'] })
-			
 		},
 	})
 }
 
+// 문의사항 수정
 export const useInquiryEdit = () => {
-	const queryClient = useQueryClient();
+	const queryClient = useQueryClient()
 
 	return useMutation({
-		mutationFn: ({commentId, content} : {commentId:number; content:string}) => patchInquiryReq(commentId, content),
+		mutationFn: ({ commentId, content }: { commentId: number; content: string }) => patchInquiryReq(commentId, content),
 		onSuccess: () => {
-			queryClient.invalidateQueries({queryKey: ['IInquiryRes']})
+			queryClient.invalidateQueries({ queryKey: ['IInquiryRes'] })
 		},
 	})
 }
