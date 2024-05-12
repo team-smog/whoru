@@ -3,18 +3,20 @@ import InquiryPage from '@/components/Admin/InquiryPage/Inquiry'
 import NotificationPage from '@/components/Admin/NotificationPage/Notification'
 import ReportPage from '@/components/Admin/ReportPage/Report'
 import { useInquiryDetail } from '@/hooks/Admin/useAdmin'
+import { IInquiryRes } from '@/types/Admin'
 import { useEffect, useState } from 'react'
 
-export type InquiryInfo = {
-	id: number
-	subject: string
-	writerName: string
-	createDate: string
-	updateDate: string
-	content: string
-	boardType: string
-	isCommented: boolean
-}
+export type InquiryInfo = IInquiryRes 
+// {
+// 	id: number
+// 	subject: string
+// 	writerName: string
+// 	createDate: string
+// 	updateDate: string
+// 	content: string
+// 	boardType: string
+// 	isCommented: boolean
+// }
 
 export type NotificationInfo = {
 	id: number
@@ -41,14 +43,14 @@ export type AdminData = {
 }
 
 const AdminPage = () => {
-	const [selectedTab, setSelectedTab] = useState<string>('Notification')
-	const [page] = useState<number>(0)
-	const [size] = useState<number>(10)
-	const { data: inquiryData } = useInquiryDetail(page, size, 0)
+	const [selectedTab, setSelectedTab] = useState<string>('Notification');
+	const [page] = useState<number>(0);
+	const [size] = useState<number>(10);
+	const { data: inquiryData } = useInquiryDetail(page, size, 0);
 
 	useEffect(() => {
-		console.log(selectedTab)
-	}, [selectedTab])
+		console.log(selectedTab);
+	}, [selectedTab]);
 
 	const info: IHeaderInfo = {
 		left_1: 'Admin',
@@ -91,9 +93,9 @@ const AdminPage = () => {
 
 	const handleUserTab = (type: string) => {
 		if (selectedTab === type) {
-			setSelectedTab('')
+			setSelectedTab('');
 		} else {
-			setSelectedTab(type)
+			setSelectedTab(type);
 		}
 	}
 
