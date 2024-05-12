@@ -5,7 +5,7 @@ export const logoutApi = async () => {
 	console.log(accesstoken)
 	const res = await axiosAuthInstance.get(`/member/logout`, {
 		params: {
-			fcmToken: `fcmToken=${localStorage.getItem('FCMToken')}`
+			fcmToken: `${localStorage.getItem('FCMToken')}`
 		},
 		headers: {
 			Authorization: `Bearer ${accesstoken}`,
