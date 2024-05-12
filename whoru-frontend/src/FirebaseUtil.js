@@ -16,7 +16,7 @@ const messaging = getMessaging(app)
 
 const requestPermission = async () => {
 	const permission = await Notification.requestPermission()
-	if (permission === 'denied') {
+	if (permission !== 'granted') {
 		console.log('알림받기가 꺼져있습니다.')
 		return ''
 	}
