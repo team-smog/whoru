@@ -113,6 +113,12 @@ const SendImageComponent = ({ messageId }: { messageId: number | null}) => {
           });
           navigate('/');
         }
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: '실패',
+          text: '이미지를 업로드해주세요.',
+        });
       }
     } else if (messageId === null) {
       if (imageFile) { // Check if there is a file
@@ -146,6 +152,12 @@ const SendImageComponent = ({ messageId }: { messageId: number | null}) => {
           });
           navigate('/');
         }
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: '실패',
+          text: '이미지를 업로드해주세요.',
+        });
       }
     }
   }
