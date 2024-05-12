@@ -75,3 +75,7 @@ export interface IReportDetail {
   createDate: string;
   readDate: string;
 }
+
+export interface IReportUser {
+  senderId: number|null;
+}
