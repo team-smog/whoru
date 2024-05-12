@@ -8,7 +8,7 @@ const CallBackPage = () => {
   useEffect(() => {
     const getTokens = () => {
       const accessToken = searchParams.get('accessToken');
-
+      console.log(accessToken)
       if (accessToken) {
         localStorage.setItem('AccessToken', accessToken);
         navigate('/');

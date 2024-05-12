@@ -113,8 +113,8 @@ const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, inne
             src={message.content}
             onPlay={() => {console.log("onPlay")}}
             layout="stacked-reverse"
-            style={{ width: "100%", 
-                      height: "100%", 
+            style={{ width: "100%",
+                      height: "100%",
                       background: "linear-gradient(90deg, #E08EDC 0%, #AFA4F4 100%)", 
                       border: "3px solid #423752", 
                       borderRadius: "10px"}}
