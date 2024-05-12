@@ -24,6 +24,8 @@ import java.util.List;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -117,4 +119,9 @@ public interface MessageApiDocs {
         @Valid @Min(value = 1, message = "id 최대값은 0보다 커야합니다.") Long lastId,
         @Valid @Min(value = 20, message = "size는 최소 20 이상이어야 합니다.") @RequestParam Integer size
     );
+
+    @Operation(summary = "메시지 상세내용 조회", description = "PathVariable로 메시지 번호를 전달")
+    @ApiResponse(responseCode = "200", description = "메시지 컨텐츠 응답", content = @Content(schema = @Schema(implementation = MessageResponse.class)))
+    @GetMapping("/{messageId}")
+    public ResponseEntity<WrapResponse<?>> findMessage(@PathVariable("messageId") Long messageId);
 }
