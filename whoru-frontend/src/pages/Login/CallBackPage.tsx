@@ -1,5 +1,5 @@
-import { setUser } from "@/stores/userStore";
 import { useAuthReq } from "@/hooks/Auth/useAuth";
+import { setUser } from "@/stores/store";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router-dom";

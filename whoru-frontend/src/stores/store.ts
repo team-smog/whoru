@@ -64,6 +64,9 @@ const userSlice = createSlice({
       console.log(state)
       return action.payload;
     },
+    setClear:(state) => {
+      Object.assign(state, initial);
+    }
   }
 })
 
@@ -126,7 +129,7 @@ const store = configureStore({
   }
 });
 
-export const { setUser } = userSlice.actions;
+export const { setUser, setClear } = userSlice.actions;
 export const { setReplyMessage } = replySlice.actions;
 export const { setFirstId, setLastId } = messageSlice.actions;
 export const { setBoxCountP, setBoxCountM } = boxCounterSlice.actions;
