@@ -35,21 +35,10 @@ const PostPage = () => {
   }, [messageId]);
 
   useEffect(() => {
-    let prevHeight = window.innerHeight;
-    const handleResize = () => {
-      const currentHeight = window.innerHeight;
-      if (currentHeight > prevHeight) {
-        window.scrollTo(0, 0);
-      }
-      prevHeight = currentHeight;
-    };
-
-    window.addEventListener("resize", handleResize);
-
     return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+      window.scrollTo(0, 0);
+    }
+  },[])
 
   return (
     <div className={styles.postPage}>
