@@ -11,18 +11,6 @@ interface Icon {
 	isDuplicat: boolean
 	isAvailable: boolean
 }
-interface ChacollectionModalProps {
-	onAction: () => void
-}
-
-const ChacollectionModal: React.FC<ChacollectionModalProps> = ({ onAction }) => {
-	return (
-		<div>
-			<button onClick={onAction}>Refresh Icons</button>
-		</div>
-	)
-}
-console.log(ChacollectionModal)
 
 const ChacollectionProfile: React.FC = () => {
 	const [icons, setIcons] = useState<Icon[]>([])
