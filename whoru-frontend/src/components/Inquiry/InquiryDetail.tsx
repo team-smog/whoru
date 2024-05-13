@@ -103,29 +103,31 @@ function InquiryDetail() {
 								<p className="text-xs word-wrap:break-word scrollable-content">{inquiry.content}</p>
 							</div>
 							{inquiry.comment && (
-								<div className="w-full mx-auto fixed bottom-52 overflow-y-auto">
-									<div className="border-b-[0.5px] mx-8">
-										<div className="flex justify-center items-center">
-											<div className="flex flex-row justify-start w-full pb-2">
-												<div>
-													<img className="w-8 h-8" src={A} alt="" />
-												</div>
-												<div className="flex flex-col items-center px-4">
-													<p className="text-[16px]">{inquiry.comment.commenterName}</p>
-                          <p className="text-[12px] text-[#858585]">{formatDate(inquiry.comment.createDate)}</p>
+								<div className="w-full">
+									<div className="mx-auto fixed bottom-52 overflow-y-auto">
+										<div className="border-b-[0.5px] mx-8">
+											<div className="flex justify-center items-center">
+												<div className="flex flex-row justify-start w-full pb-2">
+													<div>
+														<img className="w-8 h-8" src={A} alt="" />
+													</div>
+													<div className="flex flex-col justify-start px-4">
+														<p className="text-[16px]">{inquiry.comment.commenterName}</p>
+														<p className="text-[12px] text-[#858585]">{formatDate(inquiry.comment.createDate)}</p>
+													</div>
 												</div>
 											</div>
 										</div>
-									</div>
-									<div
-										className="w-full max-w-[500px] max-h-[300px] px-12 pt-2 min-h-20"
-										style={{
-											overflowWrap: 'break-word',
-											overflow: 'auto',
-											whiteSpace: 'normal',
-										}}
-									>
-										<p className="text-xs">{inquiry.comment.content}</p>
+										<div
+											className="w-full max-w-[500px] max-h-[300px] px-12 pt-2 min-h-20"
+											style={{
+												overflowWrap: 'break-word',
+												overflow: 'auto',
+												whiteSpace: 'normal',
+											}}
+										>
+											<p className="text-xs">{inquiry.comment.content}</p>
+										</div>
 									</div>
 								</div>
 							)}
