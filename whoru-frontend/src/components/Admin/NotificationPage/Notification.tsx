@@ -30,7 +30,6 @@ const Notification = () => {
 					<button className="bg-gray-200 w-full rounded-[10px] text-text_color p-2 text-[14px]">공지사항 작성</button>
 				</div>
 			</div>
-
 			{isNotificationCreateModalOpen && (
 				<NotificationCreateModal onClose={() => setIsNotificationCreateModalOpen(false)} />
 			)}
