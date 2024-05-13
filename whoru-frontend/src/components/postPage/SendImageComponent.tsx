@@ -6,14 +6,14 @@ import xIcon from '../../assets/components/InboxImageComponent/image-component-x
 import camerabutton from '../../assets/components/InboxImageComponent/image-component-camera-button.svg'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
-import { setBoxCountP } from '@/stores/store'
-import { useDispatch } from 'react-redux'
+// import { setBoxCountP } from '@/stores/store'
+// import { useDispatch } from 'react-redux'
 import Swal from 'sweetalert2'
 
 
 const SendImageComponent = ({ messageId }: { messageId: number | null}) => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const fileInputRef = useRef(null);
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -62,6 +62,14 @@ const SendImageComponent = ({ messageId }: { messageId: number | null}) => {
   //     }
   //   }
   // };
+
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'center',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+  })
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
@@ -141,7 +149,10 @@ const SendImageComponent = ({ messageId }: { messageId: number | null}) => {
             setImageSrc(null);
             console.log("ImgSrc", imageSrc);
             if (res.data.data.randomBoxProvided === true) {
-              dispatch(setBoxCountP());
+              Toast.fire({
+                icon: 'success',
+                title: '랜덤 박스에 당첨되었습니다!',
+              });
             }
             navigate('/');
           })
@@ -166,6 +177,9 @@ const SendImageComponent = ({ messageId }: { messageId: number | null}) => {
   
 
   const handleCancelClick = () => {
+    if (fileInputRef.current) {
+      (fileInputRef.current as HTMLInputElement).value = '';
+    }
     setImageSrc(null);
     console.log("ImgSrc", imageSrc);
   };
