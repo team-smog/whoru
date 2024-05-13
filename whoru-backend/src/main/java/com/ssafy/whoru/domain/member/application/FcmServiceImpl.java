@@ -3,12 +3,16 @@ package com.ssafy.whoru.domain.member.application;
 import com.ssafy.whoru.domain.member.dao.FcmRepository;
 import com.ssafy.whoru.domain.member.domain.FcmNotification;
 import com.ssafy.whoru.domain.member.domain.Member;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.PersistenceContext;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -19,8 +23,9 @@ public class FcmServiceImpl implements FcmService{
     private final CrossMemberService crossMemberService;
 
     @Override
-//    @Transactional
+    @Transactional
     public void updateFcm(Long memberId, String token) {
+
         Member member = crossMemberService.findByIdToEntity(memberId);
         List<FcmNotification> used = member.getFcmNotifications();
         Optional<FcmNotification> found = Optional.empty();
@@ -30,13 +35,50 @@ public class FcmServiceImpl implements FcmService{
                 break;
             }
         }
-        if(found.isPresent()) return; // 이미 해당 멤버가 들고있는 토큰이라면 추가 할 필요가 없으므로
-        FcmNotification fcmNotification = FcmNotification.builder()
-            .isEnabled(true)
-            .fcmToken(token)
-            .build();
+        if(found.isPresent()){
+            FcmNotification present = found.get();
+            if(present.getMark()) {
+                present.updateMark(false);
+            }
+        }else{
+            FcmNotification fcmNotification = FcmNotification.builder()
+                .isEnabled(true)
+                .fcmToken(token)
+                .build();
 
-        fcmNotification.addNotification(member);
-        fcmRepository.save(fcmNotification);
+            fcmNotification.addNotification(member);
+            fcmRepository.save(fcmNotification);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void changeEnabled(Member member) {
+        List<FcmNotification> fcmNotifications = member.getFcmNotifications();
+        fcmNotifications.forEach(fcmNotification -> {
+            if(!fcmNotification.getMark()){
+                fcmNotification.updateNotificationsEnabled(!fcmNotification.getIsEnabled());
+            }
+        });
+    }
+
+    @Override
+    @Transactional
+    public void markingUnusedToken(Long id) {
+        marking(fcmRepository.findById(id));
+    }
+
+    @Override
+    @Transactional
+    public void markingUnusedToken(Long memberId, String token) {
+        marking(fcmRepository.findFcmNotificationByMemberAndFcmToken(memberId, token));
+    }
+
+    private void marking(Optional<FcmNotification> daoResult){
+        if(daoResult.isEmpty()){
+            return;
+        }
+        FcmNotification fcmNotification = daoResult.get();
+        fcmNotification.updateMark(true);
     }
 }
