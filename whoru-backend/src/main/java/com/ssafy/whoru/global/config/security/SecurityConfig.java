@@ -1,6 +1,6 @@
 package com.ssafy.whoru.global.config.security;
 
-import com.ssafy.whoru.global.config.security.filter.JWTFilter;
+import com.ssafy.whoru.global.common.filter.JWTFilter;
 import com.ssafy.whoru.global.config.security.handler.CustomSuccessHandler;
 import com.ssafy.whoru.global.util.JWTUtil;
 import lombok.RequiredArgsConstructor;
