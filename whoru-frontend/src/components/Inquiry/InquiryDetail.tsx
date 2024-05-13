@@ -103,7 +103,7 @@ function InquiryDetail() {
 								<p className="text-xs word-wrap:break-word scrollable-content">{inquiry.content}</p>
 							</div>
 							{inquiry.comment && (
-								<div className="mx-auto fixed bottom-52 overflow-y-auto">
+								<div className="w-full mx-auto fixed bottom-52 overflow-y-auto">
 									<div className="border-b-[0.5px] mx-8">
 										<div className="flex justify-center items-center">
 											<div className="flex flex-row justify-start w-full pb-2">
