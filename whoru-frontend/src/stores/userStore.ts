@@ -1,4 +1,4 @@
-import { configureStore, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { configureStore, createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 export interface UserState {
   id: number | null;
@@ -41,6 +41,11 @@ const userSlice = createSlice({
     clearUser: (state) => {
       console.log(state)
       return initialState;
+    },
+    setBoxCount:(state, action:PayloadAction<number|null>) => {
+      state.boxCount = action.payload
+      console.log("state", state)
+      console.log("boxCount",state.boxCount)
     }
   }
 })
@@ -53,6 +58,6 @@ const store = configureStore({
   }
 });
 
-export const { setUser, clearUser } = userSlice.actions;
+export const { setUser, clearUser, setBoxCount } = userSlice.actions;
 
 export default store;

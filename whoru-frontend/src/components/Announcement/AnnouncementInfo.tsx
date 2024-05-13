@@ -85,15 +85,17 @@ const AnnouncementInfo = () => {
 					<hr className="pb-2" />
 				</div>
 			))}
-			<div className="fixed bottom-20 w-full">
-				<div className="flex justify-evenly items-center">
-					<button onClick={handlePrevPage} disabled={currentPage === 0}>
-						이전
-					</button>
-					<span>{currentPage + 1}</span>
-					<button onClick={handleNextPage} disabled={isLastPage}>
-						다음
-					</button>
+			<div className="flex justify-center">
+				<div className="fixed bottom-20 w-full max-w-[500px] m-auto px-4">
+					<div className="flex justify-evenly items-center">
+						<button onClick={handlePrevPage} disabled={currentPage === 0}>
+							이전
+						</button>
+						<span>{currentPage + 1}</span>
+						<button onClick={handleNextPage} disabled={isLastPage}>
+							다음
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>

@@ -4,7 +4,7 @@ import Confetti from 'react-confetti'
 import OpenImage from '@/assets/@common/Randomopenbox.png'
 import Cancel from '@/assets/@common/Cancel.png'
 import './Modal.css'
-import { setBoxCountM } from '@/stores/store'
+import { setBoxCount } from '@/stores/userStore'
 import { useDispatch, useSelector } from 'react-redux'
 
 interface Icon {
@@ -58,6 +58,7 @@ const ChacollectionModal: React.FC<ChacollectionModalProps> = ({ onAction }) => 
 				)
 				onAction()
 				setImageSrc(response.data.data.iconUrl)
+        dispatch(setBoxCount(response.data.data.boxCount))
 				setShowConfetti(true)
 				setIsShaking(false)
 				setTimeout(() => setShowConfetti(false), 5000)
@@ -78,7 +79,7 @@ const ChacollectionModal: React.FC<ChacollectionModalProps> = ({ onAction }) => 
 	const handleImageClick = () => {
 		if (boxCount > 0) {
 			// setRemainingChances((prevChances) => prevChances - 1)
-			dispatch(setBoxCountM())
+			// dispatch(setBoxCount())
 			setImageSrc(OpenImage) // Reset to box image each time before shaking
 			fetchUserIcons()
 			applyAnimation()

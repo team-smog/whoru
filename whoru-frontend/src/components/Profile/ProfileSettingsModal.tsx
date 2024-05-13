@@ -70,19 +70,21 @@ const ProfileSettingsModal = () => {
 				<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
 					<div className="w-80 h-32 bg-white rounded-lg border-solid border-2 border-black">
 						<div className="flex flex-row justify-between rounded-t-lg bg-[#D78DDD]">
-							<p className="pt-1 p-2 text-sm text-white">푸시 알림</p>
+							<p className=" pt-1 p-2 text-sm text-white">푸시 알림</p>
 							<button className="pr-3 text-lg p-0" onClick={() => setIsModalOpen(false)}>
 								<img src={Cancel} alt="Cancel" />
 							</button>
 						</div>
 						<hr className="border-1 border-black" />
-						<p className="flex justify-evenly pt-3 pl-3 text-sm">
-							푸시 알림
-							<label className="toggle-container ml-5">
-								<input type="checkbox" onChange={handleToggleChange} checked={isPushNotificationEnabled} />
-								<span className="toggle-slider"></span>
-							</label>
-						</p>
+						<div className="centered-content">
+							<p className="text-sm">
+								푸시 알림
+								<label className="toggle-container ml-20">
+									<input type="checkbox" onChange={handleToggleChange} checked={isPushNotificationEnabled} />
+									<span className="toggle-slider"></span>
+								</label>
+							</p>
+						</div>
 					</div>
 				</div>
 			)}
