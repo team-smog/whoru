@@ -1,13 +1,15 @@
 import { useAuthReq } from "@/hooks/Auth/useAuth";
 import { setBoxCount, setRole } from "@/stores/store";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 const CallBackPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const dispatch = useDispatch();
+  const boxCount = useSelector((state:any) => state.user.boxCount);
+  const role = useSelector((state:any) => state.user.role);
   const { data: userData, isError, isLoading } = useAuthReq();
 
   useEffect(() => {
@@ -32,13 +34,12 @@ const CallBackPage = () => {
       try {
         dispatch(setBoxCount(userData.boxCount));
         dispatch(setRole(userData.role));
-        console.log();
+        console.log(boxCount)
+        console.log(role)
         navigate('/');
       } catch (error) {
         console.log(error);
       }
-      
-
     }
   }, [navigate, searchParams, dispatch, userData, isError, isLoading]);
 

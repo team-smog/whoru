@@ -22,7 +22,7 @@ export const getNotificationReq = async (page: number, size: number): Promise<IN
 }
 
 export const getReportReq = async (page: number, size: number, condition?:string) : Promise<IReport> => {	
-	const res = await axiosAuthInstance.get(`/report/list`, {
+	const res = await axiosAuthInstance.get(`admin/report/list`, {
 		params: {page, size, condition},
 		headers: {Authorization: `Bearer ${localStorage.getItem('AccessToken')}`}
 	})
@@ -68,7 +68,7 @@ export const postInquiryCommentReq = async ( {boardId, commenterId, content} : {
 
 // 신고
 export const postReportUser = async (senderId:number, reportId:number):Promise<APIResponse<number>> => {
-	const res = await axiosAuthInstance.post(`/report/ban/${senderId}`,{},{
+	const res = await axiosAuthInstance.post(`admin/report/ban/${senderId}`,{},{
 		params: {
 			reportId,
 		},
