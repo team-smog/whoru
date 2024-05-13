@@ -68,6 +68,7 @@ const SendImageComponent = ({ messageId }: { messageId: number | null}) => {
     if (files) {
       const file = files[0];
       setImageFile(file); // Save the file instead of its Data URL
+      console.log("ImgSrc", imageSrc);
 
       // Create a new FileReader object
       const reader = new FileReader();
@@ -138,6 +139,7 @@ const SendImageComponent = ({ messageId }: { messageId: number | null}) => {
             console.log(res.data);
             setImageFile(null); // Clear the file
             setImageSrc(null);
+            console.log("ImgSrc", imageSrc);
             if (res.data.data.randomBoxProvided === true) {
               dispatch(setBoxCountP());
             }
@@ -165,6 +167,7 @@ const SendImageComponent = ({ messageId }: { messageId: number | null}) => {
 
   const handleCancelClick = () => {
     setImageSrc(null);
+    console.log("ImgSrc", imageSrc);
   };
 
   return (

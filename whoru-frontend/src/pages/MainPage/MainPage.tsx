@@ -113,10 +113,11 @@ const MainPage = () => {
 
   useEffect(() => {
     const token = FCMSetToken();
-    token.then((res) => {
+    token.then(() => {
       const FCM = localStorage.getItem('FCMToken');
+      console.log("FCM",FCM);
       fetchDataFCM(FCM);
-      console.log("res token",res);
+      // console.log("res token",res);
       // localStorage.setItem('FCMToken', res);
     })
     // fetchDataFCM(token);

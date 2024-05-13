@@ -36,11 +36,36 @@ const Header = (props: {info:IHeaderInfo}) => {
       // console.log(messagingObject.current);
       onMessage(messagingObject.current, (body)=>{
         if (body.data) {
-          const { content } = body.data;
-          Toast.fire({
-            icon: 'success',
-            title: content
-          })
+          const { content, type } = body.data;
+          let toast;
+          if (type === 'message') {
+            toast = Toast.fire({
+              icon: 'success',
+              title: content
+            })
+          } else {
+            toast = Toast.fire({
+              icon: 'success',
+              title: content
+            })
+          }
+      
+          // Toast가 성공적으로 생성되었을 때 클릭 이벤트 리스너를 추가합니다.
+          toast.then(result => {
+            if (result.dismiss === Swal.DismissReason.timer) {
+              console.log('I was closed by the timer')
+            } else {
+              // 여기에 클릭 이벤트 리스너를 추가합니다.
+              result.value.addEventListener('click', () => {
+                // 메시지의 타입에 따라 다른 경로로 이동합니다.
+                if (type === 'message') {
+                  navigate('/message');
+                } else {
+                  navigate('/other');
+                }
+              });
+            }
+          });
         }
       })
   }
