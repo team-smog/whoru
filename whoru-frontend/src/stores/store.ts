@@ -81,21 +81,27 @@ const messageSlice = createSlice({
 })
 
 const boxCounterSlice = createSlice({
-	name: 'boxCounter',
-	initialState: boxCounterInitialState,
-	reducers: {
-		setBoxCountP: (state) => {
-			if (state.boxCount !== null) {
-				state.boxCount += 1
-			}
-		},
-		setBoxCountM: (state) => {
-			if (state.boxCount !== null) {
-				state.boxCount -= 1
-			}
-		},
-	},
-})
+  name: 'boxCounter',
+  initialState: boxCounterInitialState,
+  reducers: {
+    setBoxCountP: (state) => {
+      if (state.boxCount !== null) {
+        state.boxCount += 1;
+        console.log("box Count P",state.boxCount)
+      }
+    },
+    setBoxCountM: (state) => {
+      if (state.boxCount !== null) {
+        state.boxCount -= 1;
+        console.log("box Count M",state.boxCount)
+      }
+    },
+    setBoxCountState: (state, action: PayloadAction<number|null>) => {
+      state.boxCount = action.payload;
+    },
+  }
+});
+
 
 // 슬라이스의 리듀서를 추출
 const { reducer: replyReducer } = replySlice
