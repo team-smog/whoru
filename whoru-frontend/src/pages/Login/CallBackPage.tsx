@@ -1,5 +1,5 @@
 import { useAuthReq } from "@/hooks/Auth/useAuth";
-import { setUser } from "@/stores/store";
+import { setBoxCount, setRole } from "@/stores/store";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -30,9 +30,9 @@ const CallBackPage = () => {
 
     if (userData) {
       try {
-        dispatch(setUser(userData));
+        dispatch(setBoxCount(userData.boxCount));
+        dispatch(setRole(userData.role));
         console.log();
-        localStorage.setItem('userData', JSON.stringify(userData));
         navigate('/');
       } catch (error) {
         console.log(error);
