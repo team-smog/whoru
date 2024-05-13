@@ -99,13 +99,19 @@ const SendTextComponent = ({ messageId }: { messageId: number | null}) => {
           title: '실패',
           text: '메세지가 너무 짧습니다',
         });
+      } else if (error.response.data.errorCode === 403){
+        Swal.fire({
+          icon: 'error',
+          title: '실패',
+          text: '사용 정지된 유저입니다. 관리자에게 문의하세요',
+        });
+        navigate('/');
       } else {
         Swal.fire({
           icon: 'error',
           title: '실패',
-          text: '메세지 전송에 실패했습니다.',
+          text: '알 수 없는 오류가 발생했습니다',
         });
-        navigate('/');
       }
     }
   };
