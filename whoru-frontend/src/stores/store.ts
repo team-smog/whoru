@@ -1,33 +1,13 @@
 import { configureStore, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface UserState {
-  id: number | null;
-  userName: string | null;
-  provider: string | null;
-  memberIdentifier: string | null;
   boxCount: number | null;
   role: string | null;
-  createDate: string | null;
-  reportCount: number | null;
-  languageType: string | null;
-  iconUrl: string | null;
-  fcmToken: string | null;
-  pushAlarm: boolean | null;
 }
 
 export const initial: UserState = {
-  id: null,
-  userName: null,
-  provider: null,
-  memberIdentifier: null,
   boxCount: null,
   role: null,
-  createDate: null,
-  reportCount: null,
-  languageType: null,
-  iconUrl: null,
-  fcmToken: null,
-  pushAlarm: null,
 };
 
 interface ReplyState {
@@ -60,12 +40,11 @@ const userSlice = createSlice({
   name: 'user',
   initialState:initial,
   reducers: {
-    setUser:(state, action:PayloadAction<UserState>) => {
-      console.log(state)
-      return action.payload;
+    setBoxCount:(state, action:PayloadAction<number|null>) => {
+      state.boxCount = action.payload;
     },
-    setClear:(state) => {
-      Object.assign(state, initial);
+    setRole:(state, action:PayloadAction<string|null>) => {
+      state.role = action.payload
     }
   }
 })
@@ -129,7 +108,7 @@ const store = configureStore({
   }
 });
 
-export const { setUser, setClear } = userSlice.actions;
+export const { setBoxCount, setRole } = userSlice.actions;
 export const { setReplyMessage } = replySlice.actions;
 export const { setFirstId, setLastId } = messageSlice.actions;
 export const { setBoxCountP, setBoxCountM } = boxCounterSlice.actions;
