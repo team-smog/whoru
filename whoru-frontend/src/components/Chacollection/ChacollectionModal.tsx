@@ -5,7 +5,7 @@ import OpenImage from '@/assets/@common/Randomopenbox.png'
 import Cancel from '@/assets/@common/Cancel.png'
 import './Modal.css'
 // import { setBoxCount } from '@/stores/userStore'
-import { useDispatch, useSelector } from 'react-redux'
+import {useSelector } from 'react-redux'
 
 interface Icon {
 	id: string
