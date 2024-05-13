@@ -1,4 +1,4 @@
-package com.ssafy.whoru.global.handler;
+package com.ssafy.whoru.global.config.security.handler;
 
 import com.ssafy.whoru.domain.member.dao.MemberRepository;
 import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;

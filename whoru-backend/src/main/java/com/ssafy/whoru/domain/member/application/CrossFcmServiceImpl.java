@@ -3,7 +3,6 @@ package com.ssafy.whoru.domain.member.application;
 import com.ssafy.whoru.domain.member.dao.FcmRepository;
 import com.ssafy.whoru.domain.member.domain.FcmNotification;
 import com.ssafy.whoru.domain.member.domain.Member;
-import com.ssafy.whoru.domain.member.exception.FcmTokenNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,6 @@
 package com.ssafy.whoru.domain.message.dto.response;
 
 
-import com.ssafy.whoru.domain.message.domain.Message;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import java.util.stream.Collectors;

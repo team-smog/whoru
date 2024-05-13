@@ -1,8 +1,7 @@
-package com.ssafy.whoru.global.config;
+package com.ssafy.whoru.global.config.security;
 
-import com.ssafy.whoru.domain.member.application.CustomOAuth2UserServiceImpl;
-import com.ssafy.whoru.global.common.filter.JWTFilter;
-import com.ssafy.whoru.global.handler.CustomSuccessHandler;
+import com.ssafy.whoru.global.config.security.filter.JWTFilter;
+import com.ssafy.whoru.global.config.security.handler.CustomSuccessHandler;
 import com.ssafy.whoru.global.util.JWTUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +9,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;

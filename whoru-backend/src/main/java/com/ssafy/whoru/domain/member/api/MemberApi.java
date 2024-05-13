@@ -4,7 +4,6 @@ package com.ssafy.whoru.domain.member.api;
 
 import com.ssafy.whoru.domain.member.application.FcmService;
 import com.ssafy.whoru.domain.member.application.MemberService;
-import com.ssafy.whoru.domain.member.dao.MemberRepository;
 import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.domain.member.dto.response.ChangeIconResponse;
 import com.ssafy.whoru.domain.member.dto.response.ProfileResponse;
@@ -30,7 +29,6 @@ public class MemberApi implements MemberApiDocs {
 
     private final MemberService memberService;
     private final FcmService fcmService;
-    private final MemberRepository memberRepository;
 
     @PatchMapping("/icon")
     public ResponseEntity<WrapResponse<ChangeIconResponse>> changeIcon(@AuthenticationPrincipal CustomOAuth2User member, @RequestParam("iconId") int iconId) {
@@ -47,15 +45,13 @@ public class MemberApi implements MemberApiDocs {
 
     @GetMapping("/logout")
     public ResponseEntity<WrapResponse<Void>> logout(@AuthenticationPrincipal CustomOAuth2User member, @RequestParam String fcmToken, HttpServletRequest request, HttpServletResponse response) {
-        log.info("controller start");
         memberService.logout(member.getId(), fcmToken);
         Cookie[] cookies = request.getCookies();
-        log.info("service end");
+
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 log.info(cookie.getName());
                 if ("Refresh".equals(cookie.getName())) {
-                    log.info("동일한 Refresh 쿠키 발견");
                     ResponseCookie expiredCookie = ResponseCookie.from(cookie.getName(), null)
                             .path("/")
                             .maxAge(0)
@@ -102,12 +98,5 @@ public class MemberApi implements MemberApiDocs {
         return ResponseEntity.ok(WrapResponse.create(SuccessType.SIMPLE_STATUS));
     }
 
-
-
-//    @GetMapping("/gettoken")
-//    public ResponseEntity<WrapResponse<TokenResponse>> getToken(CustomOAuth2User member) {
-//        TokenResponse response = memberService.getToken(member.getId());
-//        return ResponseEntity.ok(WrapResponse.create(response,SuccessType.SIMPLE_STATUS));
-//    }
 
 }

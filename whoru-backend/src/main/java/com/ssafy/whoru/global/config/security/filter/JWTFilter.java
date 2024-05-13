@@ -1,4 +1,4 @@
-package com.ssafy.whoru.global.common.filter;
+package com.ssafy.whoru.global.config.security.filter;
 
 import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.domain.member.dto.MemberDTO;
@@ -48,7 +48,6 @@ public class JWTFilter extends OncePerRequestFilter {
 
         // 토큰이 없다면 다음 필터로 넘김
         if (token == null) {
-            log.info("token is null");
             filterChain.doFilter(request, response);
             return;
         }
@@ -67,7 +66,6 @@ public class JWTFilter extends OncePerRequestFilter {
             return;
         }
 
-        String category = jwtUtil.getCategory(token);
         String role = jwtUtil.getRole(token);
 
 
@@ -91,7 +89,6 @@ public class JWTFilter extends OncePerRequestFilter {
 
         //세션에 사용자 등록
         SecurityContextHolder.getContext().setAuthentication(authToken);
-        System.out.println("success");
         filterChain.doFilter(request, response);
     }
 

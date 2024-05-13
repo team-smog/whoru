@@ -1,8 +1,5 @@
 package com.ssafy.whoru.domain.member.application;
 
-import com.ssafy.whoru.domain.member.domain.Member;
-import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
-import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.domain.member.dto.response.ChangeIconResponse;
 import com.ssafy.whoru.domain.member.dto.response.ProfileResponse;
 import com.ssafy.whoru.domain.member.dto.response.TokenResponse;
@@ -20,5 +17,4 @@ public interface MemberService {
 
     ProfileResponse getProfile(Long id);
 
-//    TokenResponse getToken(Long id);
 }
