@@ -32,10 +32,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 
-    private final CrossMemberService crossMemberService;
     private final MemberRepository memberRepository;
 
-    private final CrossFcmService crossFcmService;
+    private final FcmService fcmService;
     private final CrossCollectService collectService;
 
     private final ModelMapper modelMapper;
@@ -70,19 +69,19 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void logout(Long memberId, String fcmToken) {
-        crossFcmService.markingUnusedToken(memberId, fcmToken);
+        fcmService.markingUnusedToken(memberId, fcmToken);
         redisUtil.delete(RedisKeyType.REFRESHTOKEN.makeKey(memberId.toString()));
     }
 
     @Override
-//    @Transactional
     public void setPush(Long memberId) {
-        Member byId = crossMemberService.findByIdToEntity(memberId);
-        List<FcmNotification> fcm = byId.getFcmNotifications();
+        Optional<Member> byId = memberRepository.findById(memberId);
+        Member member = byId.orElseThrow(MemberNotFoundException::new);
+        List<FcmNotification> fcm = member.getFcmNotifications();
         if (fcm.isEmpty()) {
             throw new FcmNotFoundException();
         }
-        crossFcmService.changeEnabled(byId);
+        fcmService.changeEnabled(member);
     }
 
     @Override
@@ -105,10 +104,10 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public ProfileResponse getProfile(Long memberId) {
-        Member byId = crossMemberService.findByIdToEntity(memberId);
-
-        String url = (byId.getIcon()==null) ? "null" : byId.getIcon().getIconUrl();
-        List<FcmNotification> fcmNotifications = byId.getFcmNotifications();
+        Optional<Member> byId = memberRepository.findById(memberId);
+        Member member = byId.orElseThrow(MemberNotFoundException::new);
+        String url = (member.getIcon()==null) ? "null" : member.getIcon().getIconUrl();
+        List<FcmNotification> fcmNotifications = member.getFcmNotifications();
         boolean alarmStatus = true;
         for(FcmNotification fcmNotification: fcmNotifications){
             if(fcmNotification.getMark()) continue; // 삭제 될 예정인 fcm토큰은 신경안써도됨
@@ -121,13 +120,13 @@ public class MemberServiceImpl implements MemberService {
         return ProfileResponse
                 .builder()
                 .id(memberId)
-                .provider(byId.getProvider())
-                .memberIdentifier(byId.getMemberIdentifier())
-                .boxCount(byId.getBoxCount())
-                .role(byId.getRole())
-                .createDate(byId.getCreateDate())
-                .reportCount(byId.getReportCount())
-                .userName(byId.getUserName())
+                .provider(member.getProvider())
+                .memberIdentifier(member.getMemberIdentifier())
+                .boxCount(member.getBoxCount())
+                .role(member.getRole())
+                .createDate(member.getCreateDate())
+                .reportCount(member.getReportCount())
+                .userName(member.getUserName())
                 .languageType(LanguageType.KOREAN)
                 .pushAlarm(alarmStatus)
                 .iconUrl(url)
