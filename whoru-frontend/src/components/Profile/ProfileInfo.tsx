@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import Profile from '@/assets/@common/Profile.png'
+// import { useDispatch } from 'react-redux'
+// import { setBoxCount } from '@/stores/userStore'
 
 const ProfileInfo = () => {
+  // const dispatch = useDispatch()
 	const [userInfo, setUserInfo] = useState({
 		userName: '',
 		iconUrl: Profile,
@@ -19,10 +22,12 @@ const ProfileInfo = () => {
 						Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
 					},
 				})
-				console.log('사용자 정보:', response.data)
+				console.log('사용자 정보?:', response.data)
 				if (response.data && response.data.data) {
 					const iconUrl = response.data.data.iconUrl !== 'null' ? response.data.data.iconUrl : Profile
 					setUserInfo((prev) => ({ ...prev, ...response.data.data, iconUrl: iconUrl }))
+          console.log("hhhhh",response.data.data.boxCount)
+          // dispatch(setBoxCount(response.data.data.boxCount))
 				} else {
 					setUserInfo((prev) => ({ ...prev, ...response.data }))
 				}

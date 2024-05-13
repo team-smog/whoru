@@ -9,8 +9,8 @@ import './Inquriy.css'
 
 const CreateInquiry = () => {
 	const info: IHeaderInfo = {
-    left_1: null,
-		left_2: <img src={Backspace} alt=""/>,
+		left_1: null,
+		left_2: <img src={Backspace} alt="" />,
 		center: '문의사항',
 		right: null,
 	}
@@ -30,14 +30,14 @@ const CreateInquiry = () => {
 		Swal.fire({
 			title: '문의사항을 등록하시겠습니까?',
 			showDenyButton: true,
-			confirmButtonText: '예',  
+			confirmButtonText: '예',
 			denyButtonText: '아니요',
-      customClass: {
-        popup: 'my-popup-style', // 팝업 전체 스타일
-        title: 'my-title-style', // 제목 스타일
-        confirmButton: 'my-confirm-button', // 확인 버튼 스타일
-        denyButton: 'my-deny-button' // 거절 버튼 스타일
-      }
+			customClass: {
+				popup: 'my-popup-style', // 팝업 전체 스타일
+				title: 'my-title-style', // 제목 스타일
+				confirmButton: 'my-confirm-button', // 확인 버튼 스타일
+				denyButton: 'my-deny-button', // 거절 버튼 스타일
+			},
 		}).then(async (result) => {
 			if (result.isConfirmed) {
 				setIsSubmitting(true)
@@ -70,33 +70,31 @@ const CreateInquiry = () => {
 			<div className="pb-10">
 				<Header info={info} />
 			</div>
-			<div className="pt-10 pl-5 pr-5">
+			<div className="pt-10 pr-5">
 				<form onSubmit={handleSubmit}>
-					<p className="text-sm">제목</p>
+					<p className="text-sm pl-5">제목</p>
 					<input
 						type="text"
 						value={subject}
 						onChange={(e) => setSubject(e.target.value)}
-						className="transparent-input text-xs"
+						className="transparent-input text-xs pl-5"
 						placeholder="제목을 입력해주세요.(최대 80자)"
 						disabled={isSubmitting}
 						maxLength={80}
 					/>
-					<hr />
-					<p className="text-sm pt-3">내용</p>
-					<textarea
-						className="text-xs mt-3 w-full textarea p-3 rounded-md border-solid border border-black"
-						value={content}
-						onChange={(e) => setContent(e.target.value)}
-						placeholder="내용을 입력해주세요."
-						disabled={isSubmitting}
-					/>
-					<div className="flex justify-center">
-						<button
-							className="text-sm fixed bottom-20 flex justify-center bg-[#C4AFF1] w-4/5 h-10 rounded-lg items-center"
-							type="submit"
+					<hr className="ml-5" />
+					<p className="text-sm pt-3 pl-5">내용</p>
+					<div className="pl-5">
+						<textarea
+							className="text-xs mt-3 w-full textarea p-3 rounded-md border-solid border border-black"
+							value={content}
+							onChange={(e) => setContent(e.target.value)}
+							placeholder="내용을 입력해주세요."
 							disabled={isSubmitting}
-						>
+						/>
+					</div>
+					<div className="fixed bottom-20 w-full max-w-[500px] m-auto px-4">
+						<button className="p-2 text-sm w-full bg-[#C4AFF1] h-10 rounded-lg" type="submit" disabled={isSubmitting}>
 							{isSubmitting ? '작성중...' : '문의사항 작성하기'}
 						</button>
 					</div>
