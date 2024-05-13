@@ -8,5 +8,5 @@ export const getUserDetail = async () : Promise<IUserInfo> => {
     }
   })
   console.log(res);
-  return res.data
+  return res.data.data
 }

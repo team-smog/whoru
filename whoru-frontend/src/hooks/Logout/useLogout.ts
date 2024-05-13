@@ -10,7 +10,6 @@ const useLogout = () => {
     onSuccess: () => {
       console.log('로그아웃됬습니다.');
       localStorage.removeItem('AccessToken');
-      localStorage.removeItem('userData');
       localStorage.clear();
       
       navigate('/login');
