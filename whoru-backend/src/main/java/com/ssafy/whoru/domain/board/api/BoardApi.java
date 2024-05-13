@@ -3,7 +3,6 @@ package com.ssafy.whoru.domain.board.api;
 import com.ssafy.whoru.domain.board.application.BoardService;
 import com.ssafy.whoru.domain.board.dto.request.PostInquiryBoardRequest;
 import com.ssafy.whoru.domain.board.dto.response.InquiryDetailResponse;
-import com.ssafy.whoru.domain.board.dto.response.InquiryRecordResponse;
 import com.ssafy.whoru.domain.board.dto.response.NotificationResponse;
 import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.global.common.dto.SliceResponse;
@@ -12,7 +11,6 @@ import com.ssafy.whoru.global.common.dto.WrapResponse;
 import com.ssafy.whoru.global.common.dto.response.ResponseWithSuccess;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -70,9 +68,9 @@ public class BoardApi implements BoardApiDocs{
         return ResponseEntity.ok(WrapResponse.create(SuccessType.STATUS_204));
     }
 
-    /*
+    /**
     * 공지사항 목록조회 API
-    * */
+    * **/
     @GetMapping("/noti")
     public ResponseEntity<WrapResponse<SliceResponse<NotificationResponse>>>  getNotifications(
         @AuthenticationPrincipal CustomOAuth2User member,

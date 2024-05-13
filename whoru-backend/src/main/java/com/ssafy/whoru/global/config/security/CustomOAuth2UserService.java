@@ -1,4 +1,4 @@
-package com.ssafy.whoru.domain.member.application;
+package com.ssafy.whoru.global.config.security;
 
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;

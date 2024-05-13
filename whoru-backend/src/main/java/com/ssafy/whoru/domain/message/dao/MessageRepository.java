@@ -2,8 +2,6 @@ package com.ssafy.whoru.domain.message.dao;
 
 import com.ssafy.whoru.domain.message.domain.Message;
 import java.util.List;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

@@ -1,8 +1,7 @@
-package com.ssafy.whoru.domain.member.application;
+package com.ssafy.whoru.global.config.security;
 
 import com.ssafy.whoru.domain.member.dao.FcmRepository;
 import com.ssafy.whoru.domain.member.dao.MemberRepository;
-import com.ssafy.whoru.domain.member.domain.FcmNotification;
 import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.domain.member.dto.ProviderType;
 import com.ssafy.whoru.domain.member.dto.response.KakaoResponse;
@@ -25,15 +24,12 @@ import java.util.Optional;
 public class CustomOAuth2UserServiceImpl extends DefaultOAuth2UserService implements CustomOAuth2UserService{
 
     private final MemberRepository memberRepository;
-    private final FcmRepository fcmRepository;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 
         OAuth2User oAuth2User = super.loadUser(userRequest);
         log.info("oAuth2User : {}", oAuth2User.toString());
-
-        System.out.println(oAuth2User);
 
         // 어느 플랫폼의 소셜로그인인지 알아야함
         String registrationId = userRequest.getClientRegistration().getRegistrationId();

@@ -18,7 +18,6 @@ import com.ssafy.whoru.domain.report.exception.DuplicatedReportException;
 import com.ssafy.whoru.domain.report.util.ReportUtil;
 import com.ssafy.whoru.global.common.dto.RedisKeyType;
 import com.ssafy.whoru.global.util.RedisUtil;
-import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;

@@ -1,4 +1,4 @@
-package com.ssafy.whoru.global.handler;
+package com.ssafy.whoru.global.config.security.handler;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,12 +1,7 @@
 package com.ssafy.whoru.global.common.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
-
-import java.util.Arrays;
 
 @AllArgsConstructor
 @Getter
