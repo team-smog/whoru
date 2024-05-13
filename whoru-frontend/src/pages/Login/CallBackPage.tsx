@@ -8,7 +8,7 @@ const CallBackPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const dispatch = useDispatch();
-  const { data: userData, isError, isLoading } = useAuthReq(); // API 호출의 결과를 받아오는 React Query 훅
+  const { data: userData, isError, isLoading } = useAuthReq();
 
   useEffect(() => {
     const accessToken = searchParams.get('accessToken');
@@ -19,7 +19,7 @@ const CallBackPage = () => {
       return;
     }
 
-    localStorage.setItem('AccessToken', accessToken); // 액세스 토큰을 로컬 스토리지에 저장
+    localStorage.setItem('AccessToken', accessToken);
 
     if (isLoading) return; 
 
@@ -31,10 +31,11 @@ const CallBackPage = () => {
     if (userData) {
       try {
         dispatch(setUser(userData));
-        localStorage.setItem('userData', JSON.stringify(userData))
+        console.log();
+        localStorage.setItem('userData', JSON.stringify(userData));
         navigate('/');
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
       
 
