@@ -23,4 +23,6 @@ public class GetIconResponse {
 
     private Boolean isDuplicat;
 
+    private int boxCount;
+
 }
