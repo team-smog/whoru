@@ -32,6 +32,11 @@
   <!--  -->
   <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <!-- 파일경로 설정 -->
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+      <level>info</level>
+      <onMatch>ACCEPT</onMatch>
+      <onMismatch>DENY</onMismatch>
+    </filter>
     <file>${LOG_PATH}/info/${INFO_LOG_FILE_NAME}.log</file>
 
     <!-- 출력패턴 설정-->
