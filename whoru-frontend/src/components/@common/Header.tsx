@@ -59,7 +59,7 @@ const Header = (props: {info:IHeaderInfo}) => {
           </button>
         )}
       </div>
-      <div className="flex-1 flex justify-center">{center && <p className="text-white">{center}</p>}</div>
+      <div className="flex-1 flex justify-center">{center && <p className="text-text_color">{center}</p>}</div>
       <div className="flex flex-1 justify-end items-center relative">
         <div>
           {right}
