@@ -21,6 +21,7 @@ import com.ssafy.whoru.domain.board.exception.NotSameWriterException;
 import com.ssafy.whoru.domain.member.application.CrossMemberService;
 import com.ssafy.whoru.domain.member.domain.FcmNotification;
 import com.ssafy.whoru.domain.member.domain.Member;
+import com.ssafy.whoru.global.common.dto.FcmType;
 import com.ssafy.whoru.global.common.dto.SliceResponse;
 import com.ssafy.whoru.global.common.dto.SuccessType;
 import com.ssafy.whoru.global.common.dto.response.ResponseWithSuccess;
@@ -206,7 +207,7 @@ public class BoardServiceImpl implements BoardService{
             for(FcmNotification fcmNotification: fcmNotifications){
                 if(fcmNotification.getMark()) continue;
                 if(!fcmNotification.getIsEnabled()) continue;
-                fcmUtil.sendMessage(fcmNotification.getFcmToken(), fcmNotification.getId(), notiTitle, NOTIFICATION_CONTENT );
+                fcmUtil.sendMessage(fcmNotification.getFcmToken(), fcmNotification.getId(), notiTitle, NOTIFICATION_CONTENT, FcmType.NOTIFICATION );
             }
         }
 
