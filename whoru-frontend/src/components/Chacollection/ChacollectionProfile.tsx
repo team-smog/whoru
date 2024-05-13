@@ -11,24 +11,12 @@ interface Icon {
 	isDuplicat: boolean
 	isAvailable: boolean
 }
-interface ChacollectionModalProps {
-	onAction: () => void
-}
-
-const ChacollectionModal: React.FC<ChacollectionModalProps> = ({ onAction }) => {
-	return (
-		<div>
-			<button onClick={onAction}>Refresh Icons</button>
-		</div>
-	)
-}
-console.log(ChacollectionModal)
 
 const ChacollectionProfile: React.FC = () => {
 	const [icons, setIcons] = useState<Icon[]>([])
 	const [profileImageUrl, setProfileImageUrl] = useState<string>(Profile)
 	const [selectedIconId, setSelectedIconId] = useState<string | null>(null)
-  console.log(selectedIconId)
+	console.log(selectedIconId)
 
 	useEffect(() => {
 		const savedIconUrl = localStorage.getItem('selectedProfileImage')
@@ -90,7 +78,7 @@ const ChacollectionProfile: React.FC = () => {
 			<div className="relative chacollection-profile-container">
 				<p className="text-xl pt-32 pl-4">캐릭터 도감</p>
 				<p className="text-xs pt-2 pl-4 text-[#797979]">원하는 캐릭터로 자신의 프로필을 바꿀 수 있어요.</p>
-				<div className="flex flex-wrap pt-4 scrollable-container">
+				<div className="flex justify-center flex-wrap pt-4 scrollable-container">
 					{icons.map((icon, index) => (
 						<div
 							className={`profile-container ${!icon.isAvailable ? 'unavailable-icon' : ''}`}

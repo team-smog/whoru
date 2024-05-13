@@ -32,15 +32,15 @@ const InquiryManager = () => {
 		fetchInquiries()
 	}, [currentPage, pageSize])
 
-	const InquiryList: React.FC<InquiryListProps> = ({ inquiries}) => {
+	const InquiryList: React.FC<InquiryListProps> = ({ inquiries }) => {
 		return (
 			<div>
 				{inquiries.map((inquiry) => (
 					<div key={inquiry.id}>
 						<div className="pl-5 pr-5" onClick={() => goToDetailPage(inquiry)}>
-							<p className='text-sm'>{inquiry.subject}</p>
-							<p className='pb-2 text-xs text-[#858585]'>{formatDate(inquiry.updateDate)}</p>
-              <hr className="pb-2" />
+							<p className="text-sm">{inquiry.subject}</p>
+							<p className="pb-2 text-xs text-[#858585]">{formatDate(inquiry.updateDate)}</p>
+							<hr className="pb-2" />
 						</div>
 					</div>
 				))}
@@ -95,7 +95,7 @@ const InquiryManager = () => {
 		}
 	}
 
-  const formatDate = (dateString: string) => {
+	const formatDate = (dateString: string) => {
 		const date = new Date(dateString)
 		return format(date, 'yyyy.MM.dd', { locale: ko })
 	}
@@ -106,19 +106,23 @@ const InquiryManager = () => {
 	return (
 		<div className="pt-10">
 			{loading}
-      <div className='flex justify-center'>
-			<button className='text-sm fixed bottom-32 flex justify-center bg-[#C4AFF1] w-4/5 h-10 rounded-lg items-center' onClick={goToCreatePage}>문의사항 작성하기</button>
-      </div>
+			<div className="fixed bottom-32 w-full max-w-[500px] m-auto px-4">
+				<button className="p-2 text-sm w-full bg-[#C4AFF1] h-10 rounded-lg" onClick={goToCreatePage}>
+					문의사항 작성하기
+				</button>
+			</div>
 			<InquiryList inquiries={inquiries} handleDetailPage={goToCreatePage} />
-			<div className="fixed bottom-20 w-full"> 
-				<div className="flex justify-evenly items-center">
-					<button onClick={handlePrevPage} disabled={currentPage === 0}>
-						이전
-					</button>
-					<span>{currentPage + 1}</span>
-					<button onClick={handleNextPage} disabled={isLastPage}>
-						다음
-					</button>
+			<div className="flex justify-center">
+				<div className="fixed bottom-20 w-full max-w-[500px] m-auto px-4">
+					<div className="flex justify-evenly items-center">
+						<button onClick={handlePrevPage} disabled={currentPage === 0}>
+							이전
+						</button>
+						<span>{currentPage + 1}</span>
+						<button onClick={handleNextPage} disabled={isLastPage}>
+							다음
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>

@@ -44,3 +44,11 @@ input[type=checkbox] {
   width: 0;
   height: 0;
 }
+
+
+.centered-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70%;
+}

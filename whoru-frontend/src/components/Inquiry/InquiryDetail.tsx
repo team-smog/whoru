@@ -7,6 +7,8 @@ import { format } from 'date-fns'
 import { ko } from 'date-fns/locale'
 import Backspace from '@/assets/@common/Backspace.png'
 import Swal from 'sweetalert2'
+import Q from '@/assets/@common/Q.png'
+import A from '@/assets/@common/A.png'
 
 interface Inquiry {
 	id: number
@@ -85,24 +87,33 @@ function InquiryDetail() {
 					) : inquiry ? (
 						<div>
 							<div className="border-b-[0.5px] mx-8">
-								<div className="w-full mx-auto">
-									<div className="flex flex-col justify-center items-center">
-										<div className="flex flex-col justify-evenly w-full px-4 pb-2">
-											<p className="text-[16px] word-wrap break-word">{inquiry.subject}</p>
-											<p className="text-[14px] text-[#858585]">{formatDate(inquiry.updateDate)}</p>
+								<div className="w-full">
+									<div className="flex flex-col items-start">
+										<div className="flex flex-row">
+											<img className="w-8 h-8" src={Q} alt="" />
+											<div className="flex flex-col justify-evenly w-full px-4 pb-2">
+												<p className="text-[16px]">{inquiry.subject}</p>
+												<p className="text-[14px] text-[#858585]">{formatDate(inquiry.updateDate)}</p>
+											</div>
 										</div>
 									</div>
 								</div>
 							</div>
-							<div className="flex px-12 pt-4">
+							<div className="flex flex-row px-12 pt-4">
 								<p className="text-xs word-wrap:break-word scrollable-content">{inquiry.content}</p>
 							</div>
 							{inquiry.comment && (
-								<div className="w-full mx-auto fixed bottom-52 overflow-y-auto">
+								<div className="mx-auto fixed bottom-52 overflow-y-auto">
 									<div className="border-b-[0.5px] mx-8">
 										<div className="flex justify-center items-center">
-											<div className="flex flex-col justify-evenly w-full px-4 pb-2">
-												<p className="text-[16px]">{inquiry.comment.commenterName}</p>
+											<div className="flex flex-row justify-start w-full pb-2">
+												<div>
+													<img className="w-8 h-8" src={A} alt="" />
+												</div>
+												<div className="flex flex-col items-center px-4">
+													<p className="text-[16px]">{inquiry.comment.commenterName}</p>
+                          <p className="text-[12px] text-[#858585]">{formatDate(inquiry.comment.createDate)}</p>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -115,13 +126,12 @@ function InquiryDetail() {
 										}}
 									>
 										<p className="text-xs">{inquiry.comment.content}</p>
-										<p className="text-[12px] text-[#858585]">{formatDate(inquiry.comment.createDate)}</p>
 									</div>
 								</div>
 							)}
-							<div className="flex justify-center">
+							<div className="fixed bottom-20 w-full max-w-[500px] m-auto px-4">
 								<button
-									className="text-sm fixed bottom-20 flex justify-center bg-[#C4AFF1] w-4/5 h-10 rounded-lg items-center"
+									className="p-2 text-sm w-full bg-[#C4AFF1] h-10 rounded-lg"
 									onClick={() => handleDelete(inquiry.id)}
 								>
 									삭제하기

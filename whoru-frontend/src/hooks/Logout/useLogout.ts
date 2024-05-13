@@ -1,12 +1,9 @@
 import { useNavigate } from "react-router-dom"
 import { logoutApi } from "@/service/Logout/api";
 import { useMutation } from "@tanstack/react-query";
-import { useDispatch } from "react-redux";
-import { clearUser } from "@/stores/userStore";
 
 const useLogout = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   return useMutation({
     mutationFn: () => logoutApi(),
@@ -15,7 +12,6 @@ const useLogout = () => {
       localStorage.removeItem('AccessToken');
       localStorage.removeItem('userData');
       localStorage.clear();
-      dispatch(clearUser());
       
       navigate('/login');
     },

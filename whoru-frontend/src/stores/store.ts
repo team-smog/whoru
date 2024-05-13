@@ -1,5 +1,14 @@
 import { configureStore, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+export interface UserState {
+  boxCount: number | null;
+  role: string | null;
+}
+
+export const initial: UserState = {
+  boxCount: null,
+  role: null,
+};
 
 interface ReplyState {
   messageId: number | null;
@@ -26,6 +35,19 @@ interface boxCountState {
 const boxCounterInitialState: boxCountState = {
   boxCount: 0,
 }
+
+const userSlice = createSlice({
+  name: 'user',
+  initialState:initial,
+  reducers: {
+    setBoxCount:(state, action:PayloadAction<number|null>) => {
+      state.boxCount = action.payload;
+    },
+    setRole:(state, action:PayloadAction<string|null>) => {
+      state.role = action.payload
+    }
+  }
+})
 
 const replySlice = createSlice({
   name: 'reply',
@@ -79,16 +101,19 @@ const boxCounterSlice = createSlice({
 const { reducer: replyReducer } = replySlice;
 const { reducer: messageReducer } = messageSlice;
 const { reducer: boxCounterReducer } = boxCounterSlice;
+const { reducer: userReducer} = userSlice;
 
 // 스토어 구성
 const store = configureStore({
   reducer: {
+    user: userReducer,
     reply: replyReducer,
     message: messageReducer,
     boxCounter: boxCounterReducer,
   }
 });
 
+export const { setBoxCount, setRole } = userSlice.actions;
 export const { setReplyMessage } = replySlice.actions;
 export const { setFirstId, setLastId } = messageSlice.actions;
 export const { setBoxCountP, setBoxCountM } = boxCounterSlice.actions;
