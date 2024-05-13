@@ -59,12 +59,17 @@ const boxCounterSlice = createSlice({
     setBoxCountP: (state) => {
       if (state.boxCount !== null) {
         state.boxCount += 1;
+        console.log("box Count P",state.boxCount)
       }
     },
     setBoxCountM: (state) => {
-      if (state.boxCount !== null) {
+      if ((state.boxCount !== null) && (state.boxCount > 0)) {
         state.boxCount -= 1;
+        console.log("box Count M",state.boxCount)
       }
+    },
+    setBoxCountState: (state, action: PayloadAction<number|null>) => {
+      state.boxCount = action.payload;
     },
   }
 });
