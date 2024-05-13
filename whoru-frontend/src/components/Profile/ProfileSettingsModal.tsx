@@ -27,9 +27,9 @@ const ProfileSettingsModal = () => {
 					},
 				})
 				// console.log(res.data)
-				console.log(!res.data.data.pushAlarm)
+				console.log(res.data.data.pushAlarm)
 				if (res.data && res.data.data.pushAlarm !== undefined) {
-					setIsPushNotificationEnabled(!res.data.data.pushAlarm)
+					setIsPushNotificationEnabled(res.data.data.pushAlarm)
 				}
 			} catch (error) {
 				console.error('사용자 설정 정보를 불러오는 중 에러 발생:', error)
