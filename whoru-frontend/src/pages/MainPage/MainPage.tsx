@@ -90,10 +90,11 @@ const MainPage = () => {
     // const token = await requestPermission();
     // console.log("token",token)
     // return token;
+    // localStorage.getItem('FCMToken');
     return await requestPermission();
   }
   
-  const fetchDataFCM = async (token: string) => {
+  const fetchDataFCM = async (token: string|null) => {
     try {
       // console.log("token1",token)
       await fetch(`https://k10d203.p.ssafy.io/api/member/updatefcm?fcmToken=${token}`, {
@@ -112,9 +113,11 @@ const MainPage = () => {
 
   useEffect(() => {
     const token = FCMSetToken();
-    token.then((res) => {
-      fetchDataFCM(res);
-      console.log("res token",res);
+    token.then(() => {
+      const FCM = localStorage.getItem('FCMToken');
+      console.log("FCM",FCM);
+      fetchDataFCM(FCM);
+      // console.log("res token",res);
       // localStorage.setItem('FCMToken', res);
     })
     // fetchDataFCM(token);

@@ -15,15 +15,24 @@ const Header = (props: {info:IHeaderInfo}) => {
   const navigate = useNavigate();
   const messagingObject = useRef(null);
 
-  const Toast = Swal.mixin({
+  const ToastMessage = Swal.mixin({
     toast: true,
     position: 'center',
     showConfirmButton: false,
     timer: 3000,
     timerProgressBar: true,
     didOpen: (toast) => {
-      toast.addEventListener('mouseenter', Swal.stopTimer)
-      toast.addEventListener('mouseleave', Swal.resumeTimer)
+      toast.addEventListener('click', () => navigate('/'));
+    }
+  })
+
+  const ToastAnnouncement = Swal.mixin({
+    toast: true,
+    position: 'center',
+    showConfirmButton: false,
+    timer: 3000,
+    didOpen: (toast) => {
+      toast.addEventListener('click', () => navigate('/announcement'));
     }
   })
 
@@ -36,21 +45,29 @@ const Header = (props: {info:IHeaderInfo}) => {
       // console.log(messagingObject.current);
       onMessage(messagingObject.current, (body)=>{
         if (body.data) {
-          const { content } = body.data;
-          Toast.fire({
-            icon: 'success',
-            title: content
-          })
+          const { content, type } = body.data;
+          if (type === "message") {
+            ToastMessage.fire({
+              icon: 'success',
+              title: content,
+            })
+          } else {
+            ToastAnnouncement.fire({
+              icon: 'success',
+              title: content,
+            })
+          }
         }
       })
   }
+
 
   return(
     <div className="max-w-[500px] w-full z-[2] h-12 px-4 top-0 flex fixed justify-between items-center">
       <div className="flex flex-1 justify-start items-center">
         {left_1 && (
           <div className="w-13 text-[20px] text-text_color">
-            <div>{left_1}</div>
+            <div >{left_1}</div>
           </div>
         )}
         {left_2 && (
