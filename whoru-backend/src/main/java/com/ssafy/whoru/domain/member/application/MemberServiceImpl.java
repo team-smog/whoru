@@ -3,11 +3,9 @@ package com.ssafy.whoru.domain.member.application;
 
 import com.ssafy.whoru.domain.collect.application.CrossCollectService;
 import com.ssafy.whoru.domain.collect.domain.Icon;
-import com.ssafy.whoru.domain.member.dao.FcmRepository;
 import com.ssafy.whoru.domain.member.dao.MemberRepository;
 import com.ssafy.whoru.domain.member.domain.FcmNotification;
 import com.ssafy.whoru.domain.member.domain.Member;
-import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.domain.member.dto.LanguageType;
 import com.ssafy.whoru.domain.member.dto.response.ChangeIconResponse;
 import com.ssafy.whoru.domain.member.dto.response.ProfileResponse;
@@ -16,7 +14,6 @@ import com.ssafy.whoru.domain.member.exception.*;
 import com.ssafy.whoru.global.common.dto.RedisKeyType;
 import com.ssafy.whoru.global.error.exception.BusinessLogicException;
 import com.ssafy.whoru.global.error.exception.ErrorCode;
-import com.ssafy.whoru.global.error.exception.SimpleException;
 import com.ssafy.whoru.global.util.JWTUtil;
 import com.ssafy.whoru.global.util.RedisUtil;
 import java.util.List;
@@ -73,9 +70,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void logout(Long memberId, String fcmToken) {
-        log.info("fcm before");
         crossFcmService.markingUnusedToken(memberId, fcmToken);
-        log.info("fcm after");
         redisUtil.delete(RedisKeyType.REFRESHTOKEN.makeKey(memberId.toString()));
     }
 
@@ -138,25 +133,6 @@ public class MemberServiceImpl implements MemberService {
                 .iconUrl(url)
                 .build();
     }
-
-    // Get FCM Token을 할 필요가 없음
-    // 사유: 이제 해당 회원이 발급받는 모든 FCM Token은 관리 아래에 둠
-    // 그리고 사용하지 않는 토큰은 주기적으로 삭제함
-
-//    @Override
-//    public TokenResponse getToken(Long id) {
-//        Optional<Member> byId = Optional.ofNullable(memberRepository.findById(id)
-//                .orElseThrow(FcmTokenNotFoundException::new));
-//        if(byId.get().getFcmNotification()== null){
-//            throw new FcmNotFoundException();
-//        }
-//        return TokenResponse
-//                .builder()
-//                .token(byId.get().getFcmNotification().getFcmToken())
-//                .username(byId.get().getUserName())
-//                .build();
-//        return null;
-//    }
 
 
 }

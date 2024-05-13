@@ -1,8 +1,6 @@
 package com.ssafy.whoru.domain.report.api;
 
-import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.domain.report.dto.ReportType;
-import com.ssafy.whoru.domain.report.dto.request.PostReportRequest;
 import com.ssafy.whoru.domain.report.dto.response.ReportRecordResponse;
 import com.ssafy.whoru.global.common.dto.SliceResponse;
 import com.ssafy.whoru.global.common.dto.WrapResponse;
@@ -12,28 +10,15 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-/**
- * Swagger 문서 작업을 위한 추상 인터페이스
- * Controller 코드를 간결화하기 위해 해당 인터페이스에서 어노테이션 작업을 수행
- * **/
-@Tag(name ="신고 관련 Controller", description = "신고 API")
-public interface ReportControllerDocs {
-
-
-    @PostMapping("/member")
-    @Operation(summary = "사용자 신고", description = "불건전한 메시지 사용자에 대해 신고를 할 수 있다.")
-    public ResponseEntity<WrapResponse<Void>> reportMember(@RequestBody PostReportRequest request);
+public interface ReportAdminApiDocs {
 
     @Operation(summary = "사용자 이용 정지", description = "관리자는 사용자 신고 내역을 확인 후 이용 정지를 시킬 수 있다.")
     @PostMapping("/ban/{memberId}")

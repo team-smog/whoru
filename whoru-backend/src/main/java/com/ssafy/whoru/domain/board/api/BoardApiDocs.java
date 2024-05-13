@@ -2,7 +2,6 @@ package com.ssafy.whoru.domain.board.api;
 
 import com.ssafy.whoru.domain.board.dto.request.PostInquiryBoardRequest;
 import com.ssafy.whoru.domain.board.dto.response.InquiryDetailResponse;
-import com.ssafy.whoru.domain.board.dto.response.InquiryRecordResponse;
 import com.ssafy.whoru.domain.board.dto.response.NotificationResponse;
 import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.global.common.dto.SliceResponse;
@@ -18,8 +17,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Size;
-import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -70,7 +67,7 @@ public interface BoardApiDocs {
     public ResponseEntity<WrapResponse<SliceResponse<NotificationResponse>>>  getNotifications(
         @AuthenticationPrincipal CustomOAuth2User member,
         @RequestParam("page") @Min(value = 0, message = "페이지 번호는 최소 0이상이어야 합니다.") int page,
-        @RequestParam(value = "size", required = true) @Min(value = 1, message = "사이즈가 너무 작습니다.") @Max(value = 30, message = "사이즈가 너무 큽니다.") int size
+        @RequestParam(value = "size") @Min(value = 1, message = "사이즈가 너무 작습니다.") @Max(value = 30, message = "사이즈가 너무 큽니다.") int size
     );
 
 }
