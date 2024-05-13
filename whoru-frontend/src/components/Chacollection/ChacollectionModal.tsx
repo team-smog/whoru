@@ -4,8 +4,7 @@ import Confetti from 'react-confetti'
 import OpenImage from '@/assets/@common/Randomopenbox.png'
 import Cancel from '@/assets/@common/Cancel.png'
 import './Modal.css'
-// import { setBoxCount } from '@/stores/userStore'
-import {useSelector } from 'react-redux'
+// import {useSelector } from 'react-redux'
 
 interface Icon {
 	id: string
@@ -24,7 +23,8 @@ const ChacollectionModal: React.FC<ChacollectionModalProps> = ({ onAction }) => 
 	const [imageSrc, setImageSrc] = useState(OpenImage)
 	const [drawnImages] = useState<Icon[]>([])
 	// const [remainingChances, setRemainingChances] = useState(3)
-	const boxCount = useSelector((state: any) => state.boxCount)
+	// const boxCount = useSelector((state: any) => state.boxCount)
+  const [boxCount] = useState(0)
 	const [isAnimating, setIsAnimating] = useState(false)
 	const [showConfetti, setShowConfetti] = useState(false)
 	const [isShaking, setIsShaking] = useState(false)
