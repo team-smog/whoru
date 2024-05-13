@@ -105,6 +105,7 @@ public class MemberTestUtil implements InitializingBean {
                 .createDate(LocalDateTime.now())
                 .refreshToken("fdafasfasfasfafdfa")
                 .reportCount(0)
+                .role("ROLE_USER")
                 .userName("MEMBER3000")
                 .languageType(LanguageType.KOREAN)
                 .build();
@@ -128,6 +129,7 @@ public class MemberTestUtil implements InitializingBean {
             .provider(ProviderType.kakao)
             .memberIdentifier("1")
             .boxCount(3)
+            .role("ROLE_USER")
             .createDate(LocalDateTime.now())
             .refreshToken("fdafasfasfasfafdfa")
             .reportCount(0)
@@ -167,6 +169,7 @@ public class MemberTestUtil implements InitializingBean {
             .createDate(LocalDateTime.now())
             .refreshToken("fdafasfasfasfafdfa")
             .reportCount(0)
+            .role("ROLE_USER")
             .userName("ERROR_MEMBER")
             .languageType(LanguageType.KOREAN)
             .build();
