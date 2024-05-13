@@ -10,13 +10,12 @@ interface Icon {
 	iconGrade: string
 	isDuplicat: boolean
 	isAvailable: boolean
-}
+} 
 
 const ChacollectionProfile: React.FC = () => {
 	const [icons, setIcons] = useState<Icon[]>([])
 	const [profileImageUrl, setProfileImageUrl] = useState<string>(Profile)
-	const [selectedIconId, setSelectedIconId] = useState<string | null>(null)
-	console.log(selectedIconId)
+	// const [ setSelectedIconId] = useState<string | null>(null)
 
 	useEffect(() => {
 		const savedIconUrl = localStorage.getItem('selectedProfileImage')
@@ -57,7 +56,7 @@ const ChacollectionProfile: React.FC = () => {
 
 			if (response.data) {
 				setProfileImageUrl(iconUrl) // 서버 응답 성공 시, 프로필 이미지 URL 업데이트
-				setSelectedIconId(iconId)
+				// setSelectedIconId(iconId)
 				localStorage.setItem('selectedProfileImage', iconUrl) // 선택된 이미지를 localStorage에 저장
 				alert('프로필 아이콘이 성공적으로 변경되었습니다.')
 			}

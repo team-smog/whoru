@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import Confetti from 'react-confetti'
+import { useSelector, useDispatch } from 'react-redux'
+import { setBoxCount } from '@/stores/store'
 import OpenImage from '@/assets/@common/Randomopenbox.png'
 import Cancel from '@/assets/@common/Cancel.png'
 import './Modal.css'
-// import {useSelector } from 'react-redux'
 
 interface Icon {
 	id: string
@@ -18,16 +19,18 @@ interface ChacollectionModalProps {
 }
 
 const ChacollectionModal: React.FC<ChacollectionModalProps> = ({ onAction }) => {
-	// const dispatch = useDispatch()
+	const dispatch = useDispatch()
+	const boxCount = useSelector((state: any) => state.user.boxCount)
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const [imageSrc, setImageSrc] = useState(OpenImage)
 	const [drawnImages] = useState<Icon[]>([])
-	// const [remainingChances, setRemainingChances] = useState(3)
-	// const boxCount = useSelector((state: any) => state.boxCount)
-  const [boxCount] = useState(0)
 	const [isAnimating, setIsAnimating] = useState(false)
 	const [showConfetti, setShowConfetti] = useState(false)
 	const [isShaking, setIsShaking] = useState(false)
+  
+  useEffect(() => {
+    console.log("123",boxCount)
+  },[])
 
 	const handleNotificationSettingsClick = () => {
 		setIsModalOpen(true)
@@ -36,7 +39,7 @@ const ChacollectionModal: React.FC<ChacollectionModalProps> = ({ onAction }) => 
 	const closeModal = () => {
 		setIsModalOpen(false)
 		setShowConfetti(false)
-		setImageSrc(OpenImage) // Close 모달에서도 상자 이미지로 리셋
+		setImageSrc(OpenImage)
 	}
 
 	useEffect(() => {
@@ -56,9 +59,10 @@ const ChacollectionModal: React.FC<ChacollectionModalProps> = ({ onAction }) => 
 						},
 					}
 				)
+        console.log(response)
 				onAction()
 				setImageSrc(response.data.data.iconUrl)
-        // dispatch(setBoxCount(response.data.data.boxCount))
+				dispatch(setBoxCount(response.data.data.boxCount))
 				setShowConfetti(true)
 				setIsShaking(false)
 				setTimeout(() => setShowConfetti(false), 5000)
@@ -66,7 +70,7 @@ const ChacollectionModal: React.FC<ChacollectionModalProps> = ({ onAction }) => 
 				console.error('Error fetching icons:', error)
 				setIsShaking(false)
 			}
-		}, 800) // Give time for the shake animation
+		}, 800)
 	}
 
 	const applyAnimation = () => {
@@ -78,9 +82,8 @@ const ChacollectionModal: React.FC<ChacollectionModalProps> = ({ onAction }) => 
 
 	const handleImageClick = () => {
 		if (boxCount > 0) {
-			// setRemainingChances((prevChances) => prevChances - 1)
-			// dispatch(setBoxCount())
-			setImageSrc(OpenImage) // Reset to box image each time before shaking
+			dispatch(setBoxCount(boxCount - 1))
+			setImageSrc(OpenImage)
 			fetchUserIcons()
 			applyAnimation()
 		} else {
@@ -120,9 +123,7 @@ const ChacollectionModal: React.FC<ChacollectionModalProps> = ({ onAction }) => 
 								colors={['#ff5f6d', '#ffc371', '#48c6ef', '#6f86d6']}
 							/>
 						)}
-						<p className="flex justify-center pt-2 text-sm">
-							남은 기회 : {boxCount > 0 ? boxCount : 0}회
-						</p>
+						<p className="flex justify-center pt-2 text-sm">남은 기회 : {boxCount > 0 ? boxCount : 0}회</p>
 						<div
 							className="modalbutton"
 							onClick={handleImageClick}
