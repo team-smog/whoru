@@ -35,3 +35,11 @@
   color: white;
   width: 100px;
 }
+
+.scrollable-container {
+  display: flex; 
+  flex-wrap: wrap; 
+  overflow-y: auto;
+  padding: 0 1rem;
+  max-height: 350px;
+}
