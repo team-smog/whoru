@@ -1,4 +1,4 @@
-package com.ssafy.whoru.global.config.security.filter;
+package com.ssafy.whoru.global.common.filter;
 
 import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.domain.member.dto.MemberDTO;
