@@ -29,6 +29,7 @@ const CallBackPage = () => {
 		}
 
 		if (userData) {
+      console.log(userData)
 			console.log('lasiefjlsaejf', userData.pushAlarm)
 				dispatch(setBoxCount(userData.boxCount))
 				dispatch(setRole(userData.role))
