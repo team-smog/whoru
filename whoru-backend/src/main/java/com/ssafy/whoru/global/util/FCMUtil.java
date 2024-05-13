@@ -5,7 +5,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.WebpushConfig;
 import com.google.firebase.messaging.WebpushNotification;
-import com.ssafy.whoru.domain.member.application.CrossFcmService;
+import com.ssafy.whoru.domain.member.application.FcmService;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,8 @@ public class FCMUtil {
 
     static final String FCM_CONTENT = "누군가로부터 메세지가 도착했어요!";
 
-    private final CrossFcmService crossFcmService;
+    private final FcmService fcmService;
+
     @Async("fcm-send")
     public void sendMessage(String token, Long fcmId){
         try{
@@ -28,7 +29,7 @@ public class FCMUtil {
             FirebaseMessaging.getInstance().send(messageBuilder(token));
         }catch(FirebaseException e){
             log.error("Firebase exception : {}", e);
-            crossFcmService.markingUnusedToken(fcmId);
+            fcmService.markingUnusedToken(fcmId);
 
         }
     }
@@ -40,7 +41,7 @@ public class FCMUtil {
             FirebaseMessaging.getInstance().send(messageBuilder(receiverToken, title, content));
         }catch(FirebaseException e){
             log.error("Firebase exception : {}", e);
-            crossFcmService.markingUnusedToken(fcmId);
+            fcmService.markingUnusedToken(fcmId);
         }
     }
 
