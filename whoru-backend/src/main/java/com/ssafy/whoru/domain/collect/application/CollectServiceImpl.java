@@ -90,6 +90,7 @@ public class CollectServiceImpl implements CollectService {
                 .build());
         }
 
+        response.setBoxCount(member.getBoxCount());
 
         return response;
     }
