@@ -19,7 +19,7 @@ interface ChacollectionModalProps {
 }
 
 const ChacollectionModal: React.FC<ChacollectionModalProps> = ({ onAction }) => {
-	const dispatch = useDispatch()
+	// const dispatch = useDispatch()
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const [imageSrc, setImageSrc] = useState(OpenImage)
 	const [drawnImages] = useState<Icon[]>([])
