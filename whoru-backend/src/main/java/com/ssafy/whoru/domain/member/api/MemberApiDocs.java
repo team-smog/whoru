@@ -1,11 +1,9 @@
 package com.ssafy.whoru.domain.member.api;
 
-import com.ssafy.whoru.domain.collect.dto.response.GetIconResponse;
 import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.domain.member.dto.response.ChangeIconResponse;
 import com.ssafy.whoru.domain.member.dto.response.ProfileResponse;
 import com.ssafy.whoru.domain.member.dto.response.TokenResponse;
-import com.ssafy.whoru.global.common.dto.SliceResponse;
 import com.ssafy.whoru.global.common.dto.WrapResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -18,7 +16,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import software.amazon.awssdk.profiles.Profile;
 
 /*
  * Author 정민호
@@ -60,12 +57,5 @@ public interface MemberApiDocs {
     @ApiResponse(responseCode = "200")
     @PatchMapping("/updatefcm")
     ResponseEntity<WrapResponse<Void>> updateFcm(@AuthenticationPrincipal CustomOAuth2User member,String fcmToken);
-
-//    @Operation(summary = "fcmToken get", description = "사용자의 fcm 토큰을 가져올 수 있다.")
-//    @ApiResponse(responseCode = "200",description = "access토큰을 토대로 사용자의 fcm 토큰을 가져온다. ", content = @Content(schema = @Schema(implementation = TokenResponse.class)))
-//    @ApiResponse(responseCode = "204",description = "fcm 토큰이 없을때 반환된다.")
-//    @ApiResponse(responseCode = "453",description = "fcm이 설정되지 않았을 때 반환된다.")
-//    @GetMapping("/gettoken")
-//    ResponseEntity<WrapResponse<TokenResponse>> getToken(@AuthenticationPrincipal CustomOAuth2User member);
 
 }

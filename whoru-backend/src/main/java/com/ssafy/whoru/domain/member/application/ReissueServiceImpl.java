@@ -20,7 +20,7 @@ public class ReissueServiceImpl implements ReissueService {
 
     @Override
     public ResponseEntity<?> reissue(HttpServletRequest request, HttpServletResponse response) {
-        //get refresh token
+
         String refresh = null;
         Cookie[] cookies = request.getCookies();
         for (Cookie cookie : cookies) {

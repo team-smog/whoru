@@ -30,13 +30,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
-import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -202,7 +199,7 @@ public class BoardServiceImpl implements BoardService{
 
         boardRepository.save(noti);
         List<Member> allMembers = crossMemberService.findAllMemberEntities();
-        List<String> fcmTokens = new ArrayList<>();
+
         String notiTitle = fcmUtil.makeDateTitle(NOTIFICATION_TITLE, noti.getCreateDate());
         for(Member member: allMembers){
             List<FcmNotification> fcmNotifications = member.getFcmNotifications();

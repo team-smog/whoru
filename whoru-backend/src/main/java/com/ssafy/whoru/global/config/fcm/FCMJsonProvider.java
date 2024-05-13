@@ -1,4 +1,4 @@
-package com.ssafy.whoru.global.config;
+package com.ssafy.whoru.global.config.fcm;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;

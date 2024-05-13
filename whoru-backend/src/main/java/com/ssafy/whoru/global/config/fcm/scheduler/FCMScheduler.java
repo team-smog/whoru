@@ -1,4 +1,4 @@
-package com.ssafy.whoru.global.scheduler;
+package com.ssafy.whoru.global.config.fcm.scheduler;
 
 import com.ssafy.whoru.domain.member.dao.FcmRepository;
 import com.ssafy.whoru.domain.member.domain.FcmNotification;

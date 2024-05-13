@@ -22,7 +22,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.cglib.core.Local;
 
 @Entity
 @Getter
@@ -75,8 +74,6 @@ public class Message {
     private LocalDateTime readDate;
 
     public void updateReadStatus(Boolean status) {this.readStatus = status; }
-
-    public void updateIsResponse(Boolean status) {this.isResponse = status; }
 
     public void updateIsReported(Boolean status) {this.isReported = status; }
 

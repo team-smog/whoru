@@ -1,12 +1,8 @@
 package com.ssafy.whoru.domain.member.application;
 
 import com.ssafy.whoru.domain.member.dao.FcmRepository;
-import com.ssafy.whoru.domain.member.dao.MemberRepository;
 import com.ssafy.whoru.domain.member.domain.FcmNotification;
 import com.ssafy.whoru.domain.member.domain.Member;
-import com.ssafy.whoru.global.error.exception.BusinessLogicException;
-import com.ssafy.whoru.global.error.exception.ErrorCode;
-import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,13 +17,6 @@ public class FcmServiceImpl implements FcmService{
 
     private final FcmRepository fcmRepository;
     private final CrossMemberService crossMemberService;
-    private final MemberRepository memberRepository;
-
-    @Override
-    public void changeIsEnabled(FcmNotification fcm) {
-        fcm.updateNotificationsEnabled(!fcm.getIsEnabled());
-        fcmRepository.save(fcm);
-    }
 
     @Override
 //    @Transactional

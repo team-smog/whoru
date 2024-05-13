@@ -11,7 +11,6 @@ import com.ssafy.whoru.domain.collect.dto.response.MemberIconResponse;
 import com.ssafy.whoru.domain.collect.exception.BoxCountInvalidException;
 import com.ssafy.whoru.domain.collect.exception.IconNotFoundException;
 import com.ssafy.whoru.domain.member.application.CrossMemberService;
-import com.ssafy.whoru.domain.member.application.MemberServiceImpl;
 import com.ssafy.whoru.domain.member.domain.Member;
 import com.ssafy.whoru.global.error.exception.ErrorCode;
 import java.util.List;
@@ -38,8 +37,6 @@ public class CollectServiceImpl implements CollectService {
     private final MemberIconRepository memberIconRepository;
 
     private final ModelMapper modelMapper;
-
-    private final MemberServiceImpl memberServiceImpl;
 
     @Override
     public GetIconResponse redeemRandomIcon(Long memberId) {
