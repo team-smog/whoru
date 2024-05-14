@@ -21,6 +21,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -43,12 +45,17 @@ public class MemberApi implements MemberApiDocs {
 
     @PatchMapping("/push-alarm")
     public ResponseEntity<WrapResponse<Void>> setPush(@AuthenticationPrincipal CustomOAuth2User member) {
+        log.info("request member -> {}",member.getId());
         memberService.setPush(member.getId());
         return ResponseEntity.ok(WrapResponse.create(SuccessType.SIMPLE_STATUS));
     }
 
     @GetMapping("/logout")
     public ResponseEntity<WrapResponse<Void>> logout(@AuthenticationPrincipal CustomOAuth2User member, @RequestParam String fcmToken, HttpServletRequest request, HttpServletResponse response) {
+        log.info("request member -> {}",member.getId());
+        log.info("request param -> fcmToken: {}",fcmToken);
+        log.info("request -> cookies: {}", Arrays.toString(request.getCookies()));
+
         memberService.logout(member.getId(), fcmToken);
         Cookie[] cookies = request.getCookies();
 
@@ -73,6 +80,8 @@ public class MemberApi implements MemberApiDocs {
 
     @PostMapping("/regenerate-token")
     public ResponseEntity<WrapResponse<TokenResponse>> regenerateToken(@AuthenticationPrincipal CustomOAuth2User member, HttpServletRequest request) {
+        log.info("request member -> {}",member.getId());
+        log.info("request -> cookies: {}", Arrays.toString(request.getCookies()));
         String refreshToken = null;
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
@@ -92,12 +101,15 @@ public class MemberApi implements MemberApiDocs {
 
     @GetMapping("/profile")
     public ResponseEntity<WrapResponse<ProfileResponse>> getProfile(@AuthenticationPrincipal CustomOAuth2User member) {
+        log.info("request member -> {}",member.getId());
         ProfileResponse response = memberService.getProfile(member.getId());
         return ResponseEntity.ok(WrapResponse.create(response,SuccessType.SIMPLE_STATUS));
     }
 
     @PostMapping("/updatefcm")
     public ResponseEntity<WrapResponse<Void>> updateFcm(@AuthenticationPrincipal CustomOAuth2User member, String fcmToken) {
+        log.info("request member -> {}",member.getId());
+        log.info("request param -> fcmToken: {}",fcmToken);
         fcmService.updateFcm(member.getId(),fcmToken);
         return ResponseEntity.ok(WrapResponse.create(SuccessType.SIMPLE_STATUS));
     }
