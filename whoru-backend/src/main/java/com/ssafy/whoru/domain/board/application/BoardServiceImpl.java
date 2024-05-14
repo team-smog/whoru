@@ -206,6 +206,7 @@ public class BoardServiceImpl implements BoardService{
         for(Member member: allMembers){
             List<FcmNotification> fcmNotifications = member.getFcmNotifications();
             for(FcmNotification fcmNotification: fcmNotifications){
+                if(fcmNotification == null) continue;
                 if(fcmNotification.getMark()) continue;
                 if(!fcmNotification.getIsEnabled()) continue;
                 fcmUtil.sendMessage(fcmNotification.getFcmToken(), fcmNotification.getId(), notiTitle, NOTIFICATION_CONTENT, FcmType.NOTIFICATION );
