@@ -56,6 +56,9 @@ public class BoardAdminApi implements BoardAdminApiDocs{
     @PostMapping("/comment")
     public ResponseEntity<WrapResponse<Void>> postComment(@AuthenticationPrincipal CustomOAuth2User admin, @RequestBody PostInquiryCommentRequest request) {
 
+        log.info("request Member -> {}", admin.getId());
+
+        log.info("request body -> {}", request);
 
         checkedAuth();
 
@@ -75,6 +78,8 @@ public class BoardAdminApi implements BoardAdminApiDocs{
         @RequestParam(value = "size", required = false) @Min(value = 1, message = "size는 최소 1이상이어야 합니다.") @Max(value = 30, message = "size는 최대 30까지만 적용됩니다.") int size,
         @RequestParam("condition") @Min(value = 0, message = "조건값은 0 또는 1이어야 합니다.") @Max(value = 1, message = "조건값은 0 또는 1이어야 합니다.") int condition) {
 
+        log.info("request param -> page: {}, size: {}, condition: {}", page, size, condition);
+
         checkedAuth();
 
         SliceResponse<InquiryDetailResponse> response = boardService.getTotalInquiry(page, size, condition);
@@ -89,6 +94,10 @@ public class BoardAdminApi implements BoardAdminApiDocs{
      */
     @PatchMapping("/{commentId}")
     public ResponseEntity<WrapResponse<Void>> patchComment(@PathVariable("commentId") Long commentId, @RequestBody PatchInquiryCommentRequest request) {
+
+        log.info("PathVariable -> {}", commentId);
+
+        log.info("request body -> {}", request);
 
         checkedAuth();
 
