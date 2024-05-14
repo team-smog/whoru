@@ -60,6 +60,12 @@ public class Member {
     @Column(name = "language_type")
     private LanguageType languageType;
 
+    @Column(name = "is_enabled")
+    @Default
+    Boolean isEnabled = true;
+
+    public void updateNotificationsEnabled(Boolean status) { this.isEnabled = status; }
+
 //    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 //    private FcmNotification fcmNotification;
     @OneToMany(mappedBy = "member", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)

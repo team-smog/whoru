@@ -204,11 +204,11 @@ public class BoardServiceImpl implements BoardService{
 
         String notiTitle = fcmUtil.makeDateTitle(NOTIFICATION_TITLE, noti.getCreateDate());
         for(Member member: allMembers){
+            if(!member.getIsEnabled()) continue;
             List<FcmNotification> fcmNotifications = member.getFcmNotifications();
             for(FcmNotification fcmNotification: fcmNotifications){
                 if(fcmNotification == null) continue;
                 if(fcmNotification.getMark()) continue;
-                if(!fcmNotification.getIsEnabled()) continue;
                 fcmUtil.sendMessage(fcmNotification.getFcmToken(), fcmNotification.getId(), notiTitle, NOTIFICATION_CONTENT, FcmType.NOTIFICATION );
             }
         }

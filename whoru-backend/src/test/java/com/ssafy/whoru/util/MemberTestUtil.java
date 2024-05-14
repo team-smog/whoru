@@ -105,6 +105,7 @@ public class MemberTestUtil implements InitializingBean {
                 .createDate(LocalDateTime.now())
                 .refreshToken("fdafasfasfasfafdfa")
                 .reportCount(0)
+                .isEnabled(true)
                 .role("ROLE_USER")
                 .userName("MEMBER3000")
                 .languageType(LanguageType.KOREAN)
@@ -112,7 +113,6 @@ public class MemberTestUtil implements InitializingBean {
         memberRepository.save(member);
 
         FcmNotification fcmNotification = FcmNotification.builder()
-            .isEnabled(true)
             .fcmToken(MEMBER3000_FCM_TOKEN)
             .mark(false)
             .member(member)
@@ -130,6 +130,7 @@ public class MemberTestUtil implements InitializingBean {
             .memberIdentifier("1")
             .boxCount(3)
             .role("ROLE_USER")
+            .isEnabled(true)
             .createDate(LocalDateTime.now())
             .refreshToken("fdafasfasfasfafdfa")
             .reportCount(0)
@@ -139,7 +140,6 @@ public class MemberTestUtil implements InitializingBean {
         memberRepository.save(member);
 
         FcmNotification fcmNotification = FcmNotification.builder()
-            .isEnabled(true)
             .fcmToken(MEMBER3001_FCM_TOKEN)
             .member(member)
             .mark(false)
@@ -170,13 +170,13 @@ public class MemberTestUtil implements InitializingBean {
             .refreshToken("fdafasfasfasfafdfa")
             .reportCount(0)
             .role("ROLE_USER")
+            .isEnabled(true)
             .userName("ERROR_MEMBER")
             .languageType(LanguageType.KOREAN)
             .build();
         memberRepository.save(member);
 
         FcmNotification fcmNotification = FcmNotification.builder()
-            .isEnabled(true)
             .fcmToken(MEMBER_ERROR_FCM_TOKEN)
             .mark(false)
             .member(member)
@@ -193,6 +193,7 @@ public class MemberTestUtil implements InitializingBean {
             .provider(ProviderType.kakao)
             .memberIdentifier("1")
             .boxCount(3)
+            .isEnabled(true)
             .createDate(LocalDateTime.now())
             .refreshToken("fdafasfasfasfafdfa")
             .reportCount(0)
@@ -203,7 +204,6 @@ public class MemberTestUtil implements InitializingBean {
         memberRepository.save(member);
 
         FcmNotification fcmNotification = FcmNotification.builder()
-            .isEnabled(true)
             .fcmToken(MEMBER3000_FCM_TOKEN)
             .mark(false)
             .member(member)

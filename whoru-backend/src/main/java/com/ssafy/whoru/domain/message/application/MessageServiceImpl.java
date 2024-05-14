@@ -106,13 +106,15 @@ public class MessageServiceImpl implements MessageService{
         }
 
         // fcm 발송
-        List<FcmNotification> fcmNotifications = receiver.getFcmNotifications();
-        for(FcmNotification fcmNotification: fcmNotifications){
-            if(fcmNotification == null) continue;
-            if(fcmNotification.getMark()) continue;
-            if(!fcmNotification.getIsEnabled()) continue;
-            fcmUtil.sendMessage(fcmNotification.getFcmToken(), fcmNotification.getId(), FcmType.MESSAGE);
+        if(receiver.getIsEnabled()){
+            List<FcmNotification> fcmNotifications = receiver.getFcmNotifications();
+            for(FcmNotification fcmNotification: fcmNotifications){
+                if(fcmNotification == null) continue;
+                if(fcmNotification.getMark()) continue;
+                fcmUtil.sendMessage(fcmNotification.getFcmToken(), fcmNotification.getId(), FcmType.MESSAGE);
+            }
         }
+
 
 
         // message 전송
@@ -164,13 +166,15 @@ public class MessageServiceImpl implements MessageService{
 
         log.info("text response send -> sender: {}, receiver: {}", targetMessage.getReceiver().getUserName(), receiver.getUserName());
 
-        List<FcmNotification> fcmNotifications = receiver.getFcmNotifications();
-        for(FcmNotification fcmNotification: fcmNotifications){
-            if(fcmNotification == null) continue;
-            if(!fcmNotification.getIsEnabled()) continue;
-            if(fcmNotification.getMark()) continue;
-            fcmUtil.sendMessage(fcmNotification.getFcmToken(), fcmNotification.getId(),FcmType.MESSAGE);
+        if(receiver.getIsEnabled()){
+            List<FcmNotification> fcmNotifications = receiver.getFcmNotifications();
+            for(FcmNotification fcmNotification: fcmNotifications){
+                if(fcmNotification == null) continue;
+                if(fcmNotification.getMark()) continue;
+                fcmUtil.sendMessage(fcmNotification.getFcmToken(), fcmNotification.getId(),FcmType.MESSAGE);
+            }
         }
+
         messageRepository.save(responseMessage);
     }
 
@@ -233,12 +237,13 @@ public class MessageServiceImpl implements MessageService{
         );
 
         // fcm 발송
-        List<FcmNotification> fcmNotifications = receiver.getFcmNotifications();
-        for(FcmNotification fcmNotification: fcmNotifications){
-            if(fcmNotification == null) continue;
-            if(!fcmNotification.getIsEnabled()) continue;
-            if(fcmNotification.getMark()) continue;
-            fcmUtil.sendMessage(fcmNotification.getFcmToken(), fcmNotification.getId(), FcmType.MESSAGE);
+        if(receiver.getIsEnabled()){
+            List<FcmNotification> fcmNotifications = receiver.getFcmNotifications();
+            for(FcmNotification fcmNotification: fcmNotifications){
+                if(fcmNotification == null) continue;
+                if(fcmNotification.getMark()) continue;
+                fcmUtil.sendMessage(fcmNotification.getFcmToken(), fcmNotification.getId(), FcmType.MESSAGE);
+            }
         }
 
         return sendResponse;
@@ -288,13 +293,15 @@ public class MessageServiceImpl implements MessageService{
         messageRepository.save(responseMessage);
 
         // fcm 발송
-        List<FcmNotification> fcmNotifications = message.getSender().getFcmNotifications();
-        for(FcmNotification fcmNotification: fcmNotifications){
-            if(fcmNotification == null) continue;
-            if(!fcmNotification.getIsEnabled()) continue;
-            if(fcmNotification.getMark()) continue;
-            fcmUtil.sendMessage(fcmNotification.getFcmToken(), fcmNotification.getId(), FcmType.MESSAGE);
+        if(message.getSender().getIsEnabled()){
+            List<FcmNotification> fcmNotifications = message.getSender().getFcmNotifications();
+            for(FcmNotification fcmNotification: fcmNotifications){
+                if(fcmNotification == null) continue;
+                if(fcmNotification.getMark()) continue;
+                fcmUtil.sendMessage(fcmNotification.getFcmToken(), fcmNotification.getId(), FcmType.MESSAGE);
+            }
         }
+
     }
 
     @Override
