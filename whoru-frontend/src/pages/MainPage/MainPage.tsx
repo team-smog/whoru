@@ -23,20 +23,30 @@ const MainPage = () => {
     center: null,
     right: null
   }
-
+  
   useEffect(() => {
+    window.scrollTo(0, 0);
     return () => {
       dispatch(setFirstId(null));
       dispatch(setLastId(null));
     }
   }, []);
+  
+  const FCMSetToken = async () => {
+    // const token = await requestPermission();
+    // console.log("token",token)
+    // return token;
+    // localStorage.getItem('FCMToken');
+    return await requestPermission();
+  }
 
   const dispatch = useDispatch();
   const firstId = useSelector((state: any) => state.message.firstId);
   const lastId = useSelector((state: any) => state.message.lastId);
   const [hasNext,setHasNext] = useState<boolean | null>(null);
   const [serverData, setServerData] = useState<any[]>([]);
-
+  const token = FCMSetToken();
+  
   const touchStartY = useRef(0);
   const loadingHeight = useRef(0);
   const loading = useRef<HTMLDivElement | null>(null);
@@ -86,17 +96,13 @@ const MainPage = () => {
 
   // const [ myTokenFCM, setMyTokenFCM] = useState<string|null>(null);
 
-  const FCMSetToken = async () => {
-    // const token = await requestPermission();
-    // console.log("token",token)
-    // return token;
-    // localStorage.getItem('FCMToken');
-    return await requestPermission();
-  }
   
   const fetchDataFCM = async (token: string|null) => {
     try {
       // console.log("token1",token)
+      if (token === null) {
+        return;
+      }
       await fetch(`https://k10d203.p.ssafy.io/api/member/updatefcm?fcmToken=${token}`, {
         method: 'POST',
         headers: {
@@ -112,7 +118,6 @@ const MainPage = () => {
   };
 
   useEffect(() => {
-    const token = FCMSetToken();
     token.then(() => {
       const FCM = localStorage.getItem('FCMToken');
       console.log("FCM",FCM);
@@ -121,7 +126,7 @@ const MainPage = () => {
       // localStorage.setItem('FCMToken', res);
     })
     // fetchDataFCM(token);
-  }, []);
+  }, [token]);
 
   useEffect(() => {
     console.log("firstId", firstId);

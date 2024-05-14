@@ -73,6 +73,7 @@ const SendTextComponent = ({ messageId }: { messageId: number | null}) => {
           }
         )
         .then(() => {
+          window.scrollTo(0, 0);
           navigate('/');
         })
       } else if (messageId === null) {
@@ -98,6 +99,7 @@ const SendTextComponent = ({ messageId }: { messageId: number | null}) => {
               title: '랜덤 박스에 당첨되었습니다!',
             });
           }
+          window.scrollTo(0, 0);
           navigate('/');
         })
       }
@@ -115,6 +117,7 @@ const SendTextComponent = ({ messageId }: { messageId: number | null}) => {
           title: '실패',
           text: '사용 정지된 유저입니다. 관리자에게 문의하세요',
         });
+        window.scrollTo(0, 0);
         navigate('/');
       } else {
         Swal.fire({

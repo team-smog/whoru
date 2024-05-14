@@ -111,6 +111,7 @@ const SendImageComponent = ({ messageId }: { messageId: number | null}) => {
             console.log(res.data);
             setImageFile(null); // Clear the file
             setImageSrc(null);
+            window.scrollTo(0, 0);
             navigate('/');
           })
         } catch (error) {
@@ -120,6 +121,7 @@ const SendImageComponent = ({ messageId }: { messageId: number | null}) => {
             title: '실패',
             text: '이미지 전송에 실패했습니다.',
           });
+          window.scrollTo(0, 0);
           navigate('/');
         }
       } else {
@@ -154,6 +156,7 @@ const SendImageComponent = ({ messageId }: { messageId: number | null}) => {
                 title: '랜덤 박스에 당첨되었습니다!',
               });
             }
+            window.scrollTo(0, 0);
             navigate('/');
           })
         } catch (error) {
@@ -163,6 +166,7 @@ const SendImageComponent = ({ messageId }: { messageId: number | null}) => {
             title: '실패',
             text: '이미지 전송에 실패했습니다.',
           });
+          window.scrollTo(0, 0);
           navigate('/');
         }
       } else {
@@ -208,7 +212,7 @@ const SendImageComponent = ({ messageId }: { messageId: number | null}) => {
         />
           <div className={styles.sendImageComponentBodyUploadArea} onClick={handleUploadAreaClick}>
           {imageSrc ? (
-            <img src={imageSrc} alt="Uploaded" />
+            <img src={imageSrc} alt="Uploaded"  className={styles.sendImageComponentBodyUploadImageArea}/>
           ) : (
             <>
               <img src={camerabutton} alt="camera-button" />
