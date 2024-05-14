@@ -41,7 +41,7 @@ const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, inne
 
   const handleReport = (messageId:number, senderId:number) => {
     Swal.fire({
-      title: '정말로 신고하시겠습니까?',
+      title: '신고하시겠습니까?',
       showDenyButton: true,
       confirmButtonText: `신고`,
       denyButtonText: `취소`,

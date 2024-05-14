@@ -17,7 +17,7 @@ const Header = (props: {info:IHeaderInfo}) => {
 
   const ToastMessage = Swal.mixin({
     toast: true,
-    position: 'center',
+    position: 'top',
     showConfirmButton: false,
     timer: 3000,
     timerProgressBar: true,
@@ -28,7 +28,7 @@ const Header = (props: {info:IHeaderInfo}) => {
 
   const ToastAnnouncement = Swal.mixin({
     toast: true,
-    position: 'center',
+    position: 'top',
     showConfirmButton: false,
     timer: 3000,
     didOpen: (toast) => {
