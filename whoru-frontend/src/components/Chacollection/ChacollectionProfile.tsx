@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import ChacollectionModals from './ChacollectionModal'
-import Profile from '@/assets/@common/Profile.png'
+// import Profile from '@/assets/@common/Profile.png'
 import './ProfileInfo.css'
+import { useDispatch, useSelector } from 'react-redux'
+import { setIconUrl } from '@/stores/store'
 
 interface Icon {
 	iconId: string
@@ -13,50 +15,58 @@ interface Icon {
 } 
 
 const ChacollectionProfile: React.FC = () => {
-	const [icons, setIcons] = useState<Icon[]>([])
-	const [profileImageUrl, setProfileImageUrl] = useState<string>(Profile)
-	// const [ setSelectedIconId] = useState<string | null>(null)
+	const [icons, setIcons] = useState<Icon[]>([]);
+	const iconUrl = useSelector((state:any) => state.user.iconUrl)
+	const [profileImageUrl, setProfileImageUrl] = useState<string>(iconUrl);
+	// const [profileImageUrl, setProfileImageUrl] = useState<string>(Profile);
+	const dispatch = useDispatch();
 
 	useEffect(() => {
-		const savedIconUrl = localStorage.getItem('selectedProfileImage')
+		console.log(iconUrl)
+	}, [iconUrl]);
+
+	useEffect(() => {
+		const savedIconUrl = localStorage.getItem('selectedProfileImage');
 		if (savedIconUrl) {
-			setProfileImageUrl(savedIconUrl)
-		}
-		fetchIcons()
+			setProfileImageUrl(savedIconUrl);
+		};
+		fetchIcons();
 	}, [])
 
 	const fetchIcons = async () => {
 		try {
-			const response = await axios.get(`https://k10d203.p.ssafy.io/api/collects/icons`, {
+			const res = await axios.get(`https://k10d203.p.ssafy.io/api/collects/icons`, {
 				headers: {
 					'Content-Type': 'application/json',
 					Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
 				},
 			})
-			if (response.data && response.data.data) {
-				setIcons(response.data.data.data)
+			if (res.data && res.data.data) {
+				// console.log(res.data.data)
+				setIcons(res.data.data.data);
 			} else {
-				console.error('예상된 데이터 형식이 아닙니다:', response.data)
-				setIcons([])
+				console.error('예상된 데이터 형식이 아닙니다:', res.data);
+				setIcons([]);
 			}
 		} catch (error) {
-			console.error('아이콘을 가져오는 데 에러가 발생했습니다:', error)
-			setIcons([])
+			console.error('아이콘을 가져오는 데 에러가 발생했습니다:', error);
+			setIcons([]);
 		}
 	}
 
 	const changeIcon = async (iconId: string, iconUrl: string) => {
 		try {
-			const response = await axios.patch('https://k10d203.p.ssafy.io/api/member/icon', null, {
+			const res = await axios.patch('https://k10d203.p.ssafy.io/api/member/icon',null, {
 				params: { iconId },
 				headers: {
 					Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
 				},
-			})
+			});
 
-			if (response.data) {
+
+			if (res.data.data) {
+				dispatch(setIconUrl(iconUrl))
 				setProfileImageUrl(iconUrl) // 서버 응답 성공 시, 프로필 이미지 URL 업데이트
-				// setSelectedIconId(iconId)
 				localStorage.setItem('selectedProfileImage', iconUrl) // 선택된 이미지를 localStorage에 저장
 				alert('프로필 아이콘이 성공적으로 변경되었습니다.')
 			}
