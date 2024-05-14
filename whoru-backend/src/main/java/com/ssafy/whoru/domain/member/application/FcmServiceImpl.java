@@ -42,7 +42,6 @@ public class FcmServiceImpl implements FcmService{
             }
         }else{
             FcmNotification fcmNotification = FcmNotification.builder()
-                .isEnabled(true)
                 .fcmToken(token)
                 .build();
 
@@ -54,12 +53,7 @@ public class FcmServiceImpl implements FcmService{
     @Override
     @Transactional
     public void changeEnabled(Member member) {
-        List<FcmNotification> fcmNotifications = member.getFcmNotifications();
-        fcmNotifications.forEach(fcmNotification -> {
-            if(!fcmNotification.getMark()){
-                fcmNotification.updateNotificationsEnabled(!fcmNotification.getIsEnabled());
-            }
-        });
+        member.updateNotificationsEnabled(!member.getIsEnabled());
     }
 
     @Override

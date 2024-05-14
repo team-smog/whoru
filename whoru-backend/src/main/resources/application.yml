@@ -155,7 +155,6 @@ spring:
     hibernate:
       ddl-auto: none
 
-
   datasource:
     url: ${my-db.url}
     username: ${my-db.username}
