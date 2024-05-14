@@ -26,7 +26,7 @@ public class FCMUtil {
     @Async("fcm-send")
     public void sendMessage(String token, Long fcmId, FcmType fcmType){
         try{
-            log.info("thread name: {}, preparing sendAsync", Thread.currentThread().getName());
+            log.info("fcm send -> receiver fcm id: {}, type: {}", fcmId, fcmType.name());
             FirebaseMessaging.getInstance().send(messageBuilder(token, fcmType));
         }catch(FirebaseException e){
             log.error("Firebase exception : {}", e);
@@ -39,6 +39,7 @@ public class FCMUtil {
     @Async("fcm-send")
     public void sendMessage(String receiverToken, Long fcmId, String title, String content, FcmType fcmType){
         try{
+            log.info("fcm send -> receiver fcm id: {}, type: {}", fcmId, fcmType.name());
             FirebaseMessaging.getInstance().send(messageBuilder(receiverToken, title, content, fcmType));
         }catch(FirebaseException e){
             log.error("Firebase exception : {}", e);
