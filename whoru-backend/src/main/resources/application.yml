@@ -118,13 +118,13 @@ spring:
 #            redirect-uri: ${local.website}/login/oauth2/code/naver
 #            authorization-grant-type: authorization_code
 #            scope: name,email
-#          google:
-#            client-name: google
-#            client-id: ${social.google-client-id}
-#            client-secret: ${social.google-secret-key}
-#            redirect-uri: ${local.website}/login/oauth2/code/google
-#            authorization-grant-type: authorization_code
-#            scope: profile,email
+          google:
+            client-name: google
+            client-id: ENC(Q8/c+wn2ZiFkMwzHQZ+5oNsl7cWRPQnj3F2ZCYKrrw+lJnaxFp/J9JMhLaKx67F09LApgqCXpjOnl4620nTFNawhBZJy/wnodnSv1qD2H9RuG3CcTljNxA==)
+            client-secret: ENC(8YGsztcVYMuDSbyjE1OkGhmKCAb5J84xALje7VHWt1X6lnVREgy8Dh/FUoifnUGl)
+            redirect-uri: ENC(N+Kf6oCv4/8cC3hQbC2ZegqZBoLZfV7CHx8qWfW0BdxDTGFckCfUVbcEH8JUaNvvvQLhTRr3/b+RurkfdBJV9Q==)
+            authorization-grant-type: authorization_code
+            scope: profile,email
           kakao:
             client-name: kakao
             client-id: ENC(QWkDLnmvcGEJ15Kc7QzgL6KdrR7v2oWXAqZEtNlyAicIwqDocmGJ/x+7gAh2bfLt)
@@ -154,7 +154,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
-
 
   datasource:
     url: ${my-db.url}
@@ -192,13 +191,13 @@ spring:
 #            redirect-uri: ${local.website}/login/oauth2/code/naver
 #            authorization-grant-type: authorization_code
 #            scope: name,email
-#          google:
-#            client-name: google
-#            client-id: ${social.google-client-id}
-#            client-secret: ${social.google-secret-key}
-#            redirect-uri: ${local.website}/api/login/oauth2/code/google
-#            authorization-grant-type: authorization_code
-#            scope: profile,email
+          google:
+            client-name: google
+            client-id: ENC(Q8/c+wn2ZiFkMwzHQZ+5oNsl7cWRPQnj3F2ZCYKrrw+lJnaxFp/J9JMhLaKx67F09LApgqCXpjOnl4620nTFNawhBZJy/wnodnSv1qD2H9RuG3CcTljNxA==)
+            client-secret: ENC(8YGsztcVYMuDSbyjE1OkGhmKCAb5J84xALje7VHWt1X6lnVREgy8Dh/FUoifnUGl)
+            redirect-uri: ENC(V50S/3r6zlB26+ZY4J1Mvuzg26IcM7byi3Nx+09MqS2jeVd0+fdX+vGyeQmxbniCyUCGo8NoKLk3hAgSLI5wVg==)
+            authorization-grant-type: authorization_code
+            scope: profile,email
           kakao:
             client-name: kakao
             client-id: ENC(jqNS/15RI0d2d+ZCoJDd60zWPUScj7Ky7aKRUfIsvWo11dRgpusQGcX5IvKXC5R8)

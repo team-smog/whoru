@@ -6,16 +6,14 @@ import java.util.Map;
 public class KakaoResponse implements OAuth2Response{
 
     private final  Map<String, Object> attribute;
-    private final String nickname;
-    private final String id;
+    private final  Map<String,Object> kakaoAccount;
+    private final  Map<String,Object> profile;
+
 
     public KakaoResponse (Map<String, Object> attribute){
         this.attribute = attribute;
-        Map<String,Object> kakaoAccount = (Map<String, Object>) this.attribute.get("kakao_account");
-        Map<String,Object> profile = (Map<String, Object>) kakaoAccount.get("profile");
-        this.nickname = profile.get("nickname").toString();
-        this.id = attribute.get("id").toString();
-
+        this.kakaoAccount = (Map<String, Object>) this.attribute.get("kakao_account");
+        this.profile = (Map<String, Object>) kakaoAccount.get("profile");
     }
 
     @Override
@@ -26,10 +24,10 @@ public class KakaoResponse implements OAuth2Response{
     //고유번호
     @Override
     public String getProviderId() {
-        return id;
+        return attribute.get("id").toString();
     }
 
     //사용될 닉네임
     @Override
-    public String getName() { return nickname; }
+    public String getName() { return profile.get("nickname").toString(); }
 }

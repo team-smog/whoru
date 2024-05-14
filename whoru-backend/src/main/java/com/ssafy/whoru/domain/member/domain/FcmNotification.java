@@ -16,7 +16,6 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-@ToString
 public class FcmNotification {
 
     @Id
@@ -30,16 +29,9 @@ public class FcmNotification {
     @Column(nullable = false, name = "fcm_token")
     private String fcmToken;
 
-    @Column(name = "is_enabled")
-    @Builder.Default
-    private Boolean isEnabled = true;
-
     @Column(name = "mark")
     @Default
     private Boolean mark = false;
-
-
-    public void updateNotificationsEnabled(Boolean status) { this.isEnabled = status; }
 
     public void updateMark(Boolean status){
         this.mark = status;
@@ -52,5 +44,10 @@ public class FcmNotification {
 
     public void removeNotification(){
         this.getMember().getFcmNotifications().remove(this);
+    }
+
+    @Override
+    public String toString(){
+        return "memberId: "+member.getId()+" -> fcmId: "+this.getId()+" token: "+getFcmToken().substring(6);
     }
 }

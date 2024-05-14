@@ -13,5 +13,5 @@ public class MemberDTO {
     private String userName;
     private String memberIdentifier;
     private String role;
-
+    private Boolean isEnabled;
 }

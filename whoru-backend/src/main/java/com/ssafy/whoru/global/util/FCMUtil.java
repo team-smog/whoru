@@ -26,7 +26,6 @@ public class FCMUtil {
     @Async("fcm-send")
     public void sendMessage(String token, Long fcmId, FcmType fcmType){
         try{
-            log.info("thread name: {}, preparing sendAsync", Thread.currentThread().getName());
             FirebaseMessaging.getInstance().send(messageBuilder(token, fcmType));
         }catch(FirebaseException e){
             log.error("Firebase exception : {}", e);

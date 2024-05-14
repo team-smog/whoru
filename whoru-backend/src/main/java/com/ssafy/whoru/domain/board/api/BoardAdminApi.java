@@ -111,6 +111,9 @@ public class BoardAdminApi implements BoardAdminApiDocs{
     @PostMapping("/noti")
     public ResponseEntity<WrapResponse<Void>> writeNotification(@AuthenticationPrincipal CustomOAuth2User admin, @RequestBody @Valid PostNotificationRequest postNotificationRequest){
 
+        log.info("request Member -> {}", admin.getId());
+        log.info("request body -> {}", postNotificationRequest);
+
         checkedAuth();
 
         boardService.postNotification(admin.getId(), postNotificationRequest);
@@ -128,6 +131,10 @@ public class BoardAdminApi implements BoardAdminApiDocs{
         @RequestBody @Valid PatchNotificationRequest patchNotificationRequest,
         @PathVariable @Min(value = 1, message = "적어도 0보다 커야 합니다.") Long boardId
     ){
+
+        log.info("request Member -> {}", admin.getId());
+        log.info("request Pathvariable -> {}", boardId);
+        log.info("request body -> {}", patchNotificationRequest);
 
         checkedAuth();
 
