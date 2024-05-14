@@ -4,10 +4,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @AllArgsConstructor
+@ToString
 @Schema(description = "Text 혹은 VOICE, IMAGE 메세지 전송 후 응답 DTO")
 public class SendResponse {
 

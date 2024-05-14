@@ -5,10 +5,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
 @Schema(description = "Text 메세지 전송 DTO")
 @Builder
 @Getter
+@ToString
 public class TextSend {
 
     @Size(min = 2, message = "메세지 내용이 너무 짧습니다.")

@@ -16,7 +16,6 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-@ToString
 public class FcmNotification {
 
     @Id
@@ -52,5 +51,10 @@ public class FcmNotification {
 
     public void removeNotification(){
         this.getMember().getFcmNotifications().remove(this);
+    }
+
+    @Override
+    public String toString(){
+        return "memberId: "+member.getId()+" -> fcmId: "+this.getId()+" token: "+getFcmToken().substring(6);
     }
 }
