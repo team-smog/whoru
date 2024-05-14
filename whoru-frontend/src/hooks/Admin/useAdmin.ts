@@ -49,7 +49,7 @@ export const useNotificationDetail = () => {
 export const useReportDetail = () => {
 	return useInfiniteQuery({
 		queryKey: ['IReportRes'],
-		queryFn: ({ pageParam=0 }) => getReportReq(pageParam, 12),
+		queryFn: ({ pageParam }) => getReportReq(pageParam, 12, ''),
 		initialPageParam: 0,
 		getNextPageParam: (lastPage, allPages) => {
 			if (!lastPage || lastPage.last === undefined) return undefined

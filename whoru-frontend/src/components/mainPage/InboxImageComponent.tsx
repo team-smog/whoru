@@ -110,7 +110,7 @@ const InboxImageComponent: React.FC<InboxImageComponentProps> = ({ message, inne
           >
             답장
           </button>
-          <button className={styles.inboxVoiceComponentFooterReportButton} 
+          <button className={styles.inboxImageComponentFooterReportButton} 
             onClick={() => handleReport(message.id, message.senderId)}
             style={reportButtonStyle}
             disabled={message.isReported}
