@@ -4,9 +4,11 @@ import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
 @Builder
 @Getter
+@ToString
 public class PostNotificationRequest {
 
     @Size(min = 2, max = 30, message = "공지사항 제목은 2자 이상 30자 이하입니다.")

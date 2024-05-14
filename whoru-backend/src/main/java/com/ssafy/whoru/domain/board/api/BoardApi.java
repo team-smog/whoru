@@ -89,6 +89,9 @@ public class BoardApi implements BoardApiDocs{
         @RequestParam("page") @Min(value = 0, message = "페이지 번호는 최소 0이상이어야 합니다.") int page,
         @RequestParam(value = "size") @Min(value = 1, message = "사이즈가 너무 작습니다.") @Max(value = 30, message = "사이즈가 너무 큽니다.") int size
     ){
+        log.info("request Member -> {}", member.getId());
+        log.info("request param -> page: {}, size: {}", page, size);
+
         ResponseWithSuccess<SliceResponse<NotificationResponse>> response = boardService.findNotifications(page, size);
         return ResponseEntity.ok(WrapResponse.create(
            response.getBody(),

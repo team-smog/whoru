@@ -19,6 +19,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -45,6 +46,8 @@ public class MessageApi implements MessageApiDocs{
 
     @PostMapping("")
     public ResponseEntity<WrapResponse<SendResponse>> sendTextMessage(@AuthenticationPrincipal CustomOAuth2User member, @RequestBody @Valid TextSend textSend) {
+        log.info("request Member -> {}", member.getId());
+        log.info("request body -> {}", textSend);
         return ResponseEntity.ok(WrapResponse.create(
                 service.sendTextMessageToRandomMember(textSend, member.getId()),
                 SuccessType.STATUS_201
@@ -57,6 +60,9 @@ public class MessageApi implements MessageApiDocs{
         @RequestBody @Valid TextSend textSend,
         @PathVariable @Min(value = 1, message = "답장을 보낼 대상 메세지의 고유번호는 0보다 커야 합니다.") Long messageId
     ){
+        log.info("request Member -> {}", member.getId());
+        log.info("request body -> {}", textSend);
+        log.info("request Pathvariable -> {}", messageId);
         service.responseTextMessage(textSend, member.getId(), messageId);
         return ResponseEntity.ok(WrapResponse.create(
                 SuccessType.STATUS_201
@@ -69,6 +75,8 @@ public class MessageApi implements MessageApiDocs{
         MediaType.APPLICATION_JSON_VALUE, "audio/mpeg", "audio/wav", "audio/weba", "audio/webm"
     })
     public ResponseEntity<WrapResponse<SendResponse>> sendFileMessage(@AuthenticationPrincipal CustomOAuth2User member, @RequestPart MultipartFile file){
+        log.info("request Member -> {}", member.getId());
+        log.info("request file -> fileName: {}, content-type: {}", file.getOriginalFilename(), file.getContentType());
         return ResponseEntity.ok(WrapResponse.create(
             service.sendMediaMessageToRandomMember(file, member.getId()),
             SuccessType.STATUS_201
@@ -86,6 +94,9 @@ public class MessageApi implements MessageApiDocs{
         @RequestPart MultipartFile file,
         @PathVariable @Valid @Min(value = 1, message = "답장을 보낼 대상 메세지의 고유번호는 0보다 커야 합니다.") Long messageId
     ){
+        log.info("request Member -> {}", member.getId());
+        log.info("request Pathvariable -> {}", messageId);
+        log.info("request file -> fileName: {}, content-type: {}", file.getOriginalFilename(), file.getContentType());
         service.responseFileMessage(file, member.getId(), messageId);
         return ResponseEntity.ok(WrapResponse.create(
             SuccessType.STATUS_201
@@ -97,7 +108,8 @@ public class MessageApi implements MessageApiDocs{
         @AuthenticationPrincipal CustomOAuth2User member,
         @NotNull(message = "최소 번호를 적어주세요") @Min(value = 1, message = "0보다는 커야 합니다.") @RequestParam(name = "firstid") Long firstId
         )
-    {
+    {   log.info("request Member -> {}", member.getId());
+        log.info("request param -> firstId: {}", firstId);
         ResponseWithSuccess<List<MessageResponse>> response = service.getRecentMessages(firstId, 20, member.getId());
         return ResponseEntity.ok(WrapResponse.create(
             response.getBody(),
@@ -112,6 +124,8 @@ public class MessageApi implements MessageApiDocs{
         @Valid @Min(value = 1, message = "id 최대값은 0보다 커야합니다.")  @RequestParam(required = false, name = "lastid") Long lastId,
         @Valid @Min(value = 20, message = "size는 최소 20 이상이어야 합니다.") @RequestParam Integer size)
     {
+        log.info("request Member -> {}", member.getId());
+        log.info("request param -> lastid: {}, size: {}", lastId, size);
         ResponseWithSuccess<SliceMessageResponse> response = service.getOldMessages(lastId, size, member.getId());
         return ResponseEntity.ok(WrapResponse.create(
             response.getBody(),
@@ -121,7 +135,7 @@ public class MessageApi implements MessageApiDocs{
 
     @GetMapping("/{messageId}")
     public ResponseEntity<WrapResponse<?>> findMessage(@PathVariable("messageId") Long messageId) {
-
+        log.info("request Pathvariable -> {}", messageId);
         MessageResponse response = service.findMessage(messageId);
         return ResponseEntity.ok(WrapResponse.create(response, SuccessType.SIMPLE_STATUS));
     }
