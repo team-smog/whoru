@@ -4,6 +4,7 @@ import Profile from '@/assets/@common/Profile.png'
 import { useDispatch } from 'react-redux'
 import { setBoxCount, setIconUrl, setPushAlarm, setRole } from '@/stores/store'
 
+
 const ProfileInfo = () => {
 	const dispatch = useDispatch()
 	const [userInfo, setUserInfo] = useState({
@@ -28,7 +29,11 @@ const ProfileInfo = () => {
 					dispatch(setBoxCount(response.data.data.boxCount))
 					dispatch(setRole(response.data.data.role))
 					dispatch(setPushAlarm(response.data.data.pushAlarm))
-					dispatch(setIconUrl(response.data.data.iconUrl))
+          if(response.data.data.iconUrl !== "null"){
+            dispatch(setIconUrl(response.data.data.iconUrl))
+          }else{
+            dispatch(setIconUrl(Profile))
+          }
 				} else {
 					setUserInfo((prev) => ({ ...prev, ...response.data }))
 				}
