@@ -61,7 +61,7 @@ public class MessageApiTest extends TestPrepare {
         List<Member> memberList = memberTestUtil.기본_멤버_세팅();
         Member member3000 = memberList.get(0);
         Member member3001 = memberList.get(1);
-        member3001.getFcmNotifications().getFirst().updateNotificationsEnabled(false);
+        member3001.updateNotificationsEnabled(false);
 
         String header3000 = memberTestUtil.유저_AccessToken_만들고_헤더값_리턴(member3000);
 

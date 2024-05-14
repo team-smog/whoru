@@ -4,6 +4,7 @@ import com.ssafy.whoru.domain.member.dao.FcmRepository;
 import com.ssafy.whoru.domain.member.dao.MemberRepository;
 import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.domain.member.dto.ProviderType;
+import com.ssafy.whoru.domain.member.dto.response.GoogleResponse;
 import com.ssafy.whoru.domain.member.dto.response.KakaoResponse;
 import com.ssafy.whoru.domain.member.domain.Member;
 import com.ssafy.whoru.domain.member.dto.MemberDTO;
@@ -34,22 +35,18 @@ public class CustomOAuth2UserServiceImpl extends DefaultOAuth2UserService implem
         // 어느 플랫폼의 소셜로그인인지 알아야함
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
 
-        //
         OAuth2Response oAuth2Response = null;
 
         if(registrationId.equals("kakao")) {
             oAuth2Response = new KakaoResponse(oAuth2User.getAttributes());
         }
+        else if (registrationId.equals("google")) {
+            oAuth2Response = new GoogleResponse(oAuth2User.getAttributes());
+        }
 //        else if (registrationId.equals("naver")) {
-//
 //            oAuth2Response = new NaverResponse(oAuth2User.getAttributes());
 //        }
-//        else if (registrationId.equals("google")) {
-//
-//            oAuth2Response = new GoogleResponse(oAuth2User.getAttributes());
-//        }
         else {
-
             return null;
         }
 
@@ -67,6 +64,7 @@ public class CustomOAuth2UserServiceImpl extends DefaultOAuth2UserService implem
                     .builder()
                     .userName(name)
                     .role("ROLE_USER")
+                    .isEnabled(true)
                     .provider(providerType)
                     .memberIdentifier(memberIdentifier)
                     .build());
@@ -76,20 +74,20 @@ public class CustomOAuth2UserServiceImpl extends DefaultOAuth2UserService implem
                     .builder()
                     .memberIdentifier(memberIdentifier)
                     .role(member.getRole())
+                    .isEnabled(member.getIsEnabled())
                     .userName(name)
                     .id(member.getId())
                     .build();
-
-
             return new CustomOAuth2User(memberDTO);
-
         }else{   //있으면 패스
+            Member targetMember = existData.get();
             MemberDTO memberDTO = MemberDTO
                     .builder()
-                    .role(existData.get().getRole())
+                    .role(targetMember.getRole())
                     .memberIdentifier(memberIdentifier)
+                    .isEnabled(targetMember.getIsEnabled())
                     .userName(name)
-                    .id(existData.get().getId())
+                    .id(targetMember.getId())
                     .build();
 
             return new CustomOAuth2User(memberDTO);

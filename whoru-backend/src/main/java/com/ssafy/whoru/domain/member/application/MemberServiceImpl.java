@@ -107,15 +107,6 @@ public class MemberServiceImpl implements MemberService {
         Optional<Member> byId = memberRepository.findById(memberId);
         Member member = byId.orElseThrow(MemberNotFoundException::new);
         String url = (member.getIcon()==null) ? "null" : member.getIcon().getIconUrl();
-        List<FcmNotification> fcmNotifications = member.getFcmNotifications();
-        boolean alarmStatus = true;
-        for(FcmNotification fcmNotification: fcmNotifications){
-            if(fcmNotification.getMark()) continue; // 삭제 될 예정인 fcm토큰은 신경안써도됨
-            if(!fcmNotification.getIsEnabled()){
-                alarmStatus = false;
-                break;
-            }
-        }
 
         return ProfileResponse
                 .builder()
@@ -128,7 +119,7 @@ public class MemberServiceImpl implements MemberService {
                 .reportCount(member.getReportCount())
                 .userName(member.getUserName())
                 .languageType(LanguageType.KOREAN)
-                .pushAlarm(alarmStatus)
+                .pushAlarm(member.getIsEnabled())
                 .iconUrl(url)
                 .build();
     }
