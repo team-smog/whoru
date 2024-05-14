@@ -32,18 +32,17 @@ public class S3ServiceImpl implements S3Service {
         String resultFileName = makeFileName(file.getOriginalFilename());
         fileName.append(pathType.getS3Path()).append(resultFileName);
         try{
-            log.info("file info : {}", file.getContentType());
             PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                 .bucket(USED_BUCKET_NAME)
                 .key(fileName.toString())
                 .contentType(file.getContentType())
                 .contentDisposition("inline")
                 .build();
+            log.info("S3 request path -> {}", putObjectRequest.key());
             s3.putObject(putObjectRequest, RequestBody.fromInputStream(file.getInputStream(), file.getSize()));
         }catch(IOException e){
             throw new InvalidFileStreamException();
         }catch(SdkException e){
-            log.info("s3 Exception {}", e);
             throw new S3UploadException();
         }
         return Optional.of(uploadUrlMaker(pathType.getS3Path(),resultFileName));

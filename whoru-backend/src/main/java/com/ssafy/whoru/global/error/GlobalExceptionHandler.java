@@ -74,7 +74,7 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * 그 밖의 예외사항에 대한 예외처리 핸들러 (400번 에러로 처리)
+     * 그 밖의 예외사항에 대한 예외처리 핸들러
      * **/
     @ExceptionHandler(SimpleException.class)
     public ResponseEntity<ErrorResponse> handleSimpleException(final SimpleException e){
