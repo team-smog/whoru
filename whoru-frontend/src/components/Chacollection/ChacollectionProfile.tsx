@@ -60,9 +60,9 @@ const ChacollectionProfile: React.FC = () => {
 
 			if (res.data.data) {
 				dispatch(setIconUrl(iconUrl))
-				setProfileImageUrl(iconUrl) // 서버 응답 성공 시, 프로필 이미지 URL 업데이트
-				localStorage.setItem('selectedProfileImage', iconUrl) // 선택된 이미지를 localStorage에 저장
-				Swal.fire('프로필 아이콘이 성공적으로 변경되었습니다.', '', 'success')
+				setProfileImageUrl(iconUrl)
+				localStorage.setItem('selectedProfileImage', iconUrl)
+				Swal.fire('프로필 아이콘이 변경되었습니다.', '', 'success')
 			}
 		} catch (error) {}
 	}
