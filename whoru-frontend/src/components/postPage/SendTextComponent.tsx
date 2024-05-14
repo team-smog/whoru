@@ -18,7 +18,7 @@ const SendTextComponent = ({ messageId }: { messageId: number | null}) => {
   
   const Toast = Swal.mixin({
     toast: true,
-    position: 'center',
+    position: 'top',
     showConfirmButton: false,
     timer: 3000,
     timerProgressBar: true,
