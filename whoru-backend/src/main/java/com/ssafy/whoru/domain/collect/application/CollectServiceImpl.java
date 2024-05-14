@@ -22,9 +22,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 @Slf4j
 public class CollectServiceImpl implements CollectService {
 
@@ -53,6 +55,8 @@ public class CollectServiceImpl implements CollectService {
 
         int randomValue = ThreadLocalRandom.current().nextInt(RANDOM_BOUND);
 
+        log.info("randomValue -> {}", randomValue);
+
         IconGradeType grade = null;
         for(IconGradeType item : IconGradeType.values()) {
             if( randomValue <= item.getProbability() ) {
@@ -64,8 +68,8 @@ public class CollectServiceImpl implements CollectService {
         if(grade == null) throw new BoxCountInvalidException(ErrorCode.COLLECT_RANDOM_ERROR);
         //해당하는 등급에 맞는 랜덤 아이템 탐색
 
-        Optional<Icon> icon = Optional.ofNullable(iconRepository.findByRandomIcon(grade)
-            .orElseThrow(IconNotFoundException::new));
+        Icon icon = iconRepository.findByRandomIcon(grade)
+            .orElseThrow(IconNotFoundException::new);
 
         GetIconResponse response = modelMapper.map(icon, GetIconResponse.class);
 
@@ -73,7 +77,7 @@ public class CollectServiceImpl implements CollectService {
         member.updateBoxDecrease();
 
         //사용자 보유 아이콘에 해당 아이콘이 있는지 확인 후 없다면 갱신
-        Optional<MemberIcon> result = memberIconRepository.findByMemberANDIcon(member, icon.get());
+        Optional<MemberIcon> result = memberIconRepository.findByMemberANDIcon(member, icon);
 
         if(result.isPresent()) {
             response.setIsDuplicat(true);
@@ -83,7 +87,7 @@ public class CollectServiceImpl implements CollectService {
             response.setIsDuplicat(false);
             memberIconRepository.save(MemberIcon.builder()
                 .member(member)
-                .icon(icon.get())
+                .icon(icon)
                 .build());
         }
 

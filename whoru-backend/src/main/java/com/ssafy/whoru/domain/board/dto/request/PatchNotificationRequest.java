@@ -4,8 +4,10 @@ import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString
 @Builder
 public class PatchNotificationRequest {
 

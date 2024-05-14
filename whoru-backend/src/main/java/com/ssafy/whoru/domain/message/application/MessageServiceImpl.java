@@ -67,6 +67,7 @@ public class MessageServiceImpl implements MessageService{
     static final Integer EMPTY_MESSAGE = 0;
 
     @Override
+    @Transactional
     public SendResponse sendTextMessageToRandomMember(TextSend textSend, Long senderId) {
 
         // 정지여부 체크
@@ -82,6 +83,8 @@ public class MessageServiceImpl implements MessageService{
         // db에서 두사람 정보 들고오기
         Member sender = memberService.findByIdToEntity(senderId);
         Member receiver = memberService.findRandomToEntity(senderId);
+
+        log.info("text send -> sender: {}, receiver: {}", sender.getUserName(), receiver.getUserName());
 
         // 현재 redis에 남아있는 오늘의 박스 얻은 횟수 가져오기
         Integer presentBoxCount = BOX_COUNT_INIT;
@@ -105,6 +108,7 @@ public class MessageServiceImpl implements MessageService{
         // fcm 발송
         List<FcmNotification> fcmNotifications = receiver.getFcmNotifications();
         for(FcmNotification fcmNotification: fcmNotifications){
+            if(fcmNotification == null) continue;
             if(fcmNotification.getMark()) continue;
             if(!fcmNotification.getIsEnabled()) continue;
             fcmUtil.sendMessage(fcmNotification.getFcmToken(), fcmNotification.getId(), FcmType.MESSAGE);
@@ -129,6 +133,7 @@ public class MessageServiceImpl implements MessageService{
     }
 
     @Override
+    @Transactional
     public void responseTextMessage(TextSend textSend, Long senderId, Long messageId) {
 
         if(messageUtil.isBanned(senderId)){
@@ -156,14 +161,21 @@ public class MessageServiceImpl implements MessageService{
                 .build();
 
         Member receiver = targetMessage.getSender();
+
+        log.info("text response send -> sender: {}, receiver: {}", targetMessage.getReceiver().getUserName(), receiver.getUserName());
+
         List<FcmNotification> fcmNotifications = receiver.getFcmNotifications();
         for(FcmNotification fcmNotification: fcmNotifications){
+            if(fcmNotification == null) continue;
+            if(!fcmNotification.getIsEnabled()) continue;
+            if(fcmNotification.getMark()) continue;
             fcmUtil.sendMessage(fcmNotification.getFcmToken(), fcmNotification.getId(),FcmType.MESSAGE);
         }
         messageRepository.save(responseMessage);
     }
 
     @Override
+    @Transactional
     public SendResponse sendMediaMessageToRandomMember(MultipartFile file, Long senderId) {
         if(messageUtil.isBanned(senderId)){
             throw new BannedSenderException();
@@ -203,6 +215,8 @@ public class MessageServiceImpl implements MessageService{
         Optional<String> result = s3Service.upload(file, type.getS3PathType());
         String s3Url = result.orElseThrow(S3UploadException::new);
 
+        log.info("file send -> sender: {}, receiver: {}", sender.getUserName(), receiver.getUserName());
+
         // message 전송
         messageRepository.save(
             Message.builder()
@@ -221,6 +235,9 @@ public class MessageServiceImpl implements MessageService{
         // fcm 발송
         List<FcmNotification> fcmNotifications = receiver.getFcmNotifications();
         for(FcmNotification fcmNotification: fcmNotifications){
+            if(fcmNotification == null) continue;
+            if(!fcmNotification.getIsEnabled()) continue;
+            if(fcmNotification.getMark()) continue;
             fcmUtil.sendMessage(fcmNotification.getFcmToken(), fcmNotification.getId(), FcmType.MESSAGE);
         }
 
@@ -229,6 +246,7 @@ public class MessageServiceImpl implements MessageService{
     }
 
     @Override
+    @Transactional
     public void responseFileMessage(MultipartFile file, Long senderId, Long messageId) {
         if(messageUtil.isBanned(senderId)){
             throw new BannedSenderException();
@@ -246,6 +264,8 @@ public class MessageServiceImpl implements MessageService{
 
         assert(message.getResponseStatus());
 
+
+
         // S3 저장
         Optional<String> result = s3Service.upload(file, type.getS3PathType());
         String s3Url = result.orElseThrow(S3UploadException::new);
@@ -262,12 +282,17 @@ public class MessageServiceImpl implements MessageService{
             .responseStatus(null)
             .build();
 
+        log.info("file response send -> sender: {}, receiver: {}", message.getReceiver().getUserName(), message.getSender().getUserName());
+
         // message 전송
         messageRepository.save(responseMessage);
 
         // fcm 발송
         List<FcmNotification> fcmNotifications = message.getSender().getFcmNotifications();
         for(FcmNotification fcmNotification: fcmNotifications){
+            if(fcmNotification == null) continue;
+            if(!fcmNotification.getIsEnabled()) continue;
+            if(fcmNotification.getMark()) continue;
             fcmUtil.sendMessage(fcmNotification.getFcmToken(), fcmNotification.getId(), FcmType.MESSAGE);
         }
     }
@@ -292,6 +317,7 @@ public class MessageServiceImpl implements MessageService{
     }
 
     @Override
+    @Transactional
     public MessageResponse findMessage(Long messageId) {
 
         Message result = messageRepository.findById(messageId)

@@ -16,11 +16,10 @@ public class FCMScheduler {
     private final FcmRepository fcmRepository;
 
 
-//    @Scheduled()
     @Scheduled(cron = "0 0 4 * * *", zone = "Asia/Seoul")
     public void removeAllMarked(){
-        log.info("왜안됨");
         List<FcmNotification> fcmNotifications = fcmRepository.findAllMarked();
+        log.info("delete fcmTokens -> {}", fcmNotifications);
         fcmRepository.deleteAll(fcmNotifications);
     }
 

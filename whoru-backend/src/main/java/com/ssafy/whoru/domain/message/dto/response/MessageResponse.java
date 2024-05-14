@@ -6,10 +6,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @Schema(description = "메세지 정보에 관한 DTO")
+@ToString
 public class MessageResponse {
 
     @Schema(description = "메세지 고유번호")

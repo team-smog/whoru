@@ -34,8 +34,11 @@ public class MemberApi implements MemberApiDocs {
 
     @PatchMapping("/icon")
     public ResponseEntity<WrapResponse<ChangeIconResponse>> changeIcon(@AuthenticationPrincipal CustomOAuth2User member, @RequestParam("iconId") int iconId) {
-        log.info("request member -> {}",member.getId());
-        log.info("request param  -> iconId: {}",iconId);
+
+        log.info("request Member -> {}", member.getId());
+
+        log.info("request param -> {}", iconId);
+
         ChangeIconResponse response = memberService.changeIcon(member.getId(), iconId);
         return ResponseEntity.ok(WrapResponse.create(response, SuccessType.SIMPLE_STATUS));
     }

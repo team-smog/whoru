@@ -25,6 +25,8 @@ public class ReportApi implements ReportApiDocs {
     @PostMapping("/member")
     public ResponseEntity<WrapResponse<Void>> reportMember(@RequestBody PostReportRequest request) {
 
+        log.info("request body -> {}", request);
+
         reportService.reportMember(request);
         return ResponseEntity.ok(WrapResponse.create(SuccessType.STATUS_201));
     }

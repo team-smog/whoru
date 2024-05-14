@@ -31,6 +31,10 @@ public class ReportAdminApi implements ReportAdminApiDocs {
     @PostMapping("/ban/{memberId}")
     public ResponseEntity<WrapResponse<Void>> banMember(@PathVariable("memberId") Long memberId, @RequestParam("reportId") Long reportId) {
 
+        log.info("request Pathvariable -> {}", memberId);
+
+        log.info("request param -> {}", reportId);
+
         reportService.banMember(memberId, reportId);
         return ResponseEntity.ok(WrapResponse.create(SuccessType.STATUS_201));
     }
@@ -38,6 +42,8 @@ public class ReportAdminApi implements ReportAdminApiDocs {
     @GetMapping("/list")
     public ResponseEntity<WrapResponse<SliceResponse<ReportRecordResponse>>> getReportRecord(@RequestParam("page") int page, @RequestParam(value = "size", required = false) @Min(1) @Max(30) int size, @RequestParam(value = "condition", required = false)
     ReportType reportType) {
+
+        log.info("request param -> page: {}, size: {}, ReportType: {}", page, size, reportType);
 
         SliceResponse<ReportRecordResponse> result = reportService.getReportRecord(page, size, reportType);
         return ResponseEntity.ok(WrapResponse.create(result, SuccessType.SIMPLE_STATUS));
