@@ -7,8 +7,6 @@ import lombok.Data;
 @Builder
 public class PostInquiryBoardRequest {
 
-    private Long memberId;
-
     private String subject;
 
     private String content;

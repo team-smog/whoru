@@ -3,11 +3,9 @@ package com.ssafy.whoru.domain.member.application;
 
 import com.ssafy.whoru.domain.collect.application.CrossCollectService;
 import com.ssafy.whoru.domain.collect.domain.Icon;
-import com.ssafy.whoru.domain.member.dao.FcmRepository;
 import com.ssafy.whoru.domain.member.dao.MemberRepository;
 import com.ssafy.whoru.domain.member.domain.FcmNotification;
 import com.ssafy.whoru.domain.member.domain.Member;
-import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.domain.member.dto.LanguageType;
 import com.ssafy.whoru.domain.member.dto.response.ChangeIconResponse;
 import com.ssafy.whoru.domain.member.dto.response.ProfileResponse;
@@ -16,9 +14,9 @@ import com.ssafy.whoru.domain.member.exception.*;
 import com.ssafy.whoru.global.common.dto.RedisKeyType;
 import com.ssafy.whoru.global.error.exception.BusinessLogicException;
 import com.ssafy.whoru.global.error.exception.ErrorCode;
-import com.ssafy.whoru.global.error.exception.SimpleException;
 import com.ssafy.whoru.global.util.JWTUtil;
 import com.ssafy.whoru.global.util.RedisUtil;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -26,9 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
-import java.util.Optional;
 
-import static com.ssafy.whoru.domain.member.domain.QMember.member;
 
 
 @Slf4j
@@ -36,7 +32,6 @@ import static com.ssafy.whoru.domain.member.domain.QMember.member;
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 
-    private final CrossMemberService crossMemberService;
     private final MemberRepository memberRepository;
 
     private final FcmService fcmService;
@@ -46,7 +41,6 @@ public class MemberServiceImpl implements MemberService {
 
     private final RedisUtil redisUtil;
     private final JWTUtil jwtUtil;
-    private final FcmServiceImpl fcmServiceImpl;
 
 
     @Override
@@ -74,19 +68,20 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void logout(Long memberId) {
+    public void logout(Long memberId, String fcmToken) {
+        fcmService.markingUnusedToken(memberId, fcmToken);
         redisUtil.delete(RedisKeyType.REFRESHTOKEN.makeKey(memberId.toString()));
     }
 
     @Override
-    @Transactional
     public void setPush(Long memberId) {
-        Member byId = crossMemberService.findByIdToEntity(memberId);
-        FcmNotification fcm = byId.getFcmNotification();
-        if (fcm == null) {
+        Optional<Member> byId = memberRepository.findById(memberId);
+        Member member = byId.orElseThrow(MemberNotFoundException::new);
+        List<FcmNotification> fcm = member.getFcmNotifications();
+        if (fcm.isEmpty()) {
             throw new FcmNotFoundException();
         }
-        fcmService.changeIsEnabled(fcm);
+        fcmService.changeEnabled(member);
     }
 
     @Override
@@ -109,22 +104,34 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public ProfileResponse getProfile(Long memberId) {
-        Member byId = crossMemberService.findByIdToEntity(memberId);
-
-        String url = (byId.getIcon()==null) ? "null" : byId.getIcon().getIconUrl();
-        boolean alarmStatus = byId.getFcmNotification() == null || byId.getFcmNotification().getIsEnabled();
-        String fcmToken = (byId.getFcmNotification() == null) ? "" : byId.getFcmNotification().getFcmToken();
+        Optional<Member> byId = memberRepository.findById(memberId);
+        Member member = byId.orElseThrow(MemberNotFoundException::new);
+        String url = (member.getIcon()==null) ? "null" : member.getIcon().getIconUrl();
+        List<FcmNotification> fcmNotifications = member.getFcmNotifications();
+        boolean alarmStatus = true;
+        for(FcmNotification fcmNotification: fcmNotifications){
+            if(fcmNotification.getMark()) continue; // 삭제 될 예정인 fcm토큰은 신경안써도됨
+            if(!fcmNotification.getIsEnabled()){
+                alarmStatus = false;
+                break;
+            }
+        }
 
         return ProfileResponse
                 .builder()
-                .username(byId.getUserName())
+                .id(memberId)
+                .provider(member.getProvider())
+                .memberIdentifier(member.getMemberIdentifier())
+                .boxCount(member.getBoxCount())
+                .role(member.getRole())
+                .createDate(member.getCreateDate())
+                .reportCount(member.getReportCount())
+                .userName(member.getUserName())
                 .languageType(LanguageType.KOREAN)
-                .fcmToken(fcmToken)
                 .pushAlarm(alarmStatus)
                 .iconUrl(url)
                 .build();
     }
-
 
 
 }

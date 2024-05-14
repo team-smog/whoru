@@ -37,7 +37,6 @@ public class AdminApiTest extends TestPrepare {
         collectRepository.save(icon);
 
         Member admin = memberTestUtil.관리자_멤버_추가(icon);
-        memberRepository.save(admin);
 
         String header3000 = memberTestUtil.관리자_AccessToken_만들고_헤더값_리턴(admin);
 
@@ -50,7 +49,6 @@ public class AdminApiTest extends TestPrepare {
          * 문의사항 답글 작성 API 호출
          * **/
         PostInquiryCommentRequest request = PostInquiryCommentRequest.builder()
-            .commenterId(admin.getId())
             .boardId(board.getId())
             .content("문의사항에 대한 테스트 답글입니다.")
             .build();
@@ -75,7 +73,6 @@ public class AdminApiTest extends TestPrepare {
         collectRepository.save(icon);
 
         Member admin = memberTestUtil.관리자_멤버_추가(icon);
-        memberRepository.save(admin);
 
         String header3000 = memberTestUtil.관리자_AccessToken_만들고_헤더값_리턴(admin);
 
@@ -111,7 +108,6 @@ public class AdminApiTest extends TestPrepare {
         collectRepository.save(icon);
 
         Member admin = memberTestUtil.관리자_멤버_추가(icon);
-        memberRepository.save(admin);
 
         String header3000 = memberTestUtil.관리자_AccessToken_만들고_헤더값_리턴(admin);
 
@@ -147,7 +143,6 @@ public class AdminApiTest extends TestPrepare {
         collectRepository.save(icon);
 
         Member admin = memberTestUtil.관리자_멤버_추가(icon);
-        memberRepository.save(admin);
 
         String header3000 = memberTestUtil.관리자_AccessToken_만들고_헤더값_리턴(admin);
 
@@ -180,7 +175,6 @@ public class AdminApiTest extends TestPrepare {
         collectRepository.save(icon);
 
         Member admin = memberTestUtil.관리자_멤버_추가(icon);
-        memberRepository.save(admin);
 
         String header = memberTestUtil.관리자_AccessToken_만들고_헤더값_리턴(admin);
 
@@ -208,7 +202,6 @@ public class AdminApiTest extends TestPrepare {
         collectRepository.save(icon);
 
         Member admin = memberTestUtil.관리자_멤버_추가(icon);
-        memberRepository.save(admin);
 
         String header = memberTestUtil.관리자_AccessToken_만들고_헤더값_리턴(admin);
 
@@ -237,7 +230,6 @@ public class AdminApiTest extends TestPrepare {
         collectRepository.save(icon);
 
         Member admin = memberTestUtil.관리자_멤버_추가(icon);
-        memberRepository.save(admin);
 
         String header = memberTestUtil.관리자_AccessToken_만들고_헤더값_리턴(admin);
 
@@ -265,7 +257,6 @@ public class AdminApiTest extends TestPrepare {
         collectRepository.save(icon);
 
         Member admin = memberTestUtil.관리자_멤버_추가(icon);
-        memberRepository.save(admin);
 
         String header = memberTestUtil.관리자_AccessToken_만들고_헤더값_리턴(admin);
 
@@ -293,7 +284,6 @@ public class AdminApiTest extends TestPrepare {
         collectRepository.save(icon);
 
         Member admin = memberTestUtil.관리자_멤버_추가(icon);
-        memberRepository.save(admin);
 
         String header = memberTestUtil.관리자_AccessToken_만들고_헤더값_리턴(admin);
 
@@ -321,7 +311,6 @@ public class AdminApiTest extends TestPrepare {
         collectRepository.save(icon);
 
         Member admin = memberTestUtil.Member3000_멤버추가(icon);
-        memberRepository.save(admin);
 
         String header = memberTestUtil.유저_AccessToken_만들고_헤더값_리턴(admin);
 
@@ -350,7 +339,6 @@ public class AdminApiTest extends TestPrepare {
         collectRepository.save(icon);
 
         Member admin = memberTestUtil.관리자_멤버_추가(icon);
-        memberRepository.save(admin);
 
         String header = memberTestUtil.관리자_AccessToken_만들고_헤더값_리턴(admin);
 
@@ -384,7 +372,6 @@ public class AdminApiTest extends TestPrepare {
         collectRepository.save(icon);
 
         Member admin = memberTestUtil.관리자_멤버_추가(icon);
-        memberRepository.save(admin);
 
         String header = memberTestUtil.관리자_AccessToken_만들고_헤더값_리턴(admin);
 
@@ -417,7 +404,6 @@ public class AdminApiTest extends TestPrepare {
         collectRepository.save(icon);
 
         Member admin = memberTestUtil.관리자_멤버_추가(icon);
-        memberRepository.save(admin);
 
         String header = memberTestUtil.관리자_AccessToken_만들고_헤더값_리턴(admin);
 
@@ -450,7 +436,6 @@ public class AdminApiTest extends TestPrepare {
         collectRepository.save(icon);
 
         Member admin = memberTestUtil.관리자_멤버_추가(icon);
-        memberRepository.save(admin);
 
         Member member3000 = memberTestUtil.Member3000_멤버추가(icon);
 

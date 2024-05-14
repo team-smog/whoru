@@ -27,7 +27,7 @@ spring:
   #JPA 설정
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
     show-sql: true
     # SQL 포매터
     properties:
@@ -153,7 +153,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: none
 
 
   datasource:
@@ -231,7 +231,7 @@ spring:
       password: ENC(g+ew4OYTc3qVGtJ+5H7IUe2LRjr5ehtn)
 
   datasource:
-    url: ENC(EPSQGVLoerIjeLG9Gqrs14T0QUyLYthurV/Bqy3HrrY5UvnUf7ipZauxXyNJeUhbP6CXV22Pz5BnDFQfDZdcdjNtoC9G1F9/UpAHrlUKQf2W+3C7v3oKUA==)
+    url: ENC(g9l4nkdGkV5XkF/4++7/hsOq7zVp7j+x5kWURRlrVZDqyGmEQHJTXWIVyb+U1drT/Q0JHQ0xZyy316UYNxG3P7R1NFqIsLwQR6mN2icw6szTVaagrXoxI9FfVmdzKvrf)
     username: ENC(SlMRhFRwRUHykyE/Q6iYeQ==)
     password: ENC(3ke7gPavz86vfhiq+jVjcaAO5gUtQgIl)
     driver-class-name: com.mysql.cj.jdbc.Driver

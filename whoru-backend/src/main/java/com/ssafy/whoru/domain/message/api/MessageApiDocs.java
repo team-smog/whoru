@@ -7,6 +7,7 @@ package com.ssafy.whoru.domain.message.api;
 import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.domain.message.dto.request.TextSend;
 import com.ssafy.whoru.domain.message.dto.response.MessageResponse;
+import com.ssafy.whoru.domain.message.dto.response.SendResponse;
 import com.ssafy.whoru.domain.message.dto.response.SliceMessageResponse;
 import com.ssafy.whoru.global.common.dto.WrapResponse;
 import com.ssafy.whoru.global.error.ErrorResponse;
@@ -22,7 +23,8 @@ import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -33,13 +35,12 @@ public interface MessageApiDocs {
 
     @Operation(summary = "Text 메세지 전송", description = "Text 메세지를 작성자 고유번호와 함께 보내어 content를 랜덤한 사용자에게 전송합니다.")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "201", description = "Text 메세지 전송 완료", content = @Content(schema = @Schema(implementation = WrapResponse.class))),
+        @ApiResponse(responseCode = "201", description = "Text 메세지 전송 완료", useReturnTypeSchema = true),
         @ApiResponse(responseCode = "400", description = "content 길이가 2 미만일때 발생", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
         @ApiResponse(responseCode = "400", description = "content 길이가 200 초과일때 발생", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
         @ApiResponse(responseCode = "403", description = "정지된 유저 메세지 전송 권한거부", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-        @ApiResponse(responseCode = "422", description = "받는사람의 FCM 토큰이 비었거나 null 상태일때", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    ResponseEntity<WrapResponse<Void>> sendTextMessage(CustomOAuth2User member, @RequestBody @Valid TextSend textSend);
+    ResponseEntity<WrapResponse<SendResponse>> sendTextMessage(CustomOAuth2User member, @RequestBody @Valid TextSend textSend);
 
     @Operation(summary = "Text 답장 메세지 전송", description = "Text 답장메세지를 작성자 고유번호, 내용, 어떤 메세지에 대한 답장인지를 담아서 전송합니다.")
     @ApiResponses(value = {
@@ -49,7 +50,6 @@ public interface MessageApiDocs {
         @ApiResponse(responseCode = "400", description = "messageId의 크기가 1미만일때 발생", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
         @ApiResponse(responseCode = "403", description = "정지된 유저 메세지 전송 권한거부", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
         @ApiResponse(responseCode = "451", description = "신고된 메세지 답장 전송 권한거부", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-        @ApiResponse(responseCode = "422", description = "받는사람의 FCM 토큰이 비었거나 null 상태일때", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     ResponseEntity<WrapResponse<Void>> sendTextResponseMessage(
         CustomOAuth2User member,
@@ -64,14 +64,13 @@ public interface MessageApiDocs {
         }
     )
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "201", description = "이미지 / 보이스 메세지 전송 성공",  content = @Content(schema = @Schema(implementation = WrapResponse.class))),
+        @ApiResponse(responseCode = "201", description = "이미지 / 보이스 메세지 전송 성공", useReturnTypeSchema = true),
         @ApiResponse(responseCode = "415", description = "허용되지 않는 확장자를 넣은 경우", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
         @ApiResponse(responseCode = "403", description = "정지된 유저 메세지 전송 권한거부", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
         @ApiResponse(responseCode = "400", description = "업로드된 파일이 손상된 경우", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-        @ApiResponse(responseCode = "422", description = "받는사람의 FCM 토큰이 비었거나 null 상태일때", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
         @ApiResponse(responseCode = "503", description = "AW3 Upload 에 실패했을 때", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    ResponseEntity<WrapResponse<Void>> sendFileMessage(
+    ResponseEntity<WrapResponse<SendResponse>> sendFileMessage(
         CustomOAuth2User member,
         @RequestPart @Schema(description = "업로드 할 파일", format = "binary", allowableValues = {"image/jpeg", "image/gif", "image/png", "audio/mpeg", "audio/wav"}) MultipartFile file
     );
@@ -89,7 +88,6 @@ public interface MessageApiDocs {
         @ApiResponse(responseCode = "403", description = "정지된 유저 메세지 전송 권한거부", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
         @ApiResponse(responseCode = "451", description = "신고된 메세지 답장 전송 권한거부", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
         @ApiResponse(responseCode = "400", description = "업로드된 파일이 손상된 경우", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-        @ApiResponse(responseCode = "422", description = "받는사람의 FCM 토큰이 비었거나 null 상태일때", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
         @ApiResponse(responseCode = "503", description = "AW3 Upload 에 실패했을 때", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     ResponseEntity<WrapResponse<Void>> sendFileResponseMessage(
@@ -120,4 +118,9 @@ public interface MessageApiDocs {
         @Valid @Min(value = 1, message = "id 최대값은 0보다 커야합니다.") Long lastId,
         @Valid @Min(value = 20, message = "size는 최소 20 이상이어야 합니다.") @RequestParam Integer size
     );
+
+    @Operation(summary = "메시지 상세내용 조회", description = "PathVariable로 메시지 번호를 전달")
+    @ApiResponse(responseCode = "200", description = "메시지 컨텐츠 응답", content = @Content(schema = @Schema(implementation = MessageResponse.class)))
+    @GetMapping("/{messageId}")
+    public ResponseEntity<WrapResponse<?>> findMessage(@PathVariable("messageId") Long messageId);
 }

@@ -1,11 +1,9 @@
 package com.ssafy.whoru.domain.member.api;
 
-import com.ssafy.whoru.domain.collect.dto.response.GetIconResponse;
 import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.domain.member.dto.response.ChangeIconResponse;
 import com.ssafy.whoru.domain.member.dto.response.ProfileResponse;
 import com.ssafy.whoru.domain.member.dto.response.TokenResponse;
-import com.ssafy.whoru.global.common.dto.SliceResponse;
 import com.ssafy.whoru.global.common.dto.WrapResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -18,7 +16,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import software.amazon.awssdk.profiles.Profile;
 
 /*
  * Author 정민호
@@ -41,9 +38,9 @@ public interface MemberApiDocs {
     @PatchMapping("/push-alarm")
     ResponseEntity<WrapResponse<Void>> setPush(@AuthenticationPrincipal CustomOAuth2User member);
 
-    @Operation(summary = "로그아웃",description = "토큰을 받아 유저를 로그아웃 합니다.")
-    @PostMapping("/logout")
-    ResponseEntity<WrapResponse<Void>> logout(@AuthenticationPrincipal CustomOAuth2User member, HttpServletRequest request, HttpServletResponse response);
+    @Operation(summary = "로그아웃",description = "리프레시 토큰과 FCM 토큰을 받아 해당 FCM토큰을 마킹하고 유저를 로그아웃 합니다.")
+    @GetMapping("/logout")
+    ResponseEntity<WrapResponse<Void>> logout(@AuthenticationPrincipal CustomOAuth2User member, @RequestParam String fcmToken, HttpServletRequest request, HttpServletResponse response);
 
     @Operation(summary = "accessToken 재발급 ",description = "토큰을 받아 유저의 accessToken을 재발급합니다.")
     @ApiResponse(responseCode = "200", description = "TokenResponse", content = @Content(schema = @Schema(implementation = TokenResponse.class)))

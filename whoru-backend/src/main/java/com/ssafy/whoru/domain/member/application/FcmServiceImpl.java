@@ -1,18 +1,18 @@
 package com.ssafy.whoru.domain.member.application;
 
 import com.ssafy.whoru.domain.member.dao.FcmRepository;
-import com.ssafy.whoru.domain.member.dao.MemberRepository;
 import com.ssafy.whoru.domain.member.domain.FcmNotification;
 import com.ssafy.whoru.domain.member.domain.Member;
-import com.ssafy.whoru.domain.member.exception.FcmNotRegistratedException;
-import com.ssafy.whoru.global.error.exception.BusinessLogicException;
-import com.ssafy.whoru.global.error.exception.ErrorCode;
-import jakarta.transaction.Transactional;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.PersistenceContext;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -21,24 +21,64 @@ public class FcmServiceImpl implements FcmService{
 
     private final FcmRepository fcmRepository;
     private final CrossMemberService crossMemberService;
-    private final MemberRepository memberRepository;
-
-    @Override
-    public void changeIsEnabled(FcmNotification fcm) {
-        fcm.updateNotificationsEnabled(!fcm.getIsEnabled());
-        fcmRepository.save(fcm);
-    }
 
     @Override
     @Transactional
     public void updateFcm(Long memberId, String token) {
-        Optional<Member> member = Optional.ofNullable(memberRepository.findById(memberId)
-                .orElseThrow(() -> new BusinessLogicException(ErrorCode.MEMBER_NOT_FOUND)));
 
-        FcmNotification fcmNotification = member.get().getFcmNotification();
+        Member member = crossMemberService.findByIdToEntity(memberId);
+        List<FcmNotification> used = member.getFcmNotifications();
+        Optional<FcmNotification> found = Optional.empty();
+        for(FcmNotification fcmNotification: used){
+            if(fcmNotification.getFcmToken().equals(token)){
+                found = Optional.of(fcmNotification);
+                break;
+            }
+        }
+        if(found.isPresent()){
+            FcmNotification present = found.get();
+            if(present.getMark()) {
+                present.updateMark(false);
+            }
+        }else{
+            FcmNotification fcmNotification = FcmNotification.builder()
+                .isEnabled(true)
+                .fcmToken(token)
+                .build();
 
-        member.get().setFcm(fcmNotification.setFcmToken(token));
-
+            fcmNotification.addNotification(member);
+            fcmRepository.save(fcmNotification);
+        }
     }
 
+    @Override
+    @Transactional
+    public void changeEnabled(Member member) {
+        List<FcmNotification> fcmNotifications = member.getFcmNotifications();
+        fcmNotifications.forEach(fcmNotification -> {
+            if(!fcmNotification.getMark()){
+                fcmNotification.updateNotificationsEnabled(!fcmNotification.getIsEnabled());
+            }
+        });
+    }
+
+    @Override
+    @Transactional
+    public void markingUnusedToken(Long id) {
+        marking(fcmRepository.findById(id));
+    }
+
+    @Override
+    @Transactional
+    public void markingUnusedToken(Long memberId, String token) {
+        marking(fcmRepository.findFcmNotificationByMemberAndFcmToken(memberId, token));
+    }
+
+    private void marking(Optional<FcmNotification> daoResult){
+        if(daoResult.isEmpty()){
+            return;
+        }
+        FcmNotification fcmNotification = daoResult.get();
+        fcmNotification.updateMark(true);
+    }
 }

@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
-    @Query(value = "SELECT m FROM Member m WHERE m.id != :senderId ORDER BY RAND() LIMIT 1 ")
+    @Query(value = "SELECT m FROM Member m WHERE m.id != :senderId and m.role = 'ROLE_USER' ORDER BY RAND() LIMIT 1 ")
     Optional<Member> findRandom(Long senderId);
 
     Optional<Member> findByUserName(String userName);

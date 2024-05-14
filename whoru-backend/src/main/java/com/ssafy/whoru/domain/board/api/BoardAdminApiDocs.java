@@ -4,6 +4,7 @@ import com.ssafy.whoru.domain.board.dto.request.PatchInquiryCommentRequest;
 import com.ssafy.whoru.domain.board.dto.request.PatchNotificationRequest;
 import com.ssafy.whoru.domain.board.dto.request.PostInquiryCommentRequest;
 import com.ssafy.whoru.domain.board.dto.request.PostNotificationRequest;
+import com.ssafy.whoru.domain.board.dto.response.InquiryDetailResponse;
 import com.ssafy.whoru.domain.board.dto.response.InquiryRecordResponse;
 import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.global.common.dto.SliceResponse;
@@ -36,7 +37,7 @@ public interface BoardAdminApiDocs {
     @Parameter(content = @Content(schema = @Schema(implementation = PostInquiryCommentRequest.class)))
     @ApiResponse(responseCode = "201")
     @PostMapping("/comment")
-    public ResponseEntity<WrapResponse<Void>> postComment(@RequestBody PostInquiryCommentRequest request);
+    public ResponseEntity<WrapResponse<Void>> postComment(@AuthenticationPrincipal CustomOAuth2User admin, @RequestBody PostInquiryCommentRequest request);
 
     @Operation(summary = "문의사항 조회 요청", description = "관리자는 전체 문의사항을 작성할 수 있다.")
     @Parameters( value = {
@@ -46,7 +47,7 @@ public interface BoardAdminApiDocs {
     })
     @ApiResponse(responseCode = "200", description = "Custom Slice Response", content = @Content(schema = @Schema(implementation = SliceResponse.class)))
     @GetMapping("")
-    public ResponseEntity<WrapResponse<SliceResponse<InquiryRecordResponse>>> getTotalInquiry(@RequestParam("page") @Min(value = 0, message = "page는 최소 0이상이어야 합니다.") int page,
+    public ResponseEntity<WrapResponse<SliceResponse<InquiryDetailResponse>>> getTotalInquiry(@RequestParam("page") @Min(value = 0, message = "page는 최소 0이상이어야 합니다.") int page,
         @RequestParam(value = "size", required = false) @Min(value = 1, message = "size는 최소 1이상이어야 합니다.") @Max(value = 30, message = "size는 최대 30까지만 적용됩니다.") int size,
         @RequestParam("condition") @Min(value = 0, message = "조건값은 0 또는 1이어야 합니다.") @Max(value = 1, message = "조건값은 0 또는 1이어야 합니다.") int condition);
 

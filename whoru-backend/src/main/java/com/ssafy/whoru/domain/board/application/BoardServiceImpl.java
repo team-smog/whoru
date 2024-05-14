@@ -11,6 +11,8 @@ import com.ssafy.whoru.domain.board.dto.request.PatchNotificationRequest;
 import com.ssafy.whoru.domain.board.dto.request.PostInquiryBoardRequest;
 import com.ssafy.whoru.domain.board.dto.request.PostInquiryCommentRequest;
 import com.ssafy.whoru.domain.board.dto.request.PostNotificationRequest;
+import com.ssafy.whoru.domain.board.dto.response.CommentDto;
+import com.ssafy.whoru.domain.board.dto.response.InquiryDetailResponse;
 import com.ssafy.whoru.domain.board.dto.response.InquiryRecordResponse;
 import com.ssafy.whoru.domain.board.dto.response.NotificationResponse;
 import com.ssafy.whoru.domain.board.exception.BoardNotFoundException;
@@ -19,18 +21,18 @@ import com.ssafy.whoru.domain.board.exception.NotSameWriterException;
 import com.ssafy.whoru.domain.member.application.CrossMemberService;
 import com.ssafy.whoru.domain.member.domain.FcmNotification;
 import com.ssafy.whoru.domain.member.domain.Member;
+import com.ssafy.whoru.global.common.dto.FcmType;
 import com.ssafy.whoru.global.common.dto.SliceResponse;
 import com.ssafy.whoru.global.common.dto.SuccessType;
 import com.ssafy.whoru.global.common.dto.response.ResponseWithSuccess;
 import com.ssafy.whoru.global.util.FCMUtil;
 import jakarta.annotation.PostConstruct;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.data.domain.PageRequest;
@@ -60,9 +62,9 @@ public class BoardServiceImpl implements BoardService{
     private static final String NOTIFICATION_CONTENT = "새로운 공지사항이 올라왔어요";
 
     @Override
-    public void postInquiryBoard(PostInquiryBoardRequest request) {
+    public void postInquiryBoard(Long memberId, PostInquiryBoardRequest request) {
 
-        Member member = crossMemberService.findByIdToEntity(request.getMemberId());
+        Member member = crossMemberService.findByIdToEntity(memberId);
 
         boardRepository.save(Board.builder()
                 .boardType(BoardType.INQUIRY)
@@ -86,30 +88,29 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     @Transactional(readOnly = true)
-    public SliceResponse<InquiryRecordResponse> getInquiryBoard(Long memberId, int page, int size) {
+    public SliceResponse<InquiryDetailResponse> getInquiryBoard(Long memberId, int page, int size) {
 
         Member member = crossMemberService.findByIdToEntity(memberId);
 
         // 페이징 객체 생성
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createDate"));
 
-        Slice<Board> result = boardRepository.findByMember(member, pageable);
+        Slice<Board> result = boardRepository.findByMember(member, pageable, BoardType.INQUIRY);
 
 
         isCommentExist(result);
 
         // Entity to DTO
-        Slice<InquiryRecordResponse> response = result.map(board -> modelMapper.map(board, InquiryRecordResponse.class));
+        Slice<InquiryDetailResponse> response = result.map(board -> modelMapper.map(board, InquiryDetailResponse.class));
 
         return new SliceResponse<>(response);
 
     }
 
 
-
     @Override
     @Transactional(readOnly = true)
-    public SliceResponse<InquiryRecordResponse> getTotalInquiry(int page, int size,
+    public SliceResponse<InquiryDetailResponse> getTotalInquiry(int page, int size,
         int condition) {
 
         // 페이징 객체 생성
@@ -131,17 +132,17 @@ public class BoardServiceImpl implements BoardService{
         isCommentExist(result);
 
         // Entity to DTO
-        Slice<InquiryRecordResponse> response = result.map(board -> modelMapper.map(board, InquiryRecordResponse.class));
+        Slice<InquiryDetailResponse> response = result.map(board -> modelMapper.map(board, InquiryDetailResponse.class));
 
         return new SliceResponse<>(response);
     }
 
     @Override
     @Transactional
-    public void postComment(PostInquiryCommentRequest request) {
+    public void postComment(Long adminId, PostInquiryCommentRequest request) {
 
         // 관리자 조회
-        Member member = crossMemberService.findByIdToEntity(request.getCommenterId());
+        Member member = crossMemberService.findByIdToEntity(adminId);
 
         // 게시글 조회
         Optional<Board> board = Optional.of(boardRepository.findById(request.getBoardId())
@@ -198,16 +199,21 @@ public class BoardServiceImpl implements BoardService{
             .build();
 
         boardRepository.save(noti);
-        List<Member> allUsers = crossMemberService.findAllMemberEntities();
-        String [] tokens = allUsers.stream()
-            .filter( member ->member.getFcmNotification()!= null && member.getFcmNotification().getIsEnabled())
-            .map( member -> member.getFcmNotification().getFcmToken())
-            .toArray(String []::new);
+        List<Member> allMembers = crossMemberService.findAllMemberEntities();
+
+        String notiTitle = fcmUtil.makeDateTitle(NOTIFICATION_TITLE, noti.getCreateDate());
+        for(Member member: allMembers){
+            List<FcmNotification> fcmNotifications = member.getFcmNotifications();
+            for(FcmNotification fcmNotification: fcmNotifications){
+                if(fcmNotification.getMark()) continue;
+                if(!fcmNotification.getIsEnabled()) continue;
+                fcmUtil.sendMessage(fcmNotification.getFcmToken(), fcmNotification.getId(), notiTitle, NOTIFICATION_CONTENT, FcmType.NOTIFICATION );
+            }
+        }
+
         LocalDateTime createDate = noti.getCreateDate();
         final String dateTitle = fcmUtil.makeDateTitle(NOTIFICATION_TITLE, createDate);
-        for(String token: tokens){
-            fcmUtil.sendMessage(token, dateTitle, NOTIFICATION_CONTENT);
-        }
+
     }
 
     @Override
@@ -251,6 +257,13 @@ public class BoardServiceImpl implements BoardService{
                 map().setWriterName(source.getWriter().getUserName());
             }
         });
+
+        modelMapper.addMappings(new PropertyMap<Comment, CommentDto>() {
+            protected void configure() {
+                map().setCommenterName(source.getCommenter().getUserName());
+            }
+        });
+
     }
 
 }

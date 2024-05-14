@@ -11,12 +11,14 @@ import com.ssafy.whoru.domain.report.domain.Report;
 import com.ssafy.whoru.domain.report.dto.ReportType;
 import com.ssafy.whoru.domain.report.dto.request.PostReportRequest;
 import com.ssafy.whoru.domain.report.dto.response.ReportRecordResponse;
+import com.ssafy.whoru.domain.report.exception.ReportNotFoundException;
 import com.ssafy.whoru.global.common.dto.SliceResponse;
 import com.ssafy.whoru.domain.report.exception.AlreadyBanException;
 import com.ssafy.whoru.domain.report.exception.DuplicatedReportException;
 import com.ssafy.whoru.domain.report.util.ReportUtil;
 import com.ssafy.whoru.global.common.dto.RedisKeyType;
 import com.ssafy.whoru.global.util.RedisUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +31,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class ReportServiceImpl implements ReportService{
 
@@ -74,6 +77,10 @@ public class ReportServiceImpl implements ReportService{
             .reportType(ReportType.SPAM)
             .build());
 
+        //해당 사용자 report 카운트 증가
+        sender.increaseReportCount();
+
+        log.info(String.valueOf(LocalDateTime.now()));
         //메시지 로우 value 수정
         message.updateIsReported(true);
 
@@ -81,7 +88,7 @@ public class ReportServiceImpl implements ReportService{
 
     @Override
     @Transactional
-    public void banMember(Long memberId) {
+    public void banMember(Long memberId, Long reportId) {
 
         // 정지여부 체크
         if(reportUtil.isBanned(memberId)){
@@ -95,6 +102,12 @@ public class ReportServiceImpl implements ReportService{
             .member(member)
             .endDate(LocalDateTime.now().plusDays(3))
             .build());
+
+        Report report = reportRepository.findById(reportId)
+            .orElseThrow(ReportNotFoundException::new);
+
+        //리뷰 완료 더티체킹
+        report.updateReviewedStatus();
 
         // Redis 갱신
         // DB IO Time과의 차이가 있을 수 있기 때문에 Duration으로 현재 값 비교.

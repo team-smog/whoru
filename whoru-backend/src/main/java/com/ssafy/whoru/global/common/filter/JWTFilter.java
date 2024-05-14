@@ -66,7 +66,6 @@ public class JWTFilter extends OncePerRequestFilter {
             return;
         }
 
-        String category = jwtUtil.getCategory(token);
         String role = jwtUtil.getRole(token);
 
 
@@ -90,7 +89,6 @@ public class JWTFilter extends OncePerRequestFilter {
 
         //세션에 사용자 등록
         SecurityContextHolder.getContext().setAuthentication(authToken);
-        System.out.println("success");
         filterChain.doFilter(request, response);
     }
 

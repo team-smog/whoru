@@ -43,6 +43,7 @@ public class S3ServiceImpl implements S3Service {
         }catch(IOException e){
             throw new InvalidFileStreamException();
         }catch(SdkException e){
+            log.info("s3 Exception {}", e);
             throw new S3UploadException();
         }
         return Optional.of(uploadUrlMaker(pathType.getS3Path(),resultFileName));

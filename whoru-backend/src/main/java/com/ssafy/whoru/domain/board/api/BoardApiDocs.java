@@ -1,7 +1,7 @@
 package com.ssafy.whoru.domain.board.api;
 
 import com.ssafy.whoru.domain.board.dto.request.PostInquiryBoardRequest;
-import com.ssafy.whoru.domain.board.dto.response.InquiryRecordResponse;
+import com.ssafy.whoru.domain.board.dto.response.InquiryDetailResponse;
 import com.ssafy.whoru.domain.board.dto.response.NotificationResponse;
 import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.global.common.dto.SliceResponse;
@@ -17,8 +17,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Size;
-import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,8 +33,8 @@ public interface BoardApiDocs {
     @Operation(summary = "문의사항 작성 요청", description = "사용자는 문의사항을 작성할 수 있다.")
     @Parameter(content = @Content(schema = @Schema(implementation = PostInquiryBoardRequest.class)))
     @ApiResponse(responseCode = "201")
-    @PostMapping("")
-    public ResponseEntity<WrapResponse<Void>> postInquiryBoard(@RequestBody PostInquiryBoardRequest request);
+    @PostMapping("/inquiry")
+    public ResponseEntity<WrapResponse<Void>> postInquiryBoard(@AuthenticationPrincipal CustomOAuth2User member, @RequestBody PostInquiryBoardRequest request);
 
     @Operation(summary = "사용자 문의사항 조회 API", description = "사용자는 자신이 작성한 문의사항들을 조회할 수 있다.")
     @Parameters( value = {
@@ -45,7 +43,7 @@ public interface BoardApiDocs {
     })
     @ApiResponse(responseCode = "200", description = "Custom Slice Response", content = @Content(schema = @Schema(implementation = SliceResponse.class)))
     @GetMapping("")
-    public ResponseEntity<WrapResponse<SliceResponse<InquiryRecordResponse>>> getInquiryBoard(@AuthenticationPrincipal CustomOAuth2User member,
+    public ResponseEntity<WrapResponse<SliceResponse<InquiryDetailResponse>>> getInquiryBoard(@AuthenticationPrincipal CustomOAuth2User member,
         @RequestParam("page") int page,
         @RequestParam(value = "size", required = false) @Min(value = 1, message = "size는 최소 1이상이어야 합니다.") @Max(value = 30, message = "size는 최대 30까지만 적용됩니다.") int size);
 
@@ -69,7 +67,7 @@ public interface BoardApiDocs {
     public ResponseEntity<WrapResponse<SliceResponse<NotificationResponse>>>  getNotifications(
         @AuthenticationPrincipal CustomOAuth2User member,
         @RequestParam("page") @Min(value = 0, message = "페이지 번호는 최소 0이상이어야 합니다.") int page,
-        @RequestParam(value = "size", required = true) @Min(value = 1, message = "사이즈가 너무 작습니다.") @Max(value = 30, message = "사이즈가 너무 큽니다.") int size
+        @RequestParam(value = "size") @Min(value = 1, message = "사이즈가 너무 작습니다.") @Max(value = 30, message = "사이즈가 너무 큽니다.") int size
     );
 
 }

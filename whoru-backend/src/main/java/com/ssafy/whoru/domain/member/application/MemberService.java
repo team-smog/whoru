@@ -1,8 +1,5 @@
 package com.ssafy.whoru.domain.member.application;
 
-import com.ssafy.whoru.domain.member.domain.Member;
-import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
-import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.domain.member.dto.response.ChangeIconResponse;
 import com.ssafy.whoru.domain.member.dto.response.ProfileResponse;
 import com.ssafy.whoru.domain.member.dto.response.TokenResponse;
@@ -13,7 +10,7 @@ public interface MemberService {
 
     void setPush(Long memberId);
 
-    void logout(Long memberId);
+    void logout(Long memberId, String fcmToken);
 
 
     TokenResponse reGenerateToken(Long memberId, String refresh);

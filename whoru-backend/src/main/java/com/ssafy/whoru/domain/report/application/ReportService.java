@@ -9,7 +9,7 @@ public interface ReportService {
 
     public void reportMember(PostReportRequest request);
 
-    public void banMember(Long memberId);
+    public void banMember(Long memberId, Long reportId);
 
     public SliceResponse<ReportRecordResponse> getReportRecord(int page, int size, ReportType reportType);
 }

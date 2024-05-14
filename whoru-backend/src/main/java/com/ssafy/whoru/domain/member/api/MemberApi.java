@@ -4,7 +4,6 @@ package com.ssafy.whoru.domain.member.api;
 
 import com.ssafy.whoru.domain.member.application.FcmService;
 import com.ssafy.whoru.domain.member.application.MemberService;
-import com.ssafy.whoru.domain.member.dao.MemberRepository;
 import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.domain.member.dto.response.ChangeIconResponse;
 import com.ssafy.whoru.domain.member.dto.response.ProfileResponse;
@@ -17,6 +16,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +29,6 @@ public class MemberApi implements MemberApiDocs {
 
     private final MemberService memberService;
     private final FcmService fcmService;
-    private final MemberRepository memberRepository;
 
     @PatchMapping("/icon")
     public ResponseEntity<WrapResponse<ChangeIconResponse>> changeIcon(@AuthenticationPrincipal CustomOAuth2User member, @RequestParam("iconId") int iconId) {
@@ -44,27 +43,32 @@ public class MemberApi implements MemberApiDocs {
         return ResponseEntity.ok(WrapResponse.create(SuccessType.SIMPLE_STATUS));
     }
 
-    @PostMapping("/logout")
-    public ResponseEntity<WrapResponse<Void>> logout(@AuthenticationPrincipal CustomOAuth2User member, HttpServletRequest request, HttpServletResponse response) {
-        memberService.logout(member.getId());
+    @GetMapping("/logout")
+    public ResponseEntity<WrapResponse<Void>> logout(@AuthenticationPrincipal CustomOAuth2User member, @RequestParam String fcmToken, HttpServletRequest request, HttpServletResponse response) {
+        memberService.logout(member.getId(), fcmToken);
         Cookie[] cookies = request.getCookies();
-        Cookie myCookie;
-        for(Cookie c : cookies){
-            if(c.getName().equals("Refresh")){
-                myCookie = c;
-                myCookie.setHttpOnly(true);
-                myCookie.setPath("/");
-                myCookie.setMaxAge(0);
-                response.addCookie(myCookie);
-                break;
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                log.info(cookie.getName());
+                if ("Refresh".equals(cookie.getName())) {
+                    ResponseCookie expiredCookie = ResponseCookie.from(cookie.getName(), null)
+                            .path("/")
+                            .maxAge(0)
+                            .secure(true)
+                            .sameSite("None")
+                            .httpOnly(true)
+                            .build();
+                    response.addHeader("Set-Cookie", expiredCookie.toString());
+                    break;
+                }
             }
         }
         return ResponseEntity.ok(WrapResponse.create(SuccessType.SIMPLE_STATUS));
     }
 
     @PostMapping("/regenerate-token")
-    public ResponseEntity<WrapResponse<TokenResponse>> regenerateToken(@AuthenticationPrincipal CustomOAuth2User member,
-                                                                       HttpServletRequest request) {
+    public ResponseEntity<WrapResponse<TokenResponse>> regenerateToken(@AuthenticationPrincipal CustomOAuth2User member, HttpServletRequest request) {
         String refreshToken = null;
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
@@ -75,7 +79,6 @@ public class MemberApi implements MemberApiDocs {
                 }
             }
         }
-
         if (refreshToken == null) {
             throw new RefreshTokenNotFoundException();
         }
@@ -89,12 +92,11 @@ public class MemberApi implements MemberApiDocs {
         return ResponseEntity.ok(WrapResponse.create(response,SuccessType.SIMPLE_STATUS));
     }
 
-    @PatchMapping("/updatefcm")
+    @PostMapping("/updatefcm")
     public ResponseEntity<WrapResponse<Void>> updateFcm(@AuthenticationPrincipal CustomOAuth2User member, String fcmToken) {
         fcmService.updateFcm(member.getId(),fcmToken);
         return ResponseEntity.ok(WrapResponse.create(SuccessType.SIMPLE_STATUS));
     }
-
 
 
 }
