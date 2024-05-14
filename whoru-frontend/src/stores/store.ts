@@ -4,12 +4,14 @@ export interface UserState {
 	boxCount: number | null
 	role: string | null
 	pushAlarm: boolean | null
+	iconUrl: string | null
 }
 
 export const initial: UserState = {
 	boxCount: null,
 	role: null,
 	pushAlarm: true,
+	iconUrl: '',
 }
 
 interface ReplyState {
@@ -49,9 +51,13 @@ const userSlice = createSlice({
 			state.role = action.payload
 		},
 		setPushAlarm: (state, action: PayloadAction<boolean | null>) => {
-      console.log(action.payload)
+      // console.log(action.payload)
 			state.pushAlarm = action.payload
 		},
+		setIconUrl: (state, action: PayloadAction<string | null>) => {
+			state.iconUrl = action.payload
+		}
+
 	},
 })
 
@@ -119,7 +125,7 @@ const store = configureStore({
 	},
 })
 
-export const { setBoxCount, setRole, setPushAlarm } = userSlice.actions
+export const { setBoxCount, setRole, setPushAlarm, setIconUrl } = userSlice.actions
 export const { setReplyMessage } = replySlice.actions
 export const { setFirstId, setLastId } = messageSlice.actions
 export const { setBoxCountP, setBoxCountM } = boxCounterSlice.actions
