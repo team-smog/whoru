@@ -1,15 +1,42 @@
 .postPage {
 	display: flex;
 	flex-direction: column;
+	justify-content: center;
 	height: 100vh;
 }
 
-.postPageBody {
-	display: block;
-	height: calc(100% - 108px);
-	overflow-y: auto;
-	position: relative;
-	top: 48px;
-	border-top: 1px solid #df93f8;
-	border-bottom: 1px solid #c4aff1;
+.postPageTypeController {
+	display: flex;
+	justify-content: space-around;
+	margin-bottom: 24px;
+}
+
+.postPageTypeControllerButton {
+	width: 120px;
+	background-color: #f0f0f0;
+	border: 3px solid #423752;
+	border-radius: 8px;
+	cursor: pointer;
+	padding: 8px 16px;
+}
+
+.selectedButton {
+	width: 120px;
+	background-color: #423752;
+	color: white;
+	border-radius: 8px;
+	cursor: pointer;
+	padding: 8px 16px;
+}
+
+.postPageTypeControllerButton:active {
+	background-color: #423752;
+	color: white;
+}
+
+.postPageTypeControllerReplyType {
+	display: fixed;
+	font-size: 24px;
+	color: #ffffff;
+	text-align: center;
 }

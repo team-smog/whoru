@@ -3,12 +3,26 @@ import styles from './SendTextComponent.module.css'
 import ulIcon from '../../assets/components/InboxTextComponent/text-component-ul-button.svg'
 import sqIcon from '../../assets/components/InboxTextComponent/text-component-sq-button.svg'
 import xIcon from '../../assets/components/InboxTextComponent/text-component-x-button.svg'
-// import axios from 'axios'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+// import { setBoxCountP } from '@/stores/store'
+// import { useDispatch } from 'react-redux'
+import Swal from 'sweetalert2'
 
-const SendTextComponent = () => {
-  // const [content, setContent] = useState<string>("")
+const SendTextComponent = ({ messageId }: { messageId: number | null}) => {
+  const navigate = useNavigate();
+  // const dispatch = useDispatch();
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [text, setText] = useState("");
+  const accessToken = localStorage.getItem('AccessToken');
+  
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+  })
 
   const onChangeText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.currentTarget.value);
@@ -20,30 +34,100 @@ const SendTextComponent = () => {
     }
   };
 
+  const onCancel = async () => {
+    await setText("");
+    if (textareaRef && textareaRef.current) {
+      textareaRef.current.style.height = "0px";
+      const scrollHeight = textareaRef.current.scrollHeight;
+      textareaRef.current.style.height = scrollHeight + "px";
+    }
+  };
+
   useEffect(() => {
     textareaRef.current?.focus();
   }, [])
 
-  // const sendMessage = async () => {
-  //   try {
-  //     const response = await axios.post(
-  //       'https://S10P31D203WRU.com/message/text', 
-  //       {
-  //         senderId: 'your-user-id', // 보내는 사람 userId
-  //         content: text // text 내용
-  //       },
-  //       {
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //           'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
-  //         },
-  //       }
-  //     );
-  //     console.log(response.data);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+  // const [token, setToken] = useState<string>("");
+  // useEffect(() => {
+  //   const resultToken = requestPermission();
+  //   resultToken.then((token) => {
+  //     setToken(token);
+  //   });
+  // }, []);
+
+  const sendMessage = async () => {
+    try {
+      if (messageId !== null) {
+        await axios.post(
+          `https://k10d203.p.ssafy.io/api/message/${messageId}/text`,
+          {
+            // senderId: 'your-user-id', // 보내는 사람 userId
+            content: text, // text 내용
+            // token: token
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${accessToken}`
+            },
+          }
+        )
+        .then(() => {
+          window.scrollTo(0, 0);
+          navigate('/');
+        })
+      } else if (messageId === null) {
+        await axios.post(
+          'https://k10d203.p.ssafy.io/api/message',
+          {
+            // senderId: 'your-user-id', // 보내는 사람 userId
+            content: text, // text 내용
+            // token: token
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${accessToken}`
+            },
+          }
+        )
+        .then((res) => {
+          console.log(res);
+          if (res.data.data.randomBoxProvided === true) {
+            Toast.fire({
+              icon: 'success',
+              title: '랜덤 박스에 당첨되었습니다!',
+            });
+          }
+          window.scrollTo(0, 0);
+          navigate('/');
+        })
+      }
+    } catch (error: any) {
+      console.error(error);
+      if (error.response.data.errorCode === 400) {
+        Swal.fire({
+          icon: 'error',
+          title: '실패',
+          text: '메세지가 너무 짧습니다',
+        });
+      } else if (error.response.data.errorCode === 403){
+        Swal.fire({
+          icon: 'error',
+          title: '실패',
+          text: '사용 정지된 유저입니다. 관리자에게 문의하세요',
+        });
+        window.scrollTo(0, 0);
+        navigate('/');
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: '실패',
+          text: '알 수 없는 오류가 발생했습니다',
+        });
+      }
+    }
+  };
 
   return (
     <div className={styles.sendTextComponent}>
@@ -60,11 +144,12 @@ const SendTextComponent = () => {
       </div>
       <div className={styles.sendTextComponentBody}>
         <div className={styles.sendTextComponentBodyMain}>
+          {/* <FCMComponent token={token}/> */}
           <textarea className={styles.sendTextComponentBodyMainText} 
           name="textarea" 
           ref={textareaRef}
           value={text}
-          id="" 
+          id="textareaRef" 
           // cols="30" 
           // rows="10" 
           maxLength={200}
@@ -75,11 +160,16 @@ const SendTextComponent = () => {
           <div className={styles.sendTextComponentFooter}>
             <button 
               className={styles.sendTextComponentFooterButton} 
-              // onClick={sendMessage}
+              onClick={sendMessage}
             >
               전송
             </button>
-            <button className={styles.sendTextComponentFooterReportButton}>취소</button>
+            <button 
+              className={styles.sendTextComponentFooterReportButton}
+              onClick={onCancel}
+            >
+              취소
+            </button>
           </div>
         </div>
       </div>

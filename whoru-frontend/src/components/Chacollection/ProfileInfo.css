@@ -1,4 +1,4 @@
-  .profile-container {
+.profile-container {
   background-color: #f0f0f0;
   padding: 8px;
   border-radius: 10px;
@@ -15,4 +15,8 @@
 
 .chacollection-profile-wrapper {
   margin-top: 60px;
+}
+
+.unavailable-icon {
+  background-color: rgba(128, 128, 128, 0.5);
 }

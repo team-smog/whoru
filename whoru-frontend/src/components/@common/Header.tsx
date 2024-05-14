@@ -1,5 +1,8 @@
+import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import Bell from "@/assets/@common/Bell.png"
+import { getFirebaseMessagingObject } from "@/FirebaseUtil.js";
+import { onMessage } from "firebase/messaging";
+import Swal from "sweetalert2";
 
 export interface IHeaderInfo {
   left_1: React.ReactNode | null;
@@ -10,15 +13,61 @@ export interface IHeaderInfo {
 
 const Header = (props: {info:IHeaderInfo}) => {
   const navigate = useNavigate();
+  const messagingObject = useRef(null);
+
+  const ToastMessage = Swal.mixin({
+    toast: true,
+    position: 'top',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('click', () => navigate('/'));
+    }
+  })
+
+  const ToastAnnouncement = Swal.mixin({
+    toast: true,
+    position: 'top',
+    showConfirmButton: false,
+    timer: 3000,
+    didOpen: (toast) => {
+      toast.addEventListener('click', () => navigate('/announcement'));
+    }
+  })
 
   const {left_1, left_2, center, right} = props.info;
+
+  useEffect(()=>{
+    messagingObject.current = getFirebaseMessagingObject()
+  },[])
+  if(messagingObject.current !== null){
+      // console.log(messagingObject.current);
+      onMessage(messagingObject.current, (body)=>{
+        if (body.data) {
+          const { content, type } = body.data;
+          if (type == "MESSAGE") {
+            ToastMessage.fire({
+              icon: 'success',
+              title: content,
+            })
+          } else {
+            ToastAnnouncement.fire({
+              icon: 'success',
+              title: content,
+            })
+          }
+        }
+      })
+  }
+
 
   return(
     <div className="max-w-[500px] w-full z-[2] h-12 px-4 top-0 flex fixed justify-between items-center">
       <div className="flex flex-1 justify-start items-center">
         {left_1 && (
           <div className="w-13 text-[20px] text-text_color">
-            <div>{left_1}</div>
+            <div >{left_1}</div>
           </div>
         )}
         {left_2 && (
@@ -27,11 +76,11 @@ const Header = (props: {info:IHeaderInfo}) => {
           </button>
         )}
       </div>
-      <div className="flex-1 flex justify-center">{center && <p className="text-white">{center}</p>}</div>
+      <div className="flex-1 flex justify-center">{center && <p className="text-text_color">{center}</p>}</div>
       <div className="flex flex-1 justify-end items-center relative">
-        <button onClick={() => navigate('/alarm')}>
-          {right && <img src={Bell} alt="Alarm" className="w-6 h-6"/>}
-        </button>
+        <div>
+          {right}
+        </div>
       </div>
     </div>
   )

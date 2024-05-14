@@ -14,50 +14,59 @@ import postbutton from '@/assets/components/InboxVoiceComponent/voice-component-
 import pausebutton from '@/assets/components/InboxVoiceComponent/voice-component-pause-button.svg'
 import { useVoiceVisualizer, VoiceVisualizer } from "react-voice-visualizer";
 import 'react-h5-audio-player/lib/styles.css';
-// import axios from 'axios';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom'
+// import { setBoxCountP } from '@/stores/store';
+// import { useDispatch } from 'react-redux';
+import toWav from 'audiobuffer-to-wav';
+import Swal from 'sweetalert2'
 
-const SendVoiceComponent = () => {
+
+const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
+    const navigate = useNavigate();
+    // const dispatch = useDispatch();
     const [currentRecordType,setCurrentRecordType] = useState<string>("")
     // Initialize the recorder controls using the hook
     const recorderControls = useVoiceVisualizer();
+    const accessToken = localStorage.getItem('AccessToken');
     const {
         // ... (Extracted controls and states, if necessary)
-        error,
+        // error,
         audioRef,
         isRecordingInProgress,
-        isPausedRecording,
+        // isPausedRecording,
         // audioData,
         // recordingTime,
-        mediaRecorder,
-        duration,
+        // mediaRecorder,
+        // duration,
         // currentAudioTime,
-        audioSrc,
+        // audioSrc,
         isPausedRecordedAudio,
-        isProcessingRecordedAudio,
+        // isProcessingRecordedAudio,
         isCleared,
         isAvailableRecordedAudio,
         recordedBlob,
-        bufferFromRecordedBlob,
-        formattedDuration,
+        // bufferFromRecordedBlob,
+        // formattedDuration,
         formattedRecordingTime,
         // formattedRecordedAudioCurrentTime,
-        isProcessingOnResize,
-        isProcessingStartRecording,
+        // isProcessingOnResize,
+        // isProcessingStartRecording,
     } = recorderControls;
 
     // Get the recorded audio blob
-    useEffect(() => {
-      if (!recordedBlob) return;
+    // useEffect(() => {
+    //   if (!recordedBlob) return;
 
-      console.log("recordedBlob:", recordedBlob);
-    }, [recordedBlob, error]);
+    //   console.log("recordedBlob:", recordedBlob);
+    // }, [recordedBlob, error]);
 
     // Get the error when it occurs
-    useEffect(() => {
-      if (!error) return;
+    // useEffect(() => {
+    //   if (!error) return;
 
-      console.error("error:", error);
-    }, [error]);
+    //   console.error("error:", error);
+    // }, [error]);
 
     useEffect(() => {
       if (!isRecordingInProgress) return;
@@ -69,23 +78,23 @@ const SendVoiceComponent = () => {
       console.log("isRecordingInProgress:", isRecordingInProgress);
     }, [isRecordingInProgress]);
 
-    useEffect(() => {
-      if (!isPausedRecording) return;
+    // useEffect(() => {
+    //   if (!isPausedRecording) return;
 
-      console.log("isPausedRecording:", isPausedRecording);
-    }, [isPausedRecording]);
+    //   console.log("isPausedRecording:", isPausedRecording);
+    // }, [isPausedRecording]);
 
-    useEffect(() => {
-      if (!isPausedRecordedAudio) return;
+    // useEffect(() => {
+    //   if (!isPausedRecordedAudio) return;
 
-      console.log("isPausedRecordedAudio:", isPausedRecordedAudio);
-    }, [isPausedRecordedAudio]);
+    //   console.log("isPausedRecordedAudio:", isPausedRecordedAudio);
+    // }, [isPausedRecordedAudio]);
 
-    useEffect(() => {
-      if (!isProcessingRecordedAudio) return;
+    // useEffect(() => {
+    //   if (!isProcessingRecordedAudio) return;
 
-      console.log("isProcessingRecordedAudio:", isProcessingRecordedAudio);
-    }, [isProcessingRecordedAudio]);
+    //   console.log("isProcessingRecordedAudio:", isProcessingRecordedAudio);
+    // }, [isProcessingRecordedAudio]);
 
     useEffect(() => {
       if (!isCleared) return;
@@ -94,7 +103,7 @@ const SendVoiceComponent = () => {
         setCurrentRecordType("cleared")
       }
 
-      console.log("isCleared:", isCleared);
+      // console.log("isCleared:", isCleared);
     }, [isCleared]);
 
     useEffect(() => {
@@ -104,20 +113,20 @@ const SendVoiceComponent = () => {
         setCurrentRecordType("audio")
       }
 
-      console.log("isAvailableRecordedAudio:", isAvailableRecordedAudio);
+      // console.log("isAvailableRecordedAudio:", isAvailableRecordedAudio);
     }, [isAvailableRecordedAudio]);
 
-    useEffect(() => {
-      if (!isProcessingOnResize) return;
+    // useEffect(() => {
+    //   if (!isProcessingOnResize) return;
 
-      console.log("isProcessingOnResize:", isProcessingOnResize);
-    }, [isProcessingOnResize]);
+    //   console.log("isProcessingOnResize:", isProcessingOnResize);
+    // }, [isProcessingOnResize]);
 
-    useEffect(() => {
-      if (!isProcessingStartRecording) return;
+    // useEffect(() => {
+    //   if (!isProcessingStartRecording) return;
 
-      console.log("isProcessingStartRecording:", isProcessingStartRecording);
-    }, [isProcessingStartRecording]);
+    //   console.log("isProcessingStartRecording:", isProcessingStartRecording);
+    // }, [isProcessingStartRecording]);
 
     // useEffect(() => {
     //   if (!audioData) return;
@@ -131,17 +140,17 @@ const SendVoiceComponent = () => {
     //   console.log("recordingTime:", recordingTime);
     // }, [recordingTime]);
 
-    useEffect(() => {
-      if (!mediaRecorder) return;
+    // useEffect(() => {
+    //   if (!mediaRecorder) return;
 
-      console.log("mediaRecorder:", mediaRecorder);
-    }, [mediaRecorder]);
+    //   console.log("mediaRecorder:", mediaRecorder);
+    // }, [mediaRecorder]);
 
-    useEffect(() => {
-      if (!duration) return;
+    // useEffect(() => {
+    //   if (!duration) return;
 
-      console.log("duration:", duration);
-    }, [duration]);
+    //   console.log("duration:", duration);
+    // }, [duration]);
 
     // useEffect(() => {
     //   if (!currentAudioTime) return;
@@ -149,23 +158,23 @@ const SendVoiceComponent = () => {
     //   console.log("currentAudioTime:", currentAudioTime);
     // }, [currentAudioTime]);
 
-    useEffect(() => {
-      if (!audioSrc) return;
+    // useEffect(() => {
+    //   if (!audioSrc) return;
 
-      console.log("audioSrc:", audioSrc);
-    }, [audioSrc]);
+    //   console.log("audioSrc:", audioSrc);
+    // }, [audioSrc]);
 
-    useEffect(() => {
-      if (!formattedDuration) return;
+    // useEffect(() => {
+    //   if (!formattedDuration) return;
 
-      console.log("formattedDuration:", formattedDuration);
-    }, [formattedDuration]);
+    //   console.log("formattedDuration:", formattedDuration);
+    // }, [formattedDuration]);
 
-    useEffect(() => {
-      if (!formattedRecordingTime) return;
+    // useEffect(() => {
+    //   if (!formattedRecordingTime) return;
 
-      console.log("formattedRecordingTime:", formattedRecordingTime);
-    }, [formattedRecordingTime]);
+    //   console.log("formattedRecordingTime:", formattedRecordingTime);
+    // }, [formattedRecordingTime]);
 
     // useEffect(() => {
     //   if (!formattedRecordedAudioCurrentTime) return;
@@ -173,33 +182,122 @@ const SendVoiceComponent = () => {
     //   console.log("formattedRecordedAudioCurrentTime:", formattedRecordedAudioCurrentTime);
     // }, [formattedRecordedAudioCurrentTime]);
 
-    useEffect(() => {
-      if (!bufferFromRecordedBlob) return;
+    // useEffect(() => {
+    //   if (!bufferFromRecordedBlob) return;
 
-      console.log("bufferFromRecordedBlob:", bufferFromRecordedBlob);
-    }, [bufferFromRecordedBlob]);
+    //   console.log("bufferFromRecordedBlob:", bufferFromRecordedBlob);
+    // }, [bufferFromRecordedBlob]);
 
-    // const handlePostButtonClick = async () => {
-    //   if (!recordedBlob) {
-    //       console.error("No recorded audio to send");
-    //       return;
-    //   }
-  
-    //   const formData = new FormData();
-    //   formData.append('audio', recordedBlob, 'audio.webm');
-  
-    //   try {
-    //       const response = await axios.post('https://S10P31D203WRU.com//message/file', formData, {
-    //           headers: {
-    //               'Content-Type': 'multipart/form-data',
-    //               'Authorization': 'Bearer ' + localStorage.getItem('accessToken'),
-    //           }
-    //       });
-    //       console.log(response.data);
-    //   } catch (error) {
-    //       console.error(error);
-    //   }
-    // };
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+    })
+
+    const handlePostButtonClick = async () => {
+      if (messageId !== null) {
+        if (!recordedBlob) {
+            // console.error("No recorded audio to send");
+            return;
+        }
+    
+        // const formData = new FormData();
+        // let newBlob = new Blob([recordedBlob], {type: 'audio/weba'});
+        // formData.append('file', newBlob);
+
+        // const mp3Blob = await convertToMp3(recordedBlob);
+
+        // const formData = new FormData();
+        // formData.append('audio', mp3Blob);
+
+        // console.log("newBlob:", newBlob);
+
+        const audioContext = new AudioContext();
+        const audioBuffer = await audioContext.decodeAudioData(await recordedBlob.arrayBuffer());
+        const wav = toWav(audioBuffer);
+        const blob = new Blob([new Uint8Array(wav)], { type: 'audio/wav' });
+
+        console.log("blob:", blob);
+
+        const formData = new FormData();
+        formData.append('file', blob);
+    
+        try {
+            const response = await axios.post(`https://k10d203.p.ssafy.io/api/message/${messageId}/file`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    Authorization: `Bearer ${accessToken}`
+                }
+            });
+            console.log(response.data);
+            window.scrollTo(0, 0);
+            navigate('/');
+        } catch (error) {
+            console.error(error);
+            Swal.fire({
+              icon: 'error',
+              title: '실패',
+              text: '음성 전송에 실패했습니다.',
+            });
+            window.scrollTo(0, 0);
+            navigate('/');
+        }
+      } else if (messageId === null) {
+        if (!recordedBlob) {
+          // console.error("No recorded audio to send");
+          return;
+        }
+    
+        // const formData = new FormData();
+        // let newBlob = new Blob([recordedBlob], {type: 'audio/weba'});
+        // formData.append('file', newBlob);
+
+        // const mp3Blob = await convertToMp3(recordedBlob);
+        // const formData = new FormData();
+        // formData.append('audio', mp3Blob);
+
+        // console.log("newBlob:", newBlob);
+
+        const audioContext = new AudioContext();
+        const audioBuffer = await audioContext.decodeAudioData(await recordedBlob.arrayBuffer());
+        const wav = toWav(audioBuffer);
+        const blob = new Blob([new Uint8Array(wav)], { type: 'audio/wav' });
+
+        console.log("blob:", blob);
+
+        const formData = new FormData();
+        formData.append('file', blob);
+    
+        try {
+            const response = await axios.post('https://k10d203.p.ssafy.io/api/message/file', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    Authorization: `Bearer ${accessToken}`
+                }
+            })
+            console.log(response.data);
+            if (response.data.data.randomBoxProvided === true) {
+                Toast.fire({
+                    icon: 'success',
+                    title: '랜덤 박스에 당첨되었습니다!',
+                });
+            }
+            window.scrollTo(0, 0);
+            navigate('/');
+        } catch (error) {
+            console.error(error);
+            Swal.fire({
+              icon: 'error',
+              title: '실패',
+              text: '음성 전송에 실패했습니다.',
+            });
+            window.scrollTo(0, 0);
+            navigate('/');
+        }
+      }
+    };
 
   return (
     <div className={styles.sendVoiceComponent}>
@@ -250,7 +348,7 @@ const SendVoiceComponent = () => {
                 height="100px"
                 backgroundColor="transparent"
                 mainBarColor="#ffffff"
-                barWidth={8}
+                barWidth={4}
                 gap={1}
                 speed={1}
                 isDefaultUIShown={false}
@@ -274,7 +372,7 @@ const SendVoiceComponent = () => {
                     <img 
                       src={postbutton} 
                       alt="post-icon" 
-                      // onClick={handlePostButtonClick}
+                      onClick={handlePostButtonClick}
                     />
                     {isPausedRecordedAudio ?
                       <img src={startbutton} alt="start-icon" onClick={recorderControls.togglePauseResume}/>

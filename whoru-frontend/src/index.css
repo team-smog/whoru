@@ -1,18 +1,22 @@
 @tailwind base;
 @tailwind components;
-<<<<<<< HEAD
 @tailwind utilities;
+
 
 html, body, #root {
   width: 100vw;
   max-width: 500px;
   margin: 0 auto;
   min-height: 100vh;
+  min-height: -webkit-fill-available;
 }
 
 #root {
   background: linear-gradient(rgba(255, 180, 212) 0%, rgba(166, 197, 244) 100%);
   font-family: 'NeoDunggeunmoPro-Regular';
+  height: -webkit-fill-available;
+  height: 100vh;
+  height: fill-available;
 }
 
 @font-face {
@@ -23,6 +27,5 @@ html, body, #root {
 ::-webkit-scrollbar {
   width: 0px;
 }
-=======
-@tailwind utilities;
->>>>>>> master
+
+

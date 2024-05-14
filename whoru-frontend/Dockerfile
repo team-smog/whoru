@@ -6,6 +6,9 @@ FROM node:20.11.1-alpine3.18 as build
 # 컨테이너 내부 작업 디렉토리 설정
 WORKDIR /app
 
+# 환경변수 설정
+ENV VITE_BASE_URL=https://k10d203.p.ssafy.io/api
+
 # app dependencies
 # 컨테이너 내부로 package.json 파일들을 복사
 COPY package*.json ./

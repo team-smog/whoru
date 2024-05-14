@@ -4,7 +4,6 @@ import ProfileInfo from '../../components/Profile/ProfileInfo'
 import ProfileActions from '../../components/Profile/ProfileActions'
 import ProfileSettingsModal from '../../components/Profile/ProfileSettingsModal'
 import NavigationBar from '@/components/@common/NavigationBar'
-import Bell from '@/assets/@common/Bell.png'
 
 const ProfilePage = () => {
 	const navigate = useNavigate()
@@ -17,7 +16,7 @@ const ProfilePage = () => {
 		left_1: 'Profile',
 		left_2: null,
 		center: null,
-		right: <img src={Bell} alt="Alarm" />,
+		right: null,
 	}
 
 	return (
@@ -26,10 +25,12 @@ const ProfilePage = () => {
 			<div>
 				<ProfileInfo />
 			</div>
-			<hr className="border-1 border-black mt-10 px-10" />
-			<ProfileActions />
-			<hr className="border-1 border-black pt-5 px-10" />
-			<p className="pl-12 pt-4">언어 설정</p>
+      <div className='pt-10'>
+        <hr className="border-1 border-black mt-10 px-10" />
+        <ProfileActions />
+        <hr className="border-1 border-black pt-5 px-10" />
+      </div>
+			{/* <p className="pl-12 pt-4">언어 설정</p> */}
 			<ProfileSettingsModal />
 			<p className="pl-12 pt-4" onClick={handleInquiryClick}>
 				문의하기

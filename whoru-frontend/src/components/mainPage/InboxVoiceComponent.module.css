@@ -1,73 +1,111 @@
 .inboxVoiceComponent {
-  display: flex;
-    flex-direction: column;
-    /* justify-content: center; */
-    align-items: center;
-    width: 95%;
-    min-height: 110px;
-    border-radius: 10px;
-    overflow: hidden;
-    margin: 4px auto;
+	display: flex;
+	flex-direction: column;
+	/* justify-content: center; */
+	align-items: center;
+	width: 95%;
+	min-height: 110px;
+	border-radius: 10px;
+	overflow: hidden;
+	margin: 4px auto;
 }
 
 .inboxVoiceComponentHeader {
-    width: 100%;
-    background-image: url("../../assets/components/InboxVoiceComponent/voice-component-header.svg");
-    background-size: cover;
+	width: 100%;
+	background-image: url('../../assets/components/InboxVoiceComponent/voice-component-header.svg');
+	background-size: cover;
 }
 
 .inboxVoiceComponentHeaderText {
-    display: flex;
-    height: 50%;
-    flex-direction: row;
-    align-items: center;
-    color: #ffffff;
-    margin: 2px 12px;
+	display: flex;
+	height: 50%;
+	flex-direction: row;
+	align-items: center;
+	color: #ffffff;
+	margin: 2px 12px;
 }
 
 .inboxVoiceComponentHeaderTextTitle {
-  margin: auto 8px;
-  font-size: 12px;
+	margin: auto 8px;
+	font-size: 12px;
 }
 
 .inboxVoiceComponentHeaderTime {
-  font-size: 10px;
-  color: #ffffff;
+	font-size: 10px;
+	color: #ffffff;
 }
 
 .inboxVoiceComponentHeaderIcons {
-    display: flex;
-    height: 50%;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    height: 14px;
-    margin: auto 8px;
+	display: flex;
+	height: 50%;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	height: 14px;
+	margin: auto 8px;
 }
 
 .inboxVoiceComponentHeaderIcons img {
-    width: 10px;
-    height: 10px;
-    margin: 0 2.5px;
+	width: 10px;
+	height: 10px;
+	margin: 0 2.5px;
 }
 
 .inboxVoiceComponentHeaderSearchArea {
-  width: 100%;
-  height: 10px;
-  border: 2px solid #423752;
-  border-radius: 10px;
-  background: #ffffff;
-  opacity: 0.5;
+	width: 100%;
+	height: 10px;
+	border: 2px solid #423752;
+	border-radius: 10px;
+	background: #ffffff;
+	opacity: 0.5;
 }
 
 .inboxVoiceComponentBody {
-  width: 100%;
-  min-height: 100px;
-  background: #ffffff;
-  padding: 4px;
-  border: 4px solid #423752;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-  overflow: hidden;
+	width: 100%;
+	min-height: 100px;
+	background: #ffffff;
+	border: 4px solid #423752;
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+	overflow: hidden;
 }
 
+.inboxVoiceComponentBodyMain {
+	padding:2px
+}
+
+.inboxVoiceComponentFooter {
+	width: 100%;
+	height: 30px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	background: #a2b4fe;
+	border-top: 3px solid #423752;
+}
+
+.inboxVoiceComponentFooterButton {
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(0deg, #a2b4fe 0%, #ffc2fc 100%);
+	/* background: #e08edc; */
+	border-right: 1.5px solid #423752;
+	color: #ffffff;
+}
+
+.inboxVoiceComponentFooterButtonDisable {
+	width: 100%;
+	height: 100%;
+	/* background: linear-gradient(0deg, #a2b4fe 0%, #ffc2fc 100%); */
+	background: gray;
+	border-right: 1.5px solid #423752;
+	color: #656565;
+}
+
+.inboxVoiceComponentFooterReportButton {
+	width: 100%;
+	height: 100%;
+	background: #e2e0ff;
+	border-left: 1.5px solid #423752;
+	color: #656565;
+}
