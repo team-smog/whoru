@@ -29,16 +29,9 @@ public class FcmNotification {
     @Column(nullable = false, name = "fcm_token")
     private String fcmToken;
 
-    @Column(name = "is_enabled")
-    @Builder.Default
-    private Boolean isEnabled = true;
-
     @Column(name = "mark")
     @Default
     private Boolean mark = false;
-
-
-    public void updateNotificationsEnabled(Boolean status) { this.isEnabled = status; }
 
     public void updateMark(Boolean status){
         this.mark = status;
