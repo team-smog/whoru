@@ -64,7 +64,6 @@ function InquiryDetail() {
 					})
 					.then((response) => {
 						navigate('/inquiry')
-						console.log(response)
 					})
 			}
 		})

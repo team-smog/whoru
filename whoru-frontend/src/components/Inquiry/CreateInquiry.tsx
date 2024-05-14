@@ -54,7 +54,6 @@ const CreateInquiry = () => {
 						Swal.fire('등록 실패', response.data.msg || '문의사항 등록에 실패했습니다.', 'error')
 					}
 				} catch (error) {
-					console.error('문의사항 등록 중 오류 발생:', error)
 					Swal.fire('서버 오류', '문의사항 등록에 실패했습니다.', 'error')
 				} finally {
 					setIsSubmitting(false)
