@@ -11,7 +11,7 @@ import { useInView } from 'react-intersection-observer';
 import { useDispatch, useSelector } from "react-redux";
 import { setFirstId, setLastId } from "@/stores/store";
 import axios from "axios";
-import { requestPermission } from "@/FirebaseUtil.js";
+// import { requestPermission } from "@/FirebaseUtil.js";
 
 
 //todo: 
@@ -32,20 +32,20 @@ const MainPage = () => {
     }
   }, []);
   
-  const FCMSetToken = async () => {
-    // const token = await requestPermission();
-    // console.log("token",token)
-    // return token;
-    // localStorage.getItem('FCMToken');
-    return await requestPermission();
-  }
+  // const FCMSetToken = async () => {
+  //   // const token = await requestPermission();
+  //   // console.log("token",token)
+  //   // return token;
+  //   // localStorage.getItem('FCMToken');
+  //   return await requestPermission();
+  // }
 
   const dispatch = useDispatch();
   const firstId = useSelector((state: any) => state.message.firstId);
   const lastId = useSelector((state: any) => state.message.lastId);
   const [hasNext,setHasNext] = useState<boolean | null>(null);
   const [serverData, setServerData] = useState<any[]>([]);
-  const token = FCMSetToken();
+  // const token = FCMSetToken();
   
   const touchStartY = useRef(0);
   const loadingHeight = useRef(0);
@@ -97,36 +97,36 @@ const MainPage = () => {
   // const [ myTokenFCM, setMyTokenFCM] = useState<string|null>(null);
 
   
-  const fetchDataFCM = async (token: string|null) => {
-    try {
-      // console.log("token1",token)
-      if (token === null) {
-        return;
-      }
-      await fetch(`https://k10d203.p.ssafy.io/api/member/updatefcm?fcmToken=${token}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
-        },
-      });
-      console.log("fcm 토큰 저장 api 요청 완료")
-    } catch (error: any) {
-      console.error(error);
-      console.log("fcm 토큰 저장 api 요청 실패")
-    }
-  };
+  // const fetchDataFCM = async (token: string|null) => {
+  //   try {
+  //     // console.log("token1",token)
+  //     if (token === null) {
+  //       return;
+  //     }
+  //     await fetch(`https://k10d203.p.ssafy.io/api/member/updatefcm?fcmToken=${token}`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
+  //       },
+  //     });
+  //     console.log("fcm 토큰 저장 api 요청 완료")
+  //   } catch (error: any) {
+  //     console.error(error);
+  //     console.log("fcm 토큰 저장 api 요청 실패")
+  //   }
+  // };
 
-  useEffect(() => {
-    token.then(() => {
-      const FCM = localStorage.getItem('FCMToken');
-      console.log("FCM",FCM);
-      fetchDataFCM(FCM);
-      // console.log("res token",res);
-      // localStorage.setItem('FCMToken', res);
-    })
-    // fetchDataFCM(token);
-  }, [token]);
+  // useEffect(() => {
+  //   token.then(() => {
+  //     const FCM = localStorage.getItem('FCMToken');
+  //     console.log("FCM",FCM);
+  //     fetchDataFCM(FCM);
+  //     // console.log("res token",res);
+  //     // localStorage.setItem('FCMToken', res);
+  //   })
+  //   // fetchDataFCM(token);
+  // }, [token]);
 
   useEffect(() => {
     console.log("firstId", firstId);
