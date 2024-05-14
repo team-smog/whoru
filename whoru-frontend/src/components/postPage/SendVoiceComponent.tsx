@@ -232,6 +232,7 @@ const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
                 }
             });
             console.log(response.data);
+            window.scrollTo(0, 0);
             navigate('/');
         } catch (error) {
             console.error(error);
@@ -240,6 +241,7 @@ const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
               title: '실패',
               text: '음성 전송에 실패했습니다.',
             });
+            window.scrollTo(0, 0);
             navigate('/');
         }
       } else if (messageId === null) {
@@ -282,6 +284,7 @@ const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
                     title: '랜덤 박스에 당첨되었습니다!',
                 });
             }
+            window.scrollTo(0, 0);
             navigate('/');
         } catch (error) {
             console.error(error);
@@ -290,6 +293,7 @@ const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
               title: '실패',
               text: '음성 전송에 실패했습니다.',
             });
+            window.scrollTo(0, 0);
             navigate('/');
         }
       }
