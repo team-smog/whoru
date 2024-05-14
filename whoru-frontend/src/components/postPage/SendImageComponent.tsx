@@ -208,7 +208,7 @@ const SendImageComponent = ({ messageId }: { messageId: number | null}) => {
         />
           <div className={styles.sendImageComponentBodyUploadArea} onClick={handleUploadAreaClick}>
           {imageSrc ? (
-            <img src={imageSrc} alt="Uploaded"  className={styles.sendImageComponentBodyUploadArea}/>
+            <img src={imageSrc} alt="Uploaded"  className={styles.sendImageComponentBodyUploadImageArea}/>
           ) : (
             <>
               <img src={camerabutton} alt="camera-button" />
