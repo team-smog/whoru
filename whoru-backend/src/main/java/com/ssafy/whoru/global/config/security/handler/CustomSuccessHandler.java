@@ -59,6 +59,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         log.info("access Token : {}", accessToken);
 
+        log.info("request endpoint : {}", request.getRequestURI());
+
         //토큰 Redis 저장
         redisUtil.insert(RedisKeyType.REFRESHTOKEN.makeKey(String.valueOf(userId)),refreshToken,time/1000);
 
