@@ -87,7 +87,7 @@ const InboxTextComponent: React.FC<InboxTextComponentProps> = ({ message, innerR
     <div className={styles.inboxTextComponent} key={message.id} ref={innerRef} {...props}>
       <div className={styles.inboxTextComponentHeader} key={message.id} {...props}>
         <div className={styles.inboxTextComponentHeaderText}>
-          <p className={styles.inboxTextComponentHeaderTextTitle}>{message.responseStatus ? "답장 메세지" : "익명 메세지"}</p>
+          <p className={styles.inboxTextComponentHeaderTextTitle}>{message.isResponse ? "답장 메세지" : "익명 메세지"}</p>
           <p className={styles.inboxTextComponentHeaderTime}>{timeFromNow}</p>
         </div>
         <div className={styles.inboxTextComponentHeaderIcons}>
