@@ -63,21 +63,8 @@ const InquiryManager = () => {
 			if (response.status === 200) {
 				setInquiries(response.data.data.content)
 				setIsLastPage(response.data.data.last)
-				console.log('성공')
-				console.log(response)
-				console.log(response.data.data.content)
-				setTimeout(() => {
-					console.log(inquiries)
-				}, 1000)
-			} else {
-				console.error('유효한 데이터가 없습니다. 서버 응답:', response.data)
 			}
 		} catch (error) {
-			if (axios.isAxiosError(error)) {
-				console.error('API 응답 오류:', error.response?.data || error.message)
-			} else {
-				console.error('예상치 못한 오류:', error)
-			}
 		} finally {
 			setLoading(false)
 		}

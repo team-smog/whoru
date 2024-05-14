@@ -22,8 +22,8 @@ const ProfileSettingsModal = () => {
 					localStorage.setItem('isPushNotificationEnabled', String(response.data.pushAlarm))
 				}
 			} catch (error) {
-				console.error('사용자 설정 정보를 불러오는 중 에러 발생:', error)
-			}
+
+      }
 		}
 
 		fetchUserSettings()
@@ -40,7 +40,7 @@ const ProfileSettingsModal = () => {
 
 	const updatePushNotificationSetting = async (isEnabled: boolean) => {
 		try {
-			const response = await axios.patch(
+			await axios.patch(
 				'https://k10d203.p.ssafy.io/api/member/push-alarm',
 				{ pushAlarm: isEnabled },
 				{
@@ -50,10 +50,7 @@ const ProfileSettingsModal = () => {
 					},
 				}
 			)
-			console.log('푸시 알림 설정 업데이트:', response.data)
 		} catch (error) {
-			console.error('푸시 알림 설정 업데이트 중 에러 발생:', error)
-			alert('푸시 알림 설정 업데이트 실패')
 		}
 	}
 
