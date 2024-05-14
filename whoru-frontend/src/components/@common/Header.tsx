@@ -46,7 +46,7 @@ const Header = (props: {info:IHeaderInfo}) => {
       onMessage(messagingObject.current, (body)=>{
         if (body.data) {
           const { content, type } = body.data;
-          if (type === "message") {
+          if (type == "MESSAGE") {
             ToastMessage.fire({
               icon: 'success',
               title: content,
