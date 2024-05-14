@@ -40,6 +40,10 @@ public class BoardApi implements BoardApiDocs{
     @PostMapping("/inquiry")
     public ResponseEntity<WrapResponse<Void>> postInquiryBoard(@AuthenticationPrincipal CustomOAuth2User member, @RequestBody PostInquiryBoardRequest request) {
 
+        log.info("request Member -> {}", member.getId());
+
+        log.info("request body -> {}", request.toString());
+
         boardService.postInquiryBoard(member.getId(), request);
         return ResponseEntity.ok(WrapResponse.create(SuccessType.STATUS_201));
     }
@@ -53,6 +57,10 @@ public class BoardApi implements BoardApiDocs{
         @RequestParam("page") int page,
         @RequestParam(value = "size", required = false) @Min(value = 1, message = "size는 최소 1이상이어야 합니다.") @Max(value = 30, message = "size는 최대 30까지만 적용됩니다.") int size) {
 
+        log.info("request Member -> {}", member.getId());
+
+        log.info("request param -> page: {}, size: {}", page, size);
+
         SliceResponse<InquiryDetailResponse> response = boardService.getInquiryBoard(member.getId(), page, size);
 
         return ResponseEntity.ok(WrapResponse.create(response, SuccessType.SIMPLE_STATUS));
@@ -63,6 +71,10 @@ public class BoardApi implements BoardApiDocs{
      */
     @DeleteMapping("/{boardId}")
     public ResponseEntity<WrapResponse<Void>> deleteInquiryBoard(@AuthenticationPrincipal CustomOAuth2User member, @PathVariable("boardId") Long boardId) {
+
+        log.info("request Member -> {}", member.getId());
+
+        log.info("request Pathvariable -> {}", boardId);
 
         boardService.deleteInquiryBoard(member.getId(), boardId);
         return ResponseEntity.ok(WrapResponse.create(SuccessType.STATUS_204));
