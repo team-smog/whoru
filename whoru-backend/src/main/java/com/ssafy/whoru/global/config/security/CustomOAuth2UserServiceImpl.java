@@ -67,6 +67,7 @@ public class CustomOAuth2UserServiceImpl extends DefaultOAuth2UserService implem
                     .builder()
                     .userName(name)
                     .role("ROLE_USER")
+                    .isEnabled(true)
                     .provider(providerType)
                     .memberIdentifier(memberIdentifier)
                     .build());
@@ -76,6 +77,7 @@ public class CustomOAuth2UserServiceImpl extends DefaultOAuth2UserService implem
                     .builder()
                     .memberIdentifier(memberIdentifier)
                     .role(member.getRole())
+                    .isEnabled(member.getIsEnabled())
                     .userName(name)
                     .id(member.getId())
                     .build();
@@ -84,12 +86,14 @@ public class CustomOAuth2UserServiceImpl extends DefaultOAuth2UserService implem
             return new CustomOAuth2User(memberDTO);
 
         }else{   //있으면 패스
+            Member targetMember = existData.get();
             MemberDTO memberDTO = MemberDTO
                     .builder()
-                    .role(existData.get().getRole())
+                    .role(targetMember.getRole())
                     .memberIdentifier(memberIdentifier)
+                    .isEnabled(targetMember.getIsEnabled())
                     .userName(name)
-                    .id(existData.get().getId())
+                    .id(targetMember.getId())
                     .build();
 
             return new CustomOAuth2User(memberDTO);

@@ -60,7 +60,7 @@ public class Member {
     @Column(name = "language_type")
     private LanguageType languageType;
 
-    @Column(name = "is_enabled")
+    @Column(name = "is_enabled", nullable = false)
     @Default
     Boolean isEnabled = true;
 
