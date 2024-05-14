@@ -2,34 +2,24 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import Cancel from '@/assets/@common/Cancel.png'
 import './Profile.css'
-import { useDispatch, useSelector } from 'react-redux'
-import { setPushAlarm } from '@/stores/store'
-// import { RootState } from '@/stores/store'
 
 const ProfileSettingsModal = () => {
-	const pushAlarm = useSelector((state: any) => state.user.pushAlarm)
-	const boxCount = useSelector((state: any) => state.user.boxCount)
-	const dispatch = useDispatch()
-	const [isPushNotificationEnabled, setIsPushNotificationEnabled] = useState<boolean>(pushAlarm)
+	const [isPushNotificationEnabled, setIsPushNotificationEnabled] = useState(
+		localStorage.getItem('isPushNotificationEnabled') === 'false' ? false : true
+	)
 	const [isModalOpen, setIsModalOpen] = useState(false)
-
-	useEffect(() => {
-		console.log(pushAlarm)
-		// console.log(boxCount)
-	}, [pushAlarm, boxCount])
 
 	useEffect(() => {
 		const fetchUserSettings = async () => {
 			try {
-				const res = await axios.get('https://k10d203.p.ssafy.io/api/member/profile', {
+				const response = await axios.get('https://k10d203.p.ssafy.io/api/member/profile', {
 					headers: {
 						Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
 					},
 				})
-				// console.log(res.data)
-				console.log(!res.data.data.pushAlarm)
-				if (res.data && res.data.data.pushAlarm !== undefined) {
-					setIsPushNotificationEnabled(!res.data.data.pushAlarm)
+				if (response.data && response.data.pushAlarm !== undefined) {
+					setIsPushNotificationEnabled(response.data.pushAlarm)
+					localStorage.setItem('isPushNotificationEnabled', String(response.data.pushAlarm))
 				}
 			} catch (error) {
 				console.error('사용자 설정 정보를 불러오는 중 에러 발생:', error)
@@ -43,7 +33,7 @@ const ProfileSettingsModal = () => {
 		setIsPushNotificationEnabled((prevState) => {
 			const newState = !prevState
 			updatePushNotificationSetting(newState)
-			console.log('lasijeflasjf', setPushAlarm(newState))
+			localStorage.setItem('isPushNotificationEnabled', String(newState))
 			return newState
 		})
 	}
@@ -60,8 +50,7 @@ const ProfileSettingsModal = () => {
 					},
 				}
 			)
-			console.log('푸시 알림 설정 업데이트:', response.data, isEnabled)
-			dispatch(setPushAlarm(isEnabled))
+			console.log('푸시 알림 설정 업데이트:', response.data)
 		} catch (error) {
 			console.error('푸시 알림 설정 업데이트 중 에러 발생:', error)
 			alert('푸시 알림 설정 업데이트 실패')
@@ -78,7 +67,7 @@ const ProfileSettingsModal = () => {
 				푸시 알림 설정
 			</div>
 			{isModalOpen && (
-				<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+				<div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
 					<div className="w-80 h-32 bg-white rounded-lg border-solid border-2 border-black">
 						<div className="flex flex-row justify-between rounded-t-lg bg-[#D78DDD]">
 							<p className=" pt-1 p-2 text-sm text-white">푸시 알림</p>

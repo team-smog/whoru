@@ -33,7 +33,7 @@ const requestPermission = async () => {
 
 	localStorage.setItem('FCMToken', token)
 	console.log('fcm token:', token)
-	return token
+	// return token
 }
 
 function getFirebaseMessagingObject() {

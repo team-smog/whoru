@@ -33,7 +33,7 @@ const InboxImageComponent: React.FC<InboxImageComponentProps> = ({ message, inne
 
   const handleReport = (messageId:number, senderId:number) => {
     Swal.fire({
-      title: '정말로 신고하시겠습니까?',
+      title: '신고하시겠습니까?',
       showDenyButton: true,
       confirmButtonText: `신고`,
       denyButtonText: `취소`,
@@ -110,7 +110,7 @@ const InboxImageComponent: React.FC<InboxImageComponentProps> = ({ message, inne
           >
             답장
           </button>
-          <button className={styles.inboxVoiceComponentFooterReportButton} 
+          <button className={styles.inboxImageComponentFooterReportButton} 
             onClick={() => handleReport(message.id, message.senderId)}
             style={reportButtonStyle}
             disabled={message.isReported}

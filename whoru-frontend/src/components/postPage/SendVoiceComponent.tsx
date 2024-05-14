@@ -16,15 +16,15 @@ import { useVoiceVisualizer, VoiceVisualizer } from "react-voice-visualizer";
 import 'react-h5-audio-player/lib/styles.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'
-import { setBoxCountP } from '@/stores/store';
-import { useDispatch } from 'react-redux';
+// import { setBoxCountP } from '@/stores/store';
+// import { useDispatch } from 'react-redux';
 import toWav from 'audiobuffer-to-wav';
 import Swal from 'sweetalert2'
 
 
 const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     const [currentRecordType,setCurrentRecordType] = useState<string>("")
     // Initialize the recorder controls using the hook
     const recorderControls = useVoiceVisualizer();
@@ -188,6 +188,14 @@ const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
     //   console.log("bufferFromRecordedBlob:", bufferFromRecordedBlob);
     // }, [bufferFromRecordedBlob]);
 
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+    })
+
     const handlePostButtonClick = async () => {
       if (messageId !== null) {
         if (!recordedBlob) {
@@ -269,7 +277,10 @@ const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
             })
             console.log(response.data);
             if (response.data.data.randomBoxProvided === true) {
-                dispatch(setBoxCountP());
+                Toast.fire({
+                    icon: 'success',
+                    title: '랜덤 박스에 당첨되었습니다!',
+                });
             }
             navigate('/');
         } catch (error) {

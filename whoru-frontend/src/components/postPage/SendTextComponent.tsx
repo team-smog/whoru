@@ -5,16 +5,24 @@ import sqIcon from '../../assets/components/InboxTextComponent/text-component-sq
 import xIcon from '../../assets/components/InboxTextComponent/text-component-x-button.svg'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
-import { setBoxCountP } from '@/stores/store'
-import { useDispatch } from 'react-redux'
+// import { setBoxCountP } from '@/stores/store'
+// import { useDispatch } from 'react-redux'
 import Swal from 'sweetalert2'
 
 const SendTextComponent = ({ messageId }: { messageId: number | null}) => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [text, setText] = useState("");
   const accessToken = localStorage.getItem('AccessToken');
+  
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+  })
 
   const onChangeText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.currentTarget.value);
@@ -64,8 +72,7 @@ const SendTextComponent = ({ messageId }: { messageId: number | null}) => {
             },
           }
         )
-        .then((res) => {
-          console.log(res);
+        .then(() => {
           navigate('/');
         })
       } else if (messageId === null) {
@@ -86,7 +93,10 @@ const SendTextComponent = ({ messageId }: { messageId: number | null}) => {
         .then((res) => {
           console.log(res);
           if (res.data.data.randomBoxProvided === true) {
-            dispatch(setBoxCountP());
+            Toast.fire({
+              icon: 'success',
+              title: '랜덤 박스에 당첨되었습니다!',
+            });
           }
           navigate('/');
         })
