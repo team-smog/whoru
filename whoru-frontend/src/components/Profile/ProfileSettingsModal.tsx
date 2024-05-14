@@ -2,27 +2,35 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import Cancel from '@/assets/@common/Cancel.png'
 import './Profile.css'
+import { useDispatch, useSelector } from 'react-redux'
+import { setPushAlarm } from '@/stores/store'
 
 const ProfileSettingsModal = () => {
-	const [isPushNotificationEnabled, setIsPushNotificationEnabled] = useState(
-		localStorage.getItem('isPushNotificationEnabled') === 'false' ? false : true
-	)
-	const [isModalOpen, setIsModalOpen] = useState(false)
+	const pushAlarm = useSelector((state: any) => state.user.pushAlarm);
+	const boxCount = useSelector((state: any) => state.user.boxCount);
+	const dispatch = useDispatch();
+	const [isPushNotificationEnabled, setIsPushNotificationEnabled] = useState<boolean>(pushAlarm);
+	const [isModalOpen, setIsModalOpen] = useState(false);
+
+	useEffect(() => {
+		console.log(boxCount)
+		console.log(pushAlarm)
+	}, [boxCount, pushAlarm])
 
 	useEffect(() => {
 		const fetchUserSettings = async () => {
 			try {
-				const response = await axios.get('https://k10d203.p.ssafy.io/api/member/profile', {
+				const res = await axios.get('https://k10d203.p.ssafy.io/api/member/profile', {
 					headers: {
 						Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
 					},
 				})
-				if (response.data && response.data.pushAlarm !== undefined) {
-					setIsPushNotificationEnabled(response.data.pushAlarm)
-					localStorage.setItem('isPushNotificationEnabled', String(response.data.pushAlarm))
+				console.log(res.data.data.pushAlarm)
+				if (res.data && res.data.data.pushAlarm !== undefined) {
+					setIsPushNotificationEnabled(res.data.data.pushAlarm)
 				}
 			} catch (error) {
-
+				console.error('사용자 설정 정보를 불러오는 중 에러 발생:', error);
       }
 		}
 
@@ -33,14 +41,14 @@ const ProfileSettingsModal = () => {
 		setIsPushNotificationEnabled((prevState) => {
 			const newState = !prevState
 			updatePushNotificationSetting(newState)
-			localStorage.setItem('isPushNotificationEnabled', String(newState))
+			console.log('asliejfialsejfalisejf', setPushAlarm(newState))
 			return newState
 		})
 	}
 
 	const updatePushNotificationSetting = async (isEnabled: boolean) => {
 		try {
-			await axios.patch(
+			const res = await axios.patch(
 				'https://k10d203.p.ssafy.io/api/member/push-alarm',
 				{ pushAlarm: isEnabled },
 				{
@@ -50,6 +58,8 @@ const ProfileSettingsModal = () => {
 					},
 				}
 			)
+			console.log('푸시 알림 설정 업데이트:', res.data, isEnabled)
+			dispatch(setPushAlarm(isEnabled))
 		} catch (error) {
 		}
 	}
