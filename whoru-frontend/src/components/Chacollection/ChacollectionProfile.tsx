@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import ChacollectionModals from './ChacollectionModal'
-// import Profile from '@/assets/@common/Profile.png'
 import './ProfileInfo.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { setIconUrl } from '@/stores/store'
+import Swal from 'sweetalert2'
 
 interface Icon {
 	iconId: string
@@ -12,25 +12,23 @@ interface Icon {
 	iconGrade: string
 	isDuplicat: boolean
 	isAvailable: boolean
-} 
+}
 
 const ChacollectionProfile: React.FC = () => {
-	const [icons, setIcons] = useState<Icon[]>([]);
-	const iconUrl = useSelector((state:any) => state.user.iconUrl)
-	const [profileImageUrl, setProfileImageUrl] = useState<string>(iconUrl);
+	const [icons, setIcons] = useState<Icon[]>([])
+	const iconUrl = useSelector((state: any) => state.user.iconUrl)
+	const [profileImageUrl, setProfileImageUrl] = useState<string>(iconUrl)
 	// const [profileImageUrl, setProfileImageUrl] = useState<string>(Profile);
-	const dispatch = useDispatch();
+	const dispatch = useDispatch()
+
+	useEffect(() => {}, [iconUrl])
 
 	useEffect(() => {
-		console.log(iconUrl)
-	}, [iconUrl]);
-
-	useEffect(() => {
-		const savedIconUrl = localStorage.getItem('selectedProfileImage');
+		const savedIconUrl = localStorage.getItem('selectedProfileImage')
 		if (savedIconUrl) {
-			setProfileImageUrl(savedIconUrl);
-		};
-		fetchIcons();
+			setProfileImageUrl(savedIconUrl)
+		}
+		fetchIcons()
 	}, [])
 
 	const fetchIcons = async () => {
@@ -42,38 +40,31 @@ const ChacollectionProfile: React.FC = () => {
 				},
 			})
 			if (res.data && res.data.data) {
-				// console.log(res.data.data)
-				setIcons(res.data.data.data);
+				setIcons(res.data.data.data)
 			} else {
-				console.error('예상된 데이터 형식이 아닙니다:', res.data);
-				setIcons([]);
+				setIcons([])
 			}
 		} catch (error) {
-			console.error('아이콘을 가져오는 데 에러가 발생했습니다:', error);
-			setIcons([]);
+			setIcons([])
 		}
 	}
 
 	const changeIcon = async (iconId: string, iconUrl: string) => {
 		try {
-			const res = await axios.patch('https://k10d203.p.ssafy.io/api/member/icon',null, {
+			const res = await axios.patch('https://k10d203.p.ssafy.io/api/member/icon', null, {
 				params: { iconId },
 				headers: {
 					Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
 				},
-			});
-
+			})
 
 			if (res.data.data) {
 				dispatch(setIconUrl(iconUrl))
 				setProfileImageUrl(iconUrl) // 서버 응답 성공 시, 프로필 이미지 URL 업데이트
 				localStorage.setItem('selectedProfileImage', iconUrl) // 선택된 이미지를 localStorage에 저장
-				alert('프로필 아이콘이 성공적으로 변경되었습니다.')
+				Swal.fire('프로필 아이콘이 성공적으로 변경되었습니다.', '', 'success')
 			}
-		} catch (error) {
-			console.error('프로필 아이콘 변경 중 오류 발생:', error)
-			alert('프로필 아이콘 변경에 실패하였습니다.')
-		}
+		} catch (error) {}
 	}
 
 	return (
@@ -87,7 +78,7 @@ const ChacollectionProfile: React.FC = () => {
 			<div className="relative chacollection-profile-container">
 				<p className="text-xl pt-32 pl-4">캐릭터 도감</p>
 				<p className="text-xs pt-2 pl-4 text-[#797979]">원하는 캐릭터로 자신의 프로필을 바꿀 수 있어요.</p>
-				<div className="flex justify-center flex-wrap pt-4 scrollable-container">
+				<div className="flex justify-center flex-wrap pt-4 scrollable-container h-[calc(100vh-420px)]">
 					{icons.map((icon, index) => (
 						<div
 							className={`profile-container ${!icon.isAvailable ? 'unavailable-icon' : ''}`}
