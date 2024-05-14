@@ -40,7 +40,7 @@ const ProfileSettingsModal = () => {
 
 	const updatePushNotificationSetting = async (isEnabled: boolean) => {
 		try {
-			const response = await axios.patch(
+			await axios.patch(
 				'https://k10d203.p.ssafy.io/api/member/push-alarm',
 				{ pushAlarm: isEnabled },
 				{
