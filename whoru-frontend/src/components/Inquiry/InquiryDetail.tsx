@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import Header, { IHeaderInfo } from '@/components/@common/Header'
 import NavigationBar from '@/components/@common/NavigationBar'
-import { useParams, useLocation } from 'react-router-dom'
+import { useParams, useLocation, useNavigate } from 'react-router-dom'
 import { format } from 'date-fns'
 import { ko } from 'date-fns/locale'
 import Backspace from '@/assets/@common/Backspace.png'
@@ -37,6 +37,7 @@ function InquiryDetail() {
 	const [inquiry, setInquiry] = useState<Inquiry | null>(null)
 	const [loading, setLoading] = useState<boolean>(true)
 	const location = useLocation()
+	const navigate = useNavigate()
 
 	useEffect(() => {
 		setInquiry(location.state as Inquiry)
@@ -55,11 +56,15 @@ function InquiryDetail() {
 			cancelButtonText: '아니오, 취소합니다',
 		}).then((result) => {
 			if (result.isConfirmed) {
-				axios.delete(`https://k10d203.p.ssafy.io/api/board/${id}`, {
-					headers: {
-						Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
-					},
-				})
+				axios
+					.delete(`https://k10d203.p.ssafy.io/api/board/${id}`, {
+						headers: {
+							Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
+						},
+					})
+					.then(() => {
+						navigate('/inquiry')
+					})
 			}
 		})
 	}
@@ -75,7 +80,7 @@ function InquiryDetail() {
 				<Header info={info} />
 			</div>
 			<div className="flex flex-col justify-start pt-10">
-				{loading ? (
+      {loading ? (
 					<p>Loading...</p>
 				) : inquiry ? (
 					<div>
