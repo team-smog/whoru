@@ -32,7 +32,7 @@ const requestPermission = async () => {
 	}
 
 	localStorage.setItem('FCMToken', token)
-	console.log('fcm token:', token)
+	// console.log('fcm token:', token)
 	// return token
 }
 
