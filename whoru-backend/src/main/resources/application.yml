@@ -170,7 +170,7 @@ spring:
 #logging:
 #  config: classpath:log-config.xml
 ---
-#Develop 프로필
+#Develop 서버 프로필 (codearena.shop)
 spring:
   config:
     activate:
