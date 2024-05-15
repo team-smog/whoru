@@ -19,7 +19,7 @@ pipeline {
                 dir('./whoru-backend'){
                     sh 'chmod +x ./gradlew'
                     echo "JASYPT_KEY length: ${JASYPT_KEY.length()}"
-                    sh './gradlew clean build -Dencryptor.key=${JASYPT_KEY} -DAWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} -DAWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}'
+                    sh "set -x; ./gradlew clean build -Dencryptor.key='${JASYPT_KEY}' -DAWS_ACCESS_KEY_ID='${AWS_ACCESS_KEY_ID}' -DAWS_SECRET_ACCESS_KEY='${AWS_SECRET_ACCESS_KEY}'"
                 }
             }
         }
