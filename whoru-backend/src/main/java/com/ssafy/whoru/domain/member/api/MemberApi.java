@@ -11,9 +11,14 @@ import com.ssafy.whoru.domain.member.dto.response.TokenResponse;
 import com.ssafy.whoru.domain.member.exception.RefreshTokenNotFoundException;
 import com.ssafy.whoru.global.common.dto.SuccessType;
 import com.ssafy.whoru.global.common.dto.WrapResponse;
+import com.ssafy.whoru.global.util.JWTUtil;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.security.Key;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseCookie;
@@ -27,10 +32,11 @@ import java.util.Arrays;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/member")
-public class MemberApi implements MemberApiDocs {
+public class MemberApi implements MemberApiDocs{
 
     private final MemberService memberService;
     private final FcmService fcmService;
+    private final JWTUtil jwtUtil;
 
     @PatchMapping("/icon")
     public ResponseEntity<WrapResponse<ChangeIconResponse>> changeIcon(@AuthenticationPrincipal CustomOAuth2User member, @RequestParam("iconId") int iconId) {
@@ -79,23 +85,28 @@ public class MemberApi implements MemberApiDocs {
     }
 
     @PostMapping("/regenerate-token")
-    public ResponseEntity<WrapResponse<TokenResponse>> regenerateToken(@AuthenticationPrincipal CustomOAuth2User member, HttpServletRequest request) {
-        log.info("request member -> {}",member.getId());
+    public ResponseEntity<WrapResponse<TokenResponse>> regenerateToken(HttpServletRequest request) {
+
         log.info("request -> cookies: {}", Arrays.toString(request.getCookies()));
         String refreshToken = null;
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("Refresh")) {
-                    refreshToken = cookie.getValue();
-                    break;
-                }
+            Optional<Cookie> refreshTokenCookie = Arrays.stream(cookies)
+                .filter(cookie -> "refreshToken".equals(cookie.getName()))
+                .findFirst();
+
+            if (refreshTokenCookie.isPresent()) {
+                refreshToken = refreshTokenCookie.get().getValue();
             }
         }
         if (refreshToken == null) {
             throw new RefreshTokenNotFoundException();
         }
-        TokenResponse response = memberService.reGenerateToken(member.getId(),refreshToken);
+
+        // 토큰을 통해 유저 ID 가져오기
+        Long memberId = jwtUtil.getMemberId(refreshToken);
+
+        TokenResponse response = memberService.reGenerateToken(memberId, refreshToken);
         return ResponseEntity.ok((WrapResponse.create(response,SuccessType.SIMPLE_STATUS)));
     }
 
