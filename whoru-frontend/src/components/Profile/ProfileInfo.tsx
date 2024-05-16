@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import Profile from '@/assets/@common/Profile.png'
 import { useDispatch } from 'react-redux'
 import { setBoxCount, setIconUrl, setPushAlarm, setRole } from '@/stores/store'
+import { axiosWithCredentialInstance } from '@/apis/axiosInstance'
 
 
 const ProfileInfo = () => {
@@ -18,7 +18,7 @@ const ProfileInfo = () => {
 	useEffect(() => {
 		const fetchUserInfo = async () => {
 			try {
-				const response = await axios.get('https://codearena.shop/api/member/profile', {
+				const response = await axiosWithCredentialInstance.get('member/profile', {
 					headers: {
 						Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
 					},
