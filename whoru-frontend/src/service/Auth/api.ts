@@ -1,4 +1,4 @@
-import { axiosWithCredentialInstance } from '@/apis/axiosInstance'
+import { axiosAuthInstance } from '@/apis/axiosInstance'
 import { IUserInfo } from '@/types/User'
 // import { AxiosError } from 'axios'
 
@@ -16,7 +16,7 @@ import { IUserInfo } from '@/types/User'
 // }
 
 export const getUserDetail = async (): Promise<IUserInfo> => {
-	const res = await axiosWithCredentialInstance.get(`/member/profile`, {
+	const res = await axiosAuthInstance.get(`/member/profile`, {
 		headers: {
 			'Content-Type': 'application/json',
 		},
