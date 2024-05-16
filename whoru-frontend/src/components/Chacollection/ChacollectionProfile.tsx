@@ -122,7 +122,7 @@ const ChacollectionProfile: React.FC = () => {
 					))}
 				</div>
 
-				<div className="fixed flex justify-center w-full max-w-[500px] bottom-20 pt-4 m-auto px-3">
+				<div className="fixed z-50 flex justify-center w-full max-w-[500px] bottom-20 pt-4 m-auto px-3">
 					<ChacollectionModals onAction={fetchIcons} />
 				</div>
 			</div>
