@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect ,useRef, useState } from 'react'
 import styles from './SendImageComponent.module.css'
 import ulIcon from '../../assets/components/InboxImageComponent/image-component-ul-button.svg'
 import sqIcon from '../../assets/components/InboxImageComponent/image-component-sq-button.svg'
@@ -72,11 +72,17 @@ const SendImageComponent = ({ messageId }: { messageId: number | null}) => {
   })
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setImageFile(null); // Clear the file (if there is one
+    setImageSrc(null); // Clear the image (if there is one)
     const files = event.target.files;
     if (files) {
       const file = files[0];
+      if (!file) {
+        return;
+      }
       setImageFile(file); // Save the file instead of its Data URL
-      console.log("ImgSrc", imageSrc);
+      // console.log("ImgSrc", imageSrc);
+      console.log("ImgFile", imageFile);
 
       // Create a new FileReader object
       const reader = new FileReader();
@@ -185,8 +191,13 @@ const SendImageComponent = ({ messageId }: { messageId: number | null}) => {
       (fileInputRef.current as HTMLInputElement).value = '';
     }
     setImageSrc(null);
-    console.log("ImgSrc", imageSrc);
+    setImageFile(null);
   };
+
+  useEffect(() => {
+    console.log("ImgSrc", imageSrc);
+    console.log("ImgFile", imageFile);
+  }, [imageSrc, imageFile]);
 
   return (
     <div className={styles.sendImageComponent}>

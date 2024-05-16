@@ -51,8 +51,15 @@ const InboxTextComponent: React.FC<InboxTextComponentProps> = ({ message, innerR
         )
         .then((res) => {
           console.log(res);
-          Swal.fire('신고가 완료되었습니다.', '', 'success');
-          window.location.reload();
+          Swal.fire({
+            title: '신고가 완료되었습니다.',
+            icon: 'success',
+            timer: 2500, // 2.5초 후에 자동으로 닫힘
+            showConfirmButton: false
+          })
+          .then(() => {
+            window.location.reload();
+          });
         })
         .catch((err) => {
           console.log(err);
