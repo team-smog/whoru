@@ -6,62 +6,23 @@ import xIcon from '../../assets/components/InboxImageComponent/image-component-x
 import camerabutton from '../../assets/components/InboxImageComponent/image-component-camera-button.svg'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
-// import { setBoxCountP } from '@/stores/store'
-// import { useDispatch } from 'react-redux'
 import Swal from 'sweetalert2'
 
 
 const SendImageComponent = ({ messageId }: { messageId: number | null}) => {
+  const baseUrl = 'https://k10d203.p.ssafy.io/api'
+  // const baseUrl = 'https://codearena.shop/api'
   const navigate = useNavigate();
-  // const dispatch = useDispatch();
   const fileInputRef = useRef(null);
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const accessToken = localStorage.getItem('AccessToken');
-  // const [imageSrc] = useState(null);
 
   const handleUploadAreaClick = () => {
     if (fileInputRef.current) {
       (fileInputRef.current as HTMLInputElement).click();
     }
   };
-
-  // const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const files = event.target.files;
-  //   if (files) {
-  //     const file = files[0];
-  //     const reader = new FileReader();
-  //     reader.onloadend = () => {
-  //       setImageSrc(reader.result as string | null);
-  //     };
-  //     reader.readAsDataURL(file); 
-  //   }
-  // };
-
-  // const handleSendClick = async () => {
-  //   if (imageSrc) {
-  //     try {
-  //       const formData = new FormData();
-  //       formData.append('file', imageSrc);
-
-  //       // await axios.post('https://k10d203.p.ssafy.io/api/message/file', formData, {
-  //       await axios.post('http://k10d203.p.ssafy.io:18080/api/message/file', formData, {
-  //         headers: {
-  //           'Content-Type': 'multipart/form-data',
-  //           'Authorization': 'BearereyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsImlkIjoyLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE0NzEwMDkxLCJleHAiOjE3NTA3MTAwOTF9.coDlad6k0UadtPqBvTIBFhXByytdncFAvChB0kZnN9g'
-  //         },
-  //       })
-  //       .then((res) => {
-  //         console.log(res.data);
-  //       })
-
-  //       setImageSrc(null);
-
-  //     } catch (error) {
-  //       console.error('Error:', error);
-  //     }
-  //   }
-  // };
 
   const Toast = Swal.mixin({
     toast: true,
@@ -72,56 +33,51 @@ const SendImageComponent = ({ messageId }: { messageId: number | null}) => {
   })
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setImageFile(null); // Clear the file (if there is one
-    setImageSrc(null); // Clear the image (if there is one)
+    setImageFile(null); 
+    setImageSrc(null); 
     const files = event.target.files;
     if (files) {
       const file = files[0];
       if (!file) {
         return;
       }
-      setImageFile(file); // Save the file instead of its Data URL
-      // console.log("ImgSrc", imageSrc);
-      console.log("ImgFile", imageFile);
+      setImageFile(file); 
+      // console.log("ImgFile", imageFile);
 
-      // Create a new FileReader object
       const reader = new FileReader();
 
-      // Set the image source to the result of the FileReader
       reader.onloadend = () => {
         setImageSrc(reader.result as string | null);
       };
 
-      // Start reading the file as Data URL
       reader.readAsDataURL(file);
     }
   };
   
   const handleSendClick = async () => {
     if (messageId !== null) {
-      if (imageFile) { // Check if there is a file
+      if (imageFile) {
         try {
           const formData = new FormData();
-          formData.append('file', imageFile); // Add the file to FormData
-          console.log(imageFile);
-          // console.log(accessToken)
-          console.log("답장 이미지")
+          formData.append('file', imageFile);
+          // console.log(imageFile);
+          // console.log("답장 이미지")
     
-          await axios.post(`https://k10d203.p.ssafy.io/api/message/${messageId}/file`, formData, {
+          await axios.post(`${baseUrl}/message/${messageId}/file`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
               Authorization: `Bearer ${accessToken}`
             },
           })
-          .then((res) => {
-            console.log(res.data);
-            setImageFile(null); // Clear the file
+          .then(() => {
+            // console.log(res.data);
+            setImageFile(null);
             setImageSrc(null);
             window.scrollTo(0, 0);
             navigate('/');
           })
         } catch (error) {
-          console.error('Error:', error);
+          // console.error('Error:', error);
           Swal.fire({
             icon: 'error',
             title: '실패',
@@ -138,24 +94,23 @@ const SendImageComponent = ({ messageId }: { messageId: number | null}) => {
         });
       }
     } else if (messageId === null) {
-      if (imageFile) { // Check if there is a file
+      if (imageFile) {
         try {
           const formData = new FormData();
-          formData.append('file', imageFile); // Add the file to FormData
-          console.log(imageFile);
-          // console.log(accessToken)
+          formData.append('file', imageFile);
+          // console.log(imageFile);
     
-          await axios.post('https://k10d203.p.ssafy.io/api/message/file', formData, {
+          await axios.post(`${baseUrl}/message/file`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
               Authorization: `Bearer ${accessToken}`,
             },
           })
           .then((res) => {
-            console.log(res.data);
-            setImageFile(null); // Clear the file
+            // console.log(res.data);
+            setImageFile(null);
             setImageSrc(null);
-            console.log("ImgSrc", imageSrc);
+            // console.log("ImgSrc", imageSrc);
             if (res.data.data.randomBoxProvided === true) {
               Toast.fire({
                 icon: 'success',
@@ -166,7 +121,7 @@ const SendImageComponent = ({ messageId }: { messageId: number | null}) => {
             navigate('/');
           })
         } catch (error) {
-          console.error('Error:', error);
+          // console.error('Error:', error);
           Swal.fire({
             icon: 'error',
             title: '실패',
@@ -184,7 +139,6 @@ const SendImageComponent = ({ messageId }: { messageId: number | null}) => {
       }
     }
   }
-  
 
   const handleCancelClick = () => {
     if (fileInputRef.current) {
@@ -195,8 +149,8 @@ const SendImageComponent = ({ messageId }: { messageId: number | null}) => {
   };
 
   useEffect(() => {
-    console.log("ImgSrc", imageSrc);
-    console.log("ImgFile", imageFile);
+    // console.log("ImgSrc", imageSrc);
+    // console.log("ImgFile", imageFile);
   }, [imageSrc, imageFile]);
 
   return (
@@ -219,7 +173,7 @@ const SendImageComponent = ({ messageId }: { messageId: number | null}) => {
           className={styles.sendImageComponentBodyInput} 
           ref={fileInputRef}
           onChange={handleFileChange}
-          style={{ display: 'none' }} // input을 숨깁니다. 
+          style={{ display: 'none' }}
         />
           <div className={styles.sendImageComponentBodyUploadArea} onClick={handleUploadAreaClick}>
           {imageSrc ? (
