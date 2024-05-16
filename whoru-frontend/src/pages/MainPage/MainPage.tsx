@@ -10,7 +10,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from 'react-intersection-observer';
 import { useDispatch, useSelector } from "react-redux";
 import { setFirstId, setLastId } from "@/stores/store";
-import axios from "axios";
+import { axiosWithCredentialInstance } from "@/apis/axiosInstance";
 
 const MainPage = () => {
   const info: IHeaderInfo = {
@@ -28,8 +28,9 @@ const MainPage = () => {
     }
   }, []);
 
-  const baseUrl = 'https://k10d203.p.ssafy.io/api'
+  // const baseUrl = 'https://k10d203.p.ssafy.io/api'
   // const baseUrl = 'https://codearena.shop/api'
+  const baseUrl = import.meta.env.VITE_BASE_URL
 
   const dispatch = useDispatch();
   const firstId = useSelector((state: any) => state.message.firstId);
@@ -85,8 +86,8 @@ const MainPage = () => {
   }
 
   useEffect(() => {
-    // console.log("firstId", firstId);
-    // console.log("lastId", lastId);
+    console.log("firstId", firstId);
+    console.log("lastId", lastId);
   }, [firstId, lastId]);
 
   const { ref, inView } = useInView();
@@ -105,7 +106,7 @@ const MainPage = () => {
 
   const fetchData = () => {
     if (lastId === null) {
-      return axios.get(`${baseUrl}/message?size=${20}`, {
+      return axiosWithCredentialInstance.get(`message?size=${20}`, {
         headers: {
           Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
         },
@@ -115,29 +116,29 @@ const MainPage = () => {
           dispatch(setFirstId(res.data.data.content[0].id));
           dispatch(setLastId(res.data.data.content[res.data.data.content.length - 1].id));
           setHasNext(res.data.data.hasNext);
-          // console.log(res.data);
+          console.log(res.data);
           return res.data.data.content;
         }
       })
-      .catch(() => {
-        // console.log(err);
+      .catch((err) => {
+        console.log(err);
       })
     } else if (lastId !== null) {
-      return axios.get(`${baseUrl}/message?size=${20}&lastid=${lastId}`, {
+      return axiosWithCredentialInstance.get(`message?size=${20}&lastid=${lastId}`, {
         headers: {
           Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
         },
       }) 
       .then((res) => {
-        if (res.data && res.data.data && res.data.data.content) {
+        if (res.data && res.data.data && res.data.data.content && res.data.data.content.length > 0) {
           dispatch(setLastId(res.data.data.content[res.data.data.content.length - 1].id));
           setHasNext(res.data.data.hasNext);
-          // console.log(res.data);
+          console.log(res.data);
           return res.data.data.content;
         }
       })
-      .catch(() => {
-        // console.log(err);
+      .catch((err) => {
+        console.log(err);
       })
     }
   }

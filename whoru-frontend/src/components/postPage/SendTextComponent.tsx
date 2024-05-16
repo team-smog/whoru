@@ -3,13 +3,16 @@ import styles from './SendTextComponent.module.css'
 import ulIcon from '../../assets/components/InboxTextComponent/text-component-ul-button.svg'
 import sqIcon from '../../assets/components/InboxTextComponent/text-component-sq-button.svg'
 import xIcon from '../../assets/components/InboxTextComponent/text-component-x-button.svg'
-import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
+import { axiosWithCredentialInstance } from '@/apis/axiosInstance'
 
 const SendTextComponent = ({ messageId }: { messageId: number | null}) => {
+<<<<<<< 12a50f5459ff03dd12965f90daacfd36effb2e4e
+=======
   // const baseUrl = 'https://k10d203.p.ssafy.io/api'
   const baseUrl = 'https://codearena.shop/api'
+>>>>>>> 20709eec1f88992818837dd698e7b4cb5ab05534
   const navigate = useNavigate();
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [text, setText] = useState("");
@@ -48,8 +51,7 @@ const SendTextComponent = ({ messageId }: { messageId: number | null}) => {
   const sendMessage = async () => {
     try {
       if (messageId !== null) {
-        await axios.post(
-          `${baseUrl}/message/${messageId}/text`,
+        await axiosWithCredentialInstance.post(`message/${messageId}/text`,
           {
             content: text,
           },
@@ -65,8 +67,7 @@ const SendTextComponent = ({ messageId }: { messageId: number | null}) => {
           navigate('/');
         })
       } else if (messageId === null) {
-        await axios.post(
-          `${baseUrl}/message`,
+        await axiosWithCredentialInstance.post(`message`,
           {
             content: text,
           },
@@ -78,7 +79,6 @@ const SendTextComponent = ({ messageId }: { messageId: number | null}) => {
           }
         )
         .then((res) => {
-          // console.log(res);
           if (res.data.data.randomBoxProvided === true) {
             Toast.fire({
               icon: 'success',
@@ -90,7 +90,6 @@ const SendTextComponent = ({ messageId }: { messageId: number | null}) => {
         })
       }
     } catch (error: any) {
-      // console.error(error);
       if (error.response.data.errorCode === 400) {
         Swal.fire({
           icon: 'error',

@@ -4,14 +4,12 @@ import ulIcon from '../../assets/components/InboxImageComponent/image-component-
 import sqIcon from '../../assets/components/InboxImageComponent/image-component-sq-button.svg'
 import xIcon from '../../assets/components/InboxImageComponent/image-component-x-button.svg'
 import camerabutton from '../../assets/components/InboxImageComponent/image-component-camera-button.svg'
-import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
+import { axiosWithCredentialInstance } from '@/apis/axiosInstance'
 
 
 const SendImageComponent = ({ messageId }: { messageId: number | null}) => {
-  const baseUrl = 'https://k10d203.p.ssafy.io/api'
-  // const baseUrl = 'https://codearena.shop/api'
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
   const [imageSrc, setImageSrc] = useState<string | null>(null);
@@ -63,7 +61,7 @@ const SendImageComponent = ({ messageId }: { messageId: number | null}) => {
           // console.log(imageFile);
           // console.log("답장 이미지")
     
-          await axios.post(`${baseUrl}/message/${messageId}/file`, formData, {
+          await axiosWithCredentialInstance.post(`message/${messageId}/file`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
               Authorization: `Bearer ${accessToken}`
@@ -100,7 +98,7 @@ const SendImageComponent = ({ messageId }: { messageId: number | null}) => {
           formData.append('file', imageFile);
           // console.log(imageFile);
     
-          await axios.post(`${baseUrl}/message/file`, formData, {
+          await axiosWithCredentialInstance.post(`message/file`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
               Authorization: `Bearer ${accessToken}`,
