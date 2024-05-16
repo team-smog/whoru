@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import Header, { IHeaderInfo } from '@/components/@common/Header'
 import NavigationBar from '@/components/@common/NavigationBar'
 import { useParams, useLocation, useNavigate } from 'react-router-dom'
@@ -9,6 +8,7 @@ import Backspace from '@/assets/@common/Backspace.png'
 import Swal from 'sweetalert2'
 import Q from '@/assets/@common/Q.png'
 import A from '@/assets/@common/A.png'
+import { axiosWithCredentialInstance } from '@/apis/axiosInstance'
 
 interface Inquiry {
 	id: number
@@ -56,8 +56,8 @@ function InquiryDetail() {
 			cancelButtonText: '아니오, 취소합니다',
 		}).then((result) => {
 			if (result.isConfirmed) {
-				axios
-					.delete(`https://codearena.shop/api/board/${id}`, {
+				axiosWithCredentialInstance
+					.delete(`board/${id}`, {
 						headers: {
 							Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
 						},

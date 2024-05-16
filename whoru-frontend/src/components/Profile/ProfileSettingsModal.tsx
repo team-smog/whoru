@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
 import Cancel from '@/assets/@common/Cancel.png'
 import './Profile.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { setPushAlarm } from '@/stores/store'
+import { axiosWithCredentialInstance } from '@/apis/axiosInstance'
 
 const ProfileSettingsModal = () => {
 	const pushAlarm = useSelector((state: any) => state.user.pushAlarm);
@@ -20,7 +20,7 @@ const ProfileSettingsModal = () => {
 	useEffect(() => {
 		const fetchUserSettings = async () => {
 			try {
-				const res = await axios.get('https://codearena.shop/api/member/profile', {
+				const res = await axiosWithCredentialInstance.get('member/profile', {
 					headers: {
 						Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
 					},
@@ -48,8 +48,8 @@ const ProfileSettingsModal = () => {
 
 	const updatePushNotificationSetting = async (isEnabled: boolean) => {
 		try {
-			const res = await axios.patch(
-				'https://codearena.shop/api/member/push-alarm',
+			const res = await axiosWithCredentialInstance.patch(
+				'member/push-alarm',
 				{ pushAlarm: isEnabled },
 				{
 					headers: {
