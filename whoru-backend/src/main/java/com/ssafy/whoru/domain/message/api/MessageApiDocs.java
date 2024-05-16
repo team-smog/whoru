@@ -116,11 +116,32 @@ public interface MessageApiDocs {
     ResponseEntity<WrapResponse<SliceMessageResponse>> findOldMessages(
         CustomOAuth2User member,
         @Valid @Min(value = 1, message = "id 최대값은 0보다 커야합니다.") Long lastId,
-        @Valid @Min(value = 20, message = "size는 최소 20 이상이어야 합니다.") @RequestParam Integer size
+        @Valid @Min(value = 20, message = "size는 최소 20 이상이어야 합니다.") Integer size
     );
 
     @Operation(summary = "메시지 상세내용 조회", description = "PathVariable로 메시지 번호를 전달")
     @ApiResponse(responseCode = "200", description = "메시지 컨텐츠 응답", content = @Content(schema = @Schema(implementation = MessageResponse.class)))
     @GetMapping("/{messageId}")
     public ResponseEntity<WrapResponse<?>> findMessage(@PathVariable("messageId") Long messageId);
+
+    @Operation(summary = "Daily 메세지 이전 목록 조회", description = "lastid 를 받아서 그 id에 해당하는 시간보다 더 이전의 메세지 목록을 조회함")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "메세지 목록 조회 성공", content = @Content(schema = @Schema(implementation = MessageResponse.class))),
+        @ApiResponse(responseCode = "204", description = "메세지 목록 조회는 성공했으나 비었을 경우", content = @Content(schema = @Schema(implementation = MessageResponse.class))),
+        @ApiResponse(responseCode = "400", description = "잘못된 요청 또는 파라미터 입니다.", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    public ResponseEntity<WrapResponse<SliceMessageResponse>> findDailyOldMessages(
+        @Valid @Min(value = 1, message = "id 최대값은 0보다 커야합니다.") Long lastId,
+        @Valid @Min(value = 20, message = "size는 최소 20 이상이어야 합니다.") Integer size
+    );
+
+    @Operation(summary = "Daily 메세지 최신 목록 조회", description = "firstid 를 받아서 그 id에 해당하는 시간보다 더 최신의 메세지 목록을 조회함")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "메세지 목록 조회 성공", content = @Content(schema = @Schema(implementation = MessageResponse.class))),
+        @ApiResponse(responseCode = "204", description = "메세지 목록 조회는 성공했으나 비었을 경우", content = @Content(schema = @Schema(implementation = MessageResponse.class))),
+        @ApiResponse(responseCode = "400", description = "잘못된 요청 또는 파라미터 입니다.", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    public ResponseEntity<WrapResponse<List<MessageResponse>>> findDailyRecentMessages(
+        @NotNull(message = "최소 번호를 적어주세요") @Min(value = 1, message = "0보다는 커야 합니다.") @RequestParam(name = "firstid")  Long firstId
+    );
 }

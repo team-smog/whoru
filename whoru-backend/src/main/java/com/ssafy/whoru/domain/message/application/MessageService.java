@@ -23,4 +23,8 @@ public interface MessageService {
     ResponseWithSuccess<List<MessageResponse>> getRecentMessages(Long firstId, Integer size, Long receiverId);
 
     MessageResponse findMessage(Long messageId);
+
+    ResponseWithSuccess<SliceMessageResponse> getDailyOldMessages(Long lastId, Integer size);
+
+    ResponseWithSuccess<List<MessageResponse>> getDailyRecentMessages(Long firstId, Integer size);
 }
