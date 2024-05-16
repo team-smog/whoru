@@ -2,6 +2,8 @@ package com.ssafy.whoru.global.common.filter;
 
 import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.domain.member.dto.MemberDTO;
+import com.ssafy.whoru.global.error.exception.AccessTokenExpiredException;
+import com.ssafy.whoru.global.error.exception.ErrorCode;
 import com.ssafy.whoru.global.util.JWTUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
@@ -62,8 +64,7 @@ public class JWTFilter extends OncePerRequestFilter {
             writer.print("access token 만료됨");
 
             //response status code
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
+            throw new AccessTokenExpiredException(ErrorCode.ACCESSTOKEN_EXPIRED);
         }
 
         String role = jwtUtil.getRole(token);
