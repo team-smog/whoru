@@ -64,7 +64,7 @@ public class JWTFilter extends OncePerRequestFilter {
             writer.print("access token 만료됨");
 
             //response status code
-            throw new AccessTokenExpiredException(ErrorCode.ACCESSTOKEN_EXPIRED);
+            throw new AccessTokenExpiredException();
         }
 
         String role = jwtUtil.getRole(token);
