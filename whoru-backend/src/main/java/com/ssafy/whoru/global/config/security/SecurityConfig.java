@@ -49,6 +49,7 @@ public class SecurityConfig{
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/").permitAll()
                         .requestMatchers("/login/**").permitAll()
+                        .requestMatchers("/member/regenerate-token").permitAll()
                         // Prometheus에서 오는 요청만 허용
                         .requestMatchers("/actuator/**").permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
