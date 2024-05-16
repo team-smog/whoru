@@ -95,7 +95,6 @@
 	height: 100%;
 	background: #e2e0ff;
 	border-left: 1.5px solid #423752;
-	border-right: 1.5px solid #423752;
 	color: #656565;
 }
 
@@ -105,7 +104,7 @@
 	background: #e08edc;
 	border-right: 1.5px solid #423752;
 	color: #ffffff;
-	border-left: 1.5px solid #423752;
+	border-top: #423752 solid 3px;
 	border-right: none;
 }
 

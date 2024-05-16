@@ -10,8 +10,9 @@ type Props = {
   
 
 export const FCMComponent = (props: Props) => {
-    const baseUrl = 'https://k10d203.p.ssafy.io/api'
-    // const baseUrl = 'https://codearena.shop/api'
+  // const baseUrl = 'https://k10d203.p.ssafy.io/api'
+  // const baseUrl = 'https://codearena.shop/api'
+  const baseUrl = import.meta.env.VITE_BASE_URL
     const [text, setText] = useState("");
     const messagingObject = useRef(null);
     useEffect(()=>{

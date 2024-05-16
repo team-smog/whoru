@@ -3,15 +3,15 @@ import ulIcon from '../../assets/components/InboxTextComponent/text-component-ul
 import sqIcon from '../../assets/components/InboxTextComponent/text-component-sq-button.svg'
 import xIcon from '../../assets/components/InboxTextComponent/text-component-x-button.svg'
 import { MessageInfoDetail } from '../../types/mainTypes'
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom'
-import { setReplyMessage } from '@/stores/store';
-import Swal from 'sweetalert2'
+// import { useDispatch } from 'react-redux';
+// import { useNavigate } from 'react-router-dom'
+// import { setReplyMessage } from '@/stores/store';
+// import axios from 'axios'
+// import Swal from 'sweetalert2'
 import { useState } from 'react'
 import ParentInboxImageComponent from './ParentInboxImageComponent'
 import ParentInboxTextComponent from './ParentInboxTextComponent'
 import ParentInboxVoiceComponent from './ParentInboxVoiceComponent'
-import { axiosWithCredentialInstance } from '@/apis/axiosInstance'
 
 
 interface InboxTextComponentProps extends React.HTMLAttributes<HTMLDivElement>{
@@ -20,56 +20,59 @@ interface InboxTextComponentProps extends React.HTMLAttributes<HTMLDivElement>{
 }
 
 const InboxTextComponent: React.FC<InboxTextComponentProps> = ({ message, innerRef, ...props }) => {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const accessToken = localStorage.getItem('AccessToken');
+  // const baseUrl = 'https://k10d203.p.ssafy.io/api'
+  // const baseUrl = 'https://codearena.shop/api'
+  // const baseUrl = import.meta.env.VITE_BASE_URL
+  // const dispatch = useDispatch()
+  // const navigate = useNavigate()
+  // const accessToken = localStorage.getItem('AccessToken');
   const [openModal, setOpenModal] = useState<boolean>(false);
 
-  const replyButtonStyle = message.responseStatus ?  {backgroundColor: 'gray'} : {}
-  const reportButtonStyle = message.isReported ? { backgroundColor: 'gray' } : {}
+  // const replyButtonStyle = message.responseStatus ?  {backgroundColor: 'gray'} : {}
+  // const reportButtonStyle = message.isReported ? { backgroundColor: 'gray' } : {}
 
-  const handleReply = (messageId:number) => {
-    dispatch(setReplyMessage(messageId));
-    navigate('/post');
-  };
+  // const handleReply = (messageId:number) => {
+  //   dispatch(setReplyMessage(messageId));
+  //   navigate('/post');
+  // };
 
-  const handleReport = (messageId:number, senderId:number) => {
-    Swal.fire({
-      title: '신고하시겠습니까?',
-      showDenyButton: true,
-      confirmButtonText: `신고`,
-      denyButtonText: `취소`,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        axiosWithCredentialInstance.post(`report/member`,
-        {
-          messageId: messageId,
-          senderId: senderId,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${accessToken}`
-        }}
-        )
-        .then(() => {
-          // console.log(res);
-          Swal.fire({
-            title: '신고가 완료되었습니다.',
-            icon: 'success',
-            timer: 2500,
-            showConfirmButton: false
-          })
-          .then(() => {
-            window.location.reload();
-          });
-        })
-        .catch(() => {
-          // console.log(err);
-        })
-      }
-    })
-  }
+  // const handleReport = (messageId:number, senderId:number) => {
+  //   Swal.fire({
+  //     title: '신고하시겠습니까?',
+  //     showDenyButton: true,
+  //     confirmButtonText: `신고`,
+  //     denyButtonText: `취소`,
+  //   }).then((result) => {
+  //     if (result.isConfirmed) {
+  //       axios.post(`${baseUrl}/report/member`,
+  //       {
+  //         messageId: messageId,
+  //         senderId: senderId,
+  //       },
+  //       {
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //           Authorization: `Bearer ${accessToken}`
+  //       }}
+  //       )
+  //       .then(() => {
+  //         // console.log(res);
+  //         Swal.fire({
+  //           title: '신고가 완료되었습니다.',
+  //           icon: 'success',
+  //           timer: 2500,
+  //           showConfirmButton: false
+  //         })
+  //         .then(() => {
+  //           window.location.reload();
+  //         });
+  //       })
+  //       .catch(() => {
+  //         // console.log(err);
+  //       })
+  //     }
+  //   })
+  // }
 
   const createDate = new Date(message.createDate);
   const now = new Date();
@@ -109,8 +112,8 @@ const InboxTextComponent: React.FC<InboxTextComponentProps> = ({ message, innerR
       <div className={styles.inboxTextComponentBody}>
         <div className={styles.inboxTextComponentBodyMain}>
           <p className={styles.inboxTextComponentBodyMainText}>{message.content}</p>
-            <div className={styles.inboxTextComponentFooter}>
-              <button className={message.responseStatus || message.isResponse ? styles.inboxTextComponentFooterButtonDisable : styles.inboxTextComponentFooterButton} 
+            {/* <div className={styles.inboxTextComponentFooter} > */}
+              {/* <button className={message.responseStatus || message.isResponse ? styles.inboxTextComponentFooterButtonDisable : styles.inboxTextComponentFooterButton} 
                 onClick={() => handleReply(message.id)}
                 style={replyButtonStyle}
                 disabled={message.responseStatus || message.isResponse}
@@ -123,7 +126,7 @@ const InboxTextComponent: React.FC<InboxTextComponentProps> = ({ message, innerR
                 disabled={message.isReported}
               >
                 신고
-            </button>
+            </button> */}
             {message.isResponse && <button className={styles.inboxImageComponentFooterFromButton} onClick={() => {
                 if (openModal === false) {
                   setOpenModal(true)
@@ -131,7 +134,7 @@ const InboxTextComponent: React.FC<InboxTextComponentProps> = ({ message, innerR
                   setOpenModal(false)
                 }
             }}>from.</button>}
-          </div>
+          {/* </div> */}
         </div>
       </div>
       {openModal && message.parent.contentType === 'text' && 
