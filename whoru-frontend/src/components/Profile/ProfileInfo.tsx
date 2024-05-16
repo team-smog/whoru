@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+// import axios from 'axios'
 import Profile from '@/assets/@common/Profile.png'
 import { useDispatch } from 'react-redux'
-import { setBoxCount } from '@/stores/store'
+import { setBoxCount, setIconUrl, setPushAlarm, setRole } from '@/stores/store'
+import { axiosWithCredentialInstance } from '@/apis/axiosInstance'
+
 
 const ProfileInfo = () => {
-  const dispatch = useDispatch()
+	const dispatch = useDispatch()
 	const [userInfo, setUserInfo] = useState({
 		userName: '',
 		iconUrl: Profile,
@@ -17,28 +19,31 @@ const ProfileInfo = () => {
 	useEffect(() => {
 		const fetchUserInfo = async () => {
 			try {
-				const response = await axios.get('https://k10d203.p.ssafy.io/api/member/profile', {
+				const response = await axiosWithCredentialInstance.get('https://codearena.shop/api/member/profile', {
 					headers: {
 						Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
 					},
 				})
-				console.log('사용자 정보?:', response.data)
 				if (response.data && response.data.data) {
 					const iconUrl = response.data.data.iconUrl !== 'null' ? response.data.data.iconUrl : Profile
 					setUserInfo((prev) => ({ ...prev, ...response.data.data, iconUrl: iconUrl }))
-          console.log("hhhhh",response.data.data.boxCount)
-          dispatch(setBoxCount(response.data.data.boxCount))
+					dispatch(setBoxCount(response.data.data.boxCount))
+					dispatch(setRole(response.data.data.role))
+					dispatch(setPushAlarm(response.data.data.pushAlarm))
+          if(response.data.data.iconUrl !== "null"){
+            dispatch(setIconUrl(response.data.data.iconUrl))
+          }else{
+            dispatch(setIconUrl(Profile))
+          }
 				} else {
 					setUserInfo((prev) => ({ ...prev, ...response.data }))
 				}
 			} catch (error) {
-				console.error('사용자 정보를 불러오는 중 에러 발생:', error)
 			}
 		}
 
 		fetchUserInfo()
 	}, [])
-  
 
 	return (
 		<div className="flex flex-row justify-center">

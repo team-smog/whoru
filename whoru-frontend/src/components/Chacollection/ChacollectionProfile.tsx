@@ -1,8 +1,10 @@
-import { useState, useEffect } from 'react'
-import axios from 'axios'
+import React, { useState, useEffect } from 'react'
 import ChacollectionModals from './ChacollectionModal'
-import Profile from '@/assets/@common/Profile.png'
 import './ProfileInfo.css'
+import { useDispatch, useSelector } from 'react-redux'
+import { setIconUrl } from '@/stores/store'
+import Swal from 'sweetalert2'
+import { axiosWithCredentialInstance } from '@/apis/axiosInstance'
 
 interface Icon {
 	iconId: string
@@ -10,12 +12,15 @@ interface Icon {
 	iconGrade: string
 	isDuplicat: boolean
 	isAvailable: boolean
-} 
+}
 
 const ChacollectionProfile: React.FC = () => {
 	const [icons, setIcons] = useState<Icon[]>([])
-	const [profileImageUrl, setProfileImageUrl] = useState<string>(Profile)
-	// const [ setSelectedIconId] = useState<string | null>(null)
+	const iconUrl = useSelector((state: any) => state.user.iconUrl)
+	const [profileImageUrl, setProfileImageUrl] = useState<string>(iconUrl)
+	const dispatch = useDispatch()
+
+	useEffect(() => {}, [iconUrl])
 
 	useEffect(() => {
 		const savedIconUrl = localStorage.getItem('selectedProfileImage')
@@ -27,44 +32,65 @@ const ChacollectionProfile: React.FC = () => {
 
 	const fetchIcons = async () => {
 		try {
-			const response = await axios.get(`https://k10d203.p.ssafy.io/api/collects/icons`, {
+			const res = await axiosWithCredentialInstance.get(`collects/icons`, {
 				headers: {
 					'Content-Type': 'application/json',
 					Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
 				},
 			})
-			if (response.data && response.data.data) {
-				setIcons(response.data.data.data)
+			if (res.data && res.data.data) {
+				setIcons(res.data.data.data)
 			} else {
-				console.error('예상된 데이터 형식이 아닙니다:', response.data)
 				setIcons([])
 			}
 		} catch (error) {
-			console.error('아이콘을 가져오는 데 에러가 발생했습니다:', error)
+			console.error(error)
 			setIcons([])
+			Swal.fire('아이콘을 불러오는 중 오류가 발생했습니다.', '', 'error')
 		}
 	}
 
 	const changeIcon = async (iconId: string, iconUrl: string) => {
 		try {
-			const response = await axios.patch('https://k10d203.p.ssafy.io/api/member/icon', null, {
+			const res = await axiosWithCredentialInstance.patch('member/icon', null, {
 				params: { iconId },
 				headers: {
 					Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
 				},
 			})
 
-			if (response.data) {
-				setProfileImageUrl(iconUrl) // 서버 응답 성공 시, 프로필 이미지 URL 업데이트
-				// setSelectedIconId(iconId)
-				localStorage.setItem('selectedProfileImage', iconUrl) // 선택된 이미지를 localStorage에 저장
-				alert('프로필 아이콘이 성공적으로 변경되었습니다.')
+			if (res.data.data) {
+				dispatch(setIconUrl(iconUrl))
+				setProfileImageUrl(iconUrl)
+				localStorage.setItem('selectedProfileImage', iconUrl)
+				Swal.fire('프로필 아이콘이 변경되었습니다.', '', 'success')
 			}
 		} catch (error) {
-			console.error('프로필 아이콘 변경 중 오류 발생:', error)
-			alert('프로필 아이콘 변경에 실패하였습니다.')
+			console.error(error)
+			Swal.fire('프로필 아이콘을 변경하는 중 오류가 발생했습니다.', '', 'error')
 		}
 	}
+
+	const gradeMapping: { [key: string]: string } = {
+		COMMON: '흔함',
+		RARE: '레어',
+		ADVANCED: '희귀',
+	}
+
+	const groupIconsByGrade = (icons: Icon[]) => {
+		return icons.reduce(
+			(acc, icon) => {
+				if (!acc[icon.iconGrade]) {
+					acc[icon.iconGrade] = []
+				}
+				acc[icon.iconGrade].push(icon)
+				return acc
+			},
+			{} as Record<string, Icon[]>
+		)
+	}
+
+	const groupedIcons = groupIconsByGrade(icons)
 
 	return (
 		<div>
@@ -74,23 +100,29 @@ const ChacollectionProfile: React.FC = () => {
 					<p className="flex justify-center text-xs pt-2">현재 프로필</p>
 				</div>
 			</div>
-			<div className="relative chacollection-profile-container">
+			<div className="relative chacollectionProfileContainer">
 				<p className="text-xl pt-32 pl-4">캐릭터 도감</p>
 				<p className="text-xs pt-2 pl-4 text-[#797979]">원하는 캐릭터로 자신의 프로필을 바꿀 수 있어요.</p>
-				<div className="flex justify-center flex-wrap pt-4 scrollable-container">
-					{icons.map((icon, index) => (
-						<div
-							className={`profile-container ${!icon.isAvailable ? 'unavailable-icon' : ''}`}
-							key={index}
-							onClick={() => icon.isAvailable && changeIcon(icon.iconId, icon.iconUrl)}
-							style={!icon.isAvailable ? { backgroundColor: 'rgba(128, 128, 128, 0.5)' } : {}}
-						>
-							<img src={icon.iconUrl} alt={`Profile Icon ${index}`} />
+				<div className="scrollable-container h-[calc(100vh-420px)]">
+					{Object.keys(groupedIcons).map((grade, gradeIndex) => (
+						<div key={gradeIndex} className="grade-section">
+							<h2 className="text-lg pt-4 pl-4">{`등급: ${gradeMapping[grade] || grade}`}</h2>
+							<div className="flex flex-wrap">
+								{groupedIcons[grade].map((icon, index) => (
+									<div
+										className={`profile-container ${!icon.isAvailable ? 'unavailable-icon' : ''}`}
+										key={index}
+										onClick={() => icon.isAvailable && changeIcon(icon.iconId, icon.iconUrl)}
+									>
+										<img src={icon.iconUrl} alt={`Profile Icon ${index}`} />
+									</div>
+								))}
+							</div>
 						</div>
 					))}
 				</div>
 
-				<div className="fixed flex justify-center w-full max-w-[500px] bottom-20 pt-4 m-auto px-3">
+				<div className="fixed z-50 flex justify-center w-full max-w-[500px] bottom-20 pt-4 m-auto px-3">
 					<ChacollectionModals onAction={fetchIcons} />
 				</div>
 			</div>

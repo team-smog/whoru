@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { format } from 'date-fns'
 import { ko } from 'date-fns/locale'
+import { axiosWithCredentialInstance } from '@/apis/axiosInstance'
 
 interface Inquiry {
 	boardType: string
@@ -51,7 +51,7 @@ const InquiryManager = () => {
 	const fetchInquiries = async () => {
 		setLoading(true)
 		try {
-			const response = await axios.get('https://k10d203.p.ssafy.io/api/board', {
+			const response = await axiosWithCredentialInstance.get('board', {
 				params: {
 					page: currentPage,
 					size: pageSize,
@@ -63,21 +63,8 @@ const InquiryManager = () => {
 			if (response.status === 200) {
 				setInquiries(response.data.data.content)
 				setIsLastPage(response.data.data.last)
-				console.log('성공')
-				console.log(response)
-				console.log(response.data.data.content)
-				setTimeout(() => {
-					console.log(inquiries)
-				}, 1000)
-			} else {
-				console.error('유효한 데이터가 없습니다. 서버 응답:', response.data)
 			}
 		} catch (error) {
-			if (axios.isAxiosError(error)) {
-				console.error('API 응답 오류:', error.response?.data || error.message)
-			} else {
-				console.error('예상치 못한 오류:', error)
-			}
 		} finally {
 			setLoading(false)
 		}

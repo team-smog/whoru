@@ -1,5 +1,5 @@
 import { useAuthReq } from '@/hooks/Auth/useAuth'
-import { setBoxCount, setPushAlarm, setRole } from '@/stores/store'
+import { setBoxCount, setIconUrl, setPushAlarm, setRole } from '@/stores/store'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate, useSearchParams } from 'react-router-dom'
@@ -27,7 +27,7 @@ const CallBackPage = () => {
 			if (token === null) {
 				return;
 			}
-			await fetch(`https://k10d203.p.ssafy.io/api/member/updatefcm?fcmToken=${token}`, {
+			await fetch(`https://codearena.shop/api/member/updatefcm?fcmToken=${token}`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -72,18 +72,19 @@ const CallBackPage = () => {
 		}
 
 		if (userData) {
-      console.log(userData)
-			console.log('lasiefjlsaejf', userData.pushAlarm)
-				dispatch(setBoxCount(userData.boxCount))
-				dispatch(setRole(userData.role))
-				dispatch(setPushAlarm(userData.pushAlarm))
-				navigate('/')
-			} else {
-				console.log('error')
-			}
+			console.log(userData)
+			dispatch(setBoxCount(userData.boxCount))
+			dispatch(setRole(userData.role))
+			dispatch(setPushAlarm(userData.pushAlarm))
+			dispatch(setIconUrl(userData.iconUrl))
+			console.log(userData.iconUrl)
+			navigate('/')
+		} else {
+			console.log('error')
+		}
 	}, [navigate, searchParams, dispatch, userData, isError, isLoading])
 
 	return <div>로그인 중...</div>
 }
 
-export default CallBackPage
+export default CallBackPage;

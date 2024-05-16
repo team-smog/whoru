@@ -13,6 +13,7 @@ import InquiryDetail from './components/Inquiry/InquiryDetail'
 import AdminPage from './pages/Admin/AdminPage'
 import CallBackPage from './pages/Login/CallBackPage'
 import CreateInquiry from './components/Inquiry/CreateInquiry'
+import NotFound from './pages/NotFound/NotFound'
 
 interface AuthWrapperProps {
 	children: React.ReactNode
@@ -133,6 +134,10 @@ const router = createBrowserRouter([
 		path: '/callback',
 		element: <CallBackPage />,
 	},
+	{
+		path: '*',
+		element: <NotFound />
+	}
 ])
 
 const App = () => {

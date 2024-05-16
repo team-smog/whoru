@@ -3,6 +3,7 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { format } from 'date-fns'
 import { ko } from 'date-fns/locale'
+import { axiosWithCredentialInstance } from '@/apis/axiosInstance'
 
 interface Announcement {
 	id: number
@@ -26,7 +27,7 @@ const AnnouncementInfo = () => {
 	const loadAnnouncements = async (page: number) => {
 		setLoading(true)
 		try {
-			const response = await axios.get('https://k10d203.p.ssafy.io/api/board/noti', {
+			const response = await axiosWithCredentialInstance.get('board/noti', {
 				params: {
 					page: page,
 					size: size,
@@ -35,19 +36,14 @@ const AnnouncementInfo = () => {
 					Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
 				},
 			})
-			console.log(response)
 			if (response.status === 200 && response.data && response.data.data) {
 				const { content, last } = response.data.data
 				setAnnouncements(content)
 				setIsLastPage(last)
 			} else {
-				console.error('유효한 데이터가 없습니다. 서버 응답:', response.data)
 			}
 		} catch (error) {
 			if (axios.isAxiosError(error)) {
-				console.error('API 응답 오류:', error.response?.data || error.message)
-			} else {
-				console.error('예상치 못한 오류:', error)
 			}
 		} finally {
 			setLoading(false)
