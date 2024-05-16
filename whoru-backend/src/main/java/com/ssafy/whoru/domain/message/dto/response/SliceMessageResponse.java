@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Slice;
 
@@ -20,6 +21,7 @@ import org.springframework.data.domain.Slice;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @ToString
+@Slf4j
 @Schema(description = "prev 메세지 목록조회의 DTO")
 public class SliceMessageResponse {
 
