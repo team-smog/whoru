@@ -1,6 +1,6 @@
 import axios from "axios";
 import setAuthorization from "./Interceptors";
-import refresh from "./refresh";
+import { reissue } from "./refresh";
 
 const axiosRequestConfig = {
   baseURL: import.meta.env.VITE_BASE_URL,
@@ -21,5 +21,5 @@ axiosAuthInstance.interceptors.request.use(setAuthorization);
 // AccessToken 재발급
 export const axiosWithCredentialInstance = axios.create(axiosWithCredentialConfig);
 
-axiosWithCredentialInstance.interceptors.request.use(setAuthorization);
-axiosWithCredentialInstance.interceptors.response.use(null, refresh);
+axiosWithCredentialInstance.interceptors.request.use();
+axiosWithCredentialInstance.interceptors.response.use(null, reissue);

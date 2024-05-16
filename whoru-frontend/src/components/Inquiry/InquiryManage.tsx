@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { format } from 'date-fns'
 import { ko } from 'date-fns/locale'
+import { axiosWithCredentialInstance } from '@/apis/axiosInstance'
 
 interface Inquiry {
 	boardType: string
@@ -51,7 +51,7 @@ const InquiryManager = () => {
 	const fetchInquiries = async () => {
 		setLoading(true)
 		try {
-			const response = await axios.get('https://codearena.shop/api/board', {
+			const response = await axiosWithCredentialInstance.get('board', {
 				params: {
 					page: currentPage,
 					size: pageSize,
