@@ -33,7 +33,7 @@ const ChacollectionProfile: React.FC = () => {
 
 	const fetchIcons = async () => {
 		try {
-			const res = await axios.get(`https://k10d203.p.ssafy.io/api/collects/icons`, {
+			const res = await axios.get(`https://codearena.shop/api/collects/icons`, {
 				headers: {
 					'Content-Type': 'application/json',
 					Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
@@ -51,7 +51,7 @@ const ChacollectionProfile: React.FC = () => {
 
 	const changeIcon = async (iconId: string, iconUrl: string) => {
 		try {
-			const res = await axios.patch('https://k10d203.p.ssafy.io/api/member/icon', null, {
+			const res = await axios.patch('https://codearena.shop/api/member/icon', null, {
 				params: { iconId },
 				headers: {
 					Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),

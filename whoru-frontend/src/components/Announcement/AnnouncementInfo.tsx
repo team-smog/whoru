@@ -26,7 +26,7 @@ const AnnouncementInfo = () => {
 	const loadAnnouncements = async (page: number) => {
 		setLoading(true)
 		try {
-			const response = await axios.get('https://k10d203.p.ssafy.io/api/board/noti', {
+			const response = await axios.get('https://codearena.shop/api/board/noti', {
 				params: {
 					page: page,
 					size: size,

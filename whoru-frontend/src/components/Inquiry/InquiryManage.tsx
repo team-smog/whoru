@@ -51,7 +51,7 @@ const InquiryManager = () => {
 	const fetchInquiries = async () => {
 		setLoading(true)
 		try {
-			const response = await axios.get('https://k10d203.p.ssafy.io/api/board', {
+			const response = await axios.get('https://codearena.shop/api/board', {
 				params: {
 					page: currentPage,
 					size: pageSize,

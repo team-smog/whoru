@@ -43,7 +43,7 @@ const CreateInquiry = () => {
 				setIsSubmitting(true)
 				try {
 					const response = await axios.post(
-						'https://k10d203.p.ssafy.io/api/board/inquiry',
+						'https://codearena.shop/api/board/inquiry',
 						{ subject, content },
 						{ headers: { Authorization: 'Bearer ' + localStorage.getItem('AccessToken') } }
 					)
