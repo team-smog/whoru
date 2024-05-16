@@ -111,7 +111,7 @@ public class MessageServiceImpl implements MessageService{
             for(FcmNotification fcmNotification: fcmNotifications){
                 if(fcmNotification == null) continue;
                 if(fcmNotification.getMark()) continue;
-                fcmUtil.sendMessage(fcmNotification.getFcmToken(), fcmNotification.getId(), FcmType.MESSAGE);
+                fcmUtil.sendMessage(fcmNotification.getFcmToken(), fcmNotification.getId(), FcmType.RESPONSE_MESSAGE);
             }
         }
 
@@ -171,7 +171,7 @@ public class MessageServiceImpl implements MessageService{
             for(FcmNotification fcmNotification: fcmNotifications){
                 if(fcmNotification == null) continue;
                 if(fcmNotification.getMark()) continue;
-                fcmUtil.sendMessage(fcmNotification.getFcmToken(), fcmNotification.getId(),FcmType.MESSAGE);
+                fcmUtil.sendMessage(fcmNotification.getFcmToken(), fcmNotification.getId(),FcmType.RESPONSE_MESSAGE);
             }
         }
 
@@ -242,7 +242,7 @@ public class MessageServiceImpl implements MessageService{
             for(FcmNotification fcmNotification: fcmNotifications){
                 if(fcmNotification == null) continue;
                 if(fcmNotification.getMark()) continue;
-                fcmUtil.sendMessage(fcmNotification.getFcmToken(), fcmNotification.getId(), FcmType.MESSAGE);
+                fcmUtil.sendMessage(fcmNotification.getFcmToken(), fcmNotification.getId(), FcmType.RESPONSE_MESSAGE);
             }
         }
 
@@ -298,7 +298,7 @@ public class MessageServiceImpl implements MessageService{
             for(FcmNotification fcmNotification: fcmNotifications){
                 if(fcmNotification == null) continue;
                 if(fcmNotification.getMark()) continue;
-                fcmUtil.sendMessage(fcmNotification.getFcmToken(), fcmNotification.getId(), FcmType.MESSAGE);
+                fcmUtil.sendMessage(fcmNotification.getFcmToken(), fcmNotification.getId(), FcmType.RESPONSE_MESSAGE);
             }
         }
 
