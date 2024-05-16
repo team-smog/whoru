@@ -8,9 +8,9 @@ export const reissue = async (error: AxiosError) => {
     localStorage.removeItem('AccessToken');
   }
   // access 토큰 만료 시
-    else if (error.response?.status === 401) {
+	else if (error.response?.status === 401) {
 
-    const res = await axiosWithCredentialInstance.post(`/member/regenerate-token`,{}, {
+    const res = await axiosWithCredentialInstance.post(`/member/regenerate-token`, {
       headers: {
         'Content-Type' : "application/json",
       }
@@ -18,17 +18,17 @@ export const reissue = async (error: AxiosError) => {
     console.log(res.data);
     localStorage.setItem('AccessToken', res.data.token);
     console.log(localStorage.setItem('AccessToken', res.data.token));
-    // return Promise.resolve();
+    return Promise.resolve();
   }
   return Promise.reject(error);
 }
 
 export const getUserDetail = async (): Promise<IUserInfo> => {
-    const res = await axiosAuthInstance.get(`/member/profile`, {
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    }) 
-    console.log(res);
-    return res.data.data
+	const res = await axiosAuthInstance.get(`/member/profile`, {
+		headers: {
+			'Content-Type': 'application/json',
+		},
+	}) 
+	console.log(res);
+	return res.data.data
 }
