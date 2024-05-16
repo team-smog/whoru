@@ -74,7 +74,6 @@ const SendTextComponent = ({ messageId }: { messageId: number | null}) => {
           }
         )
         .then((res) => {
-          // console.log(res);
           if (res.data.data.randomBoxProvided === true) {
             Toast.fire({
               icon: 'success',
@@ -86,7 +85,6 @@ const SendTextComponent = ({ messageId }: { messageId: number | null}) => {
         })
       }
     } catch (error: any) {
-      // console.error(error);
       if (error.response.data.errorCode === 400) {
         Swal.fire({
           icon: 'error',
