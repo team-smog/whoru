@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class FCMUtil {
 
-    static final String FCM_CONTENT = "누군가로부터 메세지가 도착했어요!";
+    static final String FCM_CONTENT = "답장 메세지가 도착했어요!";
 
     private final FcmService fcmService;
 
