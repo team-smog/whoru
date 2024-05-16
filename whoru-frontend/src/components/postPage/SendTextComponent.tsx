@@ -8,11 +8,6 @@ import Swal from 'sweetalert2'
 import { axiosWithCredentialInstance } from '@/apis/axiosInstance'
 
 const SendTextComponent = ({ messageId }: { messageId: number | null}) => {
-<<<<<<< 12a50f5459ff03dd12965f90daacfd36effb2e4e
-=======
-  // const baseUrl = 'https://k10d203.p.ssafy.io/api'
-  const baseUrl = 'https://codearena.shop/api'
->>>>>>> 20709eec1f88992818837dd698e7b4cb5ab05534
   const navigate = useNavigate();
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [text, setText] = useState("");
