@@ -1,6 +1,7 @@
 package com.ssafy.whoru.domain.message.dto.response;
 
 
+import com.ssafy.whoru.domain.message.domain.Message;
 import com.ssafy.whoru.domain.message.dto.ContentType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
@@ -37,7 +38,7 @@ public class MessageResponse {
     private Boolean isResponse;
 
     @Schema(description = "상위 메세지", pattern = "[ null아님: 답장 메세지, null: 일반 메세지 ]")
-    private Long parentId; //상위 메시지
+    private MessageResponse parent; //상위 메시지
 
     @Schema(description = "신고 받음여부 처리", pattern = "[ true: 신고받은 메세지, false: 신고받지 않은 메세지 ]")
     private Boolean isReported;
