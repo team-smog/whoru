@@ -87,7 +87,9 @@ public class SecurityConfig{
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:8080", "http://localhost:3000",
                 "http://localhost:5173", "http://127.0.0.1:5173", "https://k10d203.p.ssafy.io",
-                "https://k10d203.p.ssafy.io:8080" , "https://k10d203.p.ssafy.io:8080/api")); // 모든 출처 허용
+                "https://k10d203.p.ssafy.io:8080" , "https://k10d203.p.ssafy.io:8080/api",
+                "https://codearena.shop",
+                "https://codearena.shop:8080" , "https://codearena.shop:8080/api")); // 모든 출처 허용
         configuration.setAllowedMethods(
                 Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")); // 허용할 HTTP 메소드 지정
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With", "accept", "Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers")); // 모든 헤더 허용
