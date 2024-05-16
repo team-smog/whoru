@@ -30,6 +30,16 @@ const messageIdInitialState: MessageIdState = {
 	lastId: null,
 }
 
+interface TMessageIdState {
+	TFirstId: number | null
+	TLastId: number | null
+}
+
+const TMessageIdInitialState: TMessageIdState = {
+	TFirstId: null,
+	TLastId: null,
+}
+
 interface boxCountState {
 	boxCount: number | null
 }
@@ -80,6 +90,21 @@ const messageSlice = createSlice({
 	},
 })
 
+const TMessageSlice = createSlice({
+	name: 'Tmessage',
+	initialState: TMessageIdInitialState,
+	reducers: {
+		setTFirstId: (state, action: PayloadAction<number | null>) => {
+			// console.log(action)
+			state.TFirstId = action.payload
+			// console.log(state.firstId)
+		},
+		setTLastId: (state, action: PayloadAction<number | null>) => {
+			state.TLastId = action.payload
+		},
+	},
+})
+
 const boxCounterSlice = createSlice({
   name: 'boxCounter',
   initialState: boxCounterInitialState,
@@ -108,6 +133,7 @@ const { reducer: replyReducer } = replySlice
 const { reducer: messageReducer } = messageSlice
 const { reducer: boxCounterReducer } = boxCounterSlice
 const { reducer: userReducer } = userSlice
+const { reducer: TMessageReducer } = TMessageSlice
 
 // 스토어 구성
 const store = configureStore({
@@ -116,12 +142,14 @@ const store = configureStore({
 		reply: replyReducer,
 		message: messageReducer,
 		boxCounter: boxCounterReducer,
+		TMessage: TMessageReducer,
 	},
 })
 
 export const { setBoxCount, setRole, setPushAlarm } = userSlice.actions
 export const { setReplyMessage } = replySlice.actions
 export const { setFirstId, setLastId } = messageSlice.actions
+export const { setTFirstId, setTLastId } = TMessageSlice.actions
 export const { setBoxCountP, setBoxCountM } = boxCounterSlice.actions
 export type RootState = ReturnType<typeof store.getState>
 

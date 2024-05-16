@@ -18,6 +18,9 @@ const NavigationBar = () => {
       case 'post':
         navigate('/post');
         break;
+      case 'daily':
+        navigate('/daily');
+        break;
       case 'profile':
         navigate('/profile');
         break;
@@ -28,6 +31,9 @@ const NavigationBar = () => {
     <div className="fixed bottom-0 max-w-[500px] z-[2] w-full h-[60px] bg-[#AEC3F1] px-9 flex justify-between items-center">
       <div className="" onClick={() => handleTabClick('home')}>
         <img src={pathname === '/' ? FilledHouse : House} className="w-8" />
+      </div>
+      <div className="" onClick={() => handleTabClick('daily')}>
+        <img src={pathname === '/daily' ? FilledPost : Post} className="w-8 h-9" />
       </div>
       <div className="" onClick={() => handleTabClick('post')}>
         <img src={pathname === '/post' ? FilledPost : Post} className="w-8 h-9" />

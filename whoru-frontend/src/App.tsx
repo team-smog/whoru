@@ -1,6 +1,7 @@
 import './App.css'
 import { Navigate, RouterProvider, createBrowserRouter } from 'react-router-dom'
 import MainPage from './pages/MainPage/MainPage'
+import TodayMessagesPage from './pages/TodayMessages/TodayMessagesPage'
 import LoginPage from './pages/Login/LoginPage'
 import ProfilePage from './pages/Profile/ProfilePage'
 import PostPage from './pages/Post/PostPage'
@@ -33,6 +34,14 @@ const router = createBrowserRouter([
 		element: (
 			<AuthWrapper>
 				<MainPage />
+			</AuthWrapper>
+		),
+	},
+	{
+		path: '/daily',
+		element: (
+			<AuthWrapper>
+				<TodayMessagesPage />
 			</AuthWrapper>
 		),
 	},
