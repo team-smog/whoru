@@ -10,7 +10,8 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from 'react-intersection-observer';
 import { useDispatch, useSelector } from "react-redux";
 import { setFirstId, setLastId } from "@/stores/store";
-import axios from "axios";
+import { axiosWithCredentialInstance } from "@/apis/axiosInstance";
+
 const MainPage = () => {
   const info: IHeaderInfo = {
     left_1: "Main",
@@ -105,7 +106,7 @@ const MainPage = () => {
 
   const fetchData = () => {
     if (lastId === null) {
-      return axios.get(`${baseUrl}/message?size=${20}`, {
+      return axiosWithCredentialInstance.get(`message?size=${20}`, {
         headers: {
           Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
         },
@@ -123,7 +124,7 @@ const MainPage = () => {
         console.log(err);
       })
     } else if (lastId !== null) {
-      return axios.get(`${baseUrl}/message?size=${20}&lastid=${lastId}`, {
+      return axiosWithCredentialInstance.get(`message?size=${20}&lastid=${lastId}`, {
         headers: {
           Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
         },

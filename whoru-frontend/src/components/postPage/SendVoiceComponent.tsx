@@ -13,16 +13,13 @@ import postbutton from '@/assets/components/InboxVoiceComponent/voice-component-
 import pausebutton from '@/assets/components/InboxVoiceComponent/voice-component-pause-button.svg'
 import { useVoiceVisualizer, VoiceVisualizer } from "react-voice-visualizer";
 import 'react-h5-audio-player/lib/styles.css';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom'
 import toWav from 'audiobuffer-to-wav';
 import Swal from 'sweetalert2'
+import { axiosWithCredentialInstance } from '@/apis/axiosInstance'
 
 
 const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
-    // const baseUrl = 'https://k10d203.p.ssafy.io/api'
-    // const baseUrl = 'https://codearena.shop/api'
-    const baseUrl = import.meta.env.VITE_BASE_URL
     const navigate = useNavigate();
     const [currentRecordType,setCurrentRecordType] = useState<string>("")
     const recorderControls = useVoiceVisualizer();
@@ -90,7 +87,7 @@ const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
         formData.append('file', blob);
     
         try {
-            await axios.post(`${baseUrl}/message/${messageId}/file`, formData, {
+            await axiosWithCredentialInstance.post(`message/${messageId}/file`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     Authorization: `Bearer ${accessToken}`
@@ -125,7 +122,7 @@ const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
         formData.append('file', blob);
     
         try {
-            const response = await axios.post(`${baseUrl}/message/file`, formData, {
+            const response = await axiosWithCredentialInstance.post(`message/file`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     Authorization: `Bearer ${accessToken}`

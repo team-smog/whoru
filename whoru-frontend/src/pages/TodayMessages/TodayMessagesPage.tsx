@@ -10,7 +10,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from 'react-intersection-observer';
 import { useDispatch, useSelector } from "react-redux";
 import { setTFirstId, setTLastId } from "@/stores/store";
-import axios from "axios";
+import { axiosWithCredentialInstance } from "@/apis/axiosInstance";
 
 const TodayMessagesPage = () => {
   const info: IHeaderInfo = {
@@ -27,10 +27,6 @@ const TodayMessagesPage = () => {
       dispatch(setTLastId(null));
     }
   }, []);
-
-  // const baseUrl = 'https://k10d203.p.ssafy.io/api'
-  // const baseUrl = 'https://codearena.shop/api'
-  const baseUrl = import.meta.env.VITE_BASE_URL
 
   const dispatch = useDispatch();
   const TFirstId = useSelector((state: any) => state.TMessage.TFirstId);
@@ -94,19 +90,26 @@ const TodayMessagesPage = () => {
 
   const handleRefresh = async (fId:number): Promise<MessageInfoDetail[]> => {
     // console.log("fId", fId);
-    const res = await fetch(`${baseUrl}/message/daily/recent?firstid=${fId}`, {
-      headers: {
-        Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
-      },
-    })
-    const data = await res.json();
-    console.log(data);
-    return data.data;
+    try {
+      const res = await axiosWithCredentialInstance.get(`message/daily/recent?firstid=${fId}`, {
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
+        },
+      });
+      if (res.data && res.data.data && res.data.data.content) {
+        return res.data.data;
+      } else {
+        return [];
+      }
+    } catch (err) {
+      console.log(err);
+      return [];
+    }
   }
 
   const fetchData = () => {
     if (TLastId === null) {
-      return axios.get(`${baseUrl}/message/daily/old?size=${20}`, {
+      return axiosWithCredentialInstance.get(`message/daily/old?size=${20}`, {
         headers: {
           Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
         },
@@ -124,7 +127,7 @@ const TodayMessagesPage = () => {
         // console.log(err);
       })
     } else if (TLastId !== null) {
-      return axios.get(`${baseUrl}/message/daily/old?size=${20}&lastid=${TLastId}`, {
+      return axiosWithCredentialInstance.get(`message/daily/old?size=${20}&lastid=${TLastId}`, {
         headers: {
           Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
         },

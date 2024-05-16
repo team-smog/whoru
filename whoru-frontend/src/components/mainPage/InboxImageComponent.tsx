@@ -8,11 +8,11 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
 import { setReplyMessage } from '@/stores/store';
-import axios from 'axios'
 import Swal from 'sweetalert2'
 import ParentInboxImageComponent from './ParentInboxImageComponent'
 import ParentInboxTextComponent from './ParentInboxTextComponent'
 import ParentInboxVoiceComponent from './ParentInboxVoiceComponent'
+import { axiosWithCredentialInstance } from '@/apis/axiosInstance'
 
 
 interface InboxImageComponentProps extends React.HTMLAttributes<HTMLDivElement>{
@@ -21,9 +21,6 @@ interface InboxImageComponentProps extends React.HTMLAttributes<HTMLDivElement>{
 }
 
 const InboxImageComponent: React.FC<InboxImageComponentProps> = ({ message, innerRef, ...props }) => {
-  // const baseUrl = 'https://k10d203.p.ssafy.io/api'
-  // const baseUrl = 'https://codearena.shop/api'
-  const baseUrl = import.meta.env.VITE_BASE_URL
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const accessToken = localStorage.getItem('AccessToken')
@@ -45,7 +42,7 @@ const InboxImageComponent: React.FC<InboxImageComponentProps> = ({ message, inne
       denyButtonText: `취소`,
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.post(`${baseUrl}/report/member`,
+        axiosWithCredentialInstance.post(`/report/member`,
         {
           messageId: messageId,
           senderId: senderId,
