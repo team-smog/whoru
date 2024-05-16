@@ -92,7 +92,7 @@ public class MemberApi implements MemberApiDocs{
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             Optional<Cookie> refreshTokenCookie = Arrays.stream(cookies)
-                .filter(cookie -> "refreshToken".equals(cookie.getName()))
+                .filter(cookie -> "Refresh".equals(cookie.getName()))
                 .findFirst();
 
             if (refreshTokenCookie.isPresent()) {
