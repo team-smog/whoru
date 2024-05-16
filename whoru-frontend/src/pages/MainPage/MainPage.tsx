@@ -11,7 +11,6 @@ import { useInView } from 'react-intersection-observer';
 import { useDispatch, useSelector } from "react-redux";
 import { setFirstId, setLastId } from "@/stores/store";
 import axios from "axios";
-
 const MainPage = () => {
   const info: IHeaderInfo = {
     left_1: "Main",
@@ -28,8 +27,9 @@ const MainPage = () => {
     }
   }, []);
 
-  const baseUrl = 'https://k10d203.p.ssafy.io/api'
+  // const baseUrl = 'https://k10d203.p.ssafy.io/api'
   // const baseUrl = 'https://codearena.shop/api'
+  const baseUrl = import.meta.env.VITE_BASE_URL
 
   const dispatch = useDispatch();
   const firstId = useSelector((state: any) => state.message.firstId);

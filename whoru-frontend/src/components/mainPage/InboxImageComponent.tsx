@@ -17,8 +17,9 @@ interface InboxImageComponentProps extends React.HTMLAttributes<HTMLDivElement>{
 }
 
 const InboxImageComponent: React.FC<InboxImageComponentProps> = ({ message, innerRef, ...props }) => {
-  const baseUrl = 'https://k10d203.p.ssafy.io/api'
+  // const baseUrl = 'https://k10d203.p.ssafy.io/api'
   // const baseUrl = 'https://codearena.shop/api'
+  const baseUrl = import.meta.env.VITE_BASE_URL
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const accessToken = localStorage.getItem('AccessToken')

@@ -8,8 +8,9 @@ import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 
 const SendTextComponent = ({ messageId }: { messageId: number | null}) => {
-  const baseUrl = 'https://k10d203.p.ssafy.io/api'
+  // const baseUrl = 'https://k10d203.p.ssafy.io/api'
   // const baseUrl = 'https://codearena.shop/api'
+  const baseUrl = import.meta.env.VITE_BASE_URL
   const navigate = useNavigate();
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [text, setText] = useState("");

@@ -10,8 +10,9 @@ import Swal from 'sweetalert2'
 
 
 const SendImageComponent = ({ messageId }: { messageId: number | null}) => {
-  const baseUrl = 'https://k10d203.p.ssafy.io/api'
+  // const baseUrl = 'https://k10d203.p.ssafy.io/api'
   // const baseUrl = 'https://codearena.shop/api'
+  const baseUrl = import.meta.env.VITE_BASE_URL
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
   const [imageSrc, setImageSrc] = useState<string | null>(null);
