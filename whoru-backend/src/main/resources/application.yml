@@ -21,7 +21,7 @@ spring:
 
 
   profiles:
-    active: dev
+    active: local
     include: key
 
   #JPA 설정
@@ -178,7 +178,7 @@ spring:
 
 
   local:
-    website: ENC(JNNrRyx2cRNJG6TGB0jwzazeECt1x5GoEYl+wLmq9/c=)
+    website: ENC(9rpOvFUn556DUyO3JX0Jngo6i7o4Nd8cgI0fPpePajo=)
 
   security:
     oauth2:
@@ -229,7 +229,7 @@ spring:
 
   data:
     redis:
-      host: ENC(GtKziREPvUiTz4D7HiL2FqbIW/XVMB8N)
+      host: ENC(pEdEQmlsvB+ujv9X+qao71nfHBQECNwQ)
       port: 6379
       password: ENC(PNOytbx4JCbjrJupdemfcAbxvWDBbClc)
 
