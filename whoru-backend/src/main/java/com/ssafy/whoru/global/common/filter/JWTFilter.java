@@ -2,8 +2,6 @@ package com.ssafy.whoru.global.common.filter;
 
 import com.ssafy.whoru.domain.member.dto.CustomOAuth2User;
 import com.ssafy.whoru.domain.member.dto.MemberDTO;
-import com.ssafy.whoru.global.error.exception.AccessTokenExpiredException;
-import com.ssafy.whoru.global.error.exception.ErrorCode;
 import com.ssafy.whoru.global.util.JWTUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
@@ -18,7 +16,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -60,12 +57,11 @@ public class JWTFilter extends OncePerRequestFilter {
         } catch (ExpiredJwtException e) {
 
             //response body
-            PrintWriter writer = response.getWriter();
-            writer.print("access token 만료됨");
-
-            log.error("JWT Token is Expired");
+            response.getWriter().write("Expired Token");
             //response status code
-            throw new AccessTokenExpiredException();
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+
         }
 
         String role = jwtUtil.getRole(token);

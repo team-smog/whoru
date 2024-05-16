@@ -55,12 +55,8 @@ public class JWTUtil {
             log.error("JWT is not valid");
         } catch (SignatureException exception) {
             log.error("JWT signature validation fails");
-        } catch (ExpiredJwtException exception) {
-            log.error("JWT is expired");
         } catch (IllegalArgumentException exception) {
             log.error("JWT is null or empty or only whitespace");
-        } catch (Exception exception) {
-            log.error("JWT validation fails", exception);
         }
 
         return false;
