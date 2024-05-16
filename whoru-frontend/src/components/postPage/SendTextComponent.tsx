@@ -136,10 +136,8 @@ const SendTextComponent = ({ messageId }: { messageId: number | null}) => {
           value={text}
           id="textareaRef" 
           maxLength={200}
-          autoFocus={true}
           placeholder='메세지를 입력하세요'
           onChange={onChangeText}
-          inputMode='none'
           ></textarea>
           <div className={styles.sendTextComponentFooter}>
             <button 
