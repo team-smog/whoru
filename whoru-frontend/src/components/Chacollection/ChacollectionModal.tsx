@@ -46,7 +46,7 @@ const ChacollectionModal: React.FC<ChacollectionModalProps> = ({ onAction }) => 
 		setTimeout(async () => {
 			try {
 				const response = await axios.post(
-					'https://k10d203.p.ssafy.io/api/collects/icons/redeem-random',
+					'https://codearena.shop/api/collects/icons/redeem-random',
 					{},
 					{
 						headers: {

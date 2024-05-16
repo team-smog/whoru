@@ -57,7 +57,7 @@ function InquiryDetail() {
 		}).then((result) => {
 			if (result.isConfirmed) {
 				axios
-					.delete(`https://k10d203.p.ssafy.io/api/board/${id}`, {
+					.delete(`https://codearena.shop/api/board/${id}`, {
 						headers: {
 							Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
 						},

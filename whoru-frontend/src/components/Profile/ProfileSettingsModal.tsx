@@ -20,7 +20,7 @@ const ProfileSettingsModal = () => {
 	useEffect(() => {
 		const fetchUserSettings = async () => {
 			try {
-				const res = await axios.get('https://k10d203.p.ssafy.io/api/member/profile', {
+				const res = await axios.get('https://codearena.shop/api/member/profile', {
 					headers: {
 						Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
 					},
@@ -49,7 +49,7 @@ const ProfileSettingsModal = () => {
 	const updatePushNotificationSetting = async (isEnabled: boolean) => {
 		try {
 			const res = await axios.patch(
-				'https://k10d203.p.ssafy.io/api/member/push-alarm',
+				'https://codearena.shop/api/member/push-alarm',
 				{ pushAlarm: isEnabled },
 				{
 					headers: {
