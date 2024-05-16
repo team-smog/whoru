@@ -7,15 +7,15 @@ import { axiosWithCredentialInstance } from '@/apis/axiosInstance'
 
 const ProfileSettingsModal = () => {
 	const pushAlarm = useSelector((state: any) => state.user.pushAlarm);
-	const boxCount = useSelector((state: any) => state.user.boxCount);
+	// const boxCount = useSelector((state: any) => state.user.boxCount);
 	const dispatch = useDispatch();
 	const [isPushNotificationEnabled, setIsPushNotificationEnabled] = useState<boolean>(pushAlarm);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
-	useEffect(() => {
-		console.log(boxCount)
-		console.log(pushAlarm)
-	}, [boxCount, pushAlarm])
+	// useEffect(() => {
+	// 	console.log(boxCount)
+	// 	console.log(pushAlarm)
+	// }, [boxCount, pushAlarm])
 
 	useEffect(() => {
 		const fetchUserSettings = async () => {
@@ -25,7 +25,7 @@ const ProfileSettingsModal = () => {
 						Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
 					},
 				})
-				console.log(res.data.data.pushAlarm)
+				// console.log(res.data.data.pushAlarm)
 				if (res.data && res.data.data.pushAlarm !== undefined) {
 					setIsPushNotificationEnabled(res.data.data.pushAlarm)
 				}
