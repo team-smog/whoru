@@ -16,8 +16,8 @@ export const reissue = async (error: AxiosError) => {
       }
     });
     console.log(res.data);
-    localStorage.setItem('AccessToken', res.data.token);
-    console.log(localStorage.setItem('AccessToken', res.data.token));
+    localStorage.setItem('AccessToken', res.data.data.token);
+    console.log(localStorage.setItem('AccessToken', res.data.data.token));
     return Promise.resolve();
   }
   return Promise.reject(error);
