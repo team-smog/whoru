@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useState, useRef } from 'react'
 import styles from './SendTextComponent.module.css'
 import ulIcon from '../../assets/components/InboxTextComponent/text-component-ul-button.svg'
 import sqIcon from '../../assets/components/InboxTextComponent/text-component-sq-button.svg'
