@@ -24,10 +24,11 @@ interface InboxVoiceComponentProps extends React.HTMLAttributes<HTMLDivElement>{
 }
 
 const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, innerRef, ...props }) => {
+  const baseUrl = 'https://k10d203.p.ssafy.io/api'
+  // const baseUrl = 'https://codearena.shop/api'
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const accessToken = localStorage.getItem('AccessToken')
-  // const messageId = useSelector((state: any) => state.messageId)
 
   const replyButtonStyle = message.responseStatus ?  {backgroundColor: 'gray'} : {}
   const reportButtonStyle = message.isReported ? { backgroundColor: 'gray' } : {}
@@ -35,7 +36,7 @@ const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, inne
 
   const handleReply = (messageId: number) => {
     dispatch(setReplyMessage(messageId))
-    console.log('messageId', messageId)
+    // console.log('messageId', messageId)
     navigate('/post')
   }
 
@@ -47,7 +48,7 @@ const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, inne
       denyButtonText: `취소`,
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.post('https://k10d203.p.ssafy.io/api/report/member',
+        axios.post(`${baseUrl}/report/member`,
         {
           messageId: messageId,
           senderId: senderId,
@@ -58,8 +59,8 @@ const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, inne
             Authorization: `Bearer ${accessToken}`
         }}
         )
-        .then((res) => {
-          console.log(res);
+        .then(() => {
+          // console.log(res);
           Swal.fire({
             title: '신고가 완료되었습니다.',
             icon: 'success',
@@ -70,8 +71,8 @@ const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, inne
             window.location.reload();
           });
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(() => {
+          // console.log(err);
         })
       }
     })
@@ -99,7 +100,6 @@ const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, inne
 
   return (
     <div className={styles.inboxVoiceComponent} key={message.id} ref={innerRef} {...props}>
-      {/* <img src={Header} alt="component-Header" className={styles.inboxVoiceComponentHeader} /> */}
       <div className={styles.inboxVoiceComponentHeader} key={message.id} {...props}>
         <div className={styles.inboxVoiceComponentHeaderText}>
           <p className={styles.inboxVoiceComponentHeaderTextTitle}>{message.isResponse ? "답장 메세지" : "익명 메세지"}</p>
@@ -118,7 +118,7 @@ const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, inne
           <AudioPlayer
             className={styles.inboxVoiceComponentBodyMainAudio}
             src={message.content}
-            onPlay={() => {console.log("onPlay")}}
+            onPlay={() => {}}
             layout="stacked-reverse"
             style={{ width: "100%",
                       height: "100%",
