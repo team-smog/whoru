@@ -7,6 +7,7 @@ import com.ssafy.whoru.domain.message.dto.ContentType;
 import com.ssafy.whoru.domain.message.dto.request.TextSend;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,6 +35,21 @@ public class MessageTestUtil {
                 .parent(null)
                 .readStatus(false)
                 .build();
+    }
+
+    public Message 이전날_Text_메세지(MockMvc mockMvc, Member sender, Member receiver, Boolean isReported){
+        return Message.builder()
+            .sender(sender)
+            .receiver(receiver)
+            .content("test")
+            .createDate(LocalDateTime.now().minusDays(1))
+            .contentType(ContentType.text)
+            .isResponse(false)
+            .responseStatus(false)
+            .isReported(isReported)
+            .parent(null)
+            .readStatus(false)
+            .build();
     }
 
     public Message 미디어_메세지(MockMvc mockMvc, Member sender, Member receiver, Boolean isReported){
@@ -105,6 +121,14 @@ public class MessageTestUtil {
         List<Message> messages = new ArrayList<>();
         for(int i= 0;i<size;i++){
             messages.add(Text_메세지(mockMvc, sender, receiver, false));
+        }
+        return messages;
+    }
+
+    public List<Message> 이전날짜_메세지_n개_생성(MockMvc mockMvc, int size, Member sender, Member receiver, Boolean isReported){
+        List<Message> messages = new ArrayList<>();
+        for(int i = 0;i<size;i++){
+            messages.add(이전날_Text_메세지(mockMvc, sender, receiver, isReported));
         }
         return messages;
     }

@@ -349,4 +349,33 @@ public class MessageServiceImpl implements MessageService{
         }
         return response;
     }
+
+    @Override
+    @Transactional
+    public ResponseWithSuccess<SliceMessageResponse> getDailyOldMessages(Long lastId, Integer size) {
+        Slice<Message> sliceMessages = messageCustomRepository.findAllBySizeWithNotReportedAndToday(lastId, size);
+        SliceMessageResponse body = SliceMessageResponse.to(sliceMessages, modelMapper);
+        ResponseWithSuccess<SliceMessageResponse> response = new ResponseWithSuccess<>(body);
+        if(sliceMessages.getContent().size() == EMPTY_MESSAGE){
+            response.setSuccessType(SuccessType.STATUS_204);
+        }
+        return response;
+    }
+
+    @Override
+    @Transactional
+    public ResponseWithSuccess<List<MessageResponse>> getDailyRecentMessages(Long firstId, Integer size) {
+        LocalDate today = LocalDate.now();
+        List<Message> messages = messageRepository.findRecentMessagesWithDaily(firstId, size, today.atStartOfDay(), today.atTime(23,59,59));
+        List<MessageResponse> body = messages.stream()
+            .map(message -> {
+                return modelMapper.map(message, MessageResponse.class);
+            })
+            .collect(Collectors.toList());
+        ResponseWithSuccess<List<MessageResponse>> response = new ResponseWithSuccess<>(body);
+        if(messages.size() == EMPTY_MESSAGE){
+            response.setSuccessType(SuccessType.STATUS_204);
+        }
+        return response;
+    }
 }
