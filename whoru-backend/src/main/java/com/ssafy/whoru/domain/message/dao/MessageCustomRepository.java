@@ -8,4 +8,6 @@ public interface MessageCustomRepository {
 
     Slice<Message> findAllBySizeWithNotReported(Long lastId, Integer size, Member receiver);
 
+    Slice<Message> findAllBySizeWithNotReportedAndToday(Long lastId, Integer size);
+
 }

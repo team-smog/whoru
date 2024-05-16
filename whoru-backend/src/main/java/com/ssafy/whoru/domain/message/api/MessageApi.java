@@ -139,4 +139,29 @@ public class MessageApi implements MessageApiDocs{
         MessageResponse response = service.findMessage(messageId);
         return ResponseEntity.ok(WrapResponse.create(response, SuccessType.SIMPLE_STATUS));
     }
+
+    @Override
+    @GetMapping("/daily/old")
+    public ResponseEntity<WrapResponse<SliceMessageResponse>> findDailyOldMessages(
+        @Valid @Min(value = 1, message = "id 최대값은 0보다 커야합니다.") @RequestParam(required = false, name = "lastid") Long lastId,
+        @Valid @Min(value = 20, message = "size는 최소 20 이상이어야 합니다.") @RequestParam Integer size) {
+        log.info("request param -> lastid: {}, size: {}", lastId, size);
+        ResponseWithSuccess<SliceMessageResponse> response = service.getDailyOldMessages(lastId, size);
+        return ResponseEntity.ok(WrapResponse.create(
+            response.getBody(),
+            response.getSuccessType()
+        ));
+    }
+
+    @Override
+    @GetMapping("/daily/recent")
+    public ResponseEntity<WrapResponse<List<MessageResponse>>> findDailyRecentMessages(
+        @NotNull(message = "최소 번호를 적어주세요") @Min(value = 1, message = "0보다는 커야 합니다.") @RequestParam(name = "firstid") Long firstId) {
+        log.info("request param -> firstid: {}", firstId);
+        ResponseWithSuccess<List<MessageResponse>> response = service.getDailyRecentMessages(firstId, 20);
+        return ResponseEntity.ok(WrapResponse.create(
+            response.getBody(),
+            response.getSuccessType()
+        ));
+    }
 }
