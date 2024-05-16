@@ -63,6 +63,7 @@ public class JWTFilter extends OncePerRequestFilter {
             PrintWriter writer = response.getWriter();
             writer.print("access token 만료됨");
 
+            log.error("JWT Token is Expired");
             //response status code
             throw new AccessTokenExpiredException();
         }
