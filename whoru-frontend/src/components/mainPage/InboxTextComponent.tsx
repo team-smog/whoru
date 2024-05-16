@@ -16,10 +16,11 @@ interface InboxTextComponentProps extends React.HTMLAttributes<HTMLDivElement>{
 }
 
 const InboxTextComponent: React.FC<InboxTextComponentProps> = ({ message, innerRef, ...props }) => {
-  // const [content, setContent] = useState<string>("")
+  const baseUrl = 'https://k10d203.p.ssafy.io/api'
+  // const baseUrl = 'https://codearena.shop/api'
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  // const messageId = useSelector((state: any) => state.reply.messageId);
+
   const accessToken = localStorage.getItem('AccessToken');
 
   const replyButtonStyle = message.responseStatus ?  {backgroundColor: 'gray'} : {}
@@ -38,7 +39,7 @@ const InboxTextComponent: React.FC<InboxTextComponentProps> = ({ message, innerR
       denyButtonText: `취소`,
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.post('https://k10d203.p.ssafy.io/api/report/member',
+        axios.post(`${baseUrl}/report/member`,
         {
           messageId: messageId,
           senderId: senderId,
@@ -49,20 +50,20 @@ const InboxTextComponent: React.FC<InboxTextComponentProps> = ({ message, innerR
             Authorization: `Bearer ${accessToken}`
         }}
         )
-        .then((res) => {
-          console.log(res);
+        .then(() => {
+          // console.log(res);
           Swal.fire({
             title: '신고가 완료되었습니다.',
             icon: 'success',
-            timer: 2500, // 2.5초 후에 자동으로 닫힘
+            timer: 2500,
             showConfirmButton: false
           })
           .then(() => {
             window.location.reload();
           });
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(() => {
+          // console.log(err);
         })
       }
     })

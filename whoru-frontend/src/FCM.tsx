@@ -9,8 +9,9 @@ type Props = {
   };
   
 
-// FCMComponent는 FCM을 테스트하기 위한 컴포넌트입니다.
 export const FCMComponent = (props: Props) => {
+    const baseUrl = 'https://k10d203.p.ssafy.io/api'
+    // const baseUrl = 'https://codearena.shop/api'
     const [text, setText] = useState("");
     const messagingObject = useRef(null);
     useEffect(()=>{
@@ -27,7 +28,7 @@ export const FCMComponent = (props: Props) => {
         setText(e.target.value);
     }
     const onClickHandler = () =>{
-        fetch("https://k10d203.p.ssafy.io/message/text",{
+        fetch(`${baseUrl}/message/text`,{
             method: "POST",
             headers: {
                 "Content-type": "application/json"
