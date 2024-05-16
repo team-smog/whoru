@@ -68,6 +68,7 @@ const CallBackPage = () => {
 
 		if (isError) {
 			navigate('/login')
+			console.log(isError)
 			return
 		}
 

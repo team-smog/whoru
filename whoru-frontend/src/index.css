@@ -9,15 +9,12 @@ body,
 	max-width: 500px;
 	margin: 0 auto;
 	min-height: 100dvh;
-	min-height: -webkit-fill-available;
 }
 
 #root {
 	background: linear-gradient(rgba(255, 180, 212) 0%, rgba(166, 197, 244) 100%);
 	font-family: 'NeoDunggeunmoPro-Regular';
-	height: -webkit-fill-available;
 	height: 100dvh;
-	/* height: fill-available; */
 }
 
 @font-face {
