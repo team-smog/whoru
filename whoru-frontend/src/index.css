@@ -2,27 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
-
-html, body, #root {
-  width: 100vw;
-  max-width: 500px;
-  margin: 0 auto;
-  min-height: 100dvh;
+html,
+body,
+#root {
+	width: 100vw;
+	max-width: 500px;
+	margin: 0 auto;
+	min-height: 100dvh;
 }
 
 #root {
-  background: linear-gradient(rgba(255, 180, 212) 0%, rgba(166, 197, 244) 100%);
-  font-family: 'NeoDunggeunmoPro-Regular';
-  height: 100dvh;
+	background: linear-gradient(rgba(255, 180, 212) 0%, rgba(166, 197, 244) 100%);
+	font-family: 'NeoDunggeunmoPro-Regular';
+	height: 100dvh;
 }
 
 @font-face {
-  font-family: 'NeoDunggeunmoPro-Regular';
-  src: url('@/font/NeoDunggeunmoPro-Regular.ttf') format('truetype');
+	font-family: 'NeoDunggeunmoPro-Regular';
+	src: url('@/font/NeoDunggeunmoPro-Regular.ttf') format('truetype');
 }
 
 ::-webkit-scrollbar {
-  width: 0px;
+	width: 0px;
 }
-
-
