@@ -39,9 +39,9 @@ const SendTextComponent = ({ messageId }: { messageId: number | null}) => {
     }
   };
 
-  useEffect(() => {
-    textareaRef.current?.focus();
-  }, [])
+  // useEffect(() => {
+  //   textareaRef.current?.focus();
+  // }, [])
 
   const sendMessage = async () => {
     try {
