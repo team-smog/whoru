@@ -18,7 +18,7 @@ export const reissue = async (error: AxiosError) => {
     console.log(res.data);
     localStorage.setItem('AccessToken', res.data.token);
     console.log(localStorage.setItem('AccessToken', res.data.token));
-    // return Promise.resolve();
+    return Promise.resolve();
   }
   return Promise.reject(error);
 }
