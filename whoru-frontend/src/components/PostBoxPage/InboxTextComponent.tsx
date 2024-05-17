@@ -33,7 +33,7 @@ const InboxTextComponent: React.FC<InboxTextComponentProps> = ({ message, innerR
       }
     })
     .then(() => {
-      navigate('/messagebox')
+      navigate('/mymessage')
     })
     .catch((err) => {
       console.log(err);
