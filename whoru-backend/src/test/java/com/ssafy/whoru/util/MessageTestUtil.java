@@ -67,6 +67,29 @@ public class MessageTestUtil {
             .build();
     }
 
+    public Message 우편함_메세지(MockMvc mockMvc, Member sender){
+        return Message.builder()
+            .sender(sender)
+            .receiver(null)
+            .content("test")
+            .contentType(ContentType.text)
+            .createDate(LocalDateTime.now())
+            .isResponse(false)
+            .responseStatus(false)
+            .isReported(false)
+            .parent(null)
+            .readStatus(false)
+            .build();
+    }
+
+    public List<Message> 우편함_메세지_n개_생성(MockMvc mockMvc, Member sender, int size){
+        List<Message> messages = new ArrayList<>();
+        for(int i= 0;i<size;i++){
+            messages.add(우편함_메세지(mockMvc, sender));
+        }
+        return messages;
+    }
+
     public TextSend 길이초과_text_생성(){
         return TextSend.builder()
             .content(EXCEED_TEXT)

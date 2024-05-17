@@ -10,4 +10,6 @@ public interface MessageCustomRepository {
 
     Slice<Message> findAllBySizeWithNotReportedAndToday(Long lastId, Integer size);
 
+    Slice<Message> findAllBySizeWithNotReceived(Long lastId, Integer size, Long memberId);
+
 }
