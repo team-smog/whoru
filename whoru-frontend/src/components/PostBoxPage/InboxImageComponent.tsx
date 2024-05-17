@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom'
 // import { setReplyMessage } from '@/stores/store';
 // import Swal from 'sweetalert2'
 import { axiosWithCredentialInstance } from '@/apis/axiosInstance'
+import Swal from 'sweetalert2'
 
 
 interface InboxImageComponentProps extends React.HTMLAttributes<HTMLDivElement>{
@@ -34,10 +35,20 @@ const InboxImageComponent: React.FC<InboxImageComponentProps> = ({ message, inne
       }
     })
     .then(() => {
-      navigate('/')
+      navigate('/messagebox')
     })
     .catch((err) => {
       console.log(err);
+      if (err.response.data.errorCode === 404) {
+        Swal.fire({
+          icon: 'error',
+          title: '실패',
+          text: '다른사용자가 이미 가져간 메세지입니다.',
+        })
+        .then(() => {
+          window.location.reload();
+        })
+      }
     })
     // navigate('/post')
   }
