@@ -50,6 +50,16 @@ const boxCounterInitialState: boxCountState = {
 	boxCount: 0,
 }
 
+interface AMessageIdState {
+	AFirstId: number | null
+	ALastId: number | null
+}
+
+const AMessageIdInitialState: AMessageIdState = {
+	AFirstId: null,
+	ALastId: null,
+}
+
 const userSlice = createSlice({
 	name: 'user',
 	initialState: initial,
@@ -111,6 +121,21 @@ const TMessageSlice = createSlice({
 	},
 })
 
+const AMessageSlice = createSlice({
+	name: 'Amessage',
+	initialState: AMessageIdInitialState,
+	reducers: {
+		setAFirstId: (state, action: PayloadAction<number | null>) => {
+			// console.log(action)
+			state.AFirstId = action.payload
+			// console.log(state.firstId)
+		},
+		setALastId: (state, action: PayloadAction<number | null>) => {
+			state.ALastId = action.payload
+		},
+	},
+})
+
 const boxCounterSlice = createSlice({
   name: 'boxCounter',
   initialState: boxCounterInitialState,
@@ -140,6 +165,7 @@ const { reducer: messageReducer } = messageSlice
 const { reducer: boxCounterReducer } = boxCounterSlice
 const { reducer: userReducer } = userSlice
 const { reducer: TMessageReducer } = TMessageSlice
+const { reducer: AMessageReducer } = AMessageSlice
 
 // 스토어 구성
 const store = configureStore({
@@ -149,6 +175,7 @@ const store = configureStore({
 		message: messageReducer,
 		boxCounter: boxCounterReducer,
 		TMessage: TMessageReducer,
+		AMessage: AMessageReducer,
 	},
 })
 
@@ -156,6 +183,7 @@ export const { setBoxCount, setRole, setPushAlarm, setIconUrl } = userSlice.acti
 export const { setReplyMessage } = replySlice.actions
 export const { setFirstId, setLastId } = messageSlice.actions
 export const { setTFirstId, setTLastId } = TMessageSlice.actions
+export const { setAFirstId, setALastId } = AMessageSlice.actions
 export const { setBoxCountP, setBoxCountM } = boxCounterSlice.actions
 export type RootState = ReturnType<typeof store.getState>
 

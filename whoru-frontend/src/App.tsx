@@ -1,6 +1,7 @@
 import './App.css'
 import { Navigate, RouterProvider, createBrowserRouter } from 'react-router-dom'
 import MainPage from './pages/MainPage/MainPage'
+import PostBoxPage from './pages/PostBoxPage/PostBoxPage'
 import TodayMessagesPage from './pages/TodayMessages/TodayMessagesPage'
 import LoginPage from './pages/Login/LoginPage'
 import ProfilePage from './pages/Profile/ProfilePage'
@@ -32,10 +33,18 @@ const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
 
 const router = createBrowserRouter([
 	{
-		path: '/',
+		path: '/mymessage',
 		element: (
 			<AuthWrapper>
 				<MainPage />
+			</AuthWrapper>
+		),
+	},
+	{
+		path: '/',
+		element: (
+			<AuthWrapper>
+				<PostBoxPage />
 			</AuthWrapper>
 		),
 	},

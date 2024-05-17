@@ -71,7 +71,7 @@
 
 .inboxTextComponentBodyMain {
 	width: 100%;
-	min-height: 100px;
+	min-height: 88px;
 	border: 3px solid #423752;
 	border-radius: 10px;
 	font-size: 12px;
@@ -126,16 +126,13 @@
 }
 
 .inboxImageComponentFooterFromButton {
-	width: 80px;
-	height: 32px;
-	font-size: 14px;
+	font-size: 10px;
 	margin: auto 12px;
 	border: 3px solid #423752;
 	border-radius: 6px;
 	padding: 2px 4px;
 	background: #e08edc;
 	color: #ffffff;
-	margin-bottom: 8px;
 }
 
 .inboxTextComponentFooterButtonDisable {

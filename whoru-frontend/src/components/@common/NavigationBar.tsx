@@ -15,6 +15,9 @@ const NavigationBar = () => {
       case 'home':
         navigate('/');
         break;
+      case 'mymessage':
+        navigate('/mymessage');
+        break;
       case 'post':
         navigate('/post');
         break;
@@ -32,11 +35,14 @@ const NavigationBar = () => {
       <div className="" onClick={() => handleTabClick('home')}>
         <img src={pathname === '/' ? FilledHouse : House} className="w-8" />
       </div>
-      <div className="" onClick={() => handleTabClick('daily')}>
-        <img src={pathname === '/daily' ? FilledPost : Post} className="w-8 h-9" />
+      <div className="" onClick={() => handleTabClick('mymessage')}>
+        <img src={pathname === '/mymessage' ? FilledHouse : House} className="w-8" />
       </div>
       <div className="" onClick={() => handleTabClick('post')}>
         <img src={pathname === '/post' ? FilledPost : Post} className="w-8 h-9" />
+      </div>
+      <div className="" onClick={() => handleTabClick('daily')}>
+        <img src={pathname === '/daily' ? FilledPost : Post} className="w-8 h-9" />
       </div>
       <div className="" onClick={() => handleTabClick('profile')}>
         <img src={pathname === '/profile' ? FilledProfile : Profile} className="w-8 h-7" />

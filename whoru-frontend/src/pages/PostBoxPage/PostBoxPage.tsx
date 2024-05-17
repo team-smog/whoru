@@ -1,20 +1,20 @@
 import { useState, useEffect, useRef } from "react";
 import Header, { IHeaderInfo } from "@/components/@common/Header";
 import NavigationBar from "@/components/@common/NavigationBar";
-import InboxTextComponent from "@/components/TodayMessagesPage/InboxTextComponent";
-import InboxImageComponent from "@/components/TodayMessagesPage/InboxImageComponent";
-import InboxVoiceComponent from "@/components/TodayMessagesPage/InboxVoiceComponent";
+import InboxTextComponent from "@/components/PostBoxPage/InboxTextComponent";
+import InboxImageComponent from "@/components/PostBoxPage/InboxImageComponent";
+import InboxVoiceComponent from "@/components/PostBoxPage/InboxVoiceComponent";
 import styles from "./MainPage.module.css";
 import { MessageInfoDetail } from "@/types/mainTypes";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from 'react-intersection-observer';
 import { useDispatch, useSelector } from "react-redux";
-import { setTFirstId, setTLastId } from "@/stores/store";
+import { setAFirstId, setALastId } from "@/stores/store";
 import { axiosWithCredentialInstance } from "@/apis/axiosInstance";
 
-const TodayMessagesPage = () => {
+const PostBoxPage = () => {
   const info: IHeaderInfo = {
-    left_1: "Daily",
+    left_1: "Message Box",
     left_2: null,
     center: null,
     right: null
@@ -23,14 +23,14 @@ const TodayMessagesPage = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     return () => {
-      dispatch(setTFirstId(null));
-      dispatch(setTLastId(null));
+      dispatch(setAFirstId(null));
+      dispatch(setALastId(null));
     }
   }, []);
 
   const dispatch = useDispatch();
-  const TFirstId = useSelector((state: any) => state.TMessage.TFirstId);
-  const TLastId = useSelector((state: any) => state.TMessage.TLastId);
+  const firstId = useSelector((state: any) => state.AMessage.AFirstId);
+  const lastId = useSelector((state: any) => state.AMessage.ALastId);
   const [hasNext,setHasNext] = useState<boolean | null>(null);
   const [serverData, setServerData] = useState<any[]>([]);
   
@@ -82,16 +82,16 @@ const TodayMessagesPage = () => {
   }
 
   useEffect(() => {
-    console.log("TFirstId", TFirstId);
-    console.log("TLastId", TLastId);
-  }, [TFirstId, TLastId]);
+    console.log("AFirstId", firstId);
+    console.log("ALastId", lastId);
+  }, [firstId, lastId]);
 
   const { ref, inView } = useInView();
 
   const handleRefresh = async (fId:number): Promise<MessageInfoDetail[]> => {
     // console.log("fId", fId);
     try {
-      const res = await axiosWithCredentialInstance.get(`message/daily/recent?firstid=${fId}`, {
+      const res = await axiosWithCredentialInstance.get(`message/undelivered-message/recent?firstid=${fId}`, {
         headers: {
           Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
         },
@@ -110,40 +110,43 @@ const TodayMessagesPage = () => {
   }
 
   const fetchData = () => {
-    if (TLastId === null) {
-      return axiosWithCredentialInstance.get(`message/daily/old?size=${20}`, {
+    console.log("lastId", lastId);
+    if (lastId === null) {
+      return axiosWithCredentialInstance.get(`message/undelivered-message/old?size=${20}`, {
         headers: {
           Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
         },
       }) 
       .then((res) => {
         if (res.data && res.data.data && res.data.data.content && res.data.data.content.length > 0) {
-          dispatch(setTFirstId(res.data.data.content[0].id));
-          dispatch(setTLastId(res.data.data.content[res.data.data.content.length - 1].id));
+          dispatch(setAFirstId(res.data.data.content[0].id));
+          dispatch(setALastId(res.data.data.content[res.data.data.content.length - 1].id));
           setHasNext(res.data.data.hasNext);
           console.log(res.data);
           return res.data.data.content;
         }
+        console.log("1",res);
       })
-      .catch(() => {
-        // console.log(err);
+      .catch((err) => {
+        console.log(err);
       })
-    } else if (TLastId !== null) {
-      return axiosWithCredentialInstance.get(`message/daily/old?size=${20}&lastid=${TLastId}`, {
+    } else if (lastId !== null) {
+      return axiosWithCredentialInstance.get(`message/undelivered-message/old?size=${20}&lastid=${lastId}`, {
         headers: {
           Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
         },
-      }) 
+      })
       .then((res) => {
-        if (res.data && res.data.data && res.data.data.content) {
-          dispatch(setTLastId(res.data.data.content[res.data.data.content.length - 1].id));
+        if (res.data && res.data.data && res.data.data.content && res.data.data.content.length > 0) {
+          dispatch(setALastId(res.data.data.content[res.data.data.content.length - 1].id));
           setHasNext(res.data.data.hasNext);
           console.log(res.data);
           return res.data.data.content;
         }
+        console.log("2",res.data);
       })
-      .catch(() => {
-        // console.log(err);
+      .catch((err) => {
+        console.log(err);
       })
     }
   }
@@ -180,10 +183,10 @@ const TodayMessagesPage = () => {
   }
 
   const addF = async () => {
-    const newMessages = await handleRefresh(TFirstId);
+    const newMessages = await handleRefresh(firstId);
     // console.log("newMessages", newMessages);
     if (newMessages.length !== 0) {
-      dispatch(setTFirstId(newMessages[0].id));
+      dispatch(setAFirstId(newMessages[0].id));
     }
     setServerData([newMessages, ...serverData]);
   }
@@ -192,31 +195,31 @@ const TodayMessagesPage = () => {
       <div className={styles.mainPage}>
         <Header info={info} />
         <div className={styles.mainPageBody}>
-            <div 
-              ref={div}
-              className={styles.mainPageBodyContainer}
-              onTouchStart={handleTouchStart}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
-            >
-              {serverData && serverData?.map((messageList: MessageInfoDetail[]) => {
-                return messageList?.map((message:MessageInfoDetail) => {
-                  if (message.contentType === "text") {
-                    return <InboxTextComponent innerRef={ref} key={message.id} message={message} />;
-                  } else if (message.contentType === "image") {
-                    return <InboxImageComponent innerRef={ref} key={message.id} message={message} />;
-                  } else if (message.contentType === "voice") {
-                    return <InboxVoiceComponent innerRef={ref} key={message.id} message={message} />;
-                  }
-                  return undefined;
-                });
-              })}
-              {isFetchingNextPage && <div style={{textAlign:"center"}}>Loading</div>}
-            </div>
+          <div 
+            ref={div}
+            className={styles.mainPageBodyContainer}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
+            {serverData && serverData?.map((messageList: MessageInfoDetail[]) => {
+              return messageList?.map((message:MessageInfoDetail) => {
+                if (message.contentType === "text") {
+                  return <InboxTextComponent innerRef={ref} key={message.id} message={message} />;
+                } else if (message.contentType === "image") {
+                  return <InboxImageComponent innerRef={ref} key={message.id} message={message} />;
+                } else if (message.contentType === "voice") {
+                  return <InboxVoiceComponent innerRef={ref} key={message.id} message={message} />;
+                }
+                return undefined;
+              });
+            })}
+            {isFetchingNextPage && <div style={{textAlign:"center"}}>Loading</div>}
+          </div>
         </div>
         <NavigationBar />
     </div>
   );
 };
 
-export default TodayMessagesPage;
+export default PostBoxPage;
