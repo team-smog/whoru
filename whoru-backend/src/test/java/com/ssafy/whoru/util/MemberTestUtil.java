@@ -14,6 +14,7 @@ import com.ssafy.whoru.global.util.JWTUtil;
 import com.ssafy.whoru.global.util.RedisUtil;
 import java.util.ArrayList;
 import java.util.List;
+import org.modelmapper.Provider;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.ssafy.whoru.domain.collect.dao.IconRepository;
@@ -228,6 +229,33 @@ public class MemberTestUtil implements InitializingBean {
         redisUtil.insert(RedisKeyType.BAN.makeKey(String.valueOf(member.getId())), "test_ban",banDuration.getSeconds());
     }
 
-
-
+    public List<Member> 유저_n명_추가(int n){
+        Icon icon = 아이콘_추가();
+        collectRepository.save(icon);
+        List<Member> members = new ArrayList<>();
+        for(int i= 0;i<n;i++){
+            Member member = Member.builder()
+                .isEnabled(true)
+                .role("ROLE_USER")
+                .memberIdentifier("유저")
+                .boxCount(3)
+                .createDate(LocalDateTime.now())
+                .provider(ProviderType.kakao)
+                .reportCount(0)
+                .icon(icon)
+                .languageType(LanguageType.KOREAN)
+                .refreshToken("fadafasfas")
+                .userName("유저"+i)
+                .build();
+            FcmNotification fcm = FcmNotification.builder()
+                .mark(false)
+                .fcmToken("fdasfasfafafsa")
+                .build();
+            fcm.addNotification(member);
+            memberRepository.save(member);
+            fcmRepository.save(fcm);
+            members.add(member);
+        }
+        return members;
+    }
 }

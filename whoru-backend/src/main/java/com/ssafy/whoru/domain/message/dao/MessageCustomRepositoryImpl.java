@@ -50,11 +50,37 @@ public class MessageCustomRepositoryImpl implements MessageCustomRepository{
     @Override
     public Slice<Message> findAllBySizeWithNotReportedAndToday(Long lastId, Integer size) {
         LocalDate today = LocalDate.now();
-        log.info("now: {}, nextDay: {}", today.atStartOfDay() , today.atTime(23, 59, 59));
         BooleanExpression whereConditions = message.isReported.isFalse()
             .and(message.receiver.id.isNotNull())
             .and(message.sender.id.isNotNull())
             .and(message.createDate.between(today.atStartOfDay(),  today.atTime(23, 59, 59)));
+
+        if(lastId != null && lastId > 0){
+            whereConditions = whereConditions.and(message.id.lt(lastId));
+        }
+        List<Message> content = jpaQueryFactory.
+            selectFrom(message)
+            .where(
+                whereConditions
+            ).orderBy(message.id.desc()).limit(size+1).fetch();
+
+        // 일부러 하나 더 많이 리턴하게 만들고, 실제로 하나 더 많게 된다면 앞으로 더 내보낼 페이지가 있다는 의미
+        boolean hasNext = false;
+        if(content.size() > size){
+            hasNext = true;
+        }
+
+        return new SliceImpl<Message>(content, PageRequest.ofSize(size), hasNext);
+    }
+
+    @Override
+    public Slice<Message> findAllBySizeWithNotReceived(Long lastId, Integer size, Long memberId) {
+
+        BooleanExpression whereConditions = message.isReported.isFalse()
+            .and(message.receiver.id.isNull())
+            .and(message.sender.id.isNotNull())
+            .and(message.sender.id.ne(memberId));
+
 
         if(lastId != null && lastId > 0){
             whereConditions = whereConditions.and(message.id.lt(lastId));
