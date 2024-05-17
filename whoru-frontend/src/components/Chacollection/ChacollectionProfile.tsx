@@ -95,17 +95,16 @@ const ChacollectionProfile: React.FC = () => {
 	return (
 		<div>
 			<div className="flex justify-center">
-				<div className="pt-20 w-[120px] h-[120px]">
-					<img src={profileImageUrl} alt="Profile" />
+				<div className="pt-20 w-[120px] h-[120px] flex flex-col items-center">
+					<img src={profileImageUrl} alt="Profile" className='w-20'/>
 					<p className="flex justify-center text-xs pt-2">현재 프로필</p>
 				</div>
 			</div>
-			<div className="relative chacollectionProfileContainer">
 				<p className="text-xl pt-32 pl-4">캐릭터 도감</p>
 				<p className="text-xs pt-2 pl-4 text-[#797979]">원하는 캐릭터로 자신의 프로필을 바꿀 수 있어요.</p>
-				<div className="scrollable-container h-[calc(100vh-420px)]">
+				<div className=" overflow-y-auto mx-4 pb-20 h-[calc(100vh-420px)]">
 					{Object.keys(groupedIcons).map((grade, gradeIndex) => (
-						<div key={gradeIndex} className="grade-section">
+						<div key={gradeIndex} className="flex flex-col justify-center">
 							<h2 className="text-lg pt-4 pl-4">{`등급: ${gradeMapping[grade] || grade}`}</h2>
 							<div className="flex flex-wrap">
 								{groupedIcons[grade].map((icon, index) => (
@@ -114,7 +113,7 @@ const ChacollectionProfile: React.FC = () => {
 										key={index}
 										onClick={() => icon.isAvailable && changeIcon(icon.iconId, icon.iconUrl)}
 									>
-										<img src={icon.iconUrl} alt={`Profile Icon ${index}`} />
+										<img src={icon.iconUrl} alt={`Profile Icon ${index}`}/>
 									</div>
 								))}
 							</div>
@@ -125,7 +124,6 @@ const ChacollectionProfile: React.FC = () => {
 				<div className="fixed z-50 flex justify-center w-full max-w-[500px] bottom-20 pt-4 m-auto px-3">
 					<ChacollectionModals onAction={fetchIcons} />
 				</div>
-			</div>
 		</div>
 	)
 }

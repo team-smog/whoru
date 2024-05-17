@@ -13,9 +13,9 @@ const GoogleLogin = () => {
   }
   return (
     <>
-      <button className="flex items-center h-14 gap-3 bg-white p-2 px-2 rounded-xl">
+      <button className="flex items-center h-14 gap-3 bg-white p-2 px-2 rounded-xl" onClick={handleGoogleLogin}>
         <img src={google} className='w-10'></img>
-        <div className="absolute translate-x-1/2" onClick={handleGoogleLogin}>
+        <div className="absolute translate-x-1/2" >
           <p>Google 계정으로 로그인</p>
         </div>
       </button>

@@ -11,9 +11,9 @@ const KakaoLogin = () => {
   }
   return (
     <>
-      <button className="flex items-center h-14 gap-3 bg-[#FEE500] p-2 px-2 rounded-xl">
+      <button className="flex items-center h-14 gap-3 bg-[#FEE500] p-2 px-2 rounded-xl" onClick={handleKakaoLogin}>
         <img src={kakao} className='w-10'></img>
-        <div className="absolute translate-x-1/2 pl-1" onClick={handleKakaoLogin}>
+        <div className="absolute translate-x-1/2 pl-1" >
           <p>카카오로 로그인하기</p>
         </div>
       </button>

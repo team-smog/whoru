@@ -2,15 +2,8 @@
   background-color: #f0f0f0;
   padding: 8px;
   border-radius: 10px;
-  flex: 0 0 calc(33.33% - 10px);
-  margin: 5px;
-  width: 100%;
-  height: auto; 
-}
-
-.scrollable-container {
-  overflow-y: auto;
-  max-height: 330px;
+  margin: 8px;
+  width: 100%; 
 }
 
 .chacollection-profile-wrapper {
