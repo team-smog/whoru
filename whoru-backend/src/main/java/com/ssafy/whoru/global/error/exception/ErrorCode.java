@@ -7,6 +7,9 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ErrorCode {
 
+    //Admin
+    ADMIN_NOT_FOUND(404, "존재하지 않는 관리자 계정입니다."),
+
     // Global
     INTERNAL_SERVER_ERROR(500, "내부 서버 오류입니다."),
     METHOD_NOT_ALLOWED(405, "허용되지 않은 HTTP method입니다."),
