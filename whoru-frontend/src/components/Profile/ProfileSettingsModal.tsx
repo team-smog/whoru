@@ -70,7 +70,7 @@ const ProfileSettingsModal = () => {
 
 	return (
 		<>
-			<div className="pl-12 pt-4" onClick={handleNotificationSettingsClick}>
+			<div className="pl-12 pt-2" onClick={handleNotificationSettingsClick}>
 				푸시 알림 설정
 			</div>
 			{isModalOpen && (
