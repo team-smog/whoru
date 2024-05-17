@@ -152,7 +152,7 @@ const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, inne
           <button className={styles.inboxVoiceComponentFooterButton} 
             onClick={() => handleTake(message.id)}
           >
-            답장
+            가져가기
           </button>
           {/* <button className={styles.inboxVoiceComponentFooterReportButton} 
             onClick={() => handleReport(message.id, message.senderId)}
