@@ -5,7 +5,7 @@ import back from '@/assets/components/InboxVoiceComponent/voice-component-back-b
 import front from '@/assets/components/InboxVoiceComponent/voice-component-front-button.svg'
 import re from '@/assets/components/InboxVoiceComponent/voice-component-re-button.svg'
 // import star from '@/assets/components/InboxVoiceComponent/voice-component-star-button.svg'
-import xbtn from'@/assets/components/InboxImageComponent/image-component-x-button.svg'
+import xbtn from '../../assets/components/InboxTextComponent/text-component-x-button.svg'
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
 import "./audioStyles.css";
@@ -22,10 +22,10 @@ import { useRef } from 'react'
 interface InboxVoiceComponentProps extends React.HTMLAttributes<HTMLDivElement>{
   message: Parent;
   innerRef?: React.Ref<HTMLDivElement>;
-  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ParentInboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, innerRef, setOpenModal, ...props }) => {
+const ParentInboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, innerRef, setIsModalOpen, ...props }) => {
   // const baseUrl = 'https://k10d203.p.ssafy.io/api'
   // const baseUrl = 'https://codearena.shop/api'
   // const baseUrl = import.meta.env.VITE_BASE_URL
@@ -106,7 +106,6 @@ const ParentInboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message
     <div
       className={styles.ParentInboxVoiceComponentBackground}
       ref={ParentInboxVoiceComponentBackground}
-      onClick={() => setOpenModal(false)}
     >
       <div className={styles.inboxVoiceComponent} key={message.id} ref={innerRef} {...props}>
         <div className={styles.inboxVoiceComponentHeader} key={message.id} {...props}>
@@ -119,7 +118,7 @@ const ParentInboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message
             <img src={front} alt="front-icon" />
             <img src={re} alt="re-icon" />
             <div className={styles.inboxVoiceComponentHeaderSearchArea}></div>
-            <img src={xbtn} alt="xbtn-icon" />
+            <img src={xbtn} alt="xbtn-icon" onClick={() => setIsModalOpen(false)}/>
           </div>
         </div>
         <div className={styles.inboxVoiceComponentBody}>

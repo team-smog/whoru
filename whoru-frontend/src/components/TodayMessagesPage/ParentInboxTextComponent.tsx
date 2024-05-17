@@ -14,10 +14,10 @@ import { useRef } from 'react'
 interface InboxTextComponentProps extends React.HTMLAttributes<HTMLDivElement>{
   message: Parent;
   innerRef?: React.Ref<HTMLDivElement>;
-  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ParentInboxTextComponent: React.FC<InboxTextComponentProps> = ({ message, innerRef, setOpenModal, ...props }) => {
+const ParentInboxTextComponent: React.FC<InboxTextComponentProps> = ({ message, innerRef, setIsModalOpen, ...props }) => {
   // const baseUrl = 'https://k10d203.p.ssafy.io/api'
   // const baseUrl = 'https://codearena.shop/api'
   // const baseUrl = import.meta.env.VITE_BASE_URL
@@ -99,11 +99,6 @@ const ParentInboxTextComponent: React.FC<InboxTextComponentProps> = ({ message, 
     <div 
       className={styles.ParentInboxTextComponentBackground}
       ref={ParentInboxTextComponentBackground}
-      onClick={(e) => {
-        if (e.target === ParentInboxTextComponentBackground.current) {
-          setOpenModal(false);
-        }
-      }}
     >
       <div className={styles.inboxTextComponent} key={message.id} ref={innerRef} {...props}>
         <div className={styles.inboxTextComponentHeader} key={message.id} {...props}>
@@ -114,7 +109,7 @@ const ParentInboxTextComponent: React.FC<InboxTextComponentProps> = ({ message, 
           <div className={styles.inboxTextComponentHeaderIcons}>
             <img src={ulIcon} alt="ul-icon" />
             <img src={sqIcon} alt="sq-icon" />
-            <img src={xIcon} alt="x-icon" onClick={()=>{setOpenModal(false)}}/>
+            <img src={xIcon} alt="x-icon" onClick={() => setIsModalOpen(false)}/>
           </div>
         </div>
         <div className={styles.inboxTextComponentBody}>

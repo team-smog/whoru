@@ -10,113 +10,119 @@ import { useState } from 'react'
 // import { setReplyMessage } from '@/stores/store';
 // import axios from 'axios'
 // import Swal from 'sweetalert2'
-import ParentInboxImageComponent from './ParentInboxImageComponent'
+// import ParentInboxImageComponent from './ParentInboxImageComponent'
+// import ParentInboxTextComponent from './ParentInboxTextComponent'
+// import ParentInboxVoiceComponent from './ParentInboxVoiceComponent'
+import Modal from '../@common/MessageModal'
 import ParentInboxTextComponent from './ParentInboxTextComponent'
+import ParentInboxImageComponent from './ParentInboxImageComponent'
 import ParentInboxVoiceComponent from './ParentInboxVoiceComponent'
 
-
-interface InboxImageComponentProps extends React.HTMLAttributes<HTMLDivElement>{
-  message: MessageInfoDetail;
-  innerRef?: React.Ref<HTMLDivElement>;
+interface InboxImageComponentProps extends React.HTMLAttributes<HTMLDivElement> {
+    message: MessageInfoDetail
+    innerRef?: React.Ref<HTMLDivElement>
 }
 
 const InboxImageComponent: React.FC<InboxImageComponentProps> = ({ message, innerRef, ...props }) => {
-  // const baseUrl = 'https://k10d203.p.ssafy.io/api'
-  // const baseUrl = 'https://codearena.shop/api'
-  // const baseUrl = import.meta.env.VITE_BASE_URL
-  // const dispatch = useDispatch()
-  // const navigate = useNavigate()
-  // const accessToken = localStorage.getItem('AccessToken')
-  const [openModal, setOpenModal] = useState<boolean>(false);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
-  // const replyButtonStyle = message.responseStatus ?  {backgroundColor: 'gray'} : {}
-  // const reportButtonStyle = message.isReported ? { backgroundColor: 'gray' } : {}
+    const handleModalOpen = () => {
+        setIsModalOpen(true)
+    }
+    // const baseUrl = 'https://k10d203.p.ssafy.io/api'
+    // const baseUrl = 'https://codearena.shop/api'
+    // const baseUrl = import.meta.env.VITE_BASE_URL
+    // const dispatch = useDispatch()
+    // const navigate = useNavigate()
+    // const accessToken = localStorage.getItem('AccessToken')
+    // const [openModal, setOpenModal] = useState<boolean>(false);
 
-  // const handleReply = (messageId: number) => {
-  //   dispatch(setReplyMessage(messageId))
-  //   navigate('/post')
-  // }
+    // const replyButtonStyle = message.responseStatus ?  {backgroundColor: 'gray'} : {}
+    // const reportButtonStyle = message.isReported ? { backgroundColor: 'gray' } : {}
 
-  // const handleReport = (messageId:number, senderId:number) => {
-  //   Swal.fire({
-  //     title: '신고하시겠습니까?',
-  //     showDenyButton: true,
-  //     confirmButtonText: `신고`,
-  //     denyButtonText: `취소`,
-  //   }).then((result) => {
-  //     if (result.isConfirmed) {
-  //       axios.post(`${baseUrl}/report/member`,
-  //       {
-  //         messageId: messageId,
-  //         senderId: senderId,
-  //       },
-  //       {
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //           Authorization: `Bearer ${accessToken}`
-  //       }}
-  //       )
-  //       .then(() => {
-  //         // console.log(res);
-  //         Swal.fire({
-  //           title: '신고가 완료되었습니다.',
-  //           icon: 'success',
-  //           timer: 2500,
-  //           showConfirmButton: false
-  //         })
-  //         .then(() => {
-  //           window.location.reload();
-  //         });
-  //       })
-  //       .catch(() => {
-  //         // console.log(err);
-  //       })
-  //     }
-  //   })
-  // }
+    // const handleReply = (messageId: number) => {
+    //   dispatch(setReplyMessage(messageId))
+    //   navigate('/post')
+    // }
 
-  const createDate = new Date(message.createDate);
-  const now = new Date();
+    // const handleReport = (messageId:number, senderId:number) => {
+    //   Swal.fire({
+    //     title: '신고하시겠습니까?',
+    //     showDenyButton: true,
+    //     confirmButtonText: `신고`,
+    //     denyButtonText: `취소`,
+    //   }).then((result) => {
+    //     if (result.isConfirmed) {
+    //       axios.post(`${baseUrl}/report/member`,
+    //       {
+    //         messageId: messageId,
+    //         senderId: senderId,
+    //       },
+    //       {
+    //         headers: {
+    //           'Content-Type': 'application/json',
+    //           Authorization: `Bearer ${accessToken}`
+    //       }}
+    //       )
+    //       .then(() => {
+    //         // console.log(res);
+    //         Swal.fire({
+    //           title: '신고가 완료되었습니다.',
+    //           icon: 'success',
+    //           timer: 2500,
+    //           showConfirmButton: false
+    //         })
+    //         .then(() => {
+    //           window.location.reload();
+    //         });
+    //       })
+    //       .catch(() => {
+    //         // console.log(err);
+    //       })
+    //     }
+    //   })
+    // }
 
-  const diffInMilliseconds = now.getTime() - createDate.getTime();
-  const diffInSeconds = Math.floor(diffInMilliseconds / 1000);
-  const diffInMinutes = Math.floor(diffInSeconds / 60);
-  const diffInHours = Math.floor(diffInMinutes / 60);
-  const diffInDays = Math.floor(diffInHours / 24);
+    const createDate = new Date(message.createDate)
+    const now = new Date()
 
-  let timeFromNow = '';
-  if (diffInDays > 0) {
-    timeFromNow = `${diffInDays}일 전`;
-  } else if (diffInHours > 0) {
-    timeFromNow = `${diffInHours}시간 전`;
-  } else if (diffInMinutes > 0) {
-    timeFromNow = `${diffInMinutes}분 전`;
-  } else {
-    timeFromNow = `${diffInSeconds}초 전`;
-  }
+    const diffInMilliseconds = now.getTime() - createDate.getTime()
+    const diffInSeconds = Math.floor(diffInMilliseconds / 1000)
+    const diffInMinutes = Math.floor(diffInSeconds / 60)
+    const diffInHours = Math.floor(diffInMinutes / 60)
+    const diffInDays = Math.floor(diffInHours / 24)
 
-  return (
-    <div className={styles.InboxImageComponent} key={message.id} ref={innerRef} {...props}>
-      <div className={styles.inboxImageComponentHeader} key={message.id} {...props}>
-        <div className={styles.inboxImageComponentHeaderText}>
-          <p className={styles.inboxImageComponentHeaderTextTitle}>{message.isResponse ? "답장 메세지" : "익명 메세지"}</p>
-          <p className={styles.inboxImageComponentHeaderTime}>{timeFromNow}</p>
-        </div>
-        <div className={styles.inboxImageComponentHeaderIcons}>
-          <img src={ulIcon} alt="ul-icon" />
-          <img src={sqIcon} alt="sq-icon" />
-          <img src={xIcon} alt="x-icon" />
-        </div>
-      </div>
-      <div className={styles.inboxImageComponentBody}>
-          <img 
-            className={styles.inboxImageComponentBodyMain}
-            src={message.content}
-            alt="이미지"
-          />
-      </div>
-      {/* <div className={styles.inboxImageComponentFooter}> */}
-        {/* <button className={message.responseStatus || message.isResponse ? styles.inboxImageComponentFooterButtonDisable : styles.inboxImageComponentFooterButton} 
+    let timeFromNow = ''
+    if (diffInDays > 0) {
+        timeFromNow = `${diffInDays}일 전`
+    } else if (diffInHours > 0) {
+        timeFromNow = `${diffInHours}시간 전`
+    } else if (diffInMinutes > 0) {
+        timeFromNow = `${diffInMinutes}분 전`
+    } else {
+        timeFromNow = `${diffInSeconds}초 전`
+    }
+
+    return (
+        <div className={styles.InboxImageComponent} key={message.id} ref={innerRef} {...props}>
+            <div className={styles.inboxImageComponentHeader} key={message.id} {...props}>
+                <div className={styles.inboxImageComponentHeaderText}>
+                    <p className={styles.inboxImageComponentHeaderTextTitle}>
+                        {message.isResponse ? '답장 메세지' : '익명 메세지'}
+                    </p>
+                    <p className={styles.inboxImageComponentHeaderTime}>{timeFromNow}</p>
+                </div>
+                <div className={styles.inboxImageComponentHeaderIcons}>
+                    <img src={ulIcon} alt="ul-icon" />
+                    <img src={sqIcon} alt="sq-icon" />
+                    <img src={xIcon} alt="x-icon" />
+                </div>
+            </div>
+            <div className={styles.inboxImageComponentBody}>
+                <img className={styles.inboxImageComponentBodyMain} src={message.content} alt="이미지" />
+            </div>
+            {/* <div className={styles.inboxImageComponentFooter}> */}
+            {/* <button className={message.responseStatus || message.isResponse ? styles.inboxImageComponentFooterButtonDisable : styles.inboxImageComponentFooterButton} 
             onClick={() => handleReply(message.id)}
             style={replyButtonStyle}
             disabled={message.responseStatus || message.isResponse}
@@ -130,17 +136,26 @@ const InboxImageComponent: React.FC<InboxImageComponentProps> = ({ message, inne
           >
             신고
         </button> */}
-        {message.isResponse ? <button className={styles.inboxImageComponentFooterFromButton} onClick={() => {
-          if (openModal === false) {
-            setOpenModal(true)
-          } else {
-            setOpenModal(false)
-          }
-        }}>from.</button>
-        :
-        null}
-      {/* </div> */}
-      {openModal && message.parent.contentType === 'text' && 
+            {message.isResponse ? (
+                <button className={styles.inboxImageComponentFooterFromButton} onClick={handleModalOpen}>
+                    from.
+                </button>
+            ) : null}
+            {isModalOpen && (
+                <Modal width="95dvw" height="auto" onClose={() => setIsModalOpen(false)}>
+                    {message.parent.contentType === 'text' && (
+                        <ParentInboxTextComponent message={message.parent} setIsModalOpen={setIsModalOpen}/>
+                    )}
+                    {message.parent.contentType === 'image' && (
+                        <ParentInboxImageComponent message={message.parent} setIsModalOpen={setIsModalOpen}/>
+                    )}
+                    {message.parent.contentType === 'voice' && (
+                        <ParentInboxVoiceComponent message={message.parent} setIsModalOpen={setIsModalOpen}/>
+                    )}
+                </Modal>
+            )}
+            {/* </div> */}
+            {/* {openModal && message.parent.contentType === 'text' && 
         <ParentInboxTextComponent message={message.parent} setOpenModal={setOpenModal} />
       }
       {openModal && message.parent.contentType === 'image' && 
@@ -148,9 +163,9 @@ const InboxImageComponent: React.FC<InboxImageComponentProps> = ({ message, inne
       }
       {openModal && message.parent.contentType === 'voice' && 
         <ParentInboxVoiceComponent message={message.parent} setOpenModal={setOpenModal} />
-      }
-    </div>
-  )
+      } */}
+        </div>
+    )
 }
 
 export default InboxImageComponent

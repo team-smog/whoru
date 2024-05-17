@@ -4,7 +4,7 @@ import styles from './InboxVoiceComponent.module.css'
 import back from '@/assets/components/InboxVoiceComponent/voice-component-back-button.svg'
 import front from '@/assets/components/InboxVoiceComponent/voice-component-front-button.svg'
 import re from '@/assets/components/InboxVoiceComponent/voice-component-re-button.svg'
-import xbtn from'@/assets/components/InboxTextComponent/text-component-x-button.svg'
+import xbtn from '@/assets/components/InboxTextComponent/text-component-x-button.svg'
 // import star from '@/assets/components/InboxVoiceComponent/voice-component-star-button.svg'
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
@@ -19,6 +19,7 @@ import ParentInboxImageComponent from './ParentInboxImageComponent'
 import ParentInboxTextComponent from './ParentInboxTextComponent'
 import ParentInboxVoiceComponent from './ParentInboxVoiceComponent'
 import { axiosWithCredentialInstance } from '@/apis/axiosInstance'
+import Modal from '../@common/MessageModal'
 
 
 
@@ -32,7 +33,11 @@ const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, inne
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const accessToken = localStorage.getItem('AccessToken')
-  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+
+  const handleModalOpen = () => {
+    setIsModalOpen(true)
+  }
 
   const replyButtonStyle = message.responseStatus ?  {backgroundColor: 'gray'} : {}
   const reportButtonStyle = message.isReported ? { backgroundColor: 'gray' } : {}
@@ -146,23 +151,21 @@ const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, inne
           >
             신고
         </button>
-        {message.isResponse && <button className={styles.inboxImageComponentFooterFromButton} onClick={() => {
-          if (openModal === false) {
-            setOpenModal(true)
-          } else {
-            setOpenModal(false)
-          }
-        }}>from.</button>}
+        {message.isResponse && <button className={styles.inboxImageComponentFooterFromButton} onClick={handleModalOpen}>from.</button>}
       </div>
-      {openModal && message.parent.contentType === 'text' && 
-        <ParentInboxTextComponent message={message.parent} setOpenModal={setOpenModal} />
-      }
-      {openModal && message.parent.contentType === 'image' && 
-        <ParentInboxImageComponent message={message.parent} setOpenModal={setOpenModal} />
-      }
-      {openModal && message.parent.contentType === 'voice' && 
-        <ParentInboxVoiceComponent message={message.parent} setOpenModal={setOpenModal} />
-      }
+      {isModalOpen && (
+                <Modal width="360px" height="auto" onClose={() => setIsModalOpen(false)}>
+                    {message.parent.contentType === 'text' && (
+                        <ParentInboxTextComponent message={message.parent} setIsModalOpen={setIsModalOpen}/>
+                    )}
+                    {message.parent.contentType === 'image' && (
+                        <ParentInboxImageComponent message={message.parent} setIsModalOpen={setIsModalOpen}/>
+                    )}
+                    {message.parent.contentType === 'voice' && (
+                        <ParentInboxVoiceComponent message={message.parent} setIsModalOpen={setIsModalOpen}/>
+                    )}
+                </Modal>
+            )}
       </div>
     </div>
   )
