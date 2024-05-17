@@ -30,8 +30,8 @@ const ProfileSettingsModal = () => {
 	
 	const fetchDataFCM = async (token: string|null) => {
 		try {
-			// console.log("token1",token)
-			if (token === null) {
+			console.log("token1",token)
+			if (token === null || token === undefined) {
 				return;
 			}
 			await fetch(`https://codearena.shop/api/member/updatefcm?fcmToken=${token}`, {
@@ -106,6 +106,7 @@ const ProfileSettingsModal = () => {
 			if (isEnabled) {
 				const token = await FCMSetToken();
 				fetchDataFCM(token);
+				// console.log("token",token)
 			}
 		} catch (error) {
 		}

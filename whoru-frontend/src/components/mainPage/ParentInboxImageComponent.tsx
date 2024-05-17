@@ -15,10 +15,11 @@ import { useRef } from 'react'
 interface ParentInboxImageComponentProps extends React.HTMLAttributes<HTMLDivElement>{
   message: Parent;
   innerRef?: React.Ref<HTMLDivElement>;
-  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ParentInboxImageComponent: React.FC<ParentInboxImageComponentProps> = ({ message, innerRef, setOpenModal, ...props }) => {
+const ParentInboxImageComponent: React.FC<ParentInboxImageComponentProps> = ({ message, innerRef, setIsModalOpen, ...props }) => {
+
   // const baseUrl = 'https://k10d203.p.ssafy.io/api'
   // const baseUrl = 'https://codearena.shop/api'
   // const baseUrl = import.meta.env.VITE_BASE_URL
@@ -97,11 +98,6 @@ const ParentInboxImageComponent: React.FC<ParentInboxImageComponentProps> = ({ m
   return (
     <div className={styles.ParentInboxImageComponentBackground}
       ref={ParentInboxImageComponentBackground}
-      onClick={(e) => {
-        if (e.target === ParentInboxImageComponentBackground.current) {
-          setOpenModal(false);
-        }
-      }}
       >
       <div className={styles.InboxImageComponent} key={message.id} ref={innerRef} {...props}>
         <div className={styles.inboxImageComponentHeader} key={message.id} {...props}>
@@ -112,7 +108,7 @@ const ParentInboxImageComponent: React.FC<ParentInboxImageComponentProps> = ({ m
           <div className={styles.inboxImageComponentHeaderIcons}>
             <img src={ulIcon} alt="ul-icon" />
             <img src={sqIcon} alt="sq-icon" />
-            <img src={xIcon} alt="x-icon" onClick={()=>setOpenModal(false)}/>
+            <img src={xIcon} alt="x-icon" onClick={() => setIsModalOpen(false)}/>
           </div>
         </div>
         <div className={styles.inboxImageComponentBody}>
