@@ -1,48 +1,39 @@
-// import React from 'react'
-import styles from './InboxVoiceComponent.module.css'
-// import Header from '@/assets/components/InboxVoiceComponent/voice-component-header.svg'
-import back from '@/assets/components/InboxVoiceComponent/voice-component-back-button.svg'
-import front from '@/assets/components/InboxVoiceComponent/voice-component-front-button.svg'
-import re from '@/assets/components/InboxVoiceComponent/voice-component-re-button.svg'
-// import star from '@/assets/components/InboxVoiceComponent/voice-component-star-button.svg'
-import xbtn from'@/assets/components/InboxImageComponent/image-component-x-button.svg'
-import AudioPlayer from 'react-h5-audio-player';
-import 'react-h5-audio-player/lib/styles.css';
-import "./audioStyles.css";
+import styles from './InboxTextComponent.module.css'
+import ulIcon from '../../assets/components/InboxTextComponent/text-component-ul-button.svg'
+import sqIcon from '../../assets/components/InboxTextComponent/text-component-sq-button.svg'
+import xIcon from '../../assets/components/InboxTextComponent/text-component-x-button.svg'
 import { Parent } from '../../types/mainTypes'
 // import { useDispatch } from 'react-redux';
-// import { setReplyMessage } from '@/stores/store';
 // import { useNavigate } from 'react-router-dom'
+// import { setReplyMessage } from '@/stores/store';
 // import axios from 'axios'
 // import Swal from 'sweetalert2'
 import { useRef } from 'react'
 
 
-
-interface InboxVoiceComponentProps extends React.HTMLAttributes<HTMLDivElement>{
+interface InboxTextComponentProps extends React.HTMLAttributes<HTMLDivElement>{
   message: Parent;
   innerRef?: React.Ref<HTMLDivElement>;
-  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ParentInboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, innerRef, setOpenModal, ...props }) => {
+const ParentInboxTextComponent: React.FC<InboxTextComponentProps> = ({ message, innerRef, setIsModalOpen, ...props }) => {
   // const baseUrl = 'https://k10d203.p.ssafy.io/api'
   // const baseUrl = 'https://codearena.shop/api'
   // const baseUrl = import.meta.env.VITE_BASE_URL
   // const dispatch = useDispatch()
   // const navigate = useNavigate()
-  // const accessToken = localStorage.getItem('AccessToken')
-  const ParentInboxVoiceComponentBackground = useRef(null);
+  const ParentInboxTextComponentBackground = useRef(null);
+
+  // const accessToken = localStorage.getItem('AccessToken');
 
   // const replyButtonStyle = message.responseStatus ?  {backgroundColor: 'gray'} : {}
   // const reportButtonStyle = message.isReported ? { backgroundColor: 'gray' } : {}
 
-
-  // const handleReply = (messageId: number) => {
-  //   dispatch(setReplyMessage(messageId))
-  //   // console.log('messageId', messageId)
-  //   navigate('/post')
-  // }
+  // const handleReply = (messageId:number) => {
+  //   dispatch(setReplyMessage(messageId));
+  //   navigate('/post');
+  // };
 
   // const handleReport = (messageId:number, senderId:number) => {
   //   Swal.fire({
@@ -68,7 +59,7 @@ const ParentInboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message
   //         Swal.fire({
   //           title: '신고가 완료되었습니다.',
   //           icon: 'success',
-  //           timer: 2500, // 2.5초 후에 자동으로 닫힘
+  //           timer: 2500,
   //           showConfirmButton: false
   //         })
   //         .then(() => {
@@ -101,61 +92,50 @@ const ParentInboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message
   } else {
     timeFromNow = `${diffInSeconds}초 전`;
   }
+  
+
 
   return (
-    <div
-      className={styles.ParentInboxVoiceComponentBackground}
-      ref={ParentInboxVoiceComponentBackground}
-      onClick={() => setOpenModal(false)}
+    <div 
+      className={styles.ParentInboxTextComponentBackground}
+      ref={ParentInboxTextComponentBackground}
     >
-      <div className={styles.inboxVoiceComponent} key={message.id} ref={innerRef} {...props}>
-        <div className={styles.inboxVoiceComponentHeader} key={message.id} {...props}>
-          <div className={styles.inboxVoiceComponentHeaderText}>
-            <p className={styles.inboxVoiceComponentHeaderTextTitle}>{message.isResponse ? "답장 메세지" : "익명 메세지"}</p>
-            <p className={styles.inboxVoiceComponentHeaderTime}>{timeFromNow}</p>
+      <div className={styles.inboxTextComponent} key={message.id} ref={innerRef} {...props}>
+        <div className={styles.inboxTextComponentHeader} key={message.id} {...props}>
+          <div className={styles.inboxTextComponentHeaderText}>
+            <p className={styles.inboxTextComponentHeaderTextTitle}>{message.isResponse ? "답장 메세지" : "익명 메세지"}</p>
+            <p className={styles.inboxTextComponentHeaderTime}>{timeFromNow}</p>
           </div>
-          <div className={styles.inboxVoiceComponentHeaderIcons}>
-            <img src={back} alt="back-icon" />
-            <img src={front} alt="front-icon" />
-            <img src={re} alt="re-icon" />
-            <div className={styles.inboxVoiceComponentHeaderSearchArea}></div>
-            <img src={xbtn} alt="xbtn-icon" />
+          <div className={styles.inboxTextComponentHeaderIcons}>
+            <img src={ulIcon} alt="ul-icon" />
+            <img src={sqIcon} alt="sq-icon" />
+            <img src={xIcon} alt="x-icon" onClick={() => setIsModalOpen(false)}/>
           </div>
         </div>
-        <div className={styles.inboxVoiceComponentBody}>
-          <div className={styles.inboxVoiceComponentBodyMain}>
-            <AudioPlayer
-              className={styles.inboxVoiceComponentBodyMainAudio}
-              src={message.content}
-              onPlay={() => {}}
-              layout="stacked-reverse"
-              style={{ width: "100%",
-                        height: "100%",
-                        background: "linear-gradient(90deg, #E08EDC 0%, #AFA4F4 100%)", 
-                        border: "3px solid #423752", 
-                        borderRadius: "10px"}}
-            />
+        <div className={styles.inboxTextComponentBody}>
+          <div className={styles.inboxTextComponentBodyMain}>
+            <p className={styles.inboxTextComponentBodyMainText}>{message.content}</p>
+              {/* <div className={styles.inboxTextComponentFooter}>
+                <button className={message.responseStatus || message.isResponse ? styles.inboxTextComponentFooterButtonDisable : styles.inboxTextComponentFooterButton} 
+                  onClick={() => handleReply(message.id)}
+                  style={replyButtonStyle}
+                  disabled={message.responseStatus || message.isResponse}
+                >
+                  답장
+                </button>
+                <button className={styles.inboxTextComponentFooterReportButton} 
+                  onClick={() => handleReport(message.id, message.senderId)}
+                  style={reportButtonStyle}
+                  disabled={message.isReported}
+                >
+                  신고
+              </button>
+            </div> */}
           </div>
-          {/* <div className={styles.inboxVoiceComponentFooter}>
-            <button className={message.responseStatus || message.isResponse ? styles.inboxVoiceComponentFooterButtonDisable : styles.inboxVoiceComponentFooterButton} 
-              onClick={() => handleReply(message.id)}
-              style={replyButtonStyle}
-              disabled={message.responseStatus || message.isResponse}
-            >
-              답장
-            </button>
-            <button className={styles.inboxVoiceComponentFooterReportButton} 
-              onClick={() => handleReport(message.id, message.senderId)}
-              style={reportButtonStyle}
-              disabled={message.isReported}
-            >
-              신고
-          </button>
-        </div> */}
         </div>
       </div>
     </div>
   )
 }
 
-export default ParentInboxVoiceComponent
+export default ParentInboxTextComponent

@@ -13,6 +13,7 @@ import ParentInboxImageComponent from './ParentInboxImageComponent'
 import ParentInboxTextComponent from './ParentInboxTextComponent'
 import ParentInboxVoiceComponent from './ParentInboxVoiceComponent'
 import { axiosWithCredentialInstance } from '@/apis/axiosInstance'
+import Modal from '../@common/MessageModal'
 
 
 interface InboxImageComponentProps extends React.HTMLAttributes<HTMLDivElement>{
@@ -24,7 +25,11 @@ const InboxImageComponent: React.FC<InboxImageComponentProps> = ({ message, inne
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const accessToken = localStorage.getItem('AccessToken')
-  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+
+    const handleModalOpen = () => {
+        setIsModalOpen(true)
+    }
 
   const replyButtonStyle = message.responseStatus ?  {backgroundColor: 'gray'} : {}
   const reportButtonStyle = message.isReported ? { backgroundColor: 'gray' } : {}
@@ -127,23 +132,21 @@ const InboxImageComponent: React.FC<InboxImageComponentProps> = ({ message, inne
           >
             신고
         </button>
-        {message.isResponse && <button className={styles.inboxImageComponentFooterFromButton} onClick={() => {
-          if (openModal === false) {
-            setOpenModal(true)
-          } else {
-            setOpenModal(false)
-          }
-        }}>from.</button>}
+        {message.isResponse && <button className={styles.inboxImageComponentFooterFromButton} onClick={handleModalOpen}>from.</button>}
       </div>
-      {openModal && message.parent.contentType === 'text' && 
-        <ParentInboxTextComponent message={message.parent} setOpenModal={setOpenModal} />
-      }
-      {openModal && message.parent.contentType === 'image' && 
-        <ParentInboxImageComponent message={message.parent} setOpenModal={setOpenModal} />
-      }
-      {openModal && message.parent.contentType === 'voice' && 
-        <ParentInboxVoiceComponent message={message.parent} setOpenModal={setOpenModal} />
-      }
+      {isModalOpen && (
+                <Modal width="360px" height="auto" onClose={() => setIsModalOpen(false)}>
+                    {message.parent.contentType === 'text' && (
+                        <ParentInboxTextComponent message={message.parent} setIsModalOpen={setIsModalOpen}/>
+                    )}
+                    {message.parent.contentType === 'image' && (
+                        <ParentInboxImageComponent message={message.parent} setIsModalOpen={setIsModalOpen}/>
+                    )}
+                    {message.parent.contentType === 'voice' && (
+                        <ParentInboxVoiceComponent message={message.parent} setIsModalOpen={setIsModalOpen}/>
+                    )}
+                </Modal>
+            )}
     </div>
   )
 }
