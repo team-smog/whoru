@@ -19,6 +19,9 @@ const SendTextComponent = ({ messageId }: { messageId: number | null}) => {
     showConfirmButton: false,
     timer: 3000,
     timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('click', () => navigate('/chacollection'));
+    }
   })
 
   const onChangeText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -85,13 +88,15 @@ const SendTextComponent = ({ messageId }: { messageId: number | null}) => {
         })
       }
     } catch (error: any) {
-      if (error.response.data.errorCode === 400) {
+      console.log(error)
+      if (error.response && error.response.data.errorCode === 400) {
+        console.log("catch")
         Swal.fire({
           icon: 'error',
           title: '실패',
           text: '메세지가 너무 짧습니다',
         });
-      } else if (error.response.data.errorCode === 403){
+      } else if (error.response && error.response.data.errorCode === 403){
         Swal.fire({
           icon: 'error',
           title: '실패',

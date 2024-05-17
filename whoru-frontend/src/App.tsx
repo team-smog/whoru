@@ -1,6 +1,7 @@
 import './App.css'
 import { Navigate, RouterProvider, createBrowserRouter } from 'react-router-dom'
 import MainPage from './pages/MainPage/MainPage'
+import PostBoxPage from './pages/PostBoxPage/PostBoxPage'
 import TodayMessagesPage from './pages/TodayMessages/TodayMessagesPage'
 import LoginPage from './pages/Login/LoginPage'
 import ProfilePage from './pages/Profile/ProfilePage'
@@ -35,6 +36,14 @@ const router = createBrowserRouter([
 		element: (
 			<AuthWrapper>
 				<MainPage />
+			</AuthWrapper>
+		),
+	},
+	{
+		path: '/messagebox',
+		element: (
+			<AuthWrapper>
+				<PostBoxPage />
 			</AuthWrapper>
 		),
 	},
