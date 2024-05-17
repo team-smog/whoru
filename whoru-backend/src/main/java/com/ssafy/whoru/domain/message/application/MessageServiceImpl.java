@@ -7,6 +7,7 @@ import com.ssafy.whoru.domain.message.dao.MessageCustomRepository;
 import com.ssafy.whoru.domain.message.dao.MessageRepository;
 import com.ssafy.whoru.domain.message.dto.response.MessageResponse;
 import com.ssafy.whoru.domain.message.dto.response.SendResponse;
+import com.ssafy.whoru.domain.message.exception.AlreadyAllocatedException;
 import com.ssafy.whoru.global.common.dto.FcmType;
 import com.ssafy.whoru.global.common.dto.response.ResponseWithSuccess;
 import com.ssafy.whoru.domain.message.dto.response.SliceMessageResponse;
@@ -25,7 +26,9 @@ import com.ssafy.whoru.global.common.dto.SuccessType;
 import com.ssafy.whoru.global.common.exception.S3UploadException;
 import com.ssafy.whoru.global.util.FCMUtil;
 import com.ssafy.whoru.global.util.RedisUtil;
+import jakarta.persistence.LockModeType;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -60,15 +63,12 @@ public class MessageServiceImpl implements MessageService{
     FCMUtil fcmUtil;
 
     MessageUtil messageUtil;
-
-    static final Integer BOX_COUNT_INIT = 0;
-    static final Integer BOX_LIMIT = 3;
-
     static final Integer EMPTY_MESSAGE = 0;
+    static final Integer BOX_PROBABILITY = 30;
 
     @Override
     @Transactional
-    public SendResponse sendTextMessageToRandomMember(TextSend textSend, Long senderId) {
+    public SendResponse sendTextMessage(TextSend textSend, Long senderId) {
 
         // 정지여부 체크
         if(messageUtil.isBanned(senderId)){
@@ -76,46 +76,16 @@ public class MessageServiceImpl implements MessageService{
         }
         SendResponse sendResponse = new SendResponse(false);
 
-        // randombox 카운트
-        String key = RedisKeyType.TODAY_BOX.makeKey(String.valueOf(senderId));
-        Optional<String> boxCount = redisUtil.findValueByKey(key);
-
         // db에서 두사람 정보 들고오기
         Member sender = memberService.findByIdToEntity(senderId);
-        Member receiver = memberService.findRandomToEntity(senderId);
 
-        log.info("text send -> sender: {}, receiver: {}", sender.getUserName(), receiver.getUserName());
+        int randomNumber = ThreadLocalRandom.current().nextInt(100);
 
-        // 현재 redis에 남아있는 오늘의 박스 얻은 횟수 가져오기
-        Integer presentBoxCount = BOX_COUNT_INIT;
-        if(boxCount.isPresent()){
-            presentBoxCount = Integer.parseInt(boxCount.get());
-        }
-
-        if(presentBoxCount < BOX_LIMIT){
+        if(randomNumber < BOX_PROBABILITY){
             // db상에 boxcount도 증가시켜야 하고
             sender.updateBoxIncrease();
-
             sendResponse.setRandomBoxProvided(true);
-
-            // redis에서도 새롭게 +1 된 값을 반영해야 함
-            // 날짜 바뀌는 시간 구하기
-            LocalDateTime next = LocalDate.now().plusDays(1).atStartOfDay();
-
-            redisUtil.insert(key, String.valueOf(presentBoxCount+1), Duration.between(LocalDateTime.now(), next).getSeconds());
         }
-
-        // fcm 발송
-        if(receiver.getIsEnabled()){
-            List<FcmNotification> fcmNotifications = receiver.getFcmNotifications();
-            for(FcmNotification fcmNotification: fcmNotifications){
-                if(fcmNotification == null) continue;
-                if(fcmNotification.getMark()) continue;
-                fcmUtil.sendMessage(fcmNotification.getFcmToken(), fcmNotification.getId(), FcmType.RESPONSE_MESSAGE);
-            }
-        }
-
-
 
         // message 전송
         messageRepository.save(
@@ -123,7 +93,7 @@ public class MessageServiceImpl implements MessageService{
                         .content(textSend.getContent())
                         .contentType(ContentType.text)
                         .sender(sender)
-                        .receiver(receiver)
+                        .receiver(null)
                         .isReported(false)
                         .readStatus(false)
                         .parent(null)
@@ -180,7 +150,7 @@ public class MessageServiceImpl implements MessageService{
 
     @Override
     @Transactional
-    public SendResponse sendMediaMessageToRandomMember(MultipartFile file, Long senderId) {
+    public SendResponse sendMediaMessage(MultipartFile file, Long senderId) {
         if(messageUtil.isBanned(senderId)){
             throw new BannedSenderException();
         }
@@ -188,38 +158,22 @@ public class MessageServiceImpl implements MessageService{
 
         // db에서 두사람 정보 들고오기
         Member sender = memberService.findByIdToEntity(senderId);
-        Member receiver = memberService.findRandomToEntity(senderId);
-
-        // randombox 카운트
-        String key = RedisKeyType.TODAY_BOX.makeKey(String.valueOf(senderId));
-        Optional<String> boxCount = redisUtil.findValueByKey(key);
 
         SendResponse sendResponse = new SendResponse(false);
 
-        // 현재 redis에 남아있는 오늘의 박스 얻은 횟수 가져오기
-        Integer presentBoxCount = BOX_COUNT_INIT;
-        if(boxCount.isPresent()){
-            presentBoxCount = Integer.parseInt(boxCount.get());
-        }
+        int randomNumber = ThreadLocalRandom.current().nextInt(100);
 
-        if(presentBoxCount < BOX_LIMIT){
+        if(randomNumber < BOX_PROBABILITY){
             // db상에 boxcount도 증가시켜야 하고
             sender.updateBoxIncrease();
-
             sendResponse.setRandomBoxProvided(true);
-
-            // redis에서도 새롭게 +1 된 값을 반영해야 함
-            // 날짜 바뀌는 시간 구하기
-            LocalDateTime next = LocalDate.now().plusDays(1).atStartOfDay();
-
-            redisUtil.insert(key, String.valueOf(presentBoxCount+1), Duration.between(LocalDateTime.now(), next).getSeconds());
         }
 
         // S3 저장
         Optional<String> result = s3Service.upload(file, type.getS3PathType());
         String s3Url = result.orElseThrow(S3UploadException::new);
 
-        log.info("file send -> sender: {}, receiver: {}", sender.getUserName(), receiver.getUserName());
+        log.info("file send -> sender: {}", sender.getUserName());
 
         // message 전송
         messageRepository.save(
@@ -227,7 +181,7 @@ public class MessageServiceImpl implements MessageService{
                 .content(s3Url)
                 .contentType(type.getContentType())
                 .sender(sender)
-                .receiver(receiver)
+                .receiver(null)
                 .isReported(false)
                 .readStatus(false)
                 .parent(null)
@@ -235,16 +189,6 @@ public class MessageServiceImpl implements MessageService{
                 .responseStatus(false)
                 .build()
         );
-
-        // fcm 발송
-        if(receiver.getIsEnabled()){
-            List<FcmNotification> fcmNotifications = receiver.getFcmNotifications();
-            for(FcmNotification fcmNotification: fcmNotifications){
-                if(fcmNotification == null) continue;
-                if(fcmNotification.getMark()) continue;
-                fcmUtil.sendMessage(fcmNotification.getFcmToken(), fcmNotification.getId(), FcmType.RESPONSE_MESSAGE);
-            }
-        }
 
         return sendResponse;
 
@@ -349,4 +293,72 @@ public class MessageServiceImpl implements MessageService{
         }
         return response;
     }
+
+    @Override
+    @Transactional
+    public ResponseWithSuccess<SliceMessageResponse> getDailyOldMessages(Long lastId, Integer size) {
+        Slice<Message> sliceMessages = messageCustomRepository.findAllBySizeWithNotReportedAndToday(lastId, size);
+        SliceMessageResponse body = SliceMessageResponse.to(sliceMessages, modelMapper);
+        ResponseWithSuccess<SliceMessageResponse> response = new ResponseWithSuccess<>(body);
+        if(sliceMessages.getContent().size() == EMPTY_MESSAGE){
+            response.setSuccessType(SuccessType.STATUS_204);
+        }
+        return response;
+    }
+
+    @Override
+    @Transactional
+    public ResponseWithSuccess<List<MessageResponse>> getDailyRecentMessages(Long firstId, Integer size) {
+        LocalDate today = LocalDate.now();
+        List<Message> messages = messageRepository.findRecentMessagesWithDaily(firstId, size, today.atStartOfDay(), today.atTime(23,59,59));
+        List<MessageResponse> body = messages.stream()
+            .map(message -> {
+                return modelMapper.map(message, MessageResponse.class);
+            })
+            .collect(Collectors.toList());
+        ResponseWithSuccess<List<MessageResponse>> response = new ResponseWithSuccess<>(body);
+        if(messages.size() == EMPTY_MESSAGE){
+            response.setSuccessType(SuccessType.STATUS_204);
+        }
+        return response;
+    }
+
+    @Override
+    @Transactional
+    public void updateReceiver(Long messageId, Long memberId){
+        Message message = messageRepository.findByIdWithLock(messageId);
+        Member member = memberService.findByIdToEntity(memberId);
+        if(message.getIsResponse() || message.getReceiver() != null){
+            throw new AlreadyAllocatedException();
+        }
+        message.updateReceiver(member);
+    }
+
+    @Override
+    public ResponseWithSuccess<List<MessageResponse>> getNotReceivedRecentMessages(Long firstId, Integer size, Long memberId) {
+        List<Message> messages = messageRepository.findNotReceivedRecentMessages(firstId, size, memberId);
+        List<MessageResponse> body = messages.stream()
+            .map(message -> {
+                return modelMapper.map(message, MessageResponse.class);
+            })
+            .collect(Collectors.toList());
+        ResponseWithSuccess<List<MessageResponse>> response = new ResponseWithSuccess<>(body);
+        if(messages.size() == EMPTY_MESSAGE){
+            response.setSuccessType(SuccessType.STATUS_204);
+        }
+        return response;
+    }
+
+    @Override
+    public ResponseWithSuccess<SliceMessageResponse> getNotReceivedOldMessages(Long lastId, Integer size, Long memberId) {
+        Slice<Message> sliceMessages = messageCustomRepository.findAllBySizeWithNotReceived(lastId, size, memberId);
+        SliceMessageResponse body = SliceMessageResponse.to(sliceMessages, modelMapper);
+        ResponseWithSuccess<SliceMessageResponse> response = new ResponseWithSuccess<>(body);
+        if(sliceMessages.getContent().size() == EMPTY_MESSAGE){
+            response.setSuccessType(SuccessType.STATUS_204);
+        }
+        return response;
+    }
+
+
 }

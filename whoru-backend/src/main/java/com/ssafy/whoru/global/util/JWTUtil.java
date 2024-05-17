@@ -95,4 +95,15 @@ public class JWTUtil {
                 .signWith(secretKey)
                 .compact();
     }
+
+    public Long getMemberId(String token) {
+        return Jwts
+                .parser()
+            .verifyWith(secretKey)
+            .build()
+            .parseSignedClaims(token)
+            .getPayload()
+            .get("id", Long.class);
+    }
+
 }

@@ -51,6 +51,7 @@ public enum ErrorCode {
 
     // Message
     REPORTED_MESSAGE_EXCEPTION(451, "신고한 메세지에는 답장할 수 없습니다."),
+    ALREADY_ALLOCATED(404, "이미 가져간 메세지이거나, 잘못된 요청입니다."),
 
     // S3 & File
     BUCKET_NOT_FOUND_EXCEPTION(404, "버킷 로드에 실패했습니다."),

@@ -7,6 +7,7 @@ import com.ssafy.whoru.domain.message.dto.ContentType;
 import com.ssafy.whoru.domain.message.dto.request.TextSend;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,6 +37,21 @@ public class MessageTestUtil {
                 .build();
     }
 
+    public Message 이전날_Text_메세지(MockMvc mockMvc, Member sender, Member receiver, Boolean isReported){
+        return Message.builder()
+            .sender(sender)
+            .receiver(receiver)
+            .content("test")
+            .createDate(LocalDateTime.now().minusDays(1))
+            .contentType(ContentType.text)
+            .isResponse(false)
+            .responseStatus(false)
+            .isReported(isReported)
+            .parent(null)
+            .readStatus(false)
+            .build();
+    }
+
     public Message 미디어_메세지(MockMvc mockMvc, Member sender, Member receiver, Boolean isReported){
         return Message.builder()
             .sender(sender)
@@ -49,6 +65,29 @@ public class MessageTestUtil {
             .parent(null)
             .readStatus(false)
             .build();
+    }
+
+    public Message 우편함_메세지(MockMvc mockMvc, Member sender){
+        return Message.builder()
+            .sender(sender)
+            .receiver(null)
+            .content("test")
+            .contentType(ContentType.text)
+            .createDate(LocalDateTime.now())
+            .isResponse(false)
+            .responseStatus(false)
+            .isReported(false)
+            .parent(null)
+            .readStatus(false)
+            .build();
+    }
+
+    public List<Message> 우편함_메세지_n개_생성(MockMvc mockMvc, Member sender, int size){
+        List<Message> messages = new ArrayList<>();
+        for(int i= 0;i<size;i++){
+            messages.add(우편함_메세지(mockMvc, sender));
+        }
+        return messages;
     }
 
     public TextSend 길이초과_text_생성(){
@@ -105,6 +144,14 @@ public class MessageTestUtil {
         List<Message> messages = new ArrayList<>();
         for(int i= 0;i<size;i++){
             messages.add(Text_메세지(mockMvc, sender, receiver, false));
+        }
+        return messages;
+    }
+
+    public List<Message> 이전날짜_메세지_n개_생성(MockMvc mockMvc, int size, Member sender, Member receiver, Boolean isReported){
+        List<Message> messages = new ArrayList<>();
+        for(int i = 0;i<size;i++){
+            messages.add(이전날_Text_메세지(mockMvc, sender, receiver, isReported));
         }
         return messages;
     }
