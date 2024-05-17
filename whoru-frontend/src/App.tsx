@@ -32,7 +32,7 @@ const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
 
 const router = createBrowserRouter([
 	{
-		path: '/',
+		path: '/messagebox',
 		element: (
 			<AuthWrapper>
 				<MainPage />
@@ -40,7 +40,7 @@ const router = createBrowserRouter([
 		),
 	},
 	{
-		path: '/messagebox',
+		path: '/',
 		element: (
 			<AuthWrapper>
 				<PostBoxPage />

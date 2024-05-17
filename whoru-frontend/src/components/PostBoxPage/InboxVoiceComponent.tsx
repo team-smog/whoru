@@ -13,7 +13,7 @@ import { MessageInfoDetail } from '../../types/mainTypes'
 // import { useDispatch } from 'react-redux';
 // import { setReplyMessage } from '@/stores/store';
 import { useNavigate } from 'react-router-dom'
-// import Swal from 'sweetalert2'
+import Swal from 'sweetalert2'
 // import { useState } from 'react'
 import { axiosWithCredentialInstance } from '@/apis/axiosInstance'
 
@@ -43,10 +43,20 @@ const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, inne
       }
     })
     .then(() => {
-      navigate('/')
+      navigate('/messagebox')
     })
     .catch((err) => {
       console.log(err);
+      if (err.response.data.errorCode === 404) {
+        Swal.fire({
+          icon: 'error',
+          title: '실패',
+          text: '다른사용자가 이미 가져간 메세지입니다.',
+        })
+        .then(() => {
+          window.location.reload();
+        })
+      }
     })
     // navigate('/post')
   }
