@@ -9,6 +9,7 @@ public enum ErrorCode {
 
     //Admin
     ADMIN_NOT_FOUND(404, "존재하지 않는 관리자 계정입니다."),
+    ADMIN_PASSWORD_NOT_CORRECT(401, "비밀번호가 틀렸습니다."),
 
     // Global
     INTERNAL_SERVER_ERROR(500, "내부 서버 오류입니다."),
