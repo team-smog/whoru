@@ -153,7 +153,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
 
   datasource:
     url: ${my-db.url}
@@ -225,7 +225,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
 
   data:
     redis:

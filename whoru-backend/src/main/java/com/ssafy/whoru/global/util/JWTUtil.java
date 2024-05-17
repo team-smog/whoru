@@ -84,6 +84,17 @@ public class JWTUtil {
                 .signWith(secretKey)
                 .compact();
     }
+    public String createAdminAccessToken(Integer userId, String category, String role) {
+        log.info("access token expire ms : " + accessExpirems);
+        return Jwts.builder()
+                .claim("category", category)
+                .claim("id", userId)
+                .claim("role", role)
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(new Date(System.currentTimeMillis() + accessExpirems))
+                .signWith(secretKey)
+                .compact();
+    }
     public String createRefreshToken(Long userId, String category, String role) {
 
         return Jwts.builder()
