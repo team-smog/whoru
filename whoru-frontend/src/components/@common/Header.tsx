@@ -22,7 +22,7 @@ const Header = (props: {info:IHeaderInfo}) => {
     timer: 3000,
     timerProgressBar: true,
     didOpen: (toast) => {
-      toast.addEventListener('click', () => navigate('/messagebox'));
+      toast.addEventListener('click', () => navigate('/mymessage'));
     }
   })
 
