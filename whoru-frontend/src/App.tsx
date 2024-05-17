@@ -32,7 +32,7 @@ const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
 
 const router = createBrowserRouter([
 	{
-		path: '/messagebox',
+		path: '/mymessage',
 		element: (
 			<AuthWrapper>
 				<MainPage />

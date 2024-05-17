@@ -35,7 +35,7 @@ const InboxImageComponent: React.FC<InboxImageComponentProps> = ({ message, inne
       }
     })
     .then(() => {
-      navigate('/messagebox')
+      navigate('/mymessage')
     })
     .catch((err) => {
       console.log(err);

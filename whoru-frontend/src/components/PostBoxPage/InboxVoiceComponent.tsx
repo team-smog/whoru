@@ -43,7 +43,7 @@ const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, inne
       }
     })
     .then(() => {
-      navigate('/messagebox')
+      navigate('/mymessage')
     })
     .catch((err) => {
       console.log(err);
