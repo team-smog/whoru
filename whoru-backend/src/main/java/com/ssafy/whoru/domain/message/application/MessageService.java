@@ -10,11 +10,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 public interface MessageService {
-    SendResponse sendTextMessageToRandomMember(TextSend textSend, Long senderId);
+    SendResponse sendTextMessage(TextSend textSend, Long senderId);
 
     void responseTextMessage(TextSend textSend, Long senderId, Long messageId);
 
-    SendResponse sendMediaMessageToRandomMember(MultipartFile file, Long senderId);
+    SendResponse sendMediaMessage(MultipartFile file, Long senderId);
 
     void responseFileMessage(MultipartFile file, Long senderId, Long messageId);
 
@@ -23,4 +23,14 @@ public interface MessageService {
     ResponseWithSuccess<List<MessageResponse>> getRecentMessages(Long firstId, Integer size, Long receiverId);
 
     MessageResponse findMessage(Long messageId);
+
+    ResponseWithSuccess<SliceMessageResponse> getDailyOldMessages(Long lastId, Integer size);
+
+    ResponseWithSuccess<List<MessageResponse>> getDailyRecentMessages(Long firstId, Integer size);
+
+    void updateReceiver(Long messageId, Long memberId);
+
+    ResponseWithSuccess<List<MessageResponse>> getNotReceivedRecentMessages(Long firstId, Integer size, Long memberId);
+
+    ResponseWithSuccess<SliceMessageResponse> getNotReceivedOldMessages(Long lastId, Integer size, Long memberId);
 }

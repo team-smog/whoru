@@ -5,6 +5,7 @@ import com.ssafy.whoru.domain.member.dto.response.ChangeIconResponse;
 import com.ssafy.whoru.domain.member.dto.response.ProfileResponse;
 import com.ssafy.whoru.domain.member.dto.response.TokenResponse;
 import com.ssafy.whoru.global.common.dto.WrapResponse;
+import com.ssafy.whoru.global.util.JWTUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -45,7 +46,7 @@ public interface MemberApiDocs {
     @Operation(summary = "accessToken 재발급 ",description = "토큰을 받아 유저의 accessToken을 재발급합니다.")
     @ApiResponse(responseCode = "200", description = "TokenResponse", content = @Content(schema = @Schema(implementation = TokenResponse.class)))
     @PostMapping("/regenerate-token")
-    ResponseEntity<WrapResponse<TokenResponse>> regenerateToken(@AuthenticationPrincipal CustomOAuth2User member, HttpServletRequest request);
+    ResponseEntity<WrapResponse<TokenResponse>> regenerateToken(HttpServletRequest request);
 
 
     @Operation(summary = "유저 정보 반환", description = "사용자의 프로필 icon과 닉네임, pushalarm 설정상태, 언어상태를 가져올 수 있다.")
