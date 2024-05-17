@@ -22,7 +22,7 @@ const Header = (props: {info:IHeaderInfo}) => {
     timer: 3000,
     timerProgressBar: true,
     didOpen: (toast) => {
-      toast.addEventListener('click', () => navigate('/'));
+      toast.addEventListener('click', () => navigate('/messagebox'));
     }
   })
 
@@ -46,7 +46,7 @@ const Header = (props: {info:IHeaderInfo}) => {
       onMessage(messagingObject.current, (body)=>{
         if (body.data) {
           const { content, type } = body.data;
-          if (type == "MESSAGE") {
+          if (type == "RESPONSE_MESSAGE") {
             ToastMessage.fire({
               icon: 'success',
               title: content,

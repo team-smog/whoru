@@ -36,6 +36,8 @@ axiosWithCredentialInstance.interceptors.response.use(
       // console.log(localStorage.getItem('AccessToken')); 
       err.config.headers.Authorization = `Bearer ${localStorage.getItem('AccessToken')}`
       return axiosWithCredentialInstance(err.config);
+    } else {
+      throw err;
     }
   }
 )

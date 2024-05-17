@@ -1,0 +1,21 @@
+.mainPage {
+	display: flex;
+	flex-direction: column;
+	height: 100dvh;
+}
+
+.mainPageBody {
+	display: block;
+	height: calc(100% - 108px);
+	/* height: 100vh; */
+	overflow-y: scroll;
+	position: relative;
+	top: 48px;
+	/* border-top: 1px solid #df93f8;
+	border-bottom: 1px solid #c4aff1; */
+}
+
+.loading-element {
+  height: 0;
+  transition: height 0.3s ease-out;
+}

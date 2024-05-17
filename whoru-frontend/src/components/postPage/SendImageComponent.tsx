@@ -28,6 +28,9 @@ const SendImageComponent = ({ messageId }: { messageId: number | null}) => {
     showConfirmButton: false,
     timer: 3000,
     timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('click', () => navigate('/chacollection'));
+    }
   })
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
