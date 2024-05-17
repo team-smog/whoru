@@ -14,7 +14,7 @@ import { axiosWithCredentialInstance } from "@/apis/axiosInstance";
 
 const MainPage = () => {
   const info: IHeaderInfo = {
-    left_1: "Main",
+    left_1: "My Messages",
     left_2: null,
     center: null,
     right: null
@@ -27,10 +27,6 @@ const MainPage = () => {
       dispatch(setLastId(null));
     }
   }, []);
-
-  // const baseUrl = 'https://k10d203.p.ssafy.io/api'
-  // const baseUrl = 'https://codearena.shop/api'
-  const baseUrl = import.meta.env.VITE_BASE_URL
 
   const dispatch = useDispatch();
   const firstId = useSelector((state: any) => state.message.firstId);
@@ -94,14 +90,23 @@ const MainPage = () => {
 
   const handleRefresh = async (fId:number): Promise<MessageInfoDetail[]> => {
     // console.log("fId", fId);
-    const res = await fetch(`${baseUrl}/message/recent?firstid=${fId}`, {
-      headers: {
-        Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
-      },
-    })
-    const data = await res.json();
-    // console.log(data);
-    return data.data;
+    try {
+      const res = await axiosWithCredentialInstance.get(`message/recent?firstid=${fId}`, {
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
+        },
+      });
+      if (res.data && res.data.data) {
+        // console.log(res.data.data);
+        return res.data.data;
+      } else {
+        // console.log("빈",res);
+        return [];
+      }
+    } catch (err) {
+      // console.log(err);
+      return [];
+    }
   }
 
   const fetchData = () => {
