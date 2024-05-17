@@ -163,7 +163,7 @@ public class MessageServiceImpl implements MessageService{
 
         int randomNumber = ThreadLocalRandom.current().nextInt(100);
 
-        if(randomNumber > BOX_PROBABILITY){
+        if(randomNumber < BOX_PROBABILITY){
             // db상에 boxcount도 증가시켜야 하고
             sender.updateBoxIncrease();
             sendResponse.setRandomBoxProvided(true);
