@@ -48,7 +48,7 @@ const ProfileInfo = () => {
 	return (
 		<div className="w-full max-w-[500px] px-24 pt-14 flex flex-col justify-center items-center">
 			{/* <div className="pt-20 w-20 h-20"> */}
-				<img src={userInfo.iconUrl} alt="Profile" className='px-14'/>
+				<img src={userInfo.iconUrl} alt="Profile" className='h-28'/>
 			{/* </div> */}
 			{/* <div className="pt-20 pl-6"> */}
 				<p className="text-xl pt-4">{userInfo.userName || '이름 없음'}</p>

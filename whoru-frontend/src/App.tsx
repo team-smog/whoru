@@ -14,6 +14,7 @@ import AdminPage from './pages/Admin/AdminPage'
 import CallBackPage from './pages/Login/CallBackPage'
 import CreateInquiry from './components/Inquiry/CreateInquiry'
 import NotFound from './pages/NotFound/NotFound'
+import AdminLoginPage from './pages/Admin/AdminLoginPage'
 
 interface AuthWrapperProps {
 	children: React.ReactNode
@@ -133,6 +134,10 @@ const router = createBrowserRouter([
 	{
 		path: '/callback',
 		element: <CallBackPage />,
+	},
+	{
+		path: '/admin/login',
+		element: <AdminLoginPage />
 	},
 	{
 		path: '*',
