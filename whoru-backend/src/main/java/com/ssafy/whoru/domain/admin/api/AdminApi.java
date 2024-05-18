@@ -28,6 +28,6 @@ public class AdminApi {
         log.info("request body -> id: {}, pw: {}", info.getId(), info.getPw());
         String token = adminService.login(info.getId(),info.getPw());
 
-        response.addHeader("Authorization", "Bearer" + token);
+        response.addHeader("Authorization", token);
     }
 }
