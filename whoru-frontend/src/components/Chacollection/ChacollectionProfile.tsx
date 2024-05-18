@@ -96,11 +96,11 @@ const ChacollectionProfile: React.FC = () => {
 		<div>
 			<div className="flex justify-center">
 				<div className="pt-20 w-[120px] h-[120px] flex flex-col items-center">
-					<img src={profileImageUrl} alt="Profile" className='w-16'/>
+					<img src={profileImageUrl} alt="Profile" className='w-full max-w-[80px]'/>
 					<p className="flex justify-center text-xs pt-4">현재 프로필</p>
 				</div>
 			</div>
-				<p className="text-xl pt-24 pl-4">캐릭터 도감</p>
+				<p className="text-xl pt-32 pl-4">캐릭터 도감</p>
 				<p className="text-xs pt-2 pl-4 text-[#797979]">원하는 캐릭터로 자신의 프로필을 바꿀 수 있어요.</p>
 				<div className="w-full max-w-[500px] overflow-y-auto px-4 pb-4 h-[calc(100dvh-420px)]">
 					{Object.keys(groupedIcons).map((grade, gradeIndex) => (
@@ -109,7 +109,7 @@ const ChacollectionProfile: React.FC = () => {
 							<div className="grid grid-cols-3 gap-2">
 								{groupedIcons[grade].map((icon, index) => (
 									<div
-										className={`rounded-[10px] mx-auto flex justify-center items-center p-4 ${!icon.isAvailable ? 'unavailable-icon' : 'bg-[#f0f0f0]'}`}
+										className={`rounded-[10px] mx-auto flex justify-center items-center p-3 ${!icon.isAvailable ? 'unavailable-icon' : 'bg-[#f0f0f0]'}`}
 										key={index}
 										onClick={() => icon.isAvailable && changeIcon(icon.iconId, icon.iconUrl)}
 									>
