@@ -25,7 +25,7 @@ const MessageModal = ({ width, height, onClose, children }: IModalProps) => {
   };
 
   return (
-    <div className={`fixed top-0 left-1/2 transform -translate-x-1/2 w-[500px] bottom-0 ${isRendering ? 'bg-black/50' : 'bg-black/0'} z-50 `} ref={modalRef} onClick={handleModalClick}>
+    <div className={`fixed top-0 left-1/2 transform -translate-x-1/2 w-[500px] bottom-0 ${isRendering ? 'bg-black/75' : 'bg-black/0'} z-50 `} ref={modalRef} onClick={handleModalClick}>
       <div
         ref={modalRef}
         className={`fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-lg bg-transparent ${isRendering ? 'animate-modalOn' : 'animate-modalOff'}`}
