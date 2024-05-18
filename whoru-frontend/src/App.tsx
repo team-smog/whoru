@@ -16,8 +16,13 @@ import CallBackPage from './pages/Login/CallBackPage'
 import CreateInquiry from './components/Inquiry/CreateInquiry'
 import NotFound from './pages/NotFound/NotFound'
 import AdminLoginPage from './pages/Admin/AdminLoginPage'
+import { useSelector } from 'react-redux'
 
 interface AuthWrapperProps {
+	children: React.ReactNode
+}
+
+interface AdminAuthWrapperProps {
 	children: React.ReactNode
 }
 
@@ -26,6 +31,16 @@ const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
 
 	if (accessToken == null) {
 		return <Navigate to="/login" replace />
+	}
+
+	return <>{children}</>
+}
+
+const AdminAuthWrapper: React.FC<AdminAuthWrapperProps> = ({ children }) => {
+	const role = useSelector((state: any) => state.user.role)
+
+	if (role !== 'ROLE_ADMIN') {
+		return <Navigate to="/admin/login" replace />
 	}
 
 	return <>{children}</>
@@ -135,9 +150,9 @@ const router = createBrowserRouter([
 	{
 		path: '/admin',
 		element: (
-			<AuthWrapper>
+			<AdminAuthWrapper>
 				<AdminPage />
-			</AuthWrapper>
+			</AdminAuthWrapper>
 		),
 	},
 	{
@@ -146,12 +161,14 @@ const router = createBrowserRouter([
 	},
 	{
 		path: '/admin/login',
-		element: <AdminLoginPage />
+		element: (
+				<AdminLoginPage />
+		),
 	},
 	{
 		path: '*',
-		element: <NotFound />
-	}
+		element: <NotFound />,
+	},
 ])
 
 const App = () => {
