@@ -23,7 +23,7 @@ public class AdminServiceImpl implements AdminService{
         Optional<Admin> admin = adminRepository.findByUserId(id);
         if (!admin.isPresent()) throw new AdminNotFoundException();
         if (admin.get().getPassword().equals(password)) {
-            return jwtUtil.createAdminAccessToken(admin.get().getId(),"accessToken","USER_ADMIN");
+            return jwtUtil.createAdminAccessToken(admin.get().getId(),"accessToken","ROLE_ADMIN");
         }else {
             throw new AdminPasswordNotCorrectException();
         }
