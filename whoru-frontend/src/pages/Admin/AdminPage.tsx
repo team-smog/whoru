@@ -65,7 +65,7 @@ const AdminPage = () => {
 	return (
 		<div className="h-screen bg-white">
 			<Header info={info} />
-			<div className="pt-16">
+			<div className="mt-16">
 				<div className="flex justify-between items-center">
 					<div
 						className={`w-1/3 h-8 text-center ${selectedTab === 'Notification' ? 'text-text_color border-text_color border-b-[0.5px]' : 'text-[#A5A5A5]'}`}
