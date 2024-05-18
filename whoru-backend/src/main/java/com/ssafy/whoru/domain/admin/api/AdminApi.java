@@ -27,9 +27,7 @@ public class AdminApi {
     public void adminLogin(@RequestBody AdminLoginRequest info, HttpServletResponse response) throws IOException {
         log.info("request body -> id: {}, pw: {}", info.getId(), info.getPw());
         String token = adminService.login(info.getId(),info.getPw());
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-        response.sendRedirect(url +"callback" + "?accessToken=" + token);
+
+        response.addHeader("Authorization", "Bearer" + token);
     }
 }
