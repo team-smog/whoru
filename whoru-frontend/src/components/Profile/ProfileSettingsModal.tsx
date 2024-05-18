@@ -4,7 +4,7 @@ import './Profile.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { setPushAlarm } from '@/stores/store'
 import { axiosWithCredentialInstance } from '@/apis/axiosInstance'
-import { getFCMToken, requestPermission } from "@/FirebaseUtil.js";
+import { requestPermission } from "@/FirebaseUtil.js";
 
 const ProfileSettingsModal = () => {
 	const pushAlarm = useSelector((state: any) => state.user.pushAlarm);
@@ -17,6 +17,37 @@ const ProfileSettingsModal = () => {
 	// 	console.log(boxCount)
 	// 	console.log(pushAlarm)
 	// }, [boxCount, pushAlarm])
+
+	const FCMSetToken = async () => {
+		// const token = await requestPermission();
+		// console.log("token",token)
+		// return token;
+		// localStorage.getItem('FCMToken');
+		return await requestPermission();
+	}
+	
+	// const token = FCMSetToken();
+	
+	const fetchDataFCM = async (token: string|null) => {
+		try {
+			console.log("token1",token)
+			if (token === null || token === undefined) {
+				return;
+			}
+			await fetch(`https://codearena.shop/api/member/updatefcm?fcmToken=${token}`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
+				},
+			});
+			console.log("fcm 토큰 저장 api 요청 완료")
+		} catch (error: any) {
+			console.error(error);
+			console.log("fcm 토큰 저장 api 요청 실패")
+		}
+	};
+
 
 	// useEffect(() => {
 	// 	token.then(() => {
@@ -73,10 +104,9 @@ const ProfileSettingsModal = () => {
 			console.log('푸시 알림 설정 업데이트:', res.data, isEnabled)
 			dispatch(setPushAlarm(isEnabled))
 			if (isEnabled) {
-				const permission = await requestPermission()
-				if(permission){
-					await getFCMToken()
-				}
+				const token = await FCMSetToken();
+				fetchDataFCM(token);
+				// console.log("token",token)
 			}
 		} catch (error) {
 		}
