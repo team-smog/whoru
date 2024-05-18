@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { requestPermission } from "@/FirebaseUtil.js";
+console.log('asdfliasjelfajseilfj')
 
 const CallBackPage = () => {
 	const navigate = useNavigate()
