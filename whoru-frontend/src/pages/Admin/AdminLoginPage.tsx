@@ -1,5 +1,5 @@
 import Header, { IHeaderInfo } from '@/components/@common/Header'
-import AdminLogin from '@/components/Admin/AdminPage/AdminLogin'
+import AdminLogin from '@/components/Admin/LoginPage/AdminLogin'
 
 const AdminLoginPage = () => {
 	const info: IHeaderInfo = {
