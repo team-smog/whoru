@@ -88,6 +88,9 @@ public class MemberServiceImpl implements MemberService {
     public TokenResponse reGenerateToken(Long memberId,String refresh) {
         Optional<String> valueByKey = redisUtil.findValueByKey(RedisKeyType.REFRESHTOKEN.makeKey(String.valueOf(memberId)));
 
+        log.info("MemberId -> {}", memberId);
+        log.info("Redis refreshToken -> {}", valueByKey.get());
+        log.info("Request refreshToken -> {}", refresh);
         if (valueByKey.isEmpty()||!jwtUtil.validateToken(valueByKey.get())){
             redisUtil.delete(RedisKeyType.REFRESHTOKEN.makeKey(memberId.toString()));
             throw new RefreshTokenNotFoundException();
