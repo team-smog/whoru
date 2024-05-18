@@ -1,19 +1,14 @@
-import { useAdminLoginReq } from '@/hooks/Auth/useAuth'
-import { useEffect, useState } from 'react'
-// import { useNavigate } from 'react-router-dom';
+import { useAdminAuthReq, useAdminLoginReq } from '@/hooks/Auth/useAuth'
+import { setRole } from '@/stores/store'
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
 
 const AdminLogin = () => {
-	const [id, setId] = useState<string>('')
-	const [pw, setPassword] = useState<string>('')
-	const { mutate } = useAdminLoginReq()
-
-	// const navigate = useNavigate();
-
-	// 서버
-	// const link = ``
-
-	// 로컬
-	const link = `https://codearena.shop/api/admin/login`
+	const [id, setId] = useState<string>('');
+	const dispatch = useDispatch();
+	const [pw, setPassword] = useState<string>('');
+	const { mutate } = useAdminLoginReq();
+	const { data: userData } = useAdminAuthReq();
 
 	const handleLogin = () => {
 		const formData = {
@@ -23,7 +18,11 @@ const AdminLogin = () => {
 
 		console.log(formData);
 		mutate(formData);
-		window.location.href = link;
+		console.log(userData)
+		if (userData) {
+			dispatch(setRole(userData.role));
+			console.log(userData.role);
+		}
 	}
 
 	return (
@@ -57,4 +56,6 @@ const AdminLogin = () => {
 	)
 }
 
-export default AdminLogin
+export default AdminLogin;
+
+

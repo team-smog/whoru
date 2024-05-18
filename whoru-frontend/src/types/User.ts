@@ -12,3 +12,9 @@ export interface IUserInfo {
   fcmToken: string | null;
   pushAlarm: boolean | null;
 }
+
+export interface IAdminUserInfo {
+  id: number|null;
+  userName: string | null;
+  role: string | null;
+}
