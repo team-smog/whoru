@@ -33,7 +33,7 @@ axiosWithCredentialInstance.interceptors.response.use(
       });
       // console.log(res.data.data.token);
       localStorage.setItem('AccessToken', res.data.data.token);
-      // console.log(localStorage.getItem('AccessToken')); 
+      // console.log(localStorage.getItem('AccessToken'));
       err.config.headers.Authorization = `Bearer ${localStorage.getItem('AccessToken')}`
       return axiosWithCredentialInstance(err.config);
     } else {

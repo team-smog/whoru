@@ -1,6 +1,6 @@
 const CACHE_NAME = "cache-v1";
 
-const FILES_TO_CACHE = ["/offline.html", "/public/manifest/maskable_icon_x192.png"];
+const FILES_TO_CACHE = ["/offline.html", "/logo/logo.png"];
 
 self.addEventListener("install", (event) => {
     event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(FILES_TO_CACHE)));
