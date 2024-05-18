@@ -1,11 +1,11 @@
-import { useAdminLoginReq } from '@/hooks/Auth/useAuth'
+// import { useAdminLoginReq } from '@/hooks/Auth/useAuth'
 import { useState } from 'react'
 // import { useNavigate } from 'react-router-dom';
 
 const AdminLogin = () => {
 	const [id, setId] = useState<string>('')
 	const [pw, setPassword] = useState<string>('')
-	const { mutate } = useAdminLoginReq()
+	// const { mutate } = useAdminLoginReq()
 
 	// const navigate = useNavigate();
 
@@ -22,7 +22,14 @@ const AdminLogin = () => {
 		}
 
 		console.log(formData);
-		mutate(formData);
+		// mutate(formData);
+		fetch("https://codearena.shop/api/admin/login", {
+			headers: {
+				"Content-Type": "application/json"
+			},
+			method: "POST",
+			body: JSON.stringify(formData)
+		})
 		// window.location.href = link;
 	}
 
