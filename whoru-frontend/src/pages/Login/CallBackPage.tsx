@@ -23,7 +23,7 @@ const CallBackPage = () => {
 	
 	const fetchDataFCM = async (token: string|null) => {
 		try {
-			// console.log("token1",token)
+			console.log("token1",token)
 			if (token === null) {
 				return;
 			}
