@@ -5,11 +5,12 @@ import { useDispatch } from 'react-redux'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { requestPermission } from "@/FirebaseUtil.js";
 
+
 const CallBackPage = () => {
-	const navigate = useNavigate()
-	const [searchParams] = useSearchParams()
-	const dispatch = useDispatch()
-	const { data: userData, isError, isLoading } = useAuthReq()
+	const navigate = useNavigate();
+	const [searchParams] = useSearchParams();
+	const dispatch = useDispatch();
+	const { data: userData, isError, isLoading } = useAuthReq();
 	
 	const FCMSetToken = async () => {
 		// const token = await requestPermission();
@@ -54,6 +55,7 @@ const CallBackPage = () => {
 	}, [token]);
 
 	useEffect(() => {
+
 		const accessToken = searchParams.get('accessToken')
 		console.log(accessToken)
 
@@ -62,7 +64,7 @@ const CallBackPage = () => {
 			return
 		}
 
-		localStorage.setItem('AccessToken', accessToken)
+		localStorage.setItem('AccessToken', accessToken);
 
 		if (isLoading) return
 

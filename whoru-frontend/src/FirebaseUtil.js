@@ -20,6 +20,7 @@ const requestPermission = async () => {
 		console.log('알림받기가 꺼져있습니다.')
 		return ''
 	}
+	console.log('permission', permission)
 	let token = ''
 	try {
 		token = await getToken(messaging, {
@@ -32,8 +33,8 @@ const requestPermission = async () => {
 	}
 
 	localStorage.setItem('FCMToken', token)
-	// console.log('fcm token:', token)
-	// return token
+	console.log('fcm token:', token)
+	return token
 }
 
 function getFirebaseMessagingObject() {
