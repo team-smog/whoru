@@ -11,6 +11,7 @@ import { useInView } from 'react-intersection-observer';
 import { useDispatch, useSelector } from "react-redux";
 import { setAFirstId, setALastId } from "@/stores/store";
 import { axiosWithCredentialInstance } from "@/apis/axiosInstance";
+import { getFCMToken } from "@/FirebaseUtil";
 
 const PostBoxPage = () => {
   const info: IHeaderInfo = {
@@ -22,6 +23,8 @@ const PostBoxPage = () => {
   
   useEffect(() => {
     window.scrollTo(0, 0);
+    console.log('isMain');
+    getFCMToken();
     return () => {
       dispatch(setAFirstId(null));
       dispatch(setALastId(null));

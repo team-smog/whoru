@@ -6,6 +6,7 @@ export const getUserDetail = async (): Promise<IUserInfo> => {
 	const res = await axiosAuthInstance.get(`/member/profile`, {
 		headers: {
 			'Content-Type': 'application/json',
+			Authorization: `Bearer ${localStorage.getItem('AccessToken')}`
 		},
 	})
 	console.log(res)

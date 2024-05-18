@@ -5,6 +5,7 @@ import GoogleLogin from '@/components/LoginPage/GoogleLogin';
 // import NaverLogin from '@/components/LoginPage/NaverLogin';
 
 const LoginPage = () => {
+  
   return (
     <>
       <div className='relative'>
