@@ -13,7 +13,7 @@ const AdminLogin = () => {
 	// const link = ``
 
 	// 로컬
-	const link = `https://codearena.shop/api/admin/login`
+	// const link = `https://codearena.shop/api/admin/login`
 
 	const handleLogin = () => {
 		const formData = {
@@ -23,7 +23,7 @@ const AdminLogin = () => {
 
 		console.log(formData);
 		mutate(formData);
-		window.location.href = link;
+		// window.location.href = link;
 	}
 
 	return (
