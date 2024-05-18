@@ -49,11 +49,11 @@ public class SecurityConfig{
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/").permitAll()
                         .requestMatchers("/login/**").permitAll()
-                        .requestMatchers("/admin/login").permitAll()
                         .requestMatchers("/member/regenerate-token").permitAll()
                         // Prometheus에서 오는 요청만 허용
                         .requestMatchers("/actuator/**").permitAll()
-                        .requestMatchers("/admin").hasRole("ADMIN")
+                        .requestMatchers("/admin/login").permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/api-docs/**").permitAll()
                         .anyRequest().authenticated())
                 .oauth2Login((oauth2) -> oauth2
