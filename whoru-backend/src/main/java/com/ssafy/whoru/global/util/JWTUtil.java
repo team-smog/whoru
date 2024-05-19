@@ -55,12 +55,8 @@ public class JWTUtil {
             log.error("JWT is not valid");
         } catch (SignatureException exception) {
             log.error("JWT signature validation fails");
-        } catch (ExpiredJwtException exception) {
-            log.error("JWT is expired");
         } catch (IllegalArgumentException exception) {
             log.error("JWT is null or empty or only whitespace");
-        } catch (Exception exception) {
-            log.error("JWT validation fails", exception);
         }
 
         return false;
@@ -88,6 +84,17 @@ public class JWTUtil {
                 .signWith(secretKey)
                 .compact();
     }
+    public String createAdminAccessToken(Integer userId, String category, String role) {
+        log.info("access token expire ms : " + accessExpirems);
+        return Jwts.builder()
+                .claim("category", category)
+                .claim("id", userId)
+                .claim("role", role)
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(new Date(System.currentTimeMillis() + accessExpirems))
+                .signWith(secretKey)
+                .compact();
+    }
     public String createRefreshToken(Long userId, String category, String role) {
 
         return Jwts.builder()
@@ -99,4 +106,15 @@ public class JWTUtil {
                 .signWith(secretKey)
                 .compact();
     }
+
+    public Long getMemberId(String token) {
+        return Jwts
+                .parser()
+            .verifyWith(secretKey)
+            .build()
+            .parseSignedClaims(token)
+            .getPayload()
+            .get("id", Long.class);
+    }
+
 }
