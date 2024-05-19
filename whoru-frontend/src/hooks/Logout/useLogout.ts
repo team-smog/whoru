@@ -11,7 +11,6 @@ const useLogout = () => {
       console.log('로그아웃됬습니다.');
       localStorage.removeItem('AccessToken');
       localStorage.clear();
-      
       navigate('/login');
     },
     onError: (err: Error) => {
