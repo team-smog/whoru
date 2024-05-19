@@ -25,7 +25,7 @@ const InquiryModal = ({ boardId, onClose }: { boardId: number | null; onClose: (
           placeholder="답글을 입력해주세요."
           value={content}
           onChange={e => setContent(e.target.value)}
-          className="border rounded-[10px] w-full px-2 py-2 min-h-[160px] text-text_color placeholder-[10px] text-[12px]"
+          className="border rounded-[10px] w-full px-2 py-2 min-h-[160px] text-text_color placeholder-[10px] text-[12px] whitespace-pre-wrap"
         />
         <div className="flex justify-center pt-4" onClick={handleInquiryCreate}>
           <button className="w-full h-8 bg-gray-300 text-text_color py-1 rounded-lg text-[14px]" onClick={onClose}>

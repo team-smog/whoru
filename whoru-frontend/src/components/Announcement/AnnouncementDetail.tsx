@@ -60,7 +60,7 @@ const AnnouncementDetail = () => {
 								</div>
 							</div>
 							<div className="flex px-12 pt-4">
-								<p className="text-xs break-keep">{announcement.content}</p>
+								<p className="text-xs break-keep whitespace-pre-wrap">{announcement.content}</p>
 							</div>
 						</div>
 					) : (
