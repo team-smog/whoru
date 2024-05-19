@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -58,13 +59,16 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         String refreshToken;
         //기존 Redis에 저장된 Refresh가 있다면 해당값을 전달
-        refreshToken = String.valueOf(
+        String redisRefreshToken = String.valueOf(
             redisUtil.findValueByKey(RedisKeyType.REFRESHTOKEN.makeKey(String.valueOf(userId))));
 
-        log.info("Redis search value -> {}", refreshToken);
-        if(refreshToken.isEmpty()) {
+        log.info("Redis search value -> {}", redisRefreshToken);
+        if(redisRefreshToken.isEmpty()) {
             refreshToken = jwtUtil.createRefreshToken(userId,"refresh",role);
             redisUtil.insert(RedisKeyType.REFRESHTOKEN.makeKey(String.valueOf(userId)),refreshToken,time/1000);
+        }
+        else {
+            refreshToken = redisRefreshToken;
         }
 
 

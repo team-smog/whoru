@@ -103,7 +103,6 @@ public class MemberApi implements MemberApiDocs{
             throw new RefreshTokenNotFoundException();
         }
 
-        log.info(refreshToken);
         // 토큰을 통해 유저 ID 가져오기
         Long memberId = jwtUtil.getMemberId(refreshToken);
 
