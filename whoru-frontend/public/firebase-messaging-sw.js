@@ -4,9 +4,9 @@ importScripts('https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js')
 self.addEventListener('notificationclick', (e) => {
 	const { content, title, type } = e.notification.data
 	if (type == 'MESSAGE') {
-		clients.openWindow('https://k10d203.p.ssafy.io/')
+		clients.openWindow('https://codearena.shop/')
 	} else {
-		clients.openWindow('https://k10d203.p.ssafy.io/announcement')
+		clients.openWindow('https://codearena.shop/announcement')
 	}
 })
 

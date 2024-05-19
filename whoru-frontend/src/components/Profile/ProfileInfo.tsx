@@ -19,7 +19,7 @@ const ProfileInfo = () => {
 	useEffect(() => {
 		const fetchUserInfo = async () => {
 			try {
-				const response = await axiosWithCredentialInstance.get('https://k10d203.p.ssafy.io/api/member/profile', {
+				const response = await axiosWithCredentialInstance.get('https://codearena.shop/api/member/profile', {
 					headers: {
 						Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
 					},
