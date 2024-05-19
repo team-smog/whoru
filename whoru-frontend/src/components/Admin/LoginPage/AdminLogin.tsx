@@ -1,29 +1,33 @@
 import { useAdminAuthReq, useAdminLoginReq } from '@/hooks/Auth/useAuth'
 import { setRole } from '@/stores/store'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 const AdminLogin = () => {
 	const [id, setId] = useState<string>('');
 	const dispatch = useDispatch();
 	const [pw, setPassword] = useState<string>('');
-	const { mutate } = useAdminLoginReq();
-	const { data: userData } = useAdminAuthReq();
+	const loginMutation = useAdminLoginReq();
+	const { data: userData, refetch } = useAdminAuthReq();
+	const navigate = useNavigate();
 
-	const handleLogin = () => {
-		const formData = {
-			id,
-			pw,
-		}
+  useEffect(() => {
+    if (userData) {
+      dispatch(setRole(userData.role));
+      navigate('/admin');
+    }
+  }, [userData, dispatch, navigate]);
 
-		console.log(formData);
-		mutate(formData);
-		console.log(userData)
-		if (userData) {
-			dispatch(setRole(userData.role));
-			console.log(userData.role);
-		}
-	}
+  const handleLogin = async () => {
+    const formData = { id, pw };
+    console.log(formData);
+    loginMutation.mutate(formData, {
+      onSuccess: () => {
+        refetch();
+      }
+    });
+  };
 
 	return (
 		<>
