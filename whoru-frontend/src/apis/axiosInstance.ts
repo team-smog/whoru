@@ -22,22 +22,30 @@ export const axiosWithCredentialInstance = axios.create(axiosWithCredentialConfi
 
 // axiosWithCredentialInstance.interceptors.request.use(setAuthorization)
 axiosWithCredentialInstance.interceptors.response.use(
-  (res) => res,
-  async(err) => {
-    console.log(err)
-    if (err.response.status === 401) {
-      const res = await axiosWithCredentialInstance.post(`/member/regenerate-token`, {
-        headers: {
-          'Content-Type' : "application/json",
-        }
-      });
-      // console.log(res.data.data.token);
-      localStorage.setItem('AccessToken', res.data.data.token);
-      // console.log(localStorage.getItem('AccessToken'));
-      err.config.headers.Authorization = `Bearer ${localStorage.getItem('AccessToken')}`
-      return axiosWithCredentialInstance(err.config);
-    } else {
-      throw err;
-    }
-  }
+	(res) => res,
+	async (err) => {
+		console.log(err.response.status)
+		if (err.response.status === 401) {
+			try {
+        console.log('asdfasdfasdfasdf')
+				const res = await axiosWithCredentialInstance.post(`/member/regenerate-token`, {
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				})
+				// console.log(res.data.data.token);
+				localStorage.setItem('AccessToken', res.data.data.token)
+				// console.log(localStorage.getItem('AccessToken'));
+				err.config.headers.Authorization = `Bearer ${localStorage.getItem('AccessToken')}`
+				return axiosWithCredentialInstance(err.config)
+			} catch (err) {
+				throw err
+			}
+		} else if (err.response.status === 500) {
+      // console.log('alsdfijsaliejflasef')
+      if (err.response.data.errorCode === 404) {
+        localStorage.removeItem('AccessToken')
+      }
+		}
+	}
 )
