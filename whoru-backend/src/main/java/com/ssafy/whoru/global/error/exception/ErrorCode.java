@@ -7,6 +7,10 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ErrorCode {
 
+    //Admin
+    ADMIN_NOT_FOUND(404, "존재하지 않는 관리자 계정입니다."),
+    ADMIN_PASSWORD_NOT_CORRECT(401, "비밀번호가 틀렸습니다."),
+
     // Global
     INTERNAL_SERVER_ERROR(500, "내부 서버 오류입니다."),
     METHOD_NOT_ALLOWED(405, "허용되지 않은 HTTP method입니다."),
@@ -22,6 +26,7 @@ public enum ErrorCode {
     QUERY_INVALID_PARAM(400, "잘못된 요청입니다."),
 
     // Member
+    ACCESSTOKEN_EXPIRED(401,"엑세스 토큰이 만료되었습니다 재로그인이 필요합니다."),
     REFRESHTOKEN_EXPIRED(400,"토큰이 만료되었습니다 재로그인이 필요합니다."),
     TOKEN_NOT_FOUND(404,"토큰을 찾을 수 없습니다."), //redis속 refresh토큰이 없을때
     TOKEN_CREATE_FAILED(432,"토큰 생성 실패했습니다."), //access 토큰재발급에 실패했을때
@@ -47,6 +52,7 @@ public enum ErrorCode {
 
     // Message
     REPORTED_MESSAGE_EXCEPTION(451, "신고한 메세지에는 답장할 수 없습니다."),
+    ALREADY_ALLOCATED(404, "이미 가져간 메세지이거나, 잘못된 요청입니다."),
 
     // S3 & File
     BUCKET_NOT_FOUND_EXCEPTION(404, "버킷 로드에 실패했습니다."),

@@ -82,5 +82,9 @@ public class Message {
     public void updateReadDate(){
         this.readDate = LocalDateTime.now();
     }
+
+    public void updateReceiver(Member receiver){
+        this.receiver = receiver;
+    }
     
 }

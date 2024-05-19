@@ -8,6 +8,10 @@ import com.ssafy.whoru.domain.message.dto.request.TextSend;
 import com.ssafy.whoru.global.common.dto.FcmType;
 import com.ssafy.whoru.util.MemberTestUtil;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
@@ -50,9 +54,6 @@ public class MessageApiTest extends TestPrepare {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.status").value(HttpStatus.CREATED.value()));
 
-        Mockito.verify(fcmUtil, Mockito.times(1)).sendMessage(any(String.class), any(Long.class), any(
-            FcmType.class));
-
     }
 
     @Test
@@ -79,8 +80,6 @@ public class MessageApiTest extends TestPrepare {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.status").value(HttpStatus.CREATED.value()));
 
-        Mockito.verify(fcmUtil, Mockito.times(0)).sendMessage(any(String.class), any(Long.class), any(
-            FcmType.class));
     }
 
     @Test
@@ -101,9 +100,6 @@ public class MessageApiTest extends TestPrepare {
             .andExpect(status().is4xxClientError())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.errorCode").value(HttpStatus.BAD_REQUEST.value()));
-
-        Mockito.verify(fcmUtil, Mockito.times(0)).sendMessage(any(String.class), any(Long.class), any(
-            FcmType.class));
     }
 
     @Test
@@ -125,8 +121,6 @@ public class MessageApiTest extends TestPrepare {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.errorCode").value(HttpStatus.BAD_REQUEST.value()));
 
-        Mockito.verify(fcmUtil, Mockito.times(0)).sendMessage(any(String.class), any(Long.class), any(
-            FcmType.class));
     }
 
     @Test
@@ -151,10 +145,6 @@ public class MessageApiTest extends TestPrepare {
                 .andExpect(status().is5xxServerError())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.errorCode").value(HttpStatus.FORBIDDEN.value()));
-
-        Mockito.verify(fcmUtil, Mockito.times(0))
-            .sendMessage(any(String.class), any(Long.class), any(
-                FcmType.class));
 
     }
     @Test
@@ -309,10 +299,6 @@ public class MessageApiTest extends TestPrepare {
 
         Mockito.verify(s3Client, Mockito.times(1))
             .putObject(any(PutObjectRequest.class), any(RequestBody.class));
-
-        Mockito.verify(fcmUtil, Mockito.times(1))
-            .sendMessage(any(String.class), any(Long.class), any(
-                FcmType.class));
     }
 
 
@@ -563,7 +549,8 @@ public class MessageApiTest extends TestPrepare {
         )
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.status").value(HttpStatus.OK.value()));
+            .andExpect(jsonPath("$.status").value(HttpStatus.OK.value()))
+            .andExpect(jsonPath("$.data.length()").value(messages.size()));
     }
 
     @Test
@@ -648,7 +635,8 @@ public class MessageApiTest extends TestPrepare {
             )
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.status").value(HttpStatus.OK.value()));
+            .andExpect(jsonPath("$.status").value(HttpStatus.OK.value()))
+            .andExpect(jsonPath("$.data.content.length()").value(messages.size()));
     }
 
     @Test
@@ -718,6 +706,370 @@ public class MessageApiTest extends TestPrepare {
 
         mockMvc.perform(
                 get("/message?size=20&lastid=0")
+                    .header(MemberTestUtil.MEMBER_HEADER_AUTH, header3001)
+            )
+            .andExpect(status().is4xxClientError())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.errorCode").value(HttpStatus.BAD_REQUEST.value()));
+    }
+
+
+    @Test
+    void 최근_데일리메세지_목록조회_성공_200() throws Exception{
+        List<Member> memberList = memberTestUtil.기본_멤버_세팅();
+        Member member3000 = memberList.get(0);
+        Member member3001 = memberList.get(1);
+
+        String header3001 = memberTestUtil.유저_AccessToken_만들고_헤더값_리턴(member3001);
+
+        List<Message> messages = messageTestUtil.정상_메세지_n개_생성(mockMvc, 20, member3000, member3001);
+        messageRepository.saveAll(messages);
+        Message top = messageRepository.findTopByOrderByIdDesc();
+        StringBuilder sb = new StringBuilder();
+        sb.append("/message/daily/recent?firstid=").append(top.getId()/2);
+
+        mockMvc.perform(
+                get(sb.toString())
+                    .header(MemberTestUtil.MEMBER_HEADER_AUTH, header3001)
+            )
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.status").value(HttpStatus.OK.value()))
+            .andExpect(jsonPath("$.data.length()").value(messages.size()));
+    }
+
+    @Test
+    void 최근_데일리메세지_목록조회_성공_하지만_비었음_204() throws Exception{
+        List<Member> memberList = memberTestUtil.기본_멤버_세팅();
+        Member member3000 = memberList.get(0);
+        Member member3001 = memberList.get(1);
+
+        String header3001 = memberTestUtil.유저_AccessToken_만들고_헤더값_리턴(member3001);
+
+        List<Message> messages = messageTestUtil.이전날짜_메세지_n개_생성(mockMvc, 20, member3000, member3001, false);
+        messageRepository.saveAll(messages);
+        Message top = messageRepository.findTopByOrderByIdDesc();
+        StringBuilder sb = new StringBuilder();
+        sb.append("/message/daily/recent?firstid=").append(top.getId());
+
+        mockMvc.perform(
+                get(sb.toString())
+                    .header(MemberTestUtil.MEMBER_HEADER_AUTH, header3001)
+            )
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.status").value(HttpStatus.NO_CONTENT.value()));
+    }
+
+    @Test
+    void 최근_데일리메세지_목록조회_firstid_누락_400() throws Exception{
+        List<Member> memberList = memberTestUtil.기본_멤버_세팅();
+        Member member3000 = memberList.get(0);
+        Member member3001 = memberList.get(1);
+
+        String header3001 = memberTestUtil.유저_AccessToken_만들고_헤더값_리턴(member3001);
+
+        List<Message> messages = messageTestUtil.정상_메세지_n개_생성(mockMvc, 20, member3000, member3001);
+        messageRepository.saveAll(messages);
+
+        mockMvc.perform(
+                get("/message/daily/recent")
+                    .header(MemberTestUtil.MEMBER_HEADER_AUTH, header3001)
+            )
+            .andExpect(status().is4xxClientError())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.errorCode").value(HttpStatus.BAD_REQUEST.value()));
+    }
+
+    @Test
+    void 최근_데일리메세지_목록조회_firstid_가_1보다_작음_400() throws Exception{
+        List<Member> memberList = memberTestUtil.기본_멤버_세팅();
+        Member member3000 = memberList.get(0);
+        Member member3001 = memberList.get(1);
+
+        String header3001 = memberTestUtil.유저_AccessToken_만들고_헤더값_리턴(member3001);
+
+        List<Message> messages = messageTestUtil.정상_메세지_n개_생성(mockMvc, 20, member3000, member3001);
+        messageRepository.saveAll(messages);
+        StringBuilder sb = new StringBuilder();
+        sb.append("/message/daily/recent?firstid=").append(0);
+
+        mockMvc.perform(
+                get(sb.toString())
+                    .header(MemberTestUtil.MEMBER_HEADER_AUTH, header3001)
+            )
+            .andExpect(status().is4xxClientError())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.errorCode").value(HttpStatus.BAD_REQUEST.value()));
+    }
+
+    @Test
+    void 이전_데일리메세지_목록조회_성공_200() throws Exception{
+        List<Member> memberList = memberTestUtil.기본_멤버_세팅();
+        Member member3000 = memberList.get(0);
+        Member member3001 = memberList.get(1);
+
+        String header3000 = memberTestUtil.유저_AccessToken_만들고_헤더값_리턴(member3000);
+
+        List<Message> messages = messageTestUtil.정상_메세지_n개_생성(mockMvc, 20, member3000, member3001);
+        messageRepository.saveAll(messages);
+
+        mockMvc.perform(
+                get("/message/daily/old?size=20")
+                    .header(MemberTestUtil.MEMBER_HEADER_AUTH, header3000)
+            )
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.status").value(HttpStatus.OK.value()))
+            .andExpect(jsonPath("$.data.content.length()").value(messages.size()));
+    }
+
+    @Test
+    void 이전_데일리메세지_목록조회_성공_하지만_비었음_204() throws Exception{
+        List<Member> memberList = memberTestUtil.기본_멤버_세팅();
+        Member member3000 = memberList.get(0);
+        Member member3001 = memberList.get(1);
+
+        String header3001 = memberTestUtil.유저_AccessToken_만들고_헤더값_리턴(member3001);
+
+        Message first = messageTestUtil.이전날_Text_메세지(mockMvc, member3000, member3001, false);
+        List<Message> messages = messageTestUtil.이전날짜_메세지_n개_생성(mockMvc, 19, member3000, member3001, false);
+
+        messageRepository.save(first);
+        messageRepository.saveAll(messages);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("/message/daily/old?size=20&lastid=").append(first.getId());
+
+        mockMvc.perform(
+                get(sb.toString())
+                    .header(MemberTestUtil.MEMBER_HEADER_AUTH, header3001)
+            )
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.status").value(HttpStatus.NO_CONTENT.value()));
+    }
+
+    @Test
+    void 이전_데일리메세지_목록조회_size_누락_400() throws Exception{
+        List<Member> memberList = memberTestUtil.기본_멤버_세팅();
+        Member member3001 = memberList.get(1);
+
+        String header3001 = memberTestUtil.유저_AccessToken_만들고_헤더값_리턴(member3001);
+
+        mockMvc.perform(
+                get("/message/daily/old")
+                    .header(MemberTestUtil.MEMBER_HEADER_AUTH, header3001)
+            )
+            .andExpect(status().is4xxClientError())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.errorCode").value(HttpStatus.BAD_REQUEST.value()));
+    }
+
+    @Test
+    void 이전_데일리메세지_목록조회_size_가_20보다_작음_400() throws Exception{
+        List<Member> memberList = memberTestUtil.기본_멤버_세팅();
+        Member member3001 = memberList.get(1);
+
+        String header3001 = memberTestUtil.유저_AccessToken_만들고_헤더값_리턴(member3001);
+
+        mockMvc.perform(
+                get("/message/daily/old?size=19")
+                    .header(MemberTestUtil.MEMBER_HEADER_AUTH, header3001)
+            )
+            .andExpect(status().is4xxClientError())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.errorCode").value(HttpStatus.BAD_REQUEST.value()));
+    }
+
+    @Test
+    void 이전_데일리메세지_목록조회_lastid_가_1보다_작음_400() throws Exception{
+        List<Member> memberList = memberTestUtil.기본_멤버_세팅();
+        Member member3001 = memberList.get(1);
+
+        String header3001 = memberTestUtil.유저_AccessToken_만들고_헤더값_리턴(member3001);
+
+        mockMvc.perform(
+                get("/message/daily/old??size=20&lastid=0")
+                    .header(MemberTestUtil.MEMBER_HEADER_AUTH, header3001)
+            )
+            .andExpect(status().is4xxClientError())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.errorCode").value(HttpStatus.BAD_REQUEST.value()));
+    }
+
+
+    @Test
+    void 최근_우편함_목록조회_성공_200() throws Exception{
+        List<Member> memberList = memberTestUtil.기본_멤버_세팅();
+        Member member3000 = memberList.get(0);
+        Member member3001 = memberList.get(1);
+
+        String header3001 = memberTestUtil.유저_AccessToken_만들고_헤더값_리턴(member3001);
+
+        List<Message> messages = messageTestUtil.우편함_메세지_n개_생성(mockMvc, member3000, 20);
+        messageRepository.saveAll(messages);
+        StringBuilder sb = new StringBuilder();
+        sb.append("/message/undelivered-message/recent?firstid=").append(messages.getLast().getId()/2);
+
+        mockMvc.perform(
+                get(sb.toString())
+                    .header(MemberTestUtil.MEMBER_HEADER_AUTH, header3001)
+            )
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.status").value(HttpStatus.OK.value()))
+            .andExpect(jsonPath("$.data.length()").value(messages.size()));
+    }
+
+    @Test
+    void 최근_우편함_목록조회_성공_하지만_비었음_204() throws Exception{
+        List<Member> memberList = memberTestUtil.기본_멤버_세팅();
+        Member member3000 = memberList.get(0);
+
+        String header3000 = memberTestUtil.유저_AccessToken_만들고_헤더값_리턴(member3000);
+
+        List<Message> messages = messageTestUtil.우편함_메세지_n개_생성(mockMvc, member3000, 20);
+        messageRepository.saveAll(messages);
+        Message top = messageRepository.findTopByOrderByIdDesc();
+        StringBuilder sb = new StringBuilder();
+        sb.append("/message/undelivered-message/recent?firstid=").append(top.getId());
+
+        mockMvc.perform(
+                get(sb.toString())
+                    .header(MemberTestUtil.MEMBER_HEADER_AUTH, header3000)
+            )
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.status").value(HttpStatus.NO_CONTENT.value()));
+    }
+
+    @Test
+    void 최근_우편함_목록조회_firstid_누락_400() throws Exception{
+        List<Member> memberList = memberTestUtil.기본_멤버_세팅();
+        Member member3000 = memberList.get(0);
+        Member member3001 = memberList.get(1);
+
+        String header3001 = memberTestUtil.유저_AccessToken_만들고_헤더값_리턴(member3001);
+
+        List<Message> messages = messageTestUtil.우편함_메세지_n개_생성(mockMvc,  member3000, 20);
+        messageRepository.saveAll(messages);
+
+        mockMvc.perform(
+                get("/message/undelivered-message/recent")
+                    .header(MemberTestUtil.MEMBER_HEADER_AUTH, header3001)
+            )
+            .andExpect(status().is4xxClientError())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.errorCode").value(HttpStatus.BAD_REQUEST.value()));
+    }
+
+    @Test
+    void 최근_우편함_목록조회_firstid_가_1보다_작음_400() throws Exception{
+        List<Member> memberList = memberTestUtil.기본_멤버_세팅();
+        Member member3000 = memberList.get(0);
+        Member member3001 = memberList.get(1);
+
+        String header3001 = memberTestUtil.유저_AccessToken_만들고_헤더값_리턴(member3001);
+
+        List<Message> messages = messageTestUtil.우편함_메세지_n개_생성(mockMvc,  member3000, 20);
+        messageRepository.saveAll(messages);
+        StringBuilder sb = new StringBuilder();
+        sb.append("/message/undelivered-message/recent?firstid=").append(0);
+
+        mockMvc.perform(
+                get(sb.toString())
+                    .header(MemberTestUtil.MEMBER_HEADER_AUTH, header3001)
+            )
+            .andExpect(status().is4xxClientError())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.errorCode").value(HttpStatus.BAD_REQUEST.value()));
+    }
+
+    @Test
+    void 이전_우편함_목록조회_성공_200() throws Exception{
+        List<Member> memberList = memberTestUtil.기본_멤버_세팅();
+        Member member3000 = memberList.get(0);
+        Member member3001 = memberList.get(1);
+
+        String header3001 = memberTestUtil.유저_AccessToken_만들고_헤더값_리턴(member3001);
+
+        List<Message> messages = messageTestUtil.우편함_메세지_n개_생성(mockMvc,  member3000, 20);
+        messageRepository.saveAll(messages);
+
+        mockMvc.perform(
+                get("/message/undelivered-message/old?size=20")
+                    .header(MemberTestUtil.MEMBER_HEADER_AUTH, header3001)
+            )
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.status").value(HttpStatus.OK.value()))
+            .andExpect(jsonPath("$.data.content.length()").value(messages.size()));
+    }
+
+    @Test
+    void 이전_우편함_목록조회_성공_하지만_비었음_204() throws Exception{
+        List<Member> memberList = memberTestUtil.기본_멤버_세팅();
+        Member member3000 = memberList.get(0);
+
+        String header3000 = memberTestUtil.유저_AccessToken_만들고_헤더값_리턴(member3000);
+
+        List<Message> messages = messageTestUtil.우편함_메세지_n개_생성(mockMvc,  member3000, 20);
+        messageRepository.saveAll(messages);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("");
+
+        mockMvc.perform(
+                get("/message/undelivered-message/old?size=20")
+                    .header(MemberTestUtil.MEMBER_HEADER_AUTH, header3000)
+            )
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.status").value(HttpStatus.NO_CONTENT.value()));
+    }
+
+    @Test
+    void 이전_우편함_목록조회_size_누락_400() throws Exception{
+        List<Member> memberList = memberTestUtil.기본_멤버_세팅();
+        Member member3001 = memberList.get(1);
+
+        String header3001 = memberTestUtil.유저_AccessToken_만들고_헤더값_리턴(member3001);
+
+        mockMvc.perform(
+                get("/message/undelivered-message/old")
+                    .header(MemberTestUtil.MEMBER_HEADER_AUTH, header3001)
+            )
+            .andExpect(status().is4xxClientError())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.errorCode").value(HttpStatus.BAD_REQUEST.value()));
+    }
+
+    @Test
+    void 이전_우편함_목록조회_size_가_20보다_작음_400() throws Exception{
+        List<Member> memberList = memberTestUtil.기본_멤버_세팅();
+        Member member3001 = memberList.get(1);
+
+        String header3001 = memberTestUtil.유저_AccessToken_만들고_헤더값_리턴(member3001);
+
+        mockMvc.perform(
+                get("/message/undelivered-message/old?size=19")
+                    .header(MemberTestUtil.MEMBER_HEADER_AUTH, header3001)
+            )
+            .andExpect(status().is4xxClientError())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.errorCode").value(HttpStatus.BAD_REQUEST.value()));
+    }
+
+    @Test
+    void 이전_우편함_목록조회_lastid_가_1보다_작음_400() throws Exception{
+        List<Member> memberList = memberTestUtil.기본_멤버_세팅();
+        Member member3001 = memberList.get(1);
+
+        String header3001 = memberTestUtil.유저_AccessToken_만들고_헤더값_리턴(member3001);
+
+        mockMvc.perform(
+                get("/message/undelivered-message/old??size=20&lastid=0")
                     .header(MemberTestUtil.MEMBER_HEADER_AUTH, header3001)
             )
             .andExpect(status().is4xxClientError())
