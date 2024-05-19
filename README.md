@@ -61,9 +61,6 @@
 <br>
 <h2 id="section3"> 🛠️ 3. 기술 스택 </h2>
 
-<br>
-<h2 id="section3"> 🛠️ 3. 기술 스택 </h2>
-
 <h3 align="center"> Back-End </h3>
 
 <p align="center">
