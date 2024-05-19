@@ -38,7 +38,7 @@ const InquiryItems = ({ data, onSelectItem }: { data: IInquiryRes, onSelectItem:
 						)}
 					</div>
 				</div>
-				<div className="text-[12px] text-text_color">{data.content}</div>
+				<div className="text-[12px] text-text_color whitespace-pre-wrap overflow-y-auto">{data.content}</div>
 				<div className="text-[10px] text-gray-400 pt-2">{data.createDate}</div>
 			</div>
 			{data.comment && openId === data.id && (
