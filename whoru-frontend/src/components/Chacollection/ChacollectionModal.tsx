@@ -1,11 +1,11 @@
 import React, { useState, useRef } from 'react'
-import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux'
 import { setBoxCount } from '@/stores/store'
 import OpenImage from '@/assets/@common/Randomopenbox.png'
 import Cancel from '@/assets/@common/Cancel.png'
 import './Modal.css'
 import JSConfetti from 'js-confetti'
+import { axiosWithCredentialInstance } from '@/apis/axiosInstance'
 
 interface Icon {
 	id: string
@@ -45,8 +45,8 @@ const ChacollectionModal: React.FC<ChacollectionModalProps> = ({ onAction }) => 
 		setIsShaking(true)
 		setTimeout(async () => {
 			try {
-				const response = await axios.post(
-					'https://k10d203.p.ssafy.io/api/collects/icons/redeem-random',
+				const response = await axiosWithCredentialInstance.post(
+					'collects/icons/redeem-random',
 					{},
 					{
 						headers: {
@@ -88,8 +88,8 @@ const ChacollectionModal: React.FC<ChacollectionModalProps> = ({ onAction }) => 
 	const handleImageClick = () => {
 		if (boxCount > 0) {
 			if (!isDisabled) {
-        setImageSrc(OpenImage)
-        setSelectedIcon(null)
+				setImageSrc(OpenImage)
+				setSelectedIcon(null)
 				fetchUserIcons()
 				applyAnimation()
 			}
@@ -102,7 +102,7 @@ const ChacollectionModal: React.FC<ChacollectionModalProps> = ({ onAction }) => 
 				캐릭터 뽑기
 			</div>
 			{isModalOpen && (
-				<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+				<div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
 					<div className="w-80 h-56 bg-white rounded-lg border-solid border-2 border-black">
 						<div className="flex flex-row justify-between rounded-t-lg bg-[#D78DDD]">
 							<h2 className="pt-1 p-2 modal-text">랜덤 박스</h2>
@@ -141,8 +141,10 @@ const ChacollectionModal: React.FC<ChacollectionModalProps> = ({ onAction }) => 
 						<div
 							className="modalbutton"
 							onClick={handleImageClick}
-							style={{ backgroundColor: boxCount > 0 && !isDisabled ? '#F6B5D7' : '#dadbd9',color:boxCount > 0 && !isDisabled ? 'black' :  '#727372' }}
-
+							style={{
+								backgroundColor: boxCount > 0 && !isDisabled ? '#F6B5D7' : '#dadbd9',
+								color: boxCount > 0 && !isDisabled ? 'black' : '#727372',
+							}}
 						>
 							캐릭터 뽑기
 						</div>

@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    environment {
+        VITE_BASE_URL = credentials('VITE_BASE_URL');
+    }
     stages{
         stage('Front clone'){
             steps{
@@ -12,7 +15,7 @@ pipeline {
                 dir('whoru-frontend') {
                     sh "docker stop frontend || true && docker rm frontend || true"
                     sh 'docker rmi frontend || true'
-                    sh 'docker build -t frontend .' 
+                    sh 'docker build --build-arg VITE_BASE_URL=${VITE_BASE_URL} -t frontend .' 
                 }
             }
         }

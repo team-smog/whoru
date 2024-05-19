@@ -6,8 +6,13 @@ import { MessageInfoDetail } from '../../types/mainTypes'
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
 import { setReplyMessage } from '@/stores/store';
-import axios from 'axios'
 import Swal from 'sweetalert2'
+import { useState } from 'react'
+import ParentInboxImageComponent from './ParentInboxImageComponent'
+import ParentInboxTextComponent from './ParentInboxTextComponent'
+import ParentInboxVoiceComponent from './ParentInboxVoiceComponent'
+import { axiosWithCredentialInstance } from '@/apis/axiosInstance'
+import Modal from '../@common/MessageModal'
 
 
 interface InboxTextComponentProps extends React.HTMLAttributes<HTMLDivElement>{
@@ -16,11 +21,14 @@ interface InboxTextComponentProps extends React.HTMLAttributes<HTMLDivElement>{
 }
 
 const InboxTextComponent: React.FC<InboxTextComponentProps> = ({ message, innerRef, ...props }) => {
-  // const [content, setContent] = useState<string>("")
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  // const messageId = useSelector((state: any) => state.reply.messageId);
   const accessToken = localStorage.getItem('AccessToken');
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+
+    const handleModalOpen = () => {
+        setIsModalOpen(true)
+    }
 
   const replyButtonStyle = message.responseStatus ?  {backgroundColor: 'gray'} : {}
   const reportButtonStyle = message.isReported ? { backgroundColor: 'gray' } : {}
@@ -38,7 +46,7 @@ const InboxTextComponent: React.FC<InboxTextComponentProps> = ({ message, innerR
       denyButtonText: `취소`,
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.post('https://k10d203.p.ssafy.io/api/report/member',
+        axiosWithCredentialInstance.post(`report/member`,
         {
           messageId: messageId,
           senderId: senderId,
@@ -49,13 +57,20 @@ const InboxTextComponent: React.FC<InboxTextComponentProps> = ({ message, innerR
             Authorization: `Bearer ${accessToken}`
         }}
         )
-        .then((res) => {
-          console.log(res);
-          Swal.fire('신고가 완료되었습니다.', '', 'success');
-          window.location.reload();
+        .then(() => {
+          // console.log(res);
+          Swal.fire({
+            title: '신고가 완료되었습니다.',
+            icon: 'success',
+            timer: 2500,
+            showConfirmButton: false
+          })
+          .then(() => {
+            window.location.reload();
+          });
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(() => {
+          // console.log(err);
         })
       }
     })
@@ -114,9 +129,23 @@ const InboxTextComponent: React.FC<InboxTextComponentProps> = ({ message, innerR
               >
                 신고
             </button>
+            {message.isResponse && <button className={styles.inboxImageComponentFooterFromButton} onClick={handleModalOpen}>from.</button>}
           </div>
         </div>
       </div>
+      {isModalOpen && (
+                <Modal width="360px" height="auto" onClose={() => setIsModalOpen(false)}>
+                    {message.parent.contentType === 'text' && (
+                        <ParentInboxTextComponent message={message.parent} setIsModalOpen={setIsModalOpen}/>
+                    )}
+                    {message.parent.contentType === 'image' && (
+                        <ParentInboxImageComponent message={message.parent} setIsModalOpen={setIsModalOpen}/>
+                    )}
+                    {message.parent.contentType === 'voice' && (
+                        <ParentInboxVoiceComponent message={message.parent} setIsModalOpen={setIsModalOpen}/>
+                    )}
+                </Modal>
+            )}
     </div>
   )
 }

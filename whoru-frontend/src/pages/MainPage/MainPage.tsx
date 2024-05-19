@@ -10,15 +10,11 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from 'react-intersection-observer';
 import { useDispatch, useSelector } from "react-redux";
 import { setFirstId, setLastId } from "@/stores/store";
-import axios from "axios";
-// import { requestPermission } from "@/FirebaseUtil.js";
-
-
-//todo: 
+import { axiosWithCredentialInstance } from "@/apis/axiosInstance";
 
 const MainPage = () => {
   const info: IHeaderInfo = {
-    left_1: "Main",
+    left_1: "My Messages",
     left_2: null,
     center: null,
     right: null
@@ -31,21 +27,12 @@ const MainPage = () => {
       dispatch(setLastId(null));
     }
   }, []);
-  
-  // const FCMSetToken = async () => {
-  //   // const token = await requestPermission();
-  //   // console.log("token",token)
-  //   // return token;
-  //   // localStorage.getItem('FCMToken');
-  //   return await requestPermission();
-  // }
 
   const dispatch = useDispatch();
   const firstId = useSelector((state: any) => state.message.firstId);
   const lastId = useSelector((state: any) => state.message.lastId);
   const [hasNext,setHasNext] = useState<boolean | null>(null);
   const [serverData, setServerData] = useState<any[]>([]);
-  // const token = FCMSetToken();
   
   const touchStartY = useRef(0);
   const loadingHeight = useRef(0);
@@ -94,40 +81,6 @@ const MainPage = () => {
     }
   }
 
-  // const [ myTokenFCM, setMyTokenFCM] = useState<string|null>(null);
-
-  
-  // const fetchDataFCM = async (token: string|null) => {
-  //   try {
-  //     // console.log("token1",token)
-  //     if (token === null) {
-  //       return;
-  //     }
-  //     await fetch(`https://k10d203.p.ssafy.io/api/member/updatefcm?fcmToken=${token}`, {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
-  //       },
-  //     });
-  //     console.log("fcm 토큰 저장 api 요청 완료")
-  //   } catch (error: any) {
-  //     console.error(error);
-  //     console.log("fcm 토큰 저장 api 요청 실패")
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   token.then(() => {
-  //     const FCM = localStorage.getItem('FCMToken');
-  //     console.log("FCM",FCM);
-  //     fetchDataFCM(FCM);
-  //     // console.log("res token",res);
-  //     // localStorage.setItem('FCMToken', res);
-  //   })
-  //   // fetchDataFCM(token);
-  // }, [token]);
-
   useEffect(() => {
     console.log("firstId", firstId);
     console.log("lastId", lastId);
@@ -136,20 +89,29 @@ const MainPage = () => {
   const { ref, inView } = useInView();
 
   const handleRefresh = async (fId:number): Promise<MessageInfoDetail[]> => {
-    console.log("fId", fId);
-    const res = await fetch(`https://k10d203.p.ssafy.io/api/message/recent?firstid=${fId}`, {
-      headers: {
-        Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
-      },
-    })
-    const data = await res.json();
-    console.log(data);
-    return data.data;
+    // console.log("fId", fId);
+    try {
+      const res = await axiosWithCredentialInstance.get(`message/recent?firstid=${fId}`, {
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
+        },
+      });
+      if (res.data && res.data.data) {
+        // console.log(res.data.data);
+        return res.data.data;
+      } else {
+        // console.log("빈",res);
+        return [];
+      }
+    } catch (err) {
+      // console.log(err);
+      return [];
+    }
   }
 
   const fetchData = () => {
     if (lastId === null) {
-      return axios.get(`https://k10d203.p.ssafy.io/api/message?size=${20}`, {
+      return axiosWithCredentialInstance.get(`message?size=${20}`, {
         headers: {
           Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
         },
@@ -167,13 +129,13 @@ const MainPage = () => {
         console.log(err);
       })
     } else if (lastId !== null) {
-      return axios.get(`https://k10d203.p.ssafy.io/api/message?size=${20}&lastid=${lastId}`, {
+      return axiosWithCredentialInstance.get(`message?size=${20}&lastid=${lastId}`, {
         headers: {
           Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
         },
       }) 
       .then((res) => {
-        if (res.data && res.data.data && res.data.data.content) {
+        if (res.data && res.data.data && res.data.data.content && res.data.data.content.length > 0) {
           dispatch(setLastId(res.data.data.content[res.data.data.content.length - 1].id));
           setHasNext(res.data.data.hasNext);
           console.log(res.data);
@@ -219,7 +181,7 @@ const MainPage = () => {
 
   const addF = async () => {
     const newMessages = await handleRefresh(firstId);
-    console.log("newMessages", newMessages);
+    // console.log("newMessages", newMessages);
     if (newMessages.length !== 0) {
       dispatch(setFirstId(newMessages[0].id));
     }

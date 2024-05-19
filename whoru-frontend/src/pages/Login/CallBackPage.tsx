@@ -5,11 +5,12 @@ import { useDispatch } from 'react-redux'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { requestPermission } from "@/FirebaseUtil.js";
 
+
 const CallBackPage = () => {
-	const navigate = useNavigate()
-	const [searchParams] = useSearchParams()
-	const dispatch = useDispatch()
-	const { data: userData, isError, isLoading } = useAuthReq()
+	const navigate = useNavigate();
+	const [searchParams] = useSearchParams();
+	const dispatch = useDispatch();
+	const { data: userData, isError, isLoading } = useAuthReq();
 	
 	const FCMSetToken = async () => {
 		// const token = await requestPermission();
@@ -23,11 +24,11 @@ const CallBackPage = () => {
 	
 	const fetchDataFCM = async (token: string|null) => {
 		try {
-			// console.log("token1",token)
+			console.log("token1",token)
 			if (token === null) {
 				return;
 			}
-			await fetch(`https://k10d203.p.ssafy.io/api/member/updatefcm?fcmToken=${token}`, {
+			await fetch(`https://codearena.shop/api/member/updatefcm?fcmToken=${token}`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -54,6 +55,7 @@ const CallBackPage = () => {
 	}, [token]);
 
 	useEffect(() => {
+
 		const accessToken = searchParams.get('accessToken')
 		console.log(accessToken)
 
@@ -62,12 +64,13 @@ const CallBackPage = () => {
 			return
 		}
 
-		localStorage.setItem('AccessToken', accessToken)
+		localStorage.setItem('AccessToken', accessToken);
 
 		if (isLoading) return
 
 		if (isError) {
 			navigate('/login')
+			console.log(isError)
 			return
 		}
 

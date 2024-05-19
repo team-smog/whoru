@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+// import axios from 'axios'
 import Profile from '@/assets/@common/Profile.png'
 import { useDispatch } from 'react-redux'
 import { setBoxCount, setIconUrl, setPushAlarm, setRole } from '@/stores/store'
+import { axiosWithCredentialInstance } from '@/apis/axiosInstance'
 
 
 const ProfileInfo = () => {
@@ -18,7 +19,7 @@ const ProfileInfo = () => {
 	useEffect(() => {
 		const fetchUserInfo = async () => {
 			try {
-				const response = await axios.get('https://k10d203.p.ssafy.io/api/member/profile', {
+				const response = await axiosWithCredentialInstance.get('https://codearena.shop/api/member/profile', {
 					headers: {
 						Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
 					},
@@ -45,13 +46,13 @@ const ProfileInfo = () => {
 	}, [])
 
 	return (
-		<div className="flex flex-row justify-center">
-			<div className="pt-20 w-20 h-20">
-				<img src={userInfo.iconUrl} alt="Profile" />
-			</div>
-			<div className="pt-20 pl-6">
-				<p className="text-xl pt-6">{userInfo.userName || '이름 없음'}</p>
-			</div>
+		<div className="w-full max-w-[500px] px-24 pt-14 flex flex-col justify-center items-center">
+			{/* <div className="pt-20 w-20 h-20"> */}
+				<img src={userInfo.iconUrl} alt="Profile" className='h-28'/>
+			{/* </div> */}
+			{/* <div className="pt-20 pl-6"> */}
+				<p className="text-xl pt-4">{userInfo.userName || '이름 없음'}</p>
+			{/* </div> */}
 		</div>
 	)
 }

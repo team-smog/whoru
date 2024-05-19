@@ -4,11 +4,16 @@ import ulIcon from '../../assets/components/InboxImageComponent/image-component-
 import sqIcon from '../../assets/components/InboxImageComponent/image-component-sq-button.svg'
 import xIcon from '../../assets/components/InboxImageComponent/image-component-x-button.svg'
 import { MessageInfoDetail } from '../../types/mainTypes'
+import { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
 import { setReplyMessage } from '@/stores/store';
-import axios from 'axios'
 import Swal from 'sweetalert2'
+import ParentInboxImageComponent from './ParentInboxImageComponent'
+import ParentInboxTextComponent from './ParentInboxTextComponent'
+import ParentInboxVoiceComponent from './ParentInboxVoiceComponent'
+import { axiosWithCredentialInstance } from '@/apis/axiosInstance'
+import Modal from '../@common/MessageModal'
 
 
 interface InboxImageComponentProps extends React.HTMLAttributes<HTMLDivElement>{
@@ -19,15 +24,18 @@ interface InboxImageComponentProps extends React.HTMLAttributes<HTMLDivElement>{
 const InboxImageComponent: React.FC<InboxImageComponentProps> = ({ message, innerRef, ...props }) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  // const messageId = useSelector((state: any) => state.reply.messageId)
   const accessToken = localStorage.getItem('AccessToken')
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+
+    const handleModalOpen = () => {
+        setIsModalOpen(true)
+    }
 
   const replyButtonStyle = message.responseStatus ?  {backgroundColor: 'gray'} : {}
   const reportButtonStyle = message.isReported ? { backgroundColor: 'gray' } : {}
 
   const handleReply = (messageId: number) => {
     dispatch(setReplyMessage(messageId))
-    // console.log('messageId', messageId)
     navigate('/post')
   }
 
@@ -39,7 +47,7 @@ const InboxImageComponent: React.FC<InboxImageComponentProps> = ({ message, inne
       denyButtonText: `취소`,
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.post('https://k10d203.p.ssafy.io/api/report/member',
+        axiosWithCredentialInstance.post(`/report/member`,
         {
           messageId: messageId,
           senderId: senderId,
@@ -50,13 +58,20 @@ const InboxImageComponent: React.FC<InboxImageComponentProps> = ({ message, inne
             Authorization: `Bearer ${accessToken}`
         }}
         )
-        .then((res) => {
-          console.log(res);
-          Swal.fire('신고가 완료되었습니다.', '', 'success');
-          window.location.reload();
+        .then(() => {
+          // console.log(res);
+          Swal.fire({
+            title: '신고가 완료되었습니다.',
+            icon: 'success',
+            timer: 2500,
+            showConfirmButton: false
+          })
+          .then(() => {
+            window.location.reload();
+          });
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(() => {
+          // console.log(err);
         })
       }
     })
@@ -117,7 +132,21 @@ const InboxImageComponent: React.FC<InboxImageComponentProps> = ({ message, inne
           >
             신고
         </button>
+        {message.isResponse && <button className={styles.inboxImageComponentFooterFromButton} onClick={handleModalOpen}>from.</button>}
       </div>
+      {isModalOpen && (
+                <Modal width="360px" height="auto" onClose={() => setIsModalOpen(false)}>
+                    {message.parent.contentType === 'text' && (
+                        <ParentInboxTextComponent message={message.parent} setIsModalOpen={setIsModalOpen}/>
+                    )}
+                    {message.parent.contentType === 'image' && (
+                        <ParentInboxImageComponent message={message.parent} setIsModalOpen={setIsModalOpen}/>
+                    )}
+                    {message.parent.contentType === 'voice' && (
+                        <ParentInboxVoiceComponent message={message.parent} setIsModalOpen={setIsModalOpen}/>
+                    )}
+                </Modal>
+            )}
     </div>
   )
 }

@@ -17,7 +17,7 @@ const Notification = () => {
 	return (
 		<>
 			<div className="w-full max-w-[500px]">
-				<div className="h-[calc(100vh-180px)] overflow-y-auto">
+				<div className="h-[calc(100dvh-180px)] overflow-y-auto">
 					{notificationData &&
 						notificationData.pages.map((page) =>
 							page.content.map((item, index) => {

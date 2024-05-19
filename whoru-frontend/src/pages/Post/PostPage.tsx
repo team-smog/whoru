@@ -22,13 +22,13 @@ const PostPage = () => {
 
   const isReply = () => {
     if (messageId) {
-      console.log("답장하기")
+      // console.log("답장하기")
       return <p className={styles.postPageTypeControllerReplyType}>답장하기</p>
     }
   }
 
   useEffect(() => {
-    console.log("messageId", messageId)
+    // console.log("messageId", messageId)
     return () => {
       dispatch(setReplyMessage(null))
     }
