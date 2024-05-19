@@ -8,6 +8,7 @@ import com.ssafy.whoru.global.util.RedisUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import lombok.extern.slf4j.Slf4j;
@@ -47,7 +48,6 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
 
         Long userId = customUserDetails.getId();
-        String username = memberRepository.findById(userId).get().getUserName();
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
@@ -59,16 +59,15 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         String refreshToken;
         //기존 Redis에 저장된 Refresh가 있다면 해당값을 전달
-        String redisRefreshToken = String.valueOf(
-            redisUtil.findValueByKey(RedisKeyType.REFRESHTOKEN.makeKey(String.valueOf(userId))));
+        Optional<String> redisRefreshTokenOpt = redisUtil.findValueByKey(RedisKeyType.REFRESHTOKEN.makeKey(String.valueOf(userId)));
 
-        log.info("Redis search value -> {}", redisRefreshToken);
-        if(redisRefreshToken.isEmpty()) {
-            refreshToken = jwtUtil.createRefreshToken(userId,"refresh",role);
-            redisUtil.insert(RedisKeyType.REFRESHTOKEN.makeKey(String.valueOf(userId)),refreshToken,time/1000);
+        log.info("Redis search value -> {}", redisRefreshTokenOpt);
+        if(redisRefreshTokenOpt.isPresent()) {
+            refreshToken = redisRefreshTokenOpt.get();
         }
         else {
-            refreshToken = redisRefreshToken;
+            refreshToken = jwtUtil.createRefreshToken(userId,"refresh",role);
+            redisUtil.insert(RedisKeyType.REFRESHTOKEN.makeKey(String.valueOf(userId)),refreshToken,time/1000);
         }
 
 
