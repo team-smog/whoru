@@ -1,0 +1,31 @@
+pipeline {
+    agent any
+    environment {
+        VITE_BASE_URL = credentials('VITE_BASE_URL');
+    }
+    stages{
+        stage('Front clone'){
+            steps{
+                git branch: 'FE_develop', credentialsId: 'GitLab-Last', url: 'https://lab.ssafy.com/s10-final/S10P31D203.git'
+            }
+        }
+
+        stage('Docker front image build') {
+            steps {
+                dir('whoru-frontend') {
+                    sh "docker stop frontend || true && docker rm frontend || true"
+                    sh 'docker rmi frontend || true'
+                    sh 'docker build --build-arg VITE_BASE_URL=${VITE_BASE_URL} -t frontend .' 
+                }
+            }
+        }
+
+        stage('Docker front container run && connect network') {
+            steps {
+                dir('whoru-frontend') {
+                    sh 'docker run -d -v /config/front/d203front.conf:/etc/nginx/conf.d/d203front.conf --net whoru --name frontend frontend'
+                }
+            }
+        }
+    }
+}

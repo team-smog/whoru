@@ -1,0 +1,42 @@
+pipeline {
+    agent any
+    tools {
+        gradle 'gradle'
+    }
+    environment {
+        JASYPT_KEY = credentials('JASYPT_KEY')
+        AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
+        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+        WAS_PROFILE = credentials('WAS_PROFILE')
+    }
+    stages {
+        stage('clone'){
+            steps{
+                git branch: 'BE_develop', credentialsId: 'GitLab-Last', url: 'https://lab.ssafy.com/s10-final/S10P31D203.git'
+            }
+        }
+        stage('Gradle build') {
+            steps {
+                dir('./whoru-backend'){
+                    sh 'chmod +x ./gradlew'
+                    sh "set -x; ./gradlew clean build -Dencryptor.key='${JASYPT_KEY}' -DAWS_ACCESS_KEY_ID='${AWS_ACCESS_KEY_ID}' -DAWS_SECRET_ACCESS_KEY='${AWS_SECRET_ACCESS_KEY}' -Dspring.profiles.active='${WAS_PROFILE}'"
+                }
+            }
+        }
+        stage('Container build') {
+            steps {
+                dir('./whoru-backend'){
+                    sh 'docker stop backend || true && docker rm backend || true'
+                    sh 'docker rmi backend || true'
+                    sh "docker build --build-arg JASYPT_KEY='${JASYPT_KEY}' --build-arg AWS_ACCESS_KEY_ID='${AWS_ACCESS_KEY_ID}' --build-arg WAS_PROFILE='${WAS_PROFILE}' --build-arg AWS_SECRET_ACCESS_KEY='${AWS_SECRET_ACCESS_KEY}' -t backend ."
+
+                }
+            }
+        }
+        stage('back-deploy') {
+            steps {
+                sh 'docker run -it -d -v /var/log/whoru/logs:/logs --name backend --net whoru -e TZ=Asia/Seoul backend'
+            }
+        }
+    }
+}
