@@ -1,3 +1,11 @@
+.ParentInboxTextComponentBackground {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+}
+
 .inboxTextComponent {
 	display: flex;
 	flex-direction: column;
@@ -75,7 +83,7 @@
 
 .inboxTextComponentBodyMainText {
 	margin: 12px;
-	font-size: 16px;
+	font-size: 18px;
 	color: #ffffff;
 }
 
@@ -88,22 +96,24 @@
 	margin-bottom: 8px;
 }
 
+.inboxTextComponentFooter button {
+	width: 80px;
+	height: 32px;
+	font-size: 14px;
+}
+
 .inboxTextComponentFooterButton {
-	width: 56px;
-	height: 24px;
 	font-size: 10px;
 	margin: auto 12px;
 	border: 3px solid #423752;
 	border-radius: 6px;
 	padding: 2px 4px;
-	background: #e08edc;
+	/* background: #e08edc; */
 	background: linear-gradient(165deg, #ffc2fc 0%, #9786ff 100%);
 	color: #ffffff;
 }
 
 .inboxTextComponentFooterReportButton {
-	width: 56px;
-	height: 24px;
 	font-size: 10px;
 	margin: auto 12px;
 	border: 3px solid #423752;
@@ -113,9 +123,17 @@
 	color: #656565;
 }
 
+.inboxImageComponentFooterFromButton {
+	font-size: 10px;
+	margin: auto 12px;
+	border: 3px solid #423752;
+	border-radius: 6px;
+	padding: 2px 4px;
+	background: #e08edc;
+	color: #ffffff;
+}
+
 .inboxTextComponentFooterButtonDisable {
-	width: 56px;
-	height: 24px;
 	font-size: 10px;
 	margin: auto 12px;
 	border: 3px solid #423752;

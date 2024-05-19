@@ -4,7 +4,8 @@ import styles from './InboxVoiceComponent.module.css'
 import back from '@/assets/components/InboxVoiceComponent/voice-component-back-button.svg'
 import front from '@/assets/components/InboxVoiceComponent/voice-component-front-button.svg'
 import re from '@/assets/components/InboxVoiceComponent/voice-component-re-button.svg'
-import star from '@/assets/components/InboxVoiceComponent/voice-component-star-button.svg'
+import xbtn from '@/assets/components/InboxTextComponent/text-component-x-button.svg'
+// import star from '@/assets/components/InboxVoiceComponent/voice-component-star-button.svg'
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
 import "./audioStyles.css";
@@ -12,8 +13,13 @@ import { MessageInfoDetail } from '../../types/mainTypes'
 import { useDispatch } from 'react-redux';
 import { setReplyMessage } from '@/stores/store';
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
 import Swal from 'sweetalert2'
+import { useState } from 'react'
+import ParentInboxImageComponent from './ParentInboxImageComponent'
+import ParentInboxTextComponent from './ParentInboxTextComponent'
+import ParentInboxVoiceComponent from './ParentInboxVoiceComponent'
+import { axiosWithCredentialInstance } from '@/apis/axiosInstance'
+import Modal from '../@common/MessageModal'
 
 
 
@@ -27,7 +33,11 @@ const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, inne
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const accessToken = localStorage.getItem('AccessToken')
-  // const messageId = useSelector((state: any) => state.messageId)
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+
+  const handleModalOpen = () => {
+    setIsModalOpen(true)
+  }
 
   const replyButtonStyle = message.responseStatus ?  {backgroundColor: 'gray'} : {}
   const reportButtonStyle = message.isReported ? { backgroundColor: 'gray' } : {}
@@ -35,7 +45,7 @@ const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, inne
 
   const handleReply = (messageId: number) => {
     dispatch(setReplyMessage(messageId))
-    console.log('messageId', messageId)
+    // console.log('messageId', messageId)
     navigate('/post')
   }
 
@@ -47,7 +57,7 @@ const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, inne
       denyButtonText: `취소`,
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.post('https://k10d203.p.ssafy.io/api/report/member',
+        axiosWithCredentialInstance.post(`report/member`,
         {
           messageId: messageId,
           senderId: senderId,
@@ -58,13 +68,20 @@ const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, inne
             Authorization: `Bearer ${accessToken}`
         }}
         )
-        .then((res) => {
-          console.log(res);
-          Swal.fire('신고가 완료되었습니다.', '', 'success');
-          window.location.reload();
+        .then(() => {
+          // console.log(res);
+          Swal.fire({
+            title: '신고가 완료되었습니다.',
+            icon: 'success',
+            timer: 2500, // 2.5초 후에 자동으로 닫힘
+            showConfirmButton: false
+          })
+          .then(() => {
+            window.location.reload();
+          });
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(() => {
+          // console.log(err);
         })
       }
     })
@@ -92,7 +109,6 @@ const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, inne
 
   return (
     <div className={styles.inboxVoiceComponent} key={message.id} ref={innerRef} {...props}>
-      {/* <img src={Header} alt="component-Header" className={styles.inboxVoiceComponentHeader} /> */}
       <div className={styles.inboxVoiceComponentHeader} key={message.id} {...props}>
         <div className={styles.inboxVoiceComponentHeaderText}>
           <p className={styles.inboxVoiceComponentHeaderTextTitle}>{message.isResponse ? "답장 메세지" : "익명 메세지"}</p>
@@ -103,7 +119,7 @@ const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, inne
           <img src={front} alt="front-icon" />
           <img src={re} alt="re-icon" />
           <div className={styles.inboxVoiceComponentHeaderSearchArea}></div>
-          <img src={star} alt="star-icon" />
+          <img src={xbtn} alt="xbtn-icon" className={styles.xbtn}/>
         </div>
       </div>
       <div className={styles.inboxVoiceComponentBody}>
@@ -111,7 +127,7 @@ const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, inne
           <AudioPlayer
             className={styles.inboxVoiceComponentBodyMainAudio}
             src={message.content}
-            onPlay={() => {console.log("onPlay")}}
+            onPlay={() => {}}
             layout="stacked-reverse"
             style={{ width: "100%",
                       height: "100%",
@@ -135,7 +151,21 @@ const InboxVoiceComponent: React.FC<InboxVoiceComponentProps> = ({ message, inne
           >
             신고
         </button>
+        {message.isResponse && <button className={styles.inboxImageComponentFooterFromButton} onClick={handleModalOpen}>from.</button>}
       </div>
+      {isModalOpen && (
+                <Modal width="360px" height="auto" onClose={() => setIsModalOpen(false)}>
+                    {message.parent.contentType === 'text' && (
+                        <ParentInboxTextComponent message={message.parent} setIsModalOpen={setIsModalOpen}/>
+                    )}
+                    {message.parent.contentType === 'image' && (
+                        <ParentInboxImageComponent message={message.parent} setIsModalOpen={setIsModalOpen}/>
+                    )}
+                    {message.parent.contentType === 'voice' && (
+                        <ParentInboxVoiceComponent message={message.parent} setIsModalOpen={setIsModalOpen}/>
+                    )}
+                </Modal>
+            )}
       </div>
     </div>
   )

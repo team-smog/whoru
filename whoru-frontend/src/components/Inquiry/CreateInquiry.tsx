@@ -1,11 +1,11 @@
 import { useState, FormEvent } from 'react'
 import Swal from 'sweetalert2'
-import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import Header, { IHeaderInfo } from '@/components/@common/Header'
 import NavigationBar from '@/components/@common/NavigationBar'
 import Backspace from '@/assets/@common/Backspace.png'
 import './Inquriy.css'
+import { axiosWithCredentialInstance } from '@/apis/axiosInstance'
 
 const CreateInquiry = () => {
 	const info: IHeaderInfo = {
@@ -42,8 +42,8 @@ const CreateInquiry = () => {
 			if (result.isConfirmed) {
 				setIsSubmitting(true)
 				try {
-					const response = await axios.post(
-						'https://k10d203.p.ssafy.io/api/board/inquiry',
+					const response = await axiosWithCredentialInstance.post(
+						'board/inquiry',
 						{ subject, content },
 						{ headers: { Authorization: 'Bearer ' + localStorage.getItem('AccessToken') } }
 					)

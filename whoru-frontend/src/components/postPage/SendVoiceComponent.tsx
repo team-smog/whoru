@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import styles from './SendVoiceComponent.module.css'
-// import Header from '@/assets/components/InboxVoiceComponent/voice-component-header.svg'
 import back from '@/assets/components/InboxVoiceComponent/voice-component-back-button.svg'
 import front from '@/assets/components/InboxVoiceComponent/voice-component-front-button.svg'
 import re from '@/assets/components/InboxVoiceComponent/voice-component-re-button.svg'
@@ -14,59 +13,26 @@ import postbutton from '@/assets/components/InboxVoiceComponent/voice-component-
 import pausebutton from '@/assets/components/InboxVoiceComponent/voice-component-pause-button.svg'
 import { useVoiceVisualizer, VoiceVisualizer } from "react-voice-visualizer";
 import 'react-h5-audio-player/lib/styles.css';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom'
-// import { setBoxCountP } from '@/stores/store';
-// import { useDispatch } from 'react-redux';
 import toWav from 'audiobuffer-to-wav';
 import Swal from 'sweetalert2'
+import { axiosWithCredentialInstance } from '@/apis/axiosInstance'
 
 
 const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
     const navigate = useNavigate();
-    // const dispatch = useDispatch();
     const [currentRecordType,setCurrentRecordType] = useState<string>("")
-    // Initialize the recorder controls using the hook
     const recorderControls = useVoiceVisualizer();
     const accessToken = localStorage.getItem('AccessToken');
     const {
-        // ... (Extracted controls and states, if necessary)
-        // error,
         audioRef,
         isRecordingInProgress,
-        // isPausedRecording,
-        // audioData,
-        // recordingTime,
-        // mediaRecorder,
-        // duration,
-        // currentAudioTime,
-        // audioSrc,
         isPausedRecordedAudio,
-        // isProcessingRecordedAudio,
         isCleared,
         isAvailableRecordedAudio,
         recordedBlob,
-        // bufferFromRecordedBlob,
-        // formattedDuration,
         formattedRecordingTime,
-        // formattedRecordedAudioCurrentTime,
-        // isProcessingOnResize,
-        // isProcessingStartRecording,
     } = recorderControls;
-
-    // Get the recorded audio blob
-    // useEffect(() => {
-    //   if (!recordedBlob) return;
-
-    //   console.log("recordedBlob:", recordedBlob);
-    // }, [recordedBlob, error]);
-
-    // Get the error when it occurs
-    // useEffect(() => {
-    //   if (!error) return;
-
-    //   console.error("error:", error);
-    // }, [error]);
 
     useEffect(() => {
       if (!isRecordingInProgress) return;
@@ -75,26 +41,8 @@ const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
         setCurrentRecordType("recording")
       }
 
-      console.log("isRecordingInProgress:", isRecordingInProgress);
+      // console.log("isRecordingInProgress:", isRecordingInProgress);
     }, [isRecordingInProgress]);
-
-    // useEffect(() => {
-    //   if (!isPausedRecording) return;
-
-    //   console.log("isPausedRecording:", isPausedRecording);
-    // }, [isPausedRecording]);
-
-    // useEffect(() => {
-    //   if (!isPausedRecordedAudio) return;
-
-    //   console.log("isPausedRecordedAudio:", isPausedRecordedAudio);
-    // }, [isPausedRecordedAudio]);
-
-    // useEffect(() => {
-    //   if (!isProcessingRecordedAudio) return;
-
-    //   console.log("isProcessingRecordedAudio:", isProcessingRecordedAudio);
-    // }, [isProcessingRecordedAudio]);
 
     useEffect(() => {
       if (!isCleared) return;
@@ -103,7 +51,6 @@ const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
         setCurrentRecordType("cleared")
       }
 
-      // console.log("isCleared:", isCleared);
     }, [isCleared]);
 
     useEffect(() => {
@@ -113,80 +60,7 @@ const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
         setCurrentRecordType("audio")
       }
 
-      // console.log("isAvailableRecordedAudio:", isAvailableRecordedAudio);
     }, [isAvailableRecordedAudio]);
-
-    // useEffect(() => {
-    //   if (!isProcessingOnResize) return;
-
-    //   console.log("isProcessingOnResize:", isProcessingOnResize);
-    // }, [isProcessingOnResize]);
-
-    // useEffect(() => {
-    //   if (!isProcessingStartRecording) return;
-
-    //   console.log("isProcessingStartRecording:", isProcessingStartRecording);
-    // }, [isProcessingStartRecording]);
-
-    // useEffect(() => {
-    //   if (!audioData) return;
-
-    //   console.log("audioData:", audioData);
-    // }, [audioData]);
-
-    // useEffect(() => {
-    //   if (!recordingTime) return;
-
-    //   console.log("recordingTime:", recordingTime);
-    // }, [recordingTime]);
-
-    // useEffect(() => {
-    //   if (!mediaRecorder) return;
-
-    //   console.log("mediaRecorder:", mediaRecorder);
-    // }, [mediaRecorder]);
-
-    // useEffect(() => {
-    //   if (!duration) return;
-
-    //   console.log("duration:", duration);
-    // }, [duration]);
-
-    // useEffect(() => {
-    //   if (!currentAudioTime) return;
-
-    //   console.log("currentAudioTime:", currentAudioTime);
-    // }, [currentAudioTime]);
-
-    // useEffect(() => {
-    //   if (!audioSrc) return;
-
-    //   console.log("audioSrc:", audioSrc);
-    // }, [audioSrc]);
-
-    // useEffect(() => {
-    //   if (!formattedDuration) return;
-
-    //   console.log("formattedDuration:", formattedDuration);
-    // }, [formattedDuration]);
-
-    // useEffect(() => {
-    //   if (!formattedRecordingTime) return;
-
-    //   console.log("formattedRecordingTime:", formattedRecordingTime);
-    // }, [formattedRecordingTime]);
-
-    // useEffect(() => {
-    //   if (!formattedRecordedAudioCurrentTime) return;
-
-    //   console.log("formattedRecordedAudioCurrentTime:", formattedRecordedAudioCurrentTime);
-    // }, [formattedRecordedAudioCurrentTime]);
-
-    // useEffect(() => {
-    //   if (!bufferFromRecordedBlob) return;
-
-    //   console.log("bufferFromRecordedBlob:", bufferFromRecordedBlob);
-    // }, [bufferFromRecordedBlob]);
 
     const Toast = Swal.mixin({
       toast: true,
@@ -194,48 +68,39 @@ const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
       showConfirmButton: false,
       timer: 3000,
       timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener('click', () => navigate('/chacollection'));
+      }
     })
 
     const handlePostButtonClick = async () => {
       if (messageId !== null) {
         if (!recordedBlob) {
-            // console.error("No recorded audio to send");
             return;
         }
-    
-        // const formData = new FormData();
-        // let newBlob = new Blob([recordedBlob], {type: 'audio/weba'});
-        // formData.append('file', newBlob);
-
-        // const mp3Blob = await convertToMp3(recordedBlob);
-
-        // const formData = new FormData();
-        // formData.append('audio', mp3Blob);
-
-        // console.log("newBlob:", newBlob);
 
         const audioContext = new AudioContext();
         const audioBuffer = await audioContext.decodeAudioData(await recordedBlob.arrayBuffer());
         const wav = toWav(audioBuffer);
         const blob = new Blob([new Uint8Array(wav)], { type: 'audio/wav' });
 
-        console.log("blob:", blob);
+        // console.log("blob:", blob);
 
         const formData = new FormData();
         formData.append('file', blob);
     
         try {
-            const response = await axios.post(`https://k10d203.p.ssafy.io/api/message/${messageId}/file`, formData, {
+            await axiosWithCredentialInstance.post(`message/${messageId}/file`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     Authorization: `Bearer ${accessToken}`
                 }
             });
-            console.log(response.data);
+            // console.log(response.data);
             window.scrollTo(0, 0);
             navigate('/');
         } catch (error) {
-            console.error(error);
+            // console.error(error);
             Swal.fire({
               icon: 'error',
               title: '실패',
@@ -246,38 +111,27 @@ const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
         }
       } else if (messageId === null) {
         if (!recordedBlob) {
-          // console.error("No recorded audio to send");
           return;
         }
-    
-        // const formData = new FormData();
-        // let newBlob = new Blob([recordedBlob], {type: 'audio/weba'});
-        // formData.append('file', newBlob);
-
-        // const mp3Blob = await convertToMp3(recordedBlob);
-        // const formData = new FormData();
-        // formData.append('audio', mp3Blob);
-
-        // console.log("newBlob:", newBlob);
 
         const audioContext = new AudioContext();
         const audioBuffer = await audioContext.decodeAudioData(await recordedBlob.arrayBuffer());
         const wav = toWav(audioBuffer);
         const blob = new Blob([new Uint8Array(wav)], { type: 'audio/wav' });
 
-        console.log("blob:", blob);
+        // console.log("blob:", blob);
 
         const formData = new FormData();
         formData.append('file', blob);
     
         try {
-            const response = await axios.post('https://k10d203.p.ssafy.io/api/message/file', formData, {
+            const response = await axiosWithCredentialInstance.post(`message/file`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     Authorization: `Bearer ${accessToken}`
                 }
             })
-            console.log(response.data);
+            // console.log(response.data);
             if (response.data.data.randomBoxProvided === true) {
                 Toast.fire({
                     icon: 'success',
@@ -287,7 +141,7 @@ const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
             window.scrollTo(0, 0);
             navigate('/');
         } catch (error) {
-            console.error(error);
+            // console.error(error);
             Swal.fire({
               icon: 'error',
               title: '실패',
@@ -301,7 +155,6 @@ const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
 
   return (
     <div className={styles.sendVoiceComponent}>
-      {/* <img src={Header} alt="component-Header" className={styles.sendVoiceComponentHeader} /> */}
       <div className={styles.sendVoiceComponentHeader}>
         <div className={styles.sendVoiceComponentHeaderText}>
           <p className={styles.sendVoiceComponentHeaderTextTitle}>익명 메세지</p>
@@ -333,7 +186,6 @@ const SendVoiceComponent = ({ messageId }: { messageId: number | null}) => {
                 )
               }
             })()}
-            {/* <p className={styles.sendVoiceComponentBodyRecordingTimeTimer}>{formattedRecordingTime}</p> */}
           </div>
           {isCleared ? 
             <div className={styles.sendVoiceComponentBodyMainSvg}>

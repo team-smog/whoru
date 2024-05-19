@@ -25,7 +25,7 @@ const ProfilePage = () => {
 			<div>
 				<ProfileInfo />
 			</div>
-      <div className='pt-10'>
+      <div>
         <hr className="border-1 border-black mt-10 px-10" />
         <ProfileActions />
         <hr className="border-1 border-black pt-5 px-10" />
