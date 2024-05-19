@@ -15,11 +15,11 @@ const ProfileInfo = () => {
 		deviceName: '',
 		languageType: 'korean',
 	})
-
+	https://k10d203.p.ssafy.io/api/oauth2/authorization/kakao?redirect_uri=https://k10d203.p.ssafy.io/callback
 	useEffect(() => {
 		const fetchUserInfo = async () => {
 			try {
-				const response = await axiosWithCredentialInstance.get('https://codearena.shop/api/member/profile', {
+				const response = await axiosWithCredentialInstance.get('https://k10d203.p.ssafy.io/api/member/profile', {
 					headers: {
 						Authorization: 'Bearer ' + localStorage.getItem('AccessToken'),
 					},

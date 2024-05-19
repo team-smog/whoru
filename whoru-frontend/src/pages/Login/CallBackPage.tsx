@@ -28,7 +28,7 @@ const CallBackPage = () => {
 			if (token === null) {
 				return;
 			}
-			await fetch(`https://codearena.shop/api/member/updatefcm?fcmToken=${token}`, {
+			await fetch(`https://k10d203.p.ssafy.io/api/member/updatefcm?fcmToken=${token}`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',

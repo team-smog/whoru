@@ -3,7 +3,7 @@ import kakao from '@/assets/components/login/kakao_login_medium_wide.png'
 const KakaoLogin = () => {
   // const link = "https://k10d203.p.ssafy.io/api/oauth2/authorization/kakao?redirect_uri=https://k10d203.p.ssafy.io/callback"
 
-  const link = "https://codearena.shop/api/oauth2/authorization/kakao?redirect_uri=https://codearena.shop/callback";
+  const link = "https://k10d203.p.ssafy.io/api/oauth2/authorization/kakao?redirect_uri=https://k10d203.p.ssafy.io/callback";
 
   const handleKakaoLogin = () => {
     window.location.href = link;
