@@ -3,7 +3,7 @@ import google from '@/assets/login/google.png'
 const GoogleLogin = () => {
   // 배포용
   // const link = `https://codearena.shop/api/login/oauth2/authorization/google/?redirect\_uri=https://codearena.shop/callback`
-  const link = `https://k10d203.p.ssafy.io/api/oauth2/authorization/kakao?redirect_uri=https://k10d203.p.ssafy.io/callback`
+  const link = `https://k10d203.p.ssafy.io/api/oauth2/authorization/google?redirect_uri=https://k10d203.p.ssafy.io/callback`
   
   // const link = `https://codearena.shop/api/login/oauth2/authorization/google/`
 
