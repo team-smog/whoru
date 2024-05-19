@@ -37,7 +37,7 @@ const NotificationItem = ({ data }: { data: INotificationRes }) => {
 						</div>
 					</div>
 					<div className="border-b-[0.5px] mt-1 mx-2" />
-					<div className="px-4 pt-3 text-[12px]">{data.content}</div>
+					<div className="px-4 pt-3 text-[12px] whitespace-pre-wrap overflow-y-auto">{data.content}</div>
 					<div className="absolute bottom-3 w-full flex justify-center max-w-[500px] m-auto px-4">
 						<button
 							className="justify-center w-[300px] flex items-center h-8 bg-gray-200 text-[14px] rounded-[10px] text-text_color"

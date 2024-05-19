@@ -98,7 +98,7 @@ function InquiryDetail() {
 							</div>
 						</div>
 						<div className="flex flex-row px-12 py-4">
-							<p className="text-xs word-wrap:break-word scrollable-content">{inquiry.content}</p>
+							<p className="text-xs word-wrap:break-word scrollable-content whitespace-pre-wrap">{inquiry.content}</p>
 						</div>
 						{inquiry.comment && (
 							<div className="w-full max-w-[500px] mx-auto pt-10 overflow-y-auto">
