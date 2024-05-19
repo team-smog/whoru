@@ -7,7 +7,7 @@ pipeline {
         JASYPT_KEY = credentials('JASYPT_KEY')
         AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
-        WAS_PROFILE = credentials('WAS_PROFILE)
+        WAS_PROFILE = credentials('WAS_PROFILE')
     }
     stages {
         stage('clone'){
