@@ -73,7 +73,7 @@ const ChacollectionProfile: React.FC = () => {
 
 	const gradeMapping: { [key: string]: string } = {
 		COMMON: '흔함',
-		RARE: '레어',
+		RARE: '고급',
 		ADVANCED: '희귀',
 	}
 
