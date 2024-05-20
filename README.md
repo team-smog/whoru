@@ -194,19 +194,19 @@ Nginx : 1.25.5
 
 #### Text
 
-<img src="./assets/gif/text.gif" alt="텍스트 메시지 전송" width="200px" />
+<img src="./assets/gif/text.gif" alt="텍스트 메시지 전송" width="250px" />
 
 <br/>
 
 #### Image
 
-<img src="./assets/gif/image.gif" alt="이미지 메시지 전송" width="200px" />
+<img src="./assets/gif/image.gif" alt="이미지 메시지 전송" width="250px" />
 
 <br/>
 
 #### Text
 
-<img src="./assets/gif/voice.gif" alt="음성 메시지 전송" width="200px" />
+<img src="./assets/gif/voice.gif" alt="음성 메시지 전송" width="250px" />
 
 <br/>
 
@@ -216,7 +216,7 @@ Nginx : 1.25.5
 - 사용자는 우편함에서 해당하는 메시지를 가로챌 수 있음
 - 가로채면 사용자의 메시지로 귀속되며, 1회에 한해서 답장 가능
 
-<img src="./assets/gif/message.gif" alt="메시지 가로채기" width="200px" />
+<img src="./assets/gif/message.gif" alt="메시지 가로채기" width="250px" />
 
 <br/>
 
@@ -226,7 +226,7 @@ Nginx : 1.25.5
 - 관리자는 문의사항들을 조회하고, 답글을 달 수 있음
 - 관리자는 신고내역을 조회할 수 있고, 사용자 정지 처리를 할 수 있음
 
-<img src="./assets/gif/admin.gif" alt="관리자" width="200px" />
+<img src="./assets/gif/admin.gif" alt="관리자" width="250px" />
 
 <br/>
 
@@ -234,6 +234,6 @@ Nginx : 1.25.5
 
 - 사용자는 백그라운드 및 포그라운드에서 FCM 알림을 수신할 수 있음
 
-<img src="./assets/gif/fcm.gif" alt="FCM 알림" width="200px" />
+<img src="./assets/gif/fcm.gif" alt="FCM 알림" width="250px" />
 
 <br/>
