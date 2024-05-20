@@ -14,6 +14,7 @@
   <li> <a herf="#section4"> 역할 분담 </a> </li>
   <li> <a herf="#section5"> 서비스 아키텍처 </a> </li>
   <li> <a herf="#section6"> 시연 시나리오 </a> </li>
+  <li> <a herf="#section7"> 주요 기능 </a> </li>
 </ol>
 
 <br>
@@ -65,6 +66,16 @@
 
 <p align="center">
   <img src="./assets/img/backend/기술 스택.png" width="400" height="200" alt="Logo">
+  
+  #### Version
+  ```
+  Spring boot : 3.2.4
+  JDK 21
+  Gradle : 8.7
+  JWT : 0.12.3
+  MySQL : 8.3.0
+  Redis : 7.2.4
+  ```
 </p>
 
 <br>
@@ -76,6 +87,14 @@
   <img src="./assets/img/frontend/기술 스택.png" width="400" height="200" alt="Logo">
 </p>
 
+#### Version
+
+```
+Node : 20.11.1
+React : 18.2.0
+Vite : 5.1.6
+```
+
 <br>
 <hr>
 
@@ -84,6 +103,13 @@
 <p align="center">
   <img src="./assets/img/infra/기술 스택.png" width="400" height="200" alt="Logo">
 </p>
+
+#### Version
+
+```
+Docker : 26.0.2
+Nginx : 1.25.5
+```
 
 <br>
 <hr>
@@ -109,31 +135,40 @@
 <hr>
 <h3> 😇 정민호 </h3>
 <ul>
-  <li> 추가해주세요. <li>
+  <li> FE, BE 브랜치 별 CI/CD 환경 구축
+  <li> 카카오, 구글 소셜 로그인 구현
+  <li> Spring Security 개발
+  <li> 회원관리 API 개발
+  <li> 최종 프로젝트 발표
 </ul>
 
 <hr>
 <h3> 😌 김회창 </h3>
 <ul>
-  <li> 추가해주세요. <li>
+  <li> 메세지 도메인 구현
+  <li> 관리자 공지사항 도메인 구현
+  <li> Firebase Cloud Message 푸시알림 백엔드 구현
 </ul>
 
 <hr>
 <h3> 😎 류태수 </h3>
 <ul>
-  <li> 추가해주세요. <li>
+  <li> 추가해주세요.
 </ul>
 
 <hr>
 <h3> 😊 강정수 </h3>
 <ul>
-  <li> 추가해주세요. <li>
+  <li> 소셜 로그인
+  <li> 회원 관리
+  <li> 관리자 페이지
 </ul>
 
 <hr>
 <h3> 🤓 오승현 </h3>
 <ul>
-  <li> 추가해주세요. <li>
+  <li> 마이페이지 디자인
+  <li> 수집 컨텐츠
 </ul>
 
 <hr>
@@ -146,4 +181,56 @@
 
 <br>
 
-<h2 id="section6"> 🎥 7. 시연 시나리오</h2>
+<h2 id="section6"> 🎥 7. 주요 기능</h2>
+
+### 메시지 전송
+
+- 텍스트, 이미지, 음성 3가지의 Media Type 지원
+- 전송 시 30% 확률로 랜덤박스 획득
+- 전송 시 랜덤 대상이 아닌 공통 우편함으로 전송
+
+#### Text
+
+<img src="./assets/gif/text.gif" alt="텍스트 메시지 전송" width="800px" />
+
+<br/>
+
+#### Image
+
+<img src="./assets/gif/image.gif" alt="이미지 메시지 전송" width="800px" />
+
+<br/>
+
+#### Text
+
+<img src="./assets/gif/voice.gif" alt="음성 메시지 전송" width="800px" />
+
+<br/>
+
+### 우편함
+
+- 익명으로부터 전송된 메시지는 우편함에 저장
+- 사용자는 우편함에서 해당하는 메시지를 가로챌 수 있음
+- 가로채면 사용자의 메시지로 귀속되며, 1회에 한해서 답장 가능
+
+<img src="./assets/gif/message.gif" alt="메시지 가로채기" width="800px" />
+
+<br/>
+
+### 관리자
+
+- 관리자는 공지사항을 작성 및 수정할 수 있음
+- 관리자는 문의사항들을 조회하고, 답글을 달 수 있음
+- 관리자는 신고내역을 조회할 수 있고, 사용자 정지 처리를 할 수 있음
+
+<img src="./assets/gif/admin.gif" alt="관리자" width="800px" />
+
+<br/>
+
+### FCM
+
+- 사용자는 백그라운드 및 포그라운드에서 FCM 알림을 수신할 수 있음
+
+<img src="./assets/gif/fcm.gif" alt="FCM 알림" width="800px" />
+
+<br/>
